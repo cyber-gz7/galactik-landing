@@ -23,7 +23,9 @@ export async function GET() {
       'Content-Type': 'application/octet-stream',
       'Content-Disposition': 'attachment; filename="GalacticLive-Setup.exe"',
       'Content-Length': stat.size.toString(),
-      'Cache-Control': 'public, max-age=3600, immutable',
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+      'Pragma': 'no-cache',
+      'Expires': '0',
     },
   });
 }
@@ -43,7 +45,9 @@ export async function HEAD() {
       'Content-Type': 'application/octet-stream',
       'Content-Disposition': 'attachment; filename="GalacticLive-Setup.exe"',
       'Content-Length': stat.size.toString(),
-      'Cache-Control': 'public, max-age=3600, immutable',
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+      'Pragma': 'no-cache',
+      'Expires': '0',
     },
   });
 }
