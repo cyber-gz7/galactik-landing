@@ -85,9 +85,10 @@ export default function Navbar({ userEmail }: NavbarProps) {
           )}
 
           <a
-            href="#download"
+            href="/GalacticLive-Setup.exe"
+            download="GalacticLive-Setup.exe"
             className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm font-semibold text-zinc-200 transition-all hover:border-[#fbbf24]/50 hover:bg-[#fbbf24]/10 hover:text-[#fbbf24]"
-            title="Descarga directa galactiklive.exe"
+            title="Descarga directa GalacticLive-Setup.exe"
           >
             <Download className="h-4 w-4" />
             <span className="hidden lg:inline">v1.0 Beta</span>

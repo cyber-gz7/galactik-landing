@@ -241,7 +241,8 @@ export default async function DashboardPage() {
 
             <div className="shrink-0 w-full sm:w-auto">
               <a
-                href="https://github.com/cyber-gz7/galactik-landing/releases/latest/download/GalacticLive-Setup.exe"
+                href="/GalacticLive-Setup.exe"
+                download="GalacticLive-Setup.exe"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-[#00f0ff] via-[#00c8ff] to-[#ff2a5f] px-8 py-4 text-base font-bold text-black shadow-[0_0_30px_rgba(0,240,255,0.4)] transition-all hover:scale-105 hover:shadow-[0_0_45px_rgba(255,42,95,0.5)]"
               >
                 <Download className="h-5 w-5 stroke-[2.5]" />
