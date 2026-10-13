@@ -107,8 +107,7 @@ export default async function DashboardPage() {
 
             <div className="flex items-center gap-3">
               <a
-                href="/GalacticLive-Setup.exe"
-                download="GalacticLive-Setup.exe"
+                href="/api/download"
                 className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#00f0ff] to-[#ff2a5f] px-5 py-2.5 text-sm font-bold text-black shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-transform hover:scale-105"
               >
                 <Download className="h-4 w-4 text-black stroke-[2.5]" />
@@ -241,8 +240,7 @@ export default async function DashboardPage() {
 
             <div className="shrink-0 w-full sm:w-auto">
               <a
-                href="/GalacticLive-Setup.exe"
-                download="GalacticLive-Setup.exe"
+                href="/api/download"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-[#00f0ff] via-[#00c8ff] to-[#ff2a5f] px-8 py-4 text-base font-bold text-black shadow-[0_0_30px_rgba(0,240,255,0.4)] transition-all hover:scale-105 hover:shadow-[0_0_45px_rgba(255,42,95,0.5)]"
               >
                 <Download className="h-5 w-5 stroke-[2.5]" />

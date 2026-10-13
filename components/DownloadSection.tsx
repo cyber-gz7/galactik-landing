@@ -38,8 +38,7 @@ export default function DownloadSection() {
             {/* Huge Download Button */}
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
               <a
-                href="/GalacticLive-Setup.exe"
-                download="GalacticLive-Setup.exe"
+                href="/api/download"
                 className="group relative inline-flex w-full sm:w-auto items-center justify-center gap-4 rounded-2xl bg-gradient-to-r from-[#00f0ff] via-[#00c8ff] to-[#ff2a5f] px-10 py-5 text-lg font-bold text-black shadow-[0_0_35px_rgba(0,240,255,0.45)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_55px_rgba(255,42,95,0.55)]"
               >
                 <Download className="h-6 w-6 stroke-[2.5] transition-transform group-hover:translate-y-0.5" />
