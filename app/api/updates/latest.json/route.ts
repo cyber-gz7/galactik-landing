@@ -2,9 +2,9 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   const updateManifest = {
-    version: '2.0.0',
-    notes: 'Lanzamiento oficial de Galactic Live Suite Beta',
-    pub_date: '2026-10-13T10:00:00Z',
+    version: '2.0.1',
+    notes: 'Actualización v2.0.1: autenticación estricta con Supabase Auth y sincronización automática de sonidos',
+    pub_date: '2026-10-13T12:00:00Z',
     platforms: {
       'windows-x86_64': {
         signature: '',
