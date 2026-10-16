@@ -241,6 +241,13 @@ export async function checkForUpdates(manual = false) {
     });
 
     if (!res.ok) {
+      if (res.status === 404) {
+        hideUpdatePill();
+        if (manual) {
+          showToast(`✅ GALACTK PANEL está al día (v${CURRENT_VERSION})`);
+        }
+        return;
+      }
       throw new Error(`GitHub API respondió HTTP ${res.status}`);
     }
 

@@ -666,37 +666,52 @@ export class LicenseClientController {
         const curHwid = this.status?.hwid || 'GL-0000-000000-000000';
 
         try {
-          // 1. Intentar registrar en Supabase Auth si Tauri está disponible
-          const invoke = this.getInvoke();
-          if (invoke) {
-            try {
-              await invoke('register_account', { email, password: pass, tiktok_username: u });
-            } catch (_) {}
+          // 1. Registrar usuario en Supabase Auth
+          let userId = null;
+          try {
+            const authRes = await fetch('https://dcsxkcextfdabuewfvek.supabase.co/auth/v1/signup', {
+              method: 'POST',
+              headers: {
+                'apikey': 'sb_publishable_EPb9urCJVxKSos4V-eJBfQ_-gCiHWjV',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                email,
+                password: pass,
+                data: { tiktok_username: u }
+              })
+            });
+            const authData = await authRes.json();
+            userId = authData.id || authData.user?.id;
+          } catch (e) {
+            console.warn('[REG AUTH] Error en signup:', e);
           }
 
           // 2. Insertar fila en public.streamers en estado PENDIENTE (is_active = false)
-          const supRes = await fetch('https://dcsxkcextfdabuewfvek.supabase.co/rest/v1/streamers', {
-            method: 'POST',
-            headers: {
-              'apikey': 'sb_publishable_EPb9urCJVxKSos4V-eJBfQ_-gCiHWjV',
-              'Authorization': 'Bearer sb_publishable_EPb9urCJVxKSos4V-eJBfQ_-gCiHWjV',
-              'Content-Type': 'application/json',
-              'Prefer': 'resolution=merge-duplicates,return=representation'
-            },
-            body: JSON.stringify({
-              email,
-              username: u,
-              bound_hwid: curHwid,
-              is_active: false,
-              expires_at: 0,
-              role: 'STREAMER',
-              allow_mc_plugins: true
-            })
-          });
+          if (userId) {
+            const supRes = await fetch('https://dcsxkcextfdabuewfvek.supabase.co/rest/v1/streamers', {
+              method: 'POST',
+              headers: {
+                'apikey': 'sb_publishable_EPb9urCJVxKSos4V-eJBfQ_-gCiHWjV',
+                'Authorization': 'Bearer sb_publishable_EPb9urCJVxKSos4V-eJBfQ_-gCiHWjV',
+                'Content-Type': 'application/json',
+                'Prefer': 'resolution=merge-duplicates,return=representation'
+              },
+              body: JSON.stringify({
+                id: userId,
+                email,
+                tiktok_username: u,
+                hwid: curHwid,
+                is_active: false,
+                role: 'STREAMER',
+                allow_mc_plugins: true
+              })
+            });
 
-          if (!supRes.ok) {
-            const errBody = await supRes.text();
-            console.warn('[REG STREAMER] Respuesta Supabase:', errBody);
+            if (!supRes.ok) {
+              const errBody = await supRes.text();
+              console.warn('[REG STREAMER] Respuesta Supabase:', errBody);
+            }
           }
 
           // Guardar solicitud pendiente localmente

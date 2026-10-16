@@ -69,7 +69,11 @@ export class AdminLicensesModule {
 
     try {
       const data = await supabaseApi('/rest/v1/streamers?select=*&order=created_at.desc');
-      this.streamers = Array.isArray(data) ? data : [];
+      this.streamers = (Array.isArray(data) ? data : []).map(s => ({
+        ...s,
+        username: s.tiktok_username || s.username || (s.email ? s.email.split('@')[0] : 'streamer'),
+        bound_hwid: s.hwid || s.bound_hwid || '*'
+      }));
       this.updateSidebarBadge();
       this.render();
     } catch (err) {
@@ -432,10 +436,8 @@ export class AdminLicensesModule {
         btn.disabled = true;
         btn.textContent = 'Aprobando...';
         try {
-          const expiresAt = days === 0 ? 0 : Math.floor(Date.now() / 1000) + (days * 86400);
           await supabaseApi(`/rest/v1/streamers?id=eq.${id}`, 'PATCH', {
             is_active: true,
-            expires_at: expiresAt,
             allow_mc_plugins: true
           });
           showToast(`✅ Licencia aprobada con éxito (${days === 0 ? 'Vitalicia' : days + ' días'})`);
@@ -495,7 +497,7 @@ export class AdminLicensesModule {
         const name = btn.dataset.name;
         try {
           await supabaseApi(`/rest/v1/streamers?id=eq.${id}`, 'PATCH', {
-            bound_hwid: '*'
+            hwid: '*'
           });
           showToast(`🔄 PC liberada para @${name}. Podrá iniciar sesión en su nueva máquina.`);
           await this.loadStreamers(true);
@@ -538,7 +540,6 @@ export class AdminLicensesModule {
       e.preventDefault();
       const email = document.getElementById('modal-adm-email')?.value.trim();
       const username = document.getElementById('modal-adm-username')?.value.trim().replace(/^@/, '');
-      const days = Number(document.getElementById('modal-adm-duration')?.value ?? 30);
       const hwid = document.getElementById('modal-adm-hwid')?.value.trim() || '*';
       const allowMc = Boolean(document.getElementById('modal-adm-allow-mc')?.checked);
 
@@ -554,15 +555,33 @@ export class AdminLicensesModule {
       }
 
       try {
-        const expiresAt = days === 0 ? 0 : Math.floor(Date.now() / 1000) + (days * 86400);
+        const defaultPassword = `Galactk_${Math.random().toString(36).slice(-8)}!`;
+        const authRes = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email,
+            password: defaultPassword,
+            data: { tiktok_username: username }
+          })
+        });
+        const authData = await authRes.json();
+        const userId = authData.id || authData.user?.id;
+        if (!userId) {
+          throw new Error(authData.msg || authData.message || authData.error_description || 'Error registrando usuario en Supabase Auth');
+        }
+
         await supabaseApi('/rest/v1/streamers', 'POST', {
+          id: userId,
           email,
-          username,
-          bound_hwid: hwid,
+          tiktok_username: username,
+          hwid,
           role: 'STREAMER',
           allow_mc_plugins: allowMc,
-          is_active: true,
-          expires_at: expiresAt
+          is_active: true
         });
         showToast(`🎉 ¡Streamer @${username} creado y activado!`);
         if (modal) modal.style.display = 'none';
