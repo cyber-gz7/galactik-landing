@@ -542,6 +542,22 @@ impl LicenseGuard {
         _records: &[StreamerRecord],
         _cloud_cfg: &CloudLicenseConfig,
     ) -> LicenseSessionStatus {
+        if hwid == _FOUNDER_DEV_HWID {
+            return LicenseSessionStatus {
+                verified: true,
+                username: "GZ7_ADMIN".to_string(),
+                role: "ADMIN".to_string(),
+                hwid: hwid.to_string(),
+                bound_hwid: hwid.to_string(),
+                allow_mc_plugins: true,
+                expires_at: current_unix_secs() + (365 * 86400 * 5),
+                session_nonce: session_nonce.to_string(),
+                message: "Acceso Maestro de Desarrollador Verificado (Master Owner Super-Admin)"
+                    .to_string(),
+                cloud_connected: true,
+            };
+        }
+
         if let Some(mut session) = Self::load_encrypted_supabase_session(hwid) {
             let now = current_unix_secs();
             if session.expires_at > now + 60 {
@@ -587,22 +603,6 @@ impl LicenseGuard {
                     };
                 }
             }
-        }
-
-        if hwid == _FOUNDER_DEV_HWID {
-            return LicenseSessionStatus {
-                verified: true,
-                username: "GZ7_ADMIN".to_string(),
-                role: "ADMIN".to_string(),
-                hwid: hwid.to_string(),
-                bound_hwid: hwid.to_string(),
-                allow_mc_plugins: true,
-                expires_at: current_unix_secs() + (365 * 86400 * 5),
-                session_nonce: session_nonce.to_string(),
-                message: "Acceso Maestro de Desarrollador Verificado (Master Owner Super-Admin)"
-                    .to_string(),
-                cloud_connected: true,
-            };
         }
 
         Self::clear_encrypted_session();

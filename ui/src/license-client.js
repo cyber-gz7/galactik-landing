@@ -336,11 +336,19 @@ export class LicenseClientController {
       }
     }
 
+    // Garantizar permisos plenos de ADMIN al HWID maestro y cuenta del fundador
+    if (this.status && (this.status.hwid === 'GL-E320-79485B-AFD734' || this.status.username === 'GZ7_ADMIN' || this.status.email === 'gerardyabdiel09@gmail.com')) {
+      this.status.verified = true;
+      this.status.role = 'ADMIN';
+      this.status.allow_mc_plugins = true;
+    }
+
     this.applyAntiInspectionGuards();
     this.injectTopBarControls();
     this.injectGateOverlay();
     this.injectAdminModal();
     this.syncGateVisibility();
+    document.dispatchEvent(new CustomEvent('galactk:license-status', { detail: this.status }));
   }
 
   ensureStylesInjected() {
