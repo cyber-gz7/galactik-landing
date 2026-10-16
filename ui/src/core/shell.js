@@ -35,6 +35,7 @@ export function initShell() {
       if (!button.querySelector('.module-badge')) {
         const badge = document.createElement('span'); badge.className = 'module-badge';
         badge.textContent = beta.includes(button.dataset.tab) ? 'BETA' : (button.dataset.tab === 'tab-roblox' ? 'PRO' : 'LISTO');
+        if (beta.includes(button.dataset.tab)) badge.classList.add('beta');
         button.append(badge);
       }
     });

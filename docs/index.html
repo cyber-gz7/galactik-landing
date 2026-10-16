@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es" data-github-repo="cyber-gz7/GalacticLive">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#04060A">
+  <meta name="description" content="Descarga GALACTK PANEL para Windows.">
+  <title>Descargar GALACTK PANEL</title>
+  <link rel="icon" href="logo.png">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100svh; display: grid; place-items: center; padding: 28px; background: #04060A; color: #F8FAFC; font-family: system-ui, 'Segoe UI', sans-serif; text-align: center; }
+    main { width: 100%; max-width: 400px; }
+    img { width: 84px; height: 84px; object-fit: contain; }
+    h1 { margin: 22px 0 10px; font-size: clamp(25px, 7vw, 32px); letter-spacing: -.04em; }
+    p { margin: 0; color: #94A3B8; font-size: 14px; line-height: 1.6; }
+    .download { display: block; margin-top: 30px; padding: 15px 20px; border-radius: 8px; background: #00F2FE; color: #04232A; text-decoration: none; font-size: 15px; font-weight: 700; }
+    .download:hover { background: #7ff9ff; }
+    a:focus-visible { outline: 2px solid #38BDF8; outline-offset: 4px; }
+    #version { margin-top: 14px; font-size: 12px; }
+    footer { margin-top: 46px; color: #64748B; font-size: 11px; }
+  </style>
+</head>
+<body>
+  <main>
+    <img src="logo.png" alt="">
+    <h1>GALACTK PANEL</h1>
+    <p>Tu panel interactivo para TikTok Live.</p>
+    <a id="download" class="download" href="https://github.com/cyber-gz7/GalacticLive/releases/latest">↓ Descargar para Windows</a>
+    <p id="version" aria-live="polite">Windows 10 / 11 · 64 bits</p>
+    <footer>Desarrollado por GZ7</footer>
+  </main>
+  <script>
+    (async () => {
+      const repo = document.documentElement.dataset.githubRepo;
+      const button = document.getElementById('download');
+      const version = document.getElementById('version');
+      button.href = `https://github.com/${repo}/releases/latest`;
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+      try {
+        const response = await fetch(`https://api.github.com/repos/${repo}/releases/latest`, {
+          headers: { Accept: 'application/vnd.github+json' }, signal: controller.signal
+        });
+        if (!response.ok) throw new Error('Release no disponible');
+        const release = await response.json();
+        const installer = (release.assets || []).find(asset =>
+          /-setup\.exe$/i.test(asset.name) && !/arm64|aarch64|i686|x86(?!_64)/i.test(asset.name)
+        );
+        if (!installer) throw new Error('Instalador no disponible');
+        const url = new URL(installer.browser_download_url);
+        if (url.protocol !== 'https:' || url.hostname !== 'github.com' || !url.pathname.startsWith(`/${repo}/releases/download/`)) throw new Error('Enlace inválido');
+        button.href = url.href;
+        version.textContent = `${release.tag_name} · Windows 64 bits · ${(installer.size / 1048576).toFixed(1)} MB`;
+      } catch {
+        button.textContent = 'Ver descargas en GitHub';
+        version.textContent = 'No se pudo consultar el instalador. Revisa las versiones publicadas.';
+      } finally { clearTimeout(timeout); }
+    })();
+  </script>
+</body>
+</html>

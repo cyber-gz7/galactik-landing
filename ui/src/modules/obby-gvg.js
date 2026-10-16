@@ -67,7 +67,7 @@ function renderRobloxEditor() {
   setSlider('rbx-slider-duel-scale', 'rbx-val-duel-scale', cfg.duel_scale ?? 100, '%');
   updateLocalSharpnessFilter(cfg.sharpness ?? 140);
 
-  const renderSlotRow = (slot, side) => `
+  const renderSlotRow = (slot, side, idx = 0, total = 1) => `
     <div class="roblox-slot-row" data-slot-id="${slot.id}" data-side="${side}">
       <div style="display: flex; align-items: center; gap: 10px; min-width: 145px;">
         <img src="${giftUrl(slot.icon_file, slot.gift_name, slot.coins)}" class="roblox-slot-icon gift-hd-img" onerror="this.src='./gifts/rose-1-coins.webp'" />
@@ -88,11 +88,17 @@ function renderRobloxEditor() {
         <label style="font-size:10px;color:var(--text-muted);">s <input type="number" min="0" class="table-input rbx-slot-duration" data-id="${slot.id}" value="${slot.duration_seconds ?? 5}" style="width:52px;text-align:center;" title="Duración en segundos" /></label>
       </div>
 
-      <div style="display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end;">
+      <div style="display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; align-items: center;">
+        <div class="slot-reorder-group" style="display: inline-flex; align-items: center; gap: 2px; background: rgba(15,23,42,0.85); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 2px 4px; margin-right: 2px;" title="Reordenar posición en la columna">
+          <button type="button" class="btn-micro btn-move-top-slot" data-slot-id="${slot.id}" title="Mover al primer lugar (inicio)" ${idx === 0 ? 'disabled style="opacity:0.3;cursor:not-allowed;"' : 'style="color:var(--galactk-cyan);font-weight:900;"'}>⤒</button>
+          <button type="button" class="btn-micro btn-move-up-slot" data-slot-id="${slot.id}" title="Subir una posición" ${idx === 0 ? 'disabled style="opacity:0.3;cursor:not-allowed;"' : ''}>▲</button>
+          <button type="button" class="btn-micro btn-move-down-slot" data-slot-id="${slot.id}" title="Bajar una posición" ${idx >= total - 1 ? 'disabled style="opacity:0.3;cursor:not-allowed;"' : ''}>▼</button>
+          <button type="button" class="btn-micro btn-move-bottom-slot" data-slot-id="${slot.id}" title="Mover al final (abajo de todo)" ${idx >= total - 1 ? 'disabled style="opacity:0.3;cursor:not-allowed;"' : ''}>⤓</button>
+        </div>
         <button type="button" class="btn-micro btn-change-roblox-gift" data-slot-id="${slot.id}">
-          🔄 Cambiar Regalo
+          🔄 Regalo
         </button>
-        <button type="button" class="btn-micro btn-sound-roblox-slot" data-slot-id="${slot.id}" style="color: var(--neon-cyan); border-color: rgba(0,240,255,0.4); max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="Elegir sonido del banco gratis">
+        <button type="button" class="btn-micro btn-sound-roblox-slot" data-slot-id="${slot.id}" style="color: var(--neon-cyan); border-color: rgba(0,240,255,0.4); max-width: 130px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="Elegir sonido del banco gratis">
           🔊 ${slot.sound_name || 'Elegir sonido'}
         </button>
         <button type="button" class="btn-micro btn-test-roblox-slot" data-slot-id="${slot.id}" title="Probar este regalo y su sonido en el overlay">
@@ -113,7 +119,7 @@ function renderRobloxEditor() {
     if (!rules.length) return '<div class="empty-state"><img src="./galactk-logo.png" alt=""><span>No hay acciones con este filtro.</span><small>Añade un regalo o cambia la búsqueda.</small></div>';
     const points = rules.filter(r => String(r.action_type).toUpperCase() === 'PTS');
     const wins = rules.filter(r => String(r.action_type).toUpperCase() === 'WIN');
-    return `<div style="font-size:11px;font-weight:900;color:var(--color-gold);margin:5px 0 8px;">✖ SUMA DE PUNTOS · ACCIONES ILIMITADAS</div>${points.map(s => renderSlotRow(s, side)).join('')}<div style="font-size:11px;font-weight:900;color:#ff8bd7;margin:12px 0 8px;">🏆 MODIFICADORES DE WINS · POSITIVOS O NEGATIVOS</div>${wins.map(s => renderSlotRow(s, side)).join('')}`;
+    return `<div style="font-size:11px;font-weight:900;color:var(--color-gold);margin:5px 0 8px;">✖ SUMA DE PUNTOS · ACCIONES ILIMITADAS</div>${points.map((s, idx) => renderSlotRow(s, side, idx, points.length)).join('')}<div style="font-size:11px;font-weight:900;color:#ff8bd7;margin:12px 0 8px;">🏆 MODIFICADORES DE WINS · POSITIVOS O NEGATIVOS</div>${wins.map((s, idx) => renderSlotRow(s, side, idx, wins.length)).join('')}`;
   };
   robloxLeftList.innerHTML = renderRuleCategories(cfg.left_rules || [], 'LEFT');
   robloxRightList.innerHTML = renderRuleCategories(cfg.right_rules || [], 'RIGHT');
@@ -261,6 +267,68 @@ function renderRobloxEditor() {
       await app.persistConfig();
       showToast('🗑️ Acción eliminada');
     };
+  });
+
+  const moveSlot = async (slotId, direction) => {
+    const isLeft = (cfg.left_rules || []).some(x => x.id === slotId);
+    const sideKey = isLeft ? 'left_rules' : 'right_rules';
+    const rules = cfg[sideKey] || [];
+    const item = rules.find(x => x.id === slotId);
+    if (!item) return;
+
+    const isPts = String(item.action_type).toUpperCase() === 'PTS';
+    const categoryRules = rules.filter(r => (String(r.action_type).toUpperCase() === 'PTS') === isPts);
+    const otherCategoryRules = rules.filter(r => (String(r.action_type).toUpperCase() === 'PTS') !== isPts);
+
+    const currIdx = categoryRules.findIndex(x => x.id === slotId);
+    if (currIdx === -1) return;
+
+    if (direction === 'top') {
+      if (currIdx === 0) return;
+      categoryRules.splice(currIdx, 1);
+      categoryRules.unshift(item);
+    } else if (direction === 'up') {
+      if (currIdx === 0) return;
+      const prev = categoryRules[currIdx - 1];
+      categoryRules[currIdx - 1] = item;
+      categoryRules[currIdx] = prev;
+    } else if (direction === 'down') {
+      if (currIdx >= categoryRules.length - 1) return;
+      const next = categoryRules[currIdx + 1];
+      categoryRules[currIdx + 1] = item;
+      categoryRules[currIdx] = next;
+    } else if (direction === 'bottom') {
+      if (currIdx >= categoryRules.length - 1) return;
+      categoryRules.splice(currIdx, 1);
+      categoryRules.push(item);
+    }
+
+    const newPoints = isPts ? categoryRules : otherCategoryRules;
+    const newWins = isPts ? otherCategoryRules : categoryRules;
+    cfg[sideKey] = [...newPoints, ...newWins];
+
+    renderRobloxEditor();
+    await app.persistConfig();
+    const dirMap = {
+      top: 'al primer lugar ⤒',
+      up: 'una posición arriba ▲',
+      down: 'una posición abajo ▼',
+      bottom: 'al final ⤓'
+    };
+    showToast(`↕️ "${item.gift_name}" movido ${dirMap[direction] || ''}`);
+  };
+
+  document.querySelectorAll('.btn-move-top-slot').forEach(btn => {
+    btn.onclick = () => moveSlot(btn.dataset.slotId, 'top');
+  });
+  document.querySelectorAll('.btn-move-up-slot').forEach(btn => {
+    btn.onclick = () => moveSlot(btn.dataset.slotId, 'up');
+  });
+  document.querySelectorAll('.btn-move-down-slot').forEach(btn => {
+    btn.onclick = () => moveSlot(btn.dataset.slotId, 'down');
+  });
+  document.querySelectorAll('.btn-move-bottom-slot').forEach(btn => {
+    btn.onclick = () => moveSlot(btn.dataset.slotId, 'bottom');
   });
 }
 

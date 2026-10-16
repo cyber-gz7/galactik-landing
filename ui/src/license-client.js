@@ -401,6 +401,7 @@ export class LicenseClientController {
   }
 
   refreshTopBar() {
+    document.dispatchEvent(new Event('galactk:license-status'));
     const box = document.getElementById('gz7-license-topbar-box');
     if (!box || !this.status) return;
 
@@ -422,7 +423,7 @@ export class LicenseClientController {
     box.innerHTML = `
       <div style="display:flex;align-items:center;gap:7px;background:rgba(15,23,42,0.65);border:1px solid rgba(255,255,255,0.08);padding:4px 10px;border-radius:999px;font-size:11px;color:#cbd5e1;">
         <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${isVerified ? '#38bdf8' : '#ef4444'};box-shadow:0 0 6px ${isVerified ? 'rgba(56,189,248,0.6)' : 'rgba(239,68,68,0.6)'};"></span>
-        <span style="font-weight:600;color:#f8fafc;">${this.status.username || 'Invitado'}</span>
+        <span style="font-weight:600;color:#f8fafc;">${isAdmin ? '👑 FOUNDER / ADMIN' : isVerified ? '⚡ PRO STREAMER' : 'Invitado'}</span>
         ${this.status.allow_mc_plugins ? '<span style="color:#10b981;font-size:10px;font-family:monospace;margin-left:2px;">[PRO]</span>' : ''}
       </div>
       ${

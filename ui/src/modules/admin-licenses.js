@@ -7,6 +7,8 @@ const SUPABASE_URL = 'https://dcsxkcextfdabuewfvek.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_EPb9urCJVxKSos4V-eJBfQ_-gCiHWjV';
 
 async function supabaseApi(endpoint, method = 'GET', body = null) {
+  const status = window.gz7LicenseClient?.status;
+  if (!status?.verified || status.role !== 'ADMIN') throw new Error('Acceso exclusivo para administradores verificados.');
   const headers = {
     'apikey': SUPABASE_ANON_KEY,
     'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
@@ -420,7 +422,7 @@ export class AdminLicensesModule {
       btn.addEventListener('click', async () => {
         const id = btn.dataset.id;
         const select = this.container.querySelector(`.pending-duration-select[data-id="${id}"]`);
-        const days = Number(select?.value) || 7;
+        const days = Number(select?.value ?? 7);
         btn.disabled = true;
         btn.textContent = 'Aprobando...';
         try {
@@ -530,7 +532,7 @@ export class AdminLicensesModule {
       e.preventDefault();
       const email = document.getElementById('modal-adm-email')?.value.trim();
       const username = document.getElementById('modal-adm-username')?.value.trim().replace(/^@/, '');
-      const days = Number(document.getElementById('modal-adm-duration')?.value) || 30;
+      const days = Number(document.getElementById('modal-adm-duration')?.value ?? 30);
       const hwid = document.getElementById('modal-adm-hwid')?.value.trim() || '*';
       const allowMc = Boolean(document.getElementById('modal-adm-allow-mc')?.checked);
 
@@ -574,7 +576,15 @@ export class AdminLicensesModule {
 
 export function initAdminLicenses(context) {
   const adminMod = new AdminLicensesModule(context);
-  adminMod.init();
+  let initialized = false;
+  const initForAdmin = () => {
+    const status = window.gz7LicenseClient?.status;
+    if (initialized || !status?.verified || status.role !== 'ADMIN') return;
+    initialized = true;
+    adminMod.init();
+  };
+  document.addEventListener('galactk:license-status', initForAdmin);
+  initForAdmin();
   return {
     render: () => adminMod.loadStreamers(),
     module: adminMod

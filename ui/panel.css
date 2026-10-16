@@ -1,13 +1,15 @@
 /* GALACTK PANEL / broadcast design system. Loaded after legacy component styles. */
 :root {
-  --bg-void:#05070B; --bg-surface:#0A0F18; --bg-elevated:#101826;
+  --bg-void:#04060A; --bg-surface:#090D16; --bg-elevated:#101826;
+  --bg-glass:rgba(16,24,38,.75); --bg-glass-hover:rgba(0,242,254,.05); --galactk-purple:#7C3AED; --warning-amber:#F59E0B;
+  --font-sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; --ease-spring:cubic-bezier(.16,1,.3,1);
   --galactk-cyan:#00F2FE; --galactk-celeste:#38BDF8;
   --text-primary:#F8FAFC; --text-secondary:#94A3B8; --danger-neon:#FF1744; --success-neon:#00E676;
   --bg-deep:var(--bg-surface); --bg-card:var(--bg-surface); --bg-card-hover:var(--bg-elevated); --bg-surface-elevated:var(--bg-elevated);
   --neon-cyan:var(--galactk-celeste); --neon-primary:var(--galactk-cyan); --color-malos:var(--danger-neon); --color-buenos:var(--success-neon); --color-success:var(--success-neon);
   --text-main:var(--text-primary); --text-muted:var(--text-secondary); --border-active:rgba(0,242,254,.22); --border-subtle:#1c2737;
   --font-display:'Inter','Segoe UI',sans-serif; --font-main:'Inter','Segoe UI',sans-serif;
-  --sidebar-w-expanded:232px; --topbar-h:64px;
+  --sidebar-w-expanded:236px; --topbar-h:64px;
 }
 *,*::before,*::after { box-sizing:border-box; }
 html,body { margin:0; padding:0; width:100%; height:100%; overflow:hidden; }
@@ -43,6 +45,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .nav-tab-btn.hidden-by-mode { display:flex !important; }
 .module-badge { flex-shrink:0; display:inline-flex; align-items:center; border:1px solid rgba(56,189,248,.24); background:rgba(56,189,248,.07); border-radius:5px; color:var(--galactk-celeste); font:600 9px/1.5 var(--font-main); letter-spacing:.06em; padding:2px 5px; vertical-align:middle; white-space:nowrap; }
 .app-sidebar.collapsed .module-badge { display:none; }
+.module-badge.beta { color:var(--warning-amber); border-color:rgba(245,158,11,.25); background:rgba(245,158,11,.05); }
 .app-workspace { flex:1; display:flex; flex-direction:column; height:100%; overflow:hidden; }
 .app-header { flex:0 0 64px; height:auto; background:var(--bg-void); border-bottom:1px solid var(--border-subtle); padding:10px 24px; flex-wrap:wrap; gap:8px; box-shadow:none; }
 .header-brand-logo { width:25px; height:25px; object-fit:contain; }
@@ -105,7 +108,7 @@ button:active { transform:translateY(1px); }
 .wins-card { margin-top:0; }
 .wins-card > div:last-child { gap:10px !important; }
 .wins-card label { font-size:11px !important; }
-#gvg-current-wins,#gvg-target-wins { font-size:24px; font-weight:650; width:110px !important; }
+#gvg-current-wins,#gvg-target-wins { font:650 32px var(--font-mono); width:115px !important; }
 .wins-hint { margin-bottom:14px; }
 .in-debt { border-color:rgba(255,23,68,.45) !important; }
 .in-debt .wins-hint { color:#ff657f; }
@@ -145,6 +148,8 @@ button:active { transform:translateY(1px); }
 .rcon-mapping-row { display:grid; grid-template-columns:minmax(100px,1fr) minmax(160px,2fr) auto auto; gap:8px; margin:8px 0; }
 .console-output { white-space:pre-wrap; overflow-wrap:anywhere; max-width:100%; }
 .sound-card { background:var(--bg-surface) !important; border:1px solid var(--border-subtle) !important; box-shadow:none !important; }
+.s2e-strip-preview { flex-wrap:wrap; overflow-x:hidden; background:var(--bg-elevated); border:1px solid var(--border-subtle); box-shadow:none; }
+.s2e-strip-col { flex:0 1 72px; }
 .modal-backdrop > div,.modal-content { max-width:calc(100vw - 32px) !important; max-height:calc(100vh - 32px); overflow:auto; background:var(--bg-elevated); backdrop-filter:blur(16px); }
 .section-card [style*="grid-template-columns"],.card-panel [style*="grid-template-columns"] { min-width:0; }
 #galactk-loading { position:fixed; inset:0; display:grid; place-content:center; text-align:center; background:var(--bg-void); z-index:999; gap:14px; font-size:12px; color:var(--text-secondary); }
@@ -483,5 +488,37 @@ button:active { transform:translateY(1px); }
   opacity:0.6;
   cursor:not-allowed;
   transform:none;
+}
+
+/* ==========================================================================
+   OBBY ACTION REORDERING CONTROLS
+   ========================================================================== */
+.slot-reorder-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: rgba(10, 16, 26, 0.9);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 1px 3px;
+}
+.slot-reorder-group button {
+  background: transparent !important;
+  border: none !important;
+  color: var(--text-secondary);
+  font-size: 11px !important;
+  padding: 3px 5px !important;
+  line-height: 1;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.slot-reorder-group button:hover:not(:disabled) {
+  background: rgba(0, 242, 254, 0.15) !important;
+  color: var(--galactk-cyan) !important;
+}
+.slot-reorder-group button:disabled {
+  opacity: 0.25 !important;
+  cursor: not-allowed !important;
 }
 

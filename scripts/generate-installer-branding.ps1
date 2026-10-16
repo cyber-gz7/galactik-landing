@@ -10,7 +10,7 @@ function New-GalactkBitmap([int]$Width, [int]$Height, [string]$Name) {
   $graphics.TextRenderingHint = [System.Drawing.Text.TextRenderingHint]::ClearTypeGridFit
   $graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
   $bounds = [System.Drawing.Rectangle]::new(0, 0, $Width, $Height)
-  $bg = [System.Drawing.Drawing2D.LinearGradientBrush]::new($bounds, [System.Drawing.ColorTranslator]::FromHtml('#05070B'), [System.Drawing.ColorTranslator]::FromHtml('#0A1424'), 70)
+  $bg = [System.Drawing.Drawing2D.LinearGradientBrush]::new($bounds, [System.Drawing.ColorTranslator]::FromHtml('#04060A'), [System.Drawing.ColorTranslator]::FromHtml('#0C182A'), 70)
   $cyan = [System.Drawing.SolidBrush]::new([System.Drawing.ColorTranslator]::FromHtml('#00F2FE'))
   $white = [System.Drawing.SolidBrush]::new([System.Drawing.ColorTranslator]::FromHtml('#F8FAFC'))
   $muted = [System.Drawing.SolidBrush]::new([System.Drawing.ColorTranslator]::FromHtml('#94A3B8'))
@@ -19,6 +19,10 @@ function New-GalactkBitmap([int]$Width, [int]$Height, [string]$Name) {
   $caption = [System.Drawing.Font]::new('Segoe UI', 7.8, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
   try {
     $graphics.FillRectangle($bg, $bounds)
+    $gridPen = [System.Drawing.Pen]::new([System.Drawing.Color]::FromArgb(12, 0, 242, 254), 1)
+    for ($x = 0; $x -lt $Width; $x += 20) { $graphics.DrawLine($gridPen, $x, 0, $x, $Height) }
+    for ($y = 0; $y -lt $Height; $y += 20) { $graphics.DrawLine($gridPen, 0, $y, $Width, $y) }
+    $gridPen.Dispose()
     if ($Height -gt 100) {
       $graphics.DrawLine($line, 18, 0, 18, 150)
       $graphics.DrawLine($line, 146, 160, 146, 314)
