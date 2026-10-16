@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galactic GP - New Racing 3D</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+    body, html { width: 100%; height: 100%; overflow: hidden; background: #060714; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff; }
+    #canvas-container { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
+    
+    /* HUD Overlays */
+    #hud { position: absolute; inset: 0; pointer-events: none; z-index: 10; font-family: 'Impact', 'Segoe UI Black', sans-serif; }
+    
+    /* Top Bar */
+    .top-bar {
+      position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+      background: rgba(10, 12, 28, 0.88); border: 2px solid #ff007f;
+      border-radius: 12px; padding: 8px 28px; text-align: center;
+      box-shadow: 0 0 25px rgba(255, 0, 127, 0.45); backdrop-filter: blur(8px);
+    }
+    .top-bar .lap-time { display: flex; align-items: center; justify-content: center; gap: 24px; font-size: 26px; letter-spacing: 2px; }
+    .top-bar .lap { color: #00f0ff; text-shadow: 0 0 10px #00f0ff; }
+    .top-bar .time { color: #ffe600; text-shadow: 0 0 10px #ffe600; font-family: 'Courier New', monospace; font-weight: bold; }
+    .top-bar .camera-info { font-size: 13px; color: #ff007f; letter-spacing: 1.5px; margin-top: 3px; font-family: sans-serif; font-weight: bold; }
+    
+    /* F1 Traffic Light Overlay */
+    #start-lights {
+      position: absolute; top: 90px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.85); border: 3px solid #333; border-radius: 16px;
+      padding: 12px 24px; display: flex; gap: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+      transition: opacity 0.5s ease;
+    }
+    .light-box { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+    .f1-light {
+      width: 26px; height: 26px; border-radius: 50%; background: #222;
+      border: 2px solid #111; box-shadow: inset 0 0 5px rgba(0,0,0,0.8);
+      transition: all 0.15s ease;
+    }
+    .f1-light.red-on { background: #ff1133; box-shadow: 0 0 20px #ff1133, inset 0 0 10px #fff; }
+    .f1-light.yellow-on { background: #ffcc00; box-shadow: 0 0 20px #ffcc00, inset 0 0 10px #fff; }
+    .f1-light.green-on { background: #00ff66; box-shadow: 0 0 25px #00ff66, inset 0 0 12px #fff; }
+
+    /* Top 10 Leaderboard */
+    .leaderboard-panel {
+      position: absolute; top: 20px; right: 135px; width: 230px;
+      background: rgba(12, 14, 32, 0.82); border: 2px solid rgba(0, 240, 255, 0.4);
+      border-radius: 14px; padding: 12px 14px; backdrop-filter: blur(8px);
+      box-shadow: 0 0 20px rgba(0,0,0,0.7);
+    }
+    .leaderboard-title {
+      font-size: 18px; color: #fff; letter-spacing: 2px; text-align: center;
+      padding-bottom: 6px; border-bottom: 2px solid #00f0ff; margin-bottom: 8px;
+      text-shadow: 0 0 8px #00f0ff;
+    }
+    .lb-row {
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 13px; font-family: sans-serif; font-weight: 700;
+      padding: 4px 6px; border-radius: 6px; margin-bottom: 3px;
+      background: rgba(255, 255, 255, 0.04); transition: transform 0.2s;
+    }
+    .lb-row.pos-1 { background: rgba(255, 215, 0, 0.25); border-left: 4px solid #ffd700; }
+    .lb-row.pos-2 { background: rgba(192, 192, 192, 0.2); border-left: 4px solid #c0c0c0; }
+    .lb-row.pos-3 { background: rgba(205, 127, 50, 0.2); border-left: 4px solid #cd7f32; }
+    .lb-rank { width: 22px; font-weight: 900; color: #aaa; }
+    .lb-row.pos-1 .lb-rank { color: #ffd700; }
+    .lb-name { flex: 1; margin: 0 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .lb-badge {
+      font-size: 10px; background: #00ff66; color: #000; padding: 1px 5px;
+      border-radius: 8px; font-weight: 900; opacity: 0; transition: opacity 0.3s;
+    }
+    .lb-badge.show { opacity: 1; }
+
+    /* Powers Column (Right) */
+    .powers-column {
+      position: absolute; top: 20px; right: 16px; width: 105px;
+      background: rgba(15, 12, 30, 0.88); border: 2px solid #ff007f;
+      border-radius: 14px; padding: 10px 6px; text-align: center;
+      backdrop-filter: blur(8px); box-shadow: 0 0 20px rgba(255, 0, 127, 0.3);
+    }
+    .powers-title { font-size: 15px; color: #ff007f; letter-spacing: 2px; margin-bottom: 8px; text-shadow: 0 0 8px #ff007f; }
+    .power-btn-circle {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: rgba(255, 255, 255, 0.05); border: 2px solid #ffd700;
+      border-radius: 50%; width: 44px; height: 44px; margin: 0 auto 4px auto;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); font-size: 18px;
+    }
+    .power-desc { font-size: 9px; font-family: sans-serif; font-weight: bold; color: #ffd700; margin-bottom: 5px; }
+
+    /* Power Banner Notification */
+    #power-banner {
+      position: absolute; top: 170px; left: 50%; transform: translateX(-50%) scale(0.8);
+      background: linear-gradient(90deg, rgba(255,0,127,0) 0%, rgba(255,0,127,0.95) 25%, rgba(0,240,255,0.95) 75%, rgba(0,240,255,0) 100%);
+      padding: 10px 50px; border-radius: 30px; font-size: 24px; font-weight: 900;
+      letter-spacing: 2px; text-shadow: 0 0 15px #000; opacity: 0; pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    #power-banner.active { opacity: 1; transform: translateX(-50%) scale(1.05); }
+
+    /* Car World Nameplates */
+    .nameplate-container { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 5; }
+    .car-nameplate {
+      position: absolute; transform: translate(-50%, -100%);
+      padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 800;
+      font-family: sans-serif; white-space: nowrap; color: #fff;
+      background: rgba(10, 10, 20, 0.85); border: 1.5px solid #00f0ff;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.5); text-shadow: 0 0 4px #000;
+      transition: opacity 0.1s;
+    }
+
+    /* Podium Overlay */
+    #podium-modal {
+      position: absolute; inset: 0; background: rgba(5, 7, 18, 0.94);
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 100; backdrop-filter: blur(10px);
+    }
+    #podium-modal.active { display: flex; }
+    .podium-box { text-align: center; animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    @keyframes popIn { 0% { transform: scale(0.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    .podium-title { font-size: 52px; color: #ffe600; text-shadow: 0 0 30px #ff007f; margin-bottom: 25px; letter-spacing: 3px; }
+    .podium-slots { display: flex; align-items: flex-end; justify-content: center; gap: 30px; margin-bottom: 30px; }
+    .podium-slot {
+      display: flex; flex-direction: column; align-items: center; width: 160px;
+      background: rgba(255, 255, 255, 0.06); border-radius: 14px 14px 0 0; padding: 20px 10px 10px;
+    }
+    .podium-slot.p1 { height: 240px; border: 3px solid #ffd700; box-shadow: 0 0 35px rgba(255, 215, 0, 0.4); order: 2; }
+    .podium-slot.p2 { height: 180px; border: 3px solid #c0c0c0; box-shadow: 0 0 25px rgba(192, 192, 192, 0.4); order: 1; }
+    .podium-slot.p3 { height: 140px; border: 3px solid #cd7f32; box-shadow: 0 0 25px rgba(205, 127, 50, 0.4); order: 3; }
+    .podium-trophy { font-size: 44px; margin-bottom: 8px; }
+    .podium-user { font-size: 16px; font-weight: bold; font-family: sans-serif; word-break: break-all; }
+    .podium-restart { font-size: 15px; color: #00f0ff; font-family: sans-serif; letter-spacing: 1px; }
+
+    /* Control Panel (Bottom-Left) */
+    #admin-panel {
+      position: absolute; bottom: 15px; left: 15px; z-index: 50;
+      background: rgba(14, 16, 32, 0.9); border: 2px solid #00f0ff;
+      border-radius: 14px; padding: 12px; width: 340px; font-family: sans-serif;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.25); backdrop-filter: blur(8px);
+      transition: transform 0.3s ease;
+    }
+    #admin-panel.hidden { transform: translateX(-380px); }
+    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .panel-title { font-size: 14px; font-weight: 900; color: #00f0ff; text-transform: uppercase; }
+    .btn-row { display: flex; gap: 6px; margin-bottom: 8px; }
+    .btn {
+      background: #ff007f; border: none; color: #fff; padding: 7px 12px;
+      font-size: 11px; font-weight: 800; border-radius: 8px; cursor: pointer;
+      transition: all 0.2s; flex: 1; text-align: center;
+    }
+    .btn:hover { background: #ff3399; transform: translateY(-1px); box-shadow: 0 0 10px rgba(255, 0, 127, 0.6); }
+    .btn.cyan { background: #00f0ff; color: #000; }
+    .btn.cyan:hover { background: #66f5ff; box-shadow: 0 0 10px rgba(0, 240, 255, 0.6); }
+    .btn.gold { background: #ffe600; color: #000; }
+    .input-box {
+      width: 100%; padding: 6px 10px; border-radius: 6px; border: 1px solid #444;
+      background: #080918; color: #fff; font-size: 12px; margin-bottom: 8px; outline: none;
+    }
+    .powers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 6px; }
+    .power-btn {
+      background: rgba(255, 255, 255, 0.08); border: 1px solid #ffd700;
+      color: #fff; padding: 5px 2px; font-size: 10px; font-weight: bold;
+      border-radius: 6px; cursor: pointer; text-align: center;
+    }
+    .power-btn:hover { background: #ffd700; color: #000; }
+    .toggle-tip { font-size: 10px; color: #888; text-align: center; margin-top: 6px; }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+  <div id="canvas-container"></div>
+  <div id="nameplates" class="nameplate-container"></div>
+
+  <!-- HUD -->
+  <div id="hud">
+    <!-- Top Center -->
+    <div class="top-bar">
+      <div class="lap-time">
+        <span class="lap" id="hud-lap">LAP 1/3</span>
+        <span class="time" id="hud-time">0:00.0</span>
+      </div>
+      <div class="camera-info" id="hud-cam">🎥 P1 LÍDER</div>
+    </div>
+
+    <!-- Start Lights -->
+    <div id="start-lights">
+      <div class="light-box"><div class="f1-light" id="sl-0"></div></div>
+      <div class="light-box"><div class="f1-light" id="sl-1"></div></div>
+      <div class="light-box"><div class="f1-light" id="sl-2"></div></div>
+      <div class="light-box"><div class="f1-light" id="sl-3"></div></div>
+      <div class="light-box"><div class="f1-light" id="sl-4"></div></div>
+    </div>
+
+    <!-- Leaderboard Top 10 -->
+    <div class="leaderboard-panel">
+      <div class="leaderboard-title">TOP 10</div>
+      <div id="leaderboard-list"></div>
+    </div>
+
+    <!-- Powers Column -->
+    <div class="powers-column">
+      <div class="powers-title">POWERS</div>
+      <div>
+        <div class="power-btn-circle">🌹</div>
+        <div class="power-desc">1 TURBO</div>
+      </div>
+      <div>
+        <div class="power-btn-circle">🟢</div>
+        <div class="power-desc">5 MISSILE</div>
+      </div>
+      <div>
+        <div class="power-btn-circle">🛸</div>
+        <div class="power-desc">10 UFO</div>
+      </div>
+      <div>
+        <div class="power-btn-circle">🍩</div>
+        <div class="power-desc">30 EMP</div>
+      </div>
+      <div>
+        <div class="power-btn-circle">🦍</div>
+        <div class="power-desc">50 GIANT</div>
+      </div>
+      <div>
+        <div class="power-btn-circle">⚡</div>
+        <div class="power-desc">100 LASER</div>
+      </div>
+      <div>
+        <div class="power-btn-circle">🌀</div>
+        <div class="power-desc">199 PORTAL</div>
+      </div>
+      <div>
+        <div class="power-btn-circle">🚀</div>
+        <div class="power-desc">299 JET</div>
+      </div>
+      <div>
+        <div class="power-btn-circle">🐦</div>
+        <div class="power-desc">500 PHOENIX</div>
+      </div>
+    </div>
+
+    <!-- Power Active Banner -->
+    <div id="power-banner">🔥 ¡FER ACTIVÓ PHOENIX!</div>
+  </div>
+
+  <!-- Podium Modal -->
+  <div id="podium-modal">
+    <div class="podium-box">
+      <div class="podium-title">🏆 TOP 3 GANADORES 🏆</div>
+      <div class="podium-slots">
+        <div class="podium-slot p2">
+          <div class="podium-trophy">🥈</div>
+          <div class="podium-user" id="p2-name">P2</div>
+        </div>
+        <div class="podium-slot p1">
+          <div class="podium-trophy">🥇</div>
+          <div class="podium-user" id="p1-name">P1</div>
+        </div>
+        <div class="podium-slot p3">
+          <div class="podium-trophy">🥉</div>
+          <div class="podium-user" id="p3-name">P3</div>
+        </div>
+      </div>
+      <div class="podium-restart" id="podium-counter">Próxima carrera en 10s...</div>
+    </div>
+  </div>
+
+  <!-- Admin / Test Panel -->
+  <div id="admin-panel">
+    <div class="panel-header">
+      <div class="panel-title">🎮 Simulador TikTok Live</div>
+      <span style="font-size:10px; color:#aaa;">(Pulsa 'H' para ocultar)</span>
+    </div>
+    <div class="btn-row">
+      <button class="btn cyan" id="btn-add-bots">➕ Meter 15 Bots</button>
+      <button class="btn" id="btn-restart">🏁 Reiniciar</button>
+      <button class="btn gold" id="btn-cam">🎥 Cámara</button>
+    </div>
+    <div class="btn-row">
+      <input type="text" id="input-username" class="input-box" placeholder="Tu nick TikTok (ej. ElFerJaime)" value="ElFerJaime" style="margin-bottom:0;">
+      <button class="btn cyan" id="btn-join" style="flex:0 0 90px;">Unirse</button>
+    </div>
+    <div style="font-size: 11px; font-weight: bold; margin-top: 8px; color: #ffd700;">PROBAR PODERES CON SONIDO:</div>
+    <div class="powers-grid">
+      <button class="power-btn" onclick="triggerPowerByName('turbo')">🌹 Turbo</button>
+      <button class="power-btn" onclick="triggerPowerByName('missile')">🟢 Missile</button>
+      <button class="power-btn" onclick="triggerPowerByName('ufo')">🛸 UFO</button>
+      <button class="power-btn" onclick="triggerPowerByName('emp')">🍩 EMP</button>
+      <button class="power-btn" onclick="triggerPowerByName('giant')">🦍 Giant</button>
+      <button class="power-btn" onclick="triggerPowerByName('laser')">⚡ Laser</button>
+      <button class="power-btn" onclick="triggerPowerByName('portal')">🌀 Portal</button>
+      <button class="power-btn" onclick="triggerPowerByName('jet')">🚀 Jet</button>
+      <button class="power-btn" onclick="triggerPowerByName('phoenix')">🐦 Phoenix</button>
+    </div>
+    <div class="toggle-tip">Conectado a Tokio (:4000) o modo standalone</div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       1. WEB AUDIO API SYNTHESIZER (Cero assets externos)
+       ========================================================================== */
+    const AudioEngine = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      },
+      playTone(freq, type, duration, vol = 0.15) {
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+        gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + duration);
+      },
+      turboSound() {
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(150, now);
+        osc.frequency.exponentialRampToValueAtTime(800, now + 1.2);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 1.3);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(now + 1.3);
+      },
+      explosionSound() {
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(120, now);
+        osc.frequency.exponentialRampToValueAtTime(20, now + 0.6);
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(now + 0.6);
+      },
+      laserSound() {
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(1200, now);
+        osc.frequency.exponentialRampToValueAtTime(200, now + 0.35);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(now + 0.35);
+      },
+      ufoSound() {
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(400, now);
+        osc.frequency.linearRampToValueAtTime(750, now + 0.25);
+        osc.frequency.linearRampToValueAtTime(350, now + 0.5);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(now + 0.7);
+      },
+      fanfareSound() {
+        this.init();
+        const notes = [261.63, 329.63, 392.00, 523.25];
+        notes.forEach((freq, i) => {
+          setTimeout(() => this.playTone(freq, 'triangle', 0.4, 0.25), i * 160);
+        });
+      }
+    };
+
+    /* ==========================================================================
+       2. THREE.JS SCENE, CIRCUIT & CAR BUILDER
+       ========================================================================== */
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x060814);
+    scene.fog = new THREE.FogExp2(0x060814, 0.0022);
+
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.5, 2000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    container.appendChild(renderer.domElement);
+
+    // Iluminación
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    scene.add(ambientLight);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    dirLight.position.set(100, 250, 100);
+    dirLight.castShadow = true;
+    scene.add(dirLight);
+
+    const colorsPalette = [
+      0xff007f, // Rosa Neón
+      0x00f0ff, // Cian Eléctrico
+      0x00ff66, // Verde Ácido
+      0xffe600, // Amarillo Oro
+      0x9d00ff, // Morado
+      0xff5500, // Naranja Neón
+      0xff0033  // Rojo
+    ];
+
+    // Circuito Extenso con Curvas y Zona de Salto / Rampa
+    const trackPoints = [
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(120, 0, -40),
+      new THREE.Vector3(260, 0, -20),
+      new THREE.Vector3(380, 0, 80),
+      new THREE.Vector3(420, 0, 220),
+      new THREE.Vector3(360, 0, 360),
+      new THREE.Vector3(220, 20, 420), // Rampa Subida
+      new THREE.Vector3(140, 28, 430), // Rampa Cresta
+      new THREE.Vector3(60, 0, 420),   // Rampa Caída
+      new THREE.Vector3(-100, 0, 360),
+      new THREE.Vector3(-240, 0, 240),
+      new THREE.Vector3(-300, 0, 100),
+      new THREE.Vector3(-260, 0, -60),
+      new THREE.Vector3(-140, 0, -80)
+    ];
+    const trackCurve = new THREE.CatmullRomCurve3(trackPoints, true, 'centripetal');
+
+    // Construcción del Asfalto y Bordes Neón
+    const trackWidth = 24;
+    const trackSegments = 400;
+    const trackGeom = new THREE.BufferGeometry();
+    const positions = [];
+    const uvs = [];
+    const indices = [];
+
+    const curvePoints = trackCurve.getPoints(trackSegments);
+    const curveSpaced = trackCurve.getSpacedPoints(trackSegments);
+
+    for (let i = 0; i <= trackSegments; i++) {
+      const t = i / trackSegments;
+      const pt = trackCurve.getPointAt(t);
+      const tangent = trackCurve.getTangentAt(t);
+      const up = new THREE.Vector3(0, 1, 0);
+      const normal = new THREE.Vector3().crossVectors(tangent, up).normalize();
+
+      const left = pt.clone().add(normal.clone().multiplyScalar(trackWidth / 2));
+      const right = pt.clone().add(normal.clone().multiplyScalar(-trackWidth / 2));
+
+      positions.push(left.x, left.y, left.z);
+      positions.push(right.x, right.y, right.z);
+      uvs.push(0, i * 0.1);
+      uvs.push(1, i * 0.1);
+
+      if (i < trackSegments) {
+        const row = i * 2;
+        indices.push(row, row + 1, row + 2);
+        indices.push(row + 1, row + 3, row + 2);
+      }
+    }
+    trackGeom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    trackGeom.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+    trackGeom.setIndex(indices);
+    trackGeom.computeVertexNormals();
+
+    const trackMat = new THREE.MeshStandardMaterial({ color: 0x11131e, roughness: 0.6, metalness: 0.2 });
+    const trackMesh = new THREE.Mesh(trackGeom, trackMat);
+    scene.add(trackMesh);
+
+    // Bordes Neón Rosa y Cian
+    const leftEdgePoints = [];
+    const rightEdgePoints = [];
+    for (let i = 0; i <= trackSegments; i++) {
+      const t = i / trackSegments;
+      const pt = trackCurve.getPointAt(t);
+      const tangent = trackCurve.getTangentAt(t);
+      const normal = new THREE.Vector3().crossVectors(tangent, new THREE.Vector3(0, 1, 0)).normalize();
+      leftEdgePoints.push(pt.clone().add(normal.clone().multiplyScalar(trackWidth / 2 + 0.3)).add(new THREE.Vector3(0, 0.4, 0)));
+      rightEdgePoints.push(pt.clone().add(normal.clone().multiplyScalar(-trackWidth / 2 - 0.3)).add(new THREE.Vector3(0, 0.4, 0)));
+    }
+    const leftNeonLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints(leftEdgePoints), new THREE.LineBasicMaterial({ color: 0xff007f, linewidth: 3 }));
+    const rightNeonLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints(rightEdgePoints), new THREE.LineBasicMaterial({ color: 0x00f0ff, linewidth: 3 }));
+    scene.add(leftNeonLine);
+    scene.add(rightNeonLine);
+
+    // Entorno: Gradas, Arco de Meta y Cañón
+    function buildEnvironment() {
+      // Suelo Desierto/Cañón Low-Poly
+      const floorGeom = new THREE.PlaneGeometry(1600, 1600, 32, 32);
+      floorGeom.rotateX(-Math.PI / 2);
+      const floorMat = new THREE.MeshLambertMaterial({ color: 0x070912 });
+      const floor = new THREE.Mesh(floorGeom, floorMat);
+      floor.position.y = -2;
+      scene.add(floor);
+
+      // Arco de Salida / Meta "GALACTIC GP"
+      const archGroup = new THREE.Group();
+      const pStart = trackCurve.getPointAt(0);
+      const tStart = trackCurve.getTangentAt(0);
+      const nStart = new THREE.Vector3().crossVectors(tStart, new THREE.Vector3(0, 1, 0)).normalize();
+
+      const pillarMat = new THREE.MeshStandardMaterial({ color: 0x22263d, metalness: 0.7, roughness: 0.2 });
+      const p1 = new THREE.Mesh(new THREE.BoxGeometry(3, 18, 3), pillarMat);
+      const p2 = p1.clone();
+      p1.position.copy(pStart).add(nStart.clone().multiplyScalar(trackWidth / 2 + 2));
+      p2.position.copy(pStart).add(nStart.clone().multiplyScalar(-trackWidth / 2 - 2));
+      p1.position.y = 8;
+      p2.position.y = 8;
+      archGroup.add(p1, p2);
+
+      // Travesaño
+      const crossbar = new THREE.Mesh(new THREE.BoxGeometry(trackWidth + 8, 4, 3), new THREE.MeshStandardMaterial({ color: 0xff007f }));
+      crossbar.position.copy(pStart);
+      crossbar.position.y = 17;
+      crossbar.quaternion.setFromUnitVectors(new THREE.Vector3(1, 0, 0), nStart);
+      archGroup.add(crossbar);
+
+      scene.add(archGroup);
+
+      // Gradas Low-Poly
+      for (let s = -3; s <= 3; s++) {
+        const standMat = new THREE.MeshLambertMaterial({ color: (s % 2 === 0) ? 0x00f0ff : 0xff007f });
+        const stand = new THREE.Mesh(new THREE.BoxGeometry(16, 6 + Math.abs(s) * 2, 8), standMat);
+        stand.position.set(-60 + s * 22, (6 + Math.abs(s) * 2) / 2, -35);
+        scene.add(stand);
+      }
+    }
+    buildEnvironment();
+
+    // Creador de F1 Low-Poly Estilo Bloques Roblox
+    function createF1CarMesh(colorHex) {
+      const car = new THREE.Group();
+      const bodyMat = new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.3, metalness: 0.4 });
+      const cockpitMat = new THREE.MeshStandardMaterial({ color: 0x050508, roughness: 0.1 });
+      const wheelMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.8 });
+      const rimMat = new THREE.MeshBasicMaterial({ color: colorHex });
+
+      // Chasis central alargado
+      const body = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.8, 6.2), bodyMat);
+      body.position.y = 0.7;
+      car.add(body);
+
+      // Nariz F1
+      const nose = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.6, 2.5), bodyMat);
+      nose.position.set(0, 0.6, 3.8);
+      car.add(nose);
+
+      // Cabina / Cockpit
+      const cockpit = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.7, 1.8), cockpitMat);
+      cockpit.position.set(0, 1.2, -0.4);
+      car.add(cockpit);
+
+      // Alerón Delantero
+      const frontWing = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.25, 1.2), bodyMat);
+      frontWing.position.set(0, 0.4, 4.6);
+      car.add(frontWing);
+
+      // Alerón Trasero
+      const rearWing = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.3, 1.4), bodyMat);
+      rearWing.position.set(0, 1.8, -3.2);
+      const wingSupport = new THREE.Mesh(new THREE.BoxGeometry(0.3, 1.0, 0.4), bodyMat);
+      wingSupport.position.set(0, 1.3, -3.1);
+      car.add(rearWing, wingSupport);
+
+      // Llantas Anchas (4)
+      const wheelGeom = new THREE.CylinderGeometry(0.7, 0.7, 0.8, 12);
+      wheelGeom.rotateZ(Math.PI / 2);
+      const rimGeom = new THREE.CylinderGeometry(0.4, 0.4, 0.85, 8);
+      rimGeom.rotateZ(Math.PI / 2);
+
+      const wheelPositions = [
+        [-1.7, 0.7, 2.8],
+        [ 1.7, 0.7, 2.8],
+        [-1.8, 0.7, -2.4],
+        [ 1.8, 0.7, -2.4]
+      ];
+
+      wheelPositions.forEach(pos => {
+        const wMesh = new THREE.Mesh(wheelGeom, wheelMat);
+        const rMesh = new THREE.Mesh(rimGeom, rimMat);
+        wMesh.position.set(pos[0], pos[1], pos[2]);
+        rMesh.position.set(pos[0], pos[1], pos[2]);
+        car.add(wMesh, rMesh);
+      });
+
+      // Estelas Láser traseras (Trails)
+      const trailMat = new THREE.MeshBasicMaterial({ color: colorHex, transparent: true, opacity: 0.75 });
+      const leftTrail = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.15, 4.0), trailMat);
+      const rightTrail = leftTrail.clone();
+      leftTrail.position.set(-1.4, 0.4, -4.5);
+      rightTrail.position.set(1.4, 0.4, -4.5);
+      leftTrail.visible = false;
+      rightTrail.visible = false;
+      car.add(leftTrail, rightTrail);
+      car.userData.trails = [leftTrail, rightTrail];
+
+      return car;
+    }
+
+    /* ==========================================================================
+       3. GESTIÓN DE CORREDORES Y MECÁNICAS DE JUEGO
+       ========================================================================== */
+    const TOTAL_LAPS = 3;
+    let raceState = 'COUNTDOWN'; // COUNTDOWN, RACING, FINISHED
+    let raceTime = 0;
+    let racers = [];
+    const nameplateContainer = document.getElementById('nameplates');
+
+    class Racer {
+      constructor(name, colorHex) {
+        this.name = name;
+        this.colorHex = colorHex;
+        this.progress = 0; // 0 to TOTAL_LAPS
+        this.laneOffset = (Math.random() - 0.5) * 16;
+        this.targetLaneOffset = this.laneOffset;
+        this.baseSpeed = 0.00075 + Math.random() * 0.0002;
+        this.currentSpeed = this.baseSpeed;
+        this.rank = 1;
+        this.prevRank = 1;
+        this.rankGainTimer = 0;
+        
+        // Powers State
+        this.power = null;
+        this.powerTimer = 0;
+        this.isStunned = false;
+        this.stunTimer = 0;
+        this.scaleMultiplier = 1;
+
+        // 3D Object
+        this.mesh = createF1CarMesh(colorHex);
+        scene.add(this.mesh);
+
+        // HTML Nameplate
+        this.nameplate = document.createElement('div');
+        this.nameplate.className = 'car-nameplate';
+        this.nameplate.style.borderColor = '#' + colorHex.toString(16).padStart(6, '0');
+        this.nameplate.innerText = `(1) ${this.name}`;
+        nameplateContainer.appendChild(this.nameplate);
+      }
+
+      update(delta) {
+        if (raceState === 'RACING') {
+          // Temporizadores de estado
+          if (this.isStunned) {
+            this.stunTimer -= delta;
+            this.currentSpeed = 0.0001;
+            if (this.stunTimer <= 0) this.isStunned = false;
+          } else {
+            this.currentSpeed = this.baseSpeed;
+          }
+
+          if (this.powerTimer > 0) {
+            this.powerTimer -= delta;
+            if (this.power === 'turbo' || this.power === 'jet') {
+              this.currentSpeed = this.baseSpeed * (this.power === 'jet' ? 2.5 : 1.7);
+            }
+            if (this.powerTimer <= 0) {
+              this.power = null;
+              this.scaleMultiplier = 1;
+              this.mesh.scale.set(1, 1, 1);
+            }
+          }
+
+          // Avance
+          this.progress += this.currentSpeed * (delta * 60);
+
+          // Cambio de carril suave (Adelantamientos)
+          if (Math.random() < 0.02) {
+            this.targetLaneOffset = (Math.random() - 0.5) * 16;
+          }
+          this.laneOffset += (this.targetLaneOffset - this.laneOffset) * 0.05;
+
+          // Activación de Trails si va a toda velocidad
+          const showTrail = (this.currentSpeed > this.baseSpeed * 1.2);
+          if (this.mesh.userData.trails) {
+            this.mesh.userData.trails[0].visible = showTrail;
+            this.mesh.userData.trails[1].visible = showTrail;
+          }
+        }
+
+        // Posicionamiento en la curva de pista
+        const trackT = (this.progress % 1 + 1) % 1;
+        const pt = trackCurve.getPointAt(trackT);
+        const tangent = trackCurve.getTangentAt(trackT).normalize();
+        const normal = new THREE.Vector3().crossVectors(tangent, new THREE.Vector3(0, 1, 0)).normalize();
+
+        // Aplicar carril
+        const carPos = pt.clone().add(normal.clone().multiplyScalar(this.laneOffset));
+        this.mesh.position.copy(carPos);
+
+        // Orientación F1 hacia la tangente de la pista
+        const lookTarget = carPos.clone().add(tangent);
+        this.mesh.lookAt(lookTarget);
+
+        // Escala si está activo GIANT
+        if (this.power === 'giant') {
+          this.scaleMultiplier = 2.4;
+          this.mesh.scale.set(this.scaleMultiplier, this.scaleMultiplier, this.scaleMultiplier);
+        }
+
+        // Proyección de Nameplate a coordenadas de pantalla (HTML)
+        const screenPos = carPos.clone().add(new THREE.Vector3(0, 4.2 * this.scaleMultiplier, 0)).project(camera);
+        if (screenPos.z < 1) {
+          const x = (screenPos.x * 0.5 + 0.5) * window.innerWidth;
+          const y = (-(screenPos.y * 0.5) + 0.5) * window.innerHeight;
+          this.nameplate.style.transform = `translate(-50%, -100%) translate(${x}px, ${y}px)`;
+          this.nameplate.style.display = 'block';
+          this.nameplate.innerText = `(${this.rank}) ${this.name}`;
+        } else {
+          this.nameplate.style.display = 'none';
+        }
+      }
+
+      applyPower(type) {
+        this.power = type;
+        const colorName = '#' + this.colorHex.toString(16).padStart(6, '0');
+        showPowerBanner(`🔥 ¡${this.name} ACTIVÓ ${type.toUpperCase()}!`);
+
+        switch (type) {
+          case 'turbo':
+            this.powerTimer = 3.5;
+            AudioEngine.turboSound();
+            break;
+          case 'missile':
+            AudioEngine.explosionSound();
+            // Frena al carro que va justo adelante
+            const target = racers.find(r => r.rank === this.rank - 1);
+            if (target) {
+              target.isStunned = true;
+              target.stunTimer = 2.0;
+            }
+            break;
+          case 'ufo':
+            AudioEngine.ufoSound();
+            this.progress += 0.12;
+            break;
+          case 'emp':
+            AudioEngine.laserSound();
+            // Ralentiza a los cercanos
+            racers.forEach(r => {
+              if (r !== this && Math.abs(r.progress - this.progress) < 0.08) {
+                r.isStunned = true;
+                r.stunTimer = 2.5;
+              }
+            });
+            break;
+          case 'giant':
+            this.powerTimer = 5.0;
+            this.baseSpeed *= 1.4;
+            AudioEngine.turboSound();
+            break;
+          case 'laser':
+            AudioEngine.laserSound();
+            racers.forEach(r => {
+              if (r.rank < this.rank && r.rank >= this.rank - 3) {
+                r.isStunned = true;
+                r.stunTimer = 1.8;
+              }
+            });
+            break;
+          case 'portal':
+            AudioEngine.ufoSound();
+            this.progress += 0.20;
+            break;
+          case 'jet':
+            this.powerTimer = 4.0;
+            AudioEngine.turboSound();
+            break;
+          case 'phoenix':
+            AudioEngine.fanfareSound();
+            // Lo coloca peleando el puesto 1
+            const leader = racers[0];
+            if (leader && leader !== this) {
+              this.progress = leader.progress + 0.01;
+            }
+            this.powerTimer = 3.0;
+            break;
+        }
+      }
+
+      destroy() {
+        scene.remove(this.mesh);
+        if (this.nameplate.parentNode) this.nameplate.parentNode.removeChild(this.nameplate);
+      }
+    }
+
+    // Creación inicial de corredores
+    function initRacers() {
+      racers.forEach(r => r.destroy());
+      racers = [];
+
+      const initialBots = [
+        "ElFerJaime", "PepeDrift", "AstroGamer", "CyberNeon",
+        "VortexRacer", "TurboPanda", "SpeedyGZ", "GalacticPro",
+        "KevlarX", "NovaStar", "RedBull99", "ShadowDrift"
+      ];
+
+      initialBots.forEach((nick, idx) => {
+        const col = colorsPalette[idx % colorsPalette.length];
+        const racer = new Racer(nick, col);
+        racer.progress = -0.015 * idx; // Alineación inicial en parrilla
+        racers.push(racer);
+      });
+    }
+    initRacers();
+
+    /* ==========================================================================
+       4. SEMÁFORO F1 Y CUENTA REGRESIVA (3, 2, 1, GO!)
+       ========================================================================== */
+    function runStartCountdown() {
+      raceState = 'COUNTDOWN';
+      raceTime = 0;
+      const lights = [
+        document.getElementById('sl-0'),
+        document.getElementById('sl-1'),
+        document.getElementById('sl-2'),
+        document.getElementById('sl-3'),
+        document.getElementById('sl-4')
+      ];
+      lights.forEach(l => l.className = 'f1-light');
+      document.getElementById('start-lights').style.opacity = '1';
+
+      // 3 Rojas (3, 2, 1)
+      setTimeout(() => { lights[0].classList.add('red-on'); AudioEngine.playTone(350, 'square', 0.2); }, 800);
+      setTimeout(() => { lights[1].classList.add('red-on'); AudioEngine.playTone(350, 'square', 0.2); }, 1600);
+      setTimeout(() => { lights[2].classList.add('red-on'); AudioEngine.playTone(350, 'square', 0.2); }, 2400);
+      // 2 Amarillas
+      setTimeout(() => { lights[3].classList.add('yellow-on'); AudioEngine.playTone(450, 'square', 0.2); }, 3200);
+      setTimeout(() => { lights[4].classList.add('yellow-on'); AudioEngine.playTone(450, 'square', 0.2); }, 4000);
+
+      // ¡GO! (Verdes simultáneas)
+      setTimeout(() => {
+        lights.forEach(l => {
+          l.className = 'f1-light green-on';
+        });
+        AudioEngine.playTone(700, 'triangle', 0.6, 0.3);
+        raceState = 'RACING';
+        setTimeout(() => {
+          document.getElementById('start-lights').style.opacity = '0';
+        }, 1500);
+      }, 4800);
+    }
+    runStartCountdown();
+
+    /* ==========================================================================
+       5. SISTEMA CINEMATOGRÁFICO DE CÁMARAS
+       ========================================================================== */
+    let cameraMode = 'CHASE'; // 'CHASE', 'RAMP', 'HELI'
+    let cameraTimer = 0;
+    const hudCam = document.getElementById('hud-cam');
+
+    function switchCamera(forcedMode = null) {
+      if (forcedMode) {
+        cameraMode = forcedMode;
+      } else {
+        const modes = ['CHASE', 'RAMP', 'HELI'];
+        const nextIdx = (modes.indexOf(cameraMode) + 1) % modes.length;
+        cameraMode = modes[nextIdx];
+      }
+      cameraTimer = 0;
+    }
+
+    function updateCamera(delta) {
+      cameraTimer += delta;
+      if (cameraTimer > 6.0) {
+        switchCamera();
+      }
+
+      const leader = racers[0] || null;
+      if (!leader) return;
+
+      if (cameraMode === 'CHASE') {
+        hudCam.innerText = `🎥 P1 CHASE: ${leader.name}`;
+        const offset = new THREE.Vector3(0, 10, -22);
+        offset.applyQuaternion(leader.mesh.quaternion);
+        camera.position.lerp(leader.mesh.position.clone().add(offset), 0.12);
+        camera.lookAt(leader.mesh.position.clone().add(new THREE.Vector3(0, 3, 5)));
+      } else if (cameraMode === 'RAMP') {
+        hudCam.innerText = `🎥 ACCIÓN RAMPA & SALTO`;
+        const rampPos = new THREE.Vector3(200, 35, 410);
+        camera.position.lerp(rampPos, 0.08);
+        camera.lookAt(leader.mesh.position);
+      } else if (cameraMode === 'HELI') {
+        hudCam.innerText = `🎥 HELICÓPTERO (PELOTÓN)`;
+        const heliPos = leader.mesh.position.clone().add(new THREE.Vector3(60, 90, 60));
+        camera.position.lerp(heliPos, 0.06);
+        camera.lookAt(leader.mesh.position);
+      }
+    }
+
+    /* ==========================================================================
+       6. PODIO Y FIN DE CARRERA
+       ========================================================================== */
+    function checkRaceFinish() {
+      const leader = racers[0];
+      if (leader && leader.progress >= TOTAL_LAPS && raceState === 'RACING') {
+        raceState = 'FINISHED';
+        AudioEngine.fanfareSound();
+        showPodium();
+      }
+    }
+
+    function showPodium() {
+      const modal = document.getElementById('podium-modal');
+      modal.classList.add('active');
+      document.getElementById('p1-name').innerText = racers[0] ? racers[0].name : 'N/A';
+      document.getElementById('p2-name').innerText = racers[1] ? racers[1].name : 'N/A';
+      document.getElementById('p3-name').innerText = racers[2] ? racers[2].name : 'N/A';
+
+      let count = 10;
+      const counterEl = document.getElementById('podium-counter');
+      const interval = setInterval(() => {
+        count--;
+        counterEl.innerText = `Próxima carrera en ${count}s...`;
+        if (count <= 0) {
+          clearInterval(interval);
+          modal.classList.remove('active');
+          restartRace();
+        }
+      }, 1000);
+    }
+
+    function restartRace() {
+      initRacers();
+      runStartCountdown();
+    }
+
+    /* ==========================================================================
+       7. HUD, LEADERBOARD Y NOTIFICACIONES
+       ========================================================================== */
+    const lbContainer = document.getElementById('leaderboard-list');
+    const hudLap = document.getElementById('hud-lap');
+    const hudTime = document.getElementById('hud-time');
+    const powerBanner = document.getElementById('power-banner');
+
+    function updateLeaderboard() {
+      // Ordenar por progreso descendente
+      racers.sort((a, b) => b.progress - a.progress);
+
+      let html = '';
+      racers.slice(0, 10).forEach((racer, index) => {
+        const currentRank = index + 1;
+        const rankGain = racer.prevRank - currentRank;
+        racer.prevRank = currentRank;
+        racer.rank = currentRank;
+
+        const posClass = currentRank === 1 ? 'pos-1' : currentRank === 2 ? 'pos-2' : currentRank === 3 ? 'pos-3' : '';
+        const badgeHtml = rankGain > 0 ? `<span class="lb-badge show">+${rankGain}</span>` : '';
+
+        html += `
+          <div class="lb-row ${posClass}">
+            <span class="lb-rank">#${currentRank}</span>
+            <span class="lb-name">${racer.name}</span>
+            ${badgeHtml}
+          </div>
+        `;
+      });
+      lbContainer.innerHTML = html;
+
+      // Update Lap & Time
+      if (raceState === 'RACING') {
+        const leader = racers[0];
+        const lapNum = Math.min(TOTAL_LAPS, Math.floor(leader ? leader.progress : 0) + 1);
+        hudLap.innerText = `LAP ${lapNum}/${TOTAL_LAPS}`;
+
+        const minutes = Math.floor(raceTime / 60);
+        const seconds = (raceTime % 60).toFixed(1);
+        hudTime.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      }
+    }
+
+    function showPowerBanner(text) {
+      powerBanner.innerText = text;
+      powerBanner.classList.add('active');
+      setTimeout(() => powerBanner.classList.remove('active'), 2200);
+    }
+
+    /* ==========================================================================
+       8. CONEXIÓN SSE TOKIO (:4000) & SIMULADOR
+       ========================================================================== */
+    function setupSSE() {
+      try {
+        const sse = new EventSource('http://127.0.0.1:4000/api/eventos');
+        sse.onmessage = (e) => {
+          try {
+            const data = JSON.parse(e.data);
+            handleExternalEvent(data);
+          } catch(err) {}
+        };
+        sse.onerror = () => {
+          // Reconexión silenciosa automática
+        };
+      } catch (err) {}
+    }
+    setupSSE();
+
+    function handleExternalEvent(event) {
+      const user = event.nickname || event.user || 'ViewerTikTok';
+      let racer = racers.find(r => r.name.toLowerCase() === user.toLowerCase());
+
+      if (!racer) {
+        const col = colorsPalette[racers.length % colorsPalette.length];
+        racer = new Racer(user, col);
+        const lastProgress = racers.length > 0 ? racers[racers.length - 1].progress : 0;
+        racer.progress = lastProgress - 0.02;
+        racers.push(racer);
+      }
+
+      if (event.type === 'gift' || event.gift) {
+        const giftCoins = event.coins || event.diamondCount || 1;
+        if (giftCoins >= 500) racer.applyPower('phoenix');
+        else if (giftCoins >= 299) racer.applyPower('jet');
+        else if (giftCoins >= 199) racer.applyPower('portal');
+        else if (giftCoins >= 100) racer.applyPower('laser');
+        else if (giftCoins >= 50) racer.applyPower('giant');
+        else if (giftCoins >= 30) racer.applyPower('emp');
+        else if (giftCoins >= 10) racer.applyPower('ufo');
+        else if (giftCoins >= 5) racer.applyPower('missile');
+        else racer.applyPower('turbo');
+      }
+    }
+
+    // Funciones del Panel de Pruebas
+    window.triggerPowerByName = function(type) {
+      const inputNick = document.getElementById('input-username').value.trim() || 'ElFerJaime';
+      let targetRacer = racers.find(r => r.name.toLowerCase() === inputNick.toLowerCase()) || racers[0];
+      if (targetRacer) {
+        targetRacer.applyPower(type);
+      }
+    };
+
+    document.getElementById('btn-add-bots').onclick = () => {
+      for (let i = 1; i <= 15; i++) {
+        const col = colorsPalette[(racers.length + i) % colorsPalette.length];
+        const r = new Racer(`BotSpeed_${racers.length + 1}`, col);
+        r.progress = racers.length > 0 ? racers[racers.length - 1].progress - 0.015 : 0;
+        racers.push(r);
+      }
+    };
+
+    document.getElementById('btn-join').onclick = () => {
+      const nick = document.getElementById('input-username').value.trim() || 'NuevoPiloto';
+      if (!racers.find(r => r.name.toLowerCase() === nick.toLowerCase())) {
+        const col = colorsPalette[racers.length % colorsPalette.length];
+        const r = new Racer(nick, col);
+        r.progress = racers[0] ? racers[0].progress - 0.02 : 0;
+        racers.push(r);
+      }
+    };
+
+    document.getElementById('btn-restart').onclick = restartRace;
+    document.getElementById('btn-cam').onclick = () => switchCamera();
+
+    // Tecla 'H' para togglear panel
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'h' || e.key === 'H') {
+        document.getElementById('admin-panel').classList.toggle('hidden');
+      }
+    });
+
+    /* ==========================================================================
+       9. BUCLE PRINCIPAL DE ANIMACIÓN (RAF)
+       ========================================================================== */
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const delta = Math.min(clock.getDelta(), 0.1);
+
+      if (raceState === 'RACING') {
+        raceTime += delta;
+      }
+
+      racers.forEach(r => r.update(delta));
+      updateLeaderboard();
+      checkRaceFinish();
+      updateCamera(delta);
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>

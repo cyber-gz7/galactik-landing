@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Top Rotativo, Metas y MVP - Galactic Live by GZ7</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&family=Orbitron:wght@700;800;900&family=Rajdhani:wght@600;700;800&display=swap');
+
+    :root {
+      --ui-scale: 1;
+      --neon-cyan: #00f0ff;
+      --neon-gold: #ffe600;
+      --neon-pink: #ff2a85;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      background: transparent !important;
+      overflow: hidden;
+      font-family: 'Rajdhani', sans-serif;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .widget-shell {
+      width: 370px;
+      background: rgba(4, 10, 22, 0.88);
+      border: 2px solid rgba(0, 240, 255, 0.55);
+      border-radius: 20px;
+      padding: 16px 18px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.9), 0 0 26px rgba(0, 240, 255, 0.25);
+      backdrop-filter: blur(12px);
+      transform: scale(var(--ui-scale, 1));
+      transition: all 0.35s ease;
+    }
+
+    .widget-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(0, 240, 255, 0.25);
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+    }
+
+    .widget-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--neon-cyan);
+      letter-spacing: 1.5px;
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .widget-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--neon-gold);
+      background: rgba(255, 230, 0, 0.14);
+      border: 1px solid rgba(255, 230, 0, 0.4);
+      padding: 2px 8px;
+      border-radius: 99px;
+    }
+
+    .rank-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .rank-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10, 24, 42, 0.72);
+      border: 1px solid rgba(0, 240, 255, 0.18);
+      border-radius: 12px;
+      padding: 8px 12px;
+      transition: all 0.3s ease;
+    }
+
+    .rank-row.rank-1 {
+      background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), rgba(0, 240, 255, 0.08));
+      border-color: rgba(255, 215, 0, 0.65);
+      box-shadow: 0 0 14px rgba(255, 215, 0, 0.2);
+    }
+
+    .rank-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .rank-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: rgba(0, 240, 255, 0.14);
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--neon-cyan);
+    }
+
+    .rank-row.rank-1 .rank-num {
+      background: rgba(255, 215, 0, 0.25);
+      border-color: #ffd700;
+      color: #ffd700;
+    }
+
+    .rank-user {
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffffff;
+      max-width: 175px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .rank-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--neon-gold);
+    }
+
+    .goal-bar-wrap {
+      margin-top: 8px;
+    }
+
+    .goal-track {
+      width: 100%;
+      height: 16px;
+      background: rgba(0,0,0,0.75);
+      border-radius: 99px;
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      overflow: hidden;
+      margin: 8px 0;
+    }
+
+    .goal-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #0077ff, #00f0ff, #00ffa3);
+      box-shadow: 0 0 14px rgba(0, 240, 255, 0.7);
+      transition: width 0.4s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="widget-shell" id="shell">
+    <div class="widget-header">
+      <div class="widget-title" id="w-title">👑 TOP DONADORES</div>
+      <span class="widget-badge" id="w-badge">EN VIVO</span>
+    </div>
+    <div id="w-body" class="rank-list"></div>
+  </div>
+
+  <script>
+    const pathName = window.location.pathname.toLowerCase();
+    const donorsMap = new Map();
+    const likesMap = new Map();
+    let totalCoins = 0;
+    let totalLikes = 0;
+    let currentTabIdx = 0;
+    const modes = ['gifters', 'likes', 'mvp'];
+
+    const titleEl = document.getElementById('w-title');
+    const badgeEl = document.getElementById('w-badge');
+    const bodyEl = document.getElementById('w-body');
+    const shell = document.getElementById('shell');
+
+    function renderView() {
+      let mode = modes[currentTabIdx % modes.length];
+      if (pathName.includes('mvp')) mode = 'mvp';
+      if (pathName.includes('metas')) mode = 'metas';
+
+      if (mode === 'metas') {
+        titleEl.innerHTML = '🎯 META DE MONEDAS';
+        const target = 5000;
+        const pct = Math.min(100, Math.round((totalCoins / target) * 100));
+        badgeEl.textContent = pct + '%';
+        bodyEl.innerHTML = `
+          <div class="goal-bar-wrap">
+            <div style="display:flex;justify-content:space-between;font-weight:800;font-size:15px;">
+              <span>Recaudado: ${totalCoins.toLocaleString()} 🪙</span>
+              <span style="color:#00f0ff;">Meta: ${target.toLocaleString()} 🪙</span>
+            </div>
+            <div class="goal-track"><div class="goal-fill" style="width:${pct}%"></div></div>
+          </div>
+        `;
+        return;
+      }
+
+      if (mode === 'mvp') {
+        titleEl.innerHTML = '👑 MVP DEL DIRECTO';
+        badgeEl.textContent = 'TOP #1';
+        const topDonor = Array.from(donorsMap.entries()).sort((a,b) => b[1] - a[1])[0];
+        if (!topDonor) {
+          bodyEl.innerHTML = `<div style="text-align:center;padding:18px 0;color:#7aa6c2;font-weight:700;">Esperando al primer MVP del stream...</div>`;
+        } else {
+          bodyEl.innerHTML = `
+            <div class="rank-row rank-1" style="padding:14px;">
+              <div class="rank-left">
+                <div class="rank-num">👑</div>
+                <div>
+                  <div class="rank-user" style="font-size:18px;">@${topDonor[0]}</div>
+                  <div style="font-size:12px;color:#00f0ff;font-weight:700;">Líder Supremo de Donaciones</div>
+                </div>
+              </div>
+              <div class="rank-val" style="font-size:17px;">${topDonor[1].toLocaleString()} 🪙</div>
+            </div>
+          `;
+        }
+        return;
+      }
+
+      if (mode === 'likes') {
+        titleEl.innerHTML = '💖 TOP LIKES (TAP-TAP)';
+        badgeEl.textContent = 'ROTATIVO';
+        const sorted = Array.from(likesMap.entries()).sort((a,b) => b[1] - a[1]).slice(0, 5);
+        if (!sorted.length) {
+          bodyEl.innerHTML = `<div style="text-align:center;padding:16px 0;color:#7aa6c2;font-weight:700;">Esperando likes en vivo...</div>`;
+          return;
+        }
+        bodyEl.innerHTML = sorted.map(([u, c], i) => `
+          <div class="rank-row ${i === 0 ? 'rank-1' : ''}">
+            <div class="rank-left">
+              <div class="rank-num">${i === 0 ? '👑' : (i + 1)}</div>
+              <div class="rank-user">@${u}</div>
+            </div>
+            <div class="rank-val">${c.toLocaleString()} ❤️</div>
+          </div>
+        `).join('');
+        return;
+      }
+
+      titleEl.innerHTML = '🪙 TOP GIFTERS';
+      badgeEl.textContent = 'ROTATIVO';
+      const sorted = Array.from(donorsMap.entries()).sort((a,b) => b[1] - a[1]).slice(0, 5);
+      if (!sorted.length) {
+        bodyEl.innerHTML = `<div style="text-align:center;padding:16px 0;color:#7aa6c2;font-weight:700;">Esperando regalos en vivo...</div>`;
+        return;
+      }
+      bodyEl.innerHTML = sorted.map(([u, c], i) => `
+        <div class="rank-row ${i === 0 ? 'rank-1' : ''}">
+          <div class="rank-left">
+            <div class="rank-num">${i === 0 ? '👑' : (i + 1)}</div>
+            <div class="rank-user">@${u}</div>
+          </div>
+          <div class="rank-val">${c.toLocaleString()} 🪙</div>
+        </div>
+      `).join('');
+    }
+
+    setInterval(() => {
+      currentTabIdx++;
+      renderView();
+    }, 7000);
+
+    renderView();
+
+    const evt = new EventSource('/api/eventos');
+    evt.onmessage = e => {
+      try {
+        const d = JSON.parse(e.data);
+        if (d.duel?.gift_scale) {
+          shell.style.setProperty('--ui-scale', (d.duel.gift_scale / 100).toFixed(2));
+        }
+        if (d.type === 'gift' && d.data) {
+          const u = String(d.data.user || 'Donador').replace(/^@/, '');
+          const c = Number(d.data.coins) || 1;
+          totalCoins += c;
+          donorsMap.set(u, (donorsMap.get(u) || 0) + c);
+          renderView();
+        }
+        if (d.type === 'like' && d.data) {
+          const u = String(d.data.user || 'Viewer').replace(/^@/, '');
+          const c = Number(d.data.count) || 1;
+          totalLikes += c;
+          likesMap.set(u, (likesMap.get(u) || 0) + c);
+          renderView();
+        }
+      } catch (err) {}
+    };
+  </script>
+</body>
+</html>

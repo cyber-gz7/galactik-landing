@@ -1,0 +1,15 @@
+name: BuenosMalosPlugin
+version: 1.0.0
+main: com.gz7.ruletabm.BuenosMalosMain
+api-version: '1.20'
+author: GZ7
+description: Sistema interactivo Buenos vs Malos para directos de TikTok Live en Minecraft 1.20.1
+commands:
+  bm:
+    description: Comando principal del sistema Buenos vs Malos
+    usage: /bm <totem|gift|reset|status> [args]
+    permission: buenosmalos.admin
+permissions:
+  buenosmalos.admin:
+    description: Acceso de administracion a BuenosMalosPlugin
+    default: op

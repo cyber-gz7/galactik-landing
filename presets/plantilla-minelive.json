@@ -1,0 +1,1446 @@
+﻿{
+    "id":  "plantilla-minelive",
+    "nombre":  "Plantilla MineLive",
+    "reglas":  [
+                   {
+                       "id":  "51b19334-fc80-43f6-bce0-869785679906",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "likes_persona",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "GG",
+                                                            "coins":  1,
+                                                            "archivo":  "gifts/gg-1-coins.webp"
+                                                        }
+                                                    ],
+                                          "likesCada":  3,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5,
+                                          "customNombre":  ""
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "ZOMBIE",
+                                            "colorOverlay":  "#5d4ae8",
+                                            "comandos":  [
+                                                             "execute at {nick} run summon zombie ~ ~ ~ {HandItems:[{id:\"minecraft:iron_sword\",Count:1b},{}],ArmorItems:[{},{},{},{id:\"minecraft:carved_pumpkin\",Count:1b}]}"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  "C:\\Users\\GZ7\\AppData\\Roaming\\MiniLive\\iconos\\0a3cc8ee-76d5-4d9c-b99e-b82f1df78e7a.mp4"
+                   },
+                   {
+                       "id":  "b8fda9da-bc67-4af1-93a1-8b4d869e7d83",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Heart ME",
+                                                            "coins":  1,
+                                                            "archivo":  "gifts/heart-me-1-coins.webp"
+                                                        }
+                                                    ],
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5,
+                                          "customNombre":  ""
+                                      },
+                       "timing":  {
+                                      "repeticion":  100,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "x100 Creepers",
+                                            "colorOverlay":  "#00f583",
+                                            "comandos":  [
+                                                             "execute at {nick} run summon creeper ~ ~ ~ {powered:1b,Fuse:20}"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  "C:\\Users\\GZ7\\AppData\\Roaming\\MiniLive\\iconos\\22c9de52-56d2-4067-b6d1-a6772619bb3a.mp4"
+                   },
+                   {
+                       "id":  "102fcbd4-6b1d-4268-9988-606c1eea2046",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "follow",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Rose",
+                                                            "coins":  1
+                                                        }
+                                                    ],
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5,
+                                          "customNombre":  ""
+                                      },
+                       "timing":  {
+                                      "repeticion":  5,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "10 Skeleton",
+                                            "colorOverlay":  "#e85d4c",
+                                            "comandos":  [
+                                                             "execute at {nick} run summon skeleton ~ ~ ~"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  "C:\\Users\\GZ7\\AppData\\Roaming\\MiniLive\\iconos\\5ee6e9ff-23f7-46d0-b864-f5023393de28.jpg"
+                   },
+                   {
+                       "id":  "fila-trueno",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Rose",
+                                                            "coins":  1,
+                                                            "archivo":  "gifts/rose-1-coins.webp"
+                                                        }
+                                                    ],
+                                          "customNombre":  "Trueno",
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Trueno",
+                                            "colorOverlay":  "#00fbff",
+                                            "comandos":  [
+                                                             "trueno {nick}"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  "C:\\Users\\GZ7\\AppData\\Roaming\\MiniLive\\iconos\\0719f82f-3cbe-412e-9b85-7d5d92e6a2cc.mp4"
+                   },
+                   {
+                       "id":  "89bc900b-c384-468e-9714-29eb6a4e54ed",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "White Rose",
+                                                            "coins":  1,
+                                                            "archivo":  "gifts/white-rose-1-coins.webp"
+                                                        }
+                                                    ],
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5,
+                                          "customNombre":  ""
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Cruz",
+                                            "colorOverlay":  "#ff00bb",
+                                            "comandos":  [
+                                                             "cruz {nick}"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  "C:\\Users\\GZ7\\AppData\\Roaming\\MiniLive\\iconos\\7aa2d651-00b8-4524-9691-7f45f9e62c34.jpg"
+                   },
+                   {
+                       "id":  "a965b638-6928-4cc8-b27a-2697f3645b85",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Finger Heart",
+                                                            "coins":  5,
+                                                            "archivo":  "gifts/finger-heart-5-coins.webp"
+                                                        }
+                                                    ],
+                                          "customNombre":  "Orbe aliado",
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Orbe Aliado",
+                                            "colorOverlay":  "#b04dff",
+                                            "comandos":  [
+                                                             "aliado {nick} {quien} duracion=120 cantidad=5 golpes=3 area=5 cadencia=0.5"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  "C:\\Users\\GZ7\\AppData\\Roaming\\MiniLive\\iconos\\60f3521e-9735-4942-aa22-c1a9d504977d.mp4"
+                   },
+                   {
+                       "id":  "fila-carcel",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Name Shoutout",
+                                                            "coins":  5,
+                                                            "archivo":  "gifts/name-shoutout-5-coins.webp"
+                                                        }
+                                                    ],
+                                          "customNombre":  "Cárcel",
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Cárcel",
+                                            "colorOverlay":  "#ff0000",
+                                            "comandos":  [
+                                                             "carcel {nick}"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  "C:\\Users\\GZ7\\AppData\\Roaming\\MiniLive\\iconos\\e0f81a3f-ff2c-47b7-ad00-443cba51a8f9.jpg"
+                   },
+                   {
+                       "id":  "63e47448-0c5f-4b89-823a-a84cf1613718",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Wave Firework",
+                                                            "coins":  5,
+                                                            "archivo":  "gifts/wave-firework-5-coins.webp"
+                                                        }
+                                                    ],
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5,
+                                          "customNombre":  ""
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Escudo",
+                                            "colorOverlay":  "#e85d4c",
+                                            "comandos":  [
+                                                             "escudo {nick} vida=90 tamano=2.5"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  "C:\\Users\\GZ7\\AppData\\Roaming\\MiniLive\\iconos\\5ffdc424-3a14-48d1-8b7c-a8e1cb92c933.jpg"
+                   },
+                   {
+                       "id":  "fila-espada",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Balloons",
+                                                            "coins":  10,
+                                                            "archivo":  "gifts/balloons-10-coins.webp"
+                                                        }
+                                                    ],
+                                          "customNombre":  "Corona de espadas",
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Corona de espadas",
+                                            "colorOverlay":  "#fbbf24",
+                                            "comandos":  [
+                                                             "corona {nick} potencia=3 totems=2"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  "C:\\Users\\GZ7\\AppData\\Roaming\\MiniLive\\iconos\\a7eb014c-e455-4253-a097-2a1669f9b90b.mp4"
+                   },
+                   {
+                       "id":  "fila-caos",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Slow Motion",
+                                                            "coins":  10,
+                                                            "archivo":  "gifts/slow-motion-10-coins.webp"
+                                                        }
+                                                    ],
+                                          "customNombre":  "Planetario",
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Planetario",
+                                            "colorOverlay":  "#ffdd00",
+                                            "comandos":  [
+                                                             "ml planetario {nick} dano=4 potencia=5"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  "C:\\Users\\GZ7\\AppData\\Roaming\\MiniLive\\iconos\\1366d6a4-12c7-4ee8-91da-d25b6b7ae530.mp4"
+                   },
+                   {
+                       "id":  "fila-creeper",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Bravo",
+                                                            "coins":  15,
+                                                            "archivo":  "gifts/bravo-15-coins.webp"
+                                                        }
+                                                    ],
+                                          "customNombre":  "Carrusel",
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Carrusel",
+                                            "colorOverlay":  "#50d2ff",
+                                            "comandos":  [
+                                                             "carrusel {nick} {quien} dps=10 rayo=10 totems=3"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  "C:\\Users\\GZ7\\AppData\\Roaming\\MiniLive\\iconos\\19731ae6-f9d9-40a6-bd6d-da62e08f3edc.mp4"
+                   },
+                   {
+                       "id":  "fila-agujero",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Perfume",
+                                                            "coins":  20,
+                                                            "archivo":  "gifts/perfume-20-coins.webp"
+                                                        }
+                                                    ],
+                                          "customNombre":  "Agujero negro",
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Agujero negro",
+                                            "colorOverlay":  "#2d8037",
+                                            "comandos":  [
+                                                             "agujero {nick} dano=20 duracion=12.5 potencia=5 totems=1"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  "C:\\Users\\GZ7\\AppData\\Roaming\\MiniLive\\iconos\\6b89f6f8-a573-48f9-978a-926b04bc3b67.mp4"
+                   },
+                   {
+                       "id":  "fila-dragon",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Doughnut",
+                                                            "coins":  30,
+                                                            "archivo":  "gifts/doughnut-30-coins.webp"
+                                                        }
+                                                    ],
+                                          "customNombre":  "Dragón",
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Dragón",
+                                            "colorOverlay":  "#1e00ff",
+                                            "comandos":  [
+                                                             "dragon {nick} {quien} dragones=5 dps=10 duracion=20 totems=5"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  "C:\\Users\\GZ7\\AppData\\Roaming\\MiniLive\\iconos\\871bf10a-6d92-4a66-9683-99b8c5147e91.mp4"
+                   },
+                   {
+                       "id":  "fila-esfera",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Capybara",
+                                                            "coins":  30,
+                                                            "archivo":  "gifts/capybara-30-coins.webp"
+                                                        }
+                                                    ],
+                                          "customNombre":  "Hakai",
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Hakai",
+                                            "colorOverlay":  "#df7fe1",
+                                            "comandos":  [
+                                                             "hakai {nick} {quien} dps=20 duracion=12.5"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  "C:\\Users\\GZ7\\AppData\\Roaming\\MiniLive\\iconos\\f64cf33a-c585-4b18-9620-9ce616a01b71.mp4"
+                   },
+                   {
+                       "id":  "954e05ef-2886-46a1-b13c-aacf40bead87",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "A Shard OF Hope",
+                                                            "coins":  1,
+                                                            "archivo":  "gifts/a-shard-of-hope-1-coins.webp"
+                                                        }
+                                                    ],
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5,
+                                          "customNombre":  ""
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "+3 TOTEMs",
+                                            "colorOverlay":  "#e85d4c",
+                                            "comandos":  [
+                                                             "totems dar {nick} cantidad=3"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  "C:\\Users\\GZ7\\AppData\\Roaming\\MiniLive\\iconos\\e940e696-7a08-490f-8eb4-2adc9b398c68.jpg"
+                   },
+                   {
+                       "id":  "fila-solcruel",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Ramadan Moon",
+                                                            "coins":  199,
+                                                            "archivo":  "gifts/ramadan-moon-199-coins.webp"
+                                                        }
+                                                    ],
+                                          "customNombre":  "Sol cruel",
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Sol cruel",
+                                            "colorOverlay":  "#ffb020",
+                                            "comandos":  [
+                                                             "solcruel {nick} {quien} tamano=25 sol=20 duracion=15 golpes=15 dps=30 dano=25 totems=50"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  "C:\\Users\\GZ7\\AppData\\Roaming\\MiniLive\\iconos\\3432cb94-1fd0-4b28-8c04-cfdd17b315ab.mp4"
+                   },
+                   {
+                       "id":  "fila-esqueleto",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Corgi",
+                                                            "coins":  299,
+                                                            "archivo":  "gifts/corgi-299-coins.webp"
+                                                        }
+                                                    ],
+                                          "customNombre":  "Esqueleto gigante",
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "LA PARKA",
+                                            "colorOverlay":  "#e8e2d0",
+                                            "comandos":  [
+                                                             "esqueleto {nick} {quien} tamano=24 dano=35 potencia=10 explosiones=20 totems=60 titulo=\"\u0026f\u0026l[LA PARKA]\""
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  "C:\\Users\\GZ7\\AppData\\Roaming\\MiniLive\\iconos\\d396cdf5-0a03-4b3b-aba6-fe4644872080.mp4"
+                   },
+                   {
+                       "id":  "3b5e3381-6127-4bb4-b697-481d61a64f1e",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Rosa",
+                                                            "coins":  10,
+                                                            "archivo":  "gifts/rosa-10-coins.webp"
+                                                        }
+                                                    ],
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5,
+                                          "customNombre":  ""
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Warden",
+                                            "colorOverlay":  "#e85d4c",
+                                            "comandos":  [
+                                                             "execute at {nick} run summon warden ~ ~ ~"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  "C:\\Users\\GZ7\\AppData\\Roaming\\MiniLive\\iconos\\db2ca5cc-4baf-403e-b741-43e168ade396.jpg"
+                   },
+                   {
+                       "id":  "1504e162-8ca8-4885-9d7c-dbe91718f59f",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Cap",
+                                                            "coins":  99,
+                                                            "archivo":  "gifts/cap-99-coins.webp"
+                                                        }
+                                                    ],
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5,
+                                          "customNombre":  ""
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "WITHER",
+                                            "colorOverlay":  "#e85d4c",
+                                            "comandos":  [
+                                                             "execute at {nick} run summon wither ~ ~ ~"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  "C:\\Users\\GZ7\\AppData\\Roaming\\MiniLive\\iconos\\f56408a9-23c9-4af0-b2f5-4a9d3447181b.jpg"
+                   },
+                   {
+                       "id":  "23b9669b-8de9-4526-b79b-4c08265202b3",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "GG",
+                                                            "coins":  1,
+                                                            "archivo":  "gifts/gg-1-coins.webp"
+                                                        }
+                                                    ],
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5,
+                                          "customNombre":  ""
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "TNT",
+                                            "colorOverlay":  "#e85d4c",
+                                            "comandos":  [
+                                                             "execute at {nick} run summon tnt ~ ~3 ~ {Fuse:50,Passengers:[{id:\"minecraft:tnt\",Fuse:60},{id:\"minecraft:tnt\",Fuse:70}]}"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  "C:\\Users\\GZ7\\AppData\\Roaming\\MiniLive\\iconos\\584fba1e-fb8a-4d7c-b43f-4e5c0cdd05e6.jpg"
+                   },
+                   {
+                       "id":  "fila-enjambre",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Rose",
+                                                            "coins":  1,
+                                                            "archivo":  "gifts/rose-1-coins.webp"
+                                                        }
+                                                    ],
+                                          "customNombre":  "Enjambre",
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Enjambre",
+                                            "colorOverlay":  "#f59e0b",
+                                            "comandos":  [
+                                                             "enjambre {nick} 30"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  null
+                   },
+                   {
+                       "id":  "fila-atomica",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "GG",
+                                                            "coins":  1,
+                                                            "archivo":  "gifts/gg-1-coins.webp"
+                                                        }
+                                                    ],
+                                          "customNombre":  "Atomica",
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Atomica",
+                                            "colorOverlay":  "#10b981",
+                                            "comandos":  [
+                                                             "atomica {nick} {quien}"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  null
+                   },
+                   {
+                       "id":  "fila-superrayo",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Heart ME",
+                                                            "coins":  1,
+                                                            "archivo":  "gifts/heart-me-1-coins.webp"
+                                                        }
+                                                    ],
+                                          "customNombre":  "Super Rayo",
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Super Rayo",
+                                            "colorOverlay":  "#6366f1",
+                                            "comandos":  [
+                                                             "superrayo {nick} {quien}"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  null
+                   },
+                   {
+                       "id":  "fila-ruleta",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "White Rose",
+                                                            "coins":  1,
+                                                            "archivo":  "gifts/white-rose-1-coins.webp"
+                                                        }
+                                                    ],
+                                          "customNombre":  "Ruleta",
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Ruleta",
+                                            "colorOverlay":  "#ec4899",
+                                            "comandos":  [
+                                                             "ruleta {nick} {quien} auto"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  null
+                   },
+                   {
+                       "id":  "fila-angel",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Rose",
+                                                            "coins":  1,
+                                                            "archivo":  "gifts/rose-1-coins.webp"
+                                                        }
+                                                    ],
+                                          "customNombre":  "Arcangel",
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Arcangel",
+                                            "colorOverlay":  "#fde68a",
+                                            "comandos":  [
+                                                             "angel {nick} {quien} dano=18 duracion=15 totems=5"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  null
+                   },
+                   {
+                       "id":  "fila-wukong",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "GG",
+                                                            "coins":  1,
+                                                            "archivo":  "gifts/gg-1-coins.webp"
+                                                        }
+                                                    ],
+                                          "customNombre":  "Wukong",
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Wukong",
+                                            "colorOverlay":  "#f97316",
+                                            "comandos":  [
+                                                             "wukong {nick} {quien} dano=18 duracion=15 totems=5"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  null
+                   },
+                   {
+                       "id":  "fila-buda",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Heart ME",
+                                                            "coins":  1,
+                                                            "archivo":  "gifts/heart-me-1-coins.webp"
+                                                        }
+                                                    ],
+                                          "customNombre":  "Buda",
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Buda",
+                                            "colorOverlay":  "#fcd34d",
+                                            "comandos":  [
+                                                             "buda {nick} {quien} dano=18 duracion=15 totems=5"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  null
+                   },
+                   {
+                       "id":  "fila-cortes",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "White Rose",
+                                                            "coins":  1,
+                                                            "archivo":  "gifts/white-rose-1-coins.webp"
+                                                        }
+                                                    ],
+                                          "customNombre":  "Mil Cortes",
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Mil Cortes",
+                                            "colorOverlay":  "#f43f5e",
+                                            "comandos":  [
+                                                             "cortes {nick} {quien} dano=18 duracion=15 totems=5"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  null
+                   },
+                   {
+                       "id":  "fila-rinnegan",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Finger Heart",
+                                                            "coins":  5,
+                                                            "archivo":  "gifts/finger-heart-5-coins.webp"
+                                                        }
+                                                    ],
+                                          "customNombre":  "Rinnegan",
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Rinnegan",
+                                            "colorOverlay":  "#8b5cf6",
+                                            "comandos":  [
+                                                             "rinnegan {nick} {quien} dano=18 duracion=15 totems=5"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  null
+                   },
+                   {
+                       "id":  "fila-sagitario",
+                       "activa":  true,
+                       "disparador":  {
+                                          "tipo":  "gift",
+                                          "quien":  "cualquiera",
+                                          "personas":  [
+
+                                                       ],
+                                          "gifts":  [
+                                                        {
+                                                            "nombre":  "Name Shoutout",
+                                                            "coins":  5,
+                                                            "archivo":  "gifts/name-shoutout-5-coins.webp"
+                                                        }
+                                                    ],
+                                          "customNombre":  "Sagitario",
+                                          "likesCada":  10,
+                                          "likesSala":  100,
+                                          "likesSalaRepetir":  true,
+                                          "coinsMin":  1,
+                                          "coinsMax":  100,
+                                          "chatFrase":  "",
+                                          "chatCooldownSeg":  5
+                                      },
+                       "timing":  {
+                                      "repeticion":  1,
+                                      "retrasoMs":  0,
+                                      "intervaloMs":  100
+                                  },
+                       "acciones":  [
+                                        {
+                                            "tipo":  "comandos",
+                                            "visibleEnOverlay":  true,
+                                            "nombreOverlay":  "Sagitario",
+                                            "colorOverlay":  "#14b8a6",
+                                            "comandos":  [
+                                                             "sagitario {nick} {quien} dano=18 duracion=15 totems=5"
+                                                         ],
+                                            "comandoAleatorio":  false,
+                                            "cartel":  null
+                                        }
+                                    ],
+                       "audio":  null,
+                       "cooldownGlobalSeg":  0,
+                       "cooldownPersonaSeg":  0,
+                       "iconoLocal":  null
+                   }
+               ],
+    "creada":  1791068873162
+}

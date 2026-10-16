@@ -1,0 +1,851 @@
+// Prevents additional console window on Windows in release, DO NOT REMOVE!!
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
+mod asset_sync;
+mod license_guard;
+mod overlay_server;
+mod rcon;
+
+use asset_sync::{
+    check_environment_health, deploy_authorized_mc_plugins, preload_core_soundpack,
+    resolve_custom_media_dir, EnvironmentHealth, PluginDeployReport,
+};
+use license_guard::{
+    generate_mc_server_pass, CloudLicenseConfig, LicenseGuard, LicenseSessionStatus, StreamerRecord,
+};
+use overlay_server::{start_overlay_http_server, OverlayServerState};
+use serde::{Deserialize, Serialize};
+use std::fs;
+use std::os::windows::process::CommandExt;
+use std::path::PathBuf;
+use std::process::Command;
+use std::sync::Arc;
+use tauri::{Emitter, State};
+use tauri_plugin_updater::UpdaterExt;
+
+const CREATE_NO_WINDOW: u32 = 0x08000000;
+
+#[derive(Clone, Serialize, Deserialize, Debug)]
+pub struct AppUpdateInfo {
+    pub available: bool,
+    pub current_version: String,
+    pub version: String,
+    pub body: String,
+    pub date: String,
+}
+
+#[derive(Clone, Serialize, Deserialize, Debug)]
+pub struct UpdateProgressPayload {
+    pub downloaded_bytes: u64,
+    pub total_bytes: Option<u64>,
+    pub percentage: f32,
+    pub status: String,
+}
+
+fn get_config_dir() -> Result<PathBuf, String> {
+    let home = std::env::var("USERPROFILE")
+        .or_else(|_| std::env::var("HOME"))
+        .map_err(|_| "No se pudo determinar el directorio de usuario".to_string())?;
+    Ok(PathBuf::from(home).join(".gz7live"))
+}
+
+#[tauri::command]
+async fn send_rcon(
+    host: String,
+    port: u16,
+    password: String,
+    command: String,
+    guard: State<'_, Arc<LicenseGuard>>,
+) -> Result<String, String> {
+    guard.require_verified().await?;
+    let mut client = rcon::RconClient::connect(&host, port, &password).await?;
+    client.send_command(&command).await
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn inject_mc_session_pass(
+    host: String,
+    port: u16,
+    password: String,
+    server_id: String,
+    guard: State<'_, Arc<LicenseGuard>>,
+) -> Result<String, String> {
+    let session = guard.require_mc_plugins_permission().await?;
+    let pass_token = generate_mc_server_pass(&server_id, &session.username);
+    let mut client = rcon::RconClient::connect(&host, port, &password).await?;
+    let _ = client
+        .send_command(&format!("gz7pase {}", pass_token))
+        .await;
+    Ok(pass_token)
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn save_config(config_json: String) -> Result<(), String> {
+    let dir = get_config_dir()?;
+    fs::create_dir_all(&dir)
+        .map_err(|e| format!("Error creando directorio de configuración: {}", e))?;
+    let path = dir.join("config.json");
+    fs::write(&path, config_json).map_err(|e| format!("Error guardando config.json: {}", e))?;
+    Ok(())
+}
+
+#[tauri::command]
+async fn load_config() -> Result<String, String> {
+    let dir = get_config_dir()?;
+    let path = dir.join("config.json");
+    if path.exists() {
+        fs::read_to_string(&path).map_err(|e| format!("Error leyendo config.json: {}", e))
+    } else {
+        Ok(String::from("{}"))
+    }
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn write_server_file(
+    folder: String,
+    filename: String,
+    content: String,
+    guard: State<'_, Arc<LicenseGuard>>,
+) -> Result<(), String> {
+    guard.require_verified().await?;
+    let base = PathBuf::from(&folder);
+    fs::create_dir_all(&base).map_err(|e| format!("Error creando carpeta del servidor: {}", e))?;
+    let target = base.join(filename);
+    fs::write(&target, content).map_err(|e| format!("Error escribiendo archivo: {}", e))?;
+    Ok(())
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn launch_server_bat(
+    folder: String,
+    guard: State<'_, Arc<LicenseGuard>>,
+) -> Result<String, String> {
+    guard.require_verified().await?;
+    let bat_path = PathBuf::from(&folder).join("iniciar.bat");
+    if !bat_path.exists() {
+        return Err("No se encontró iniciar.bat en la carpeta del servidor".to_string());
+    }
+    Command::new("cmd")
+        .args(["/c", "start", "", bat_path.to_str().unwrap()])
+        .current_dir(&folder)
+        .spawn()
+        .map_err(|e| format!("Error iniciando servidor: {}", e))?;
+    Ok("Servidor arrancado en nueva ventana".to_string())
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn download_file(
+    url: String,
+    target_path: String,
+    guard: State<'_, Arc<LicenseGuard>>,
+) -> Result<String, String> {
+    guard.require_verified().await?;
+    if target_path.to_lowercase().ends_with(".jar")
+        && !target_path.to_lowercase().ends_with("paper.jar")
+    {
+        guard.require_mc_plugins_permission().await?;
+    }
+    let target = PathBuf::from(&target_path);
+    if let Some(parent) = target.parent() {
+        fs::create_dir_all(parent)
+            .map_err(|e| format!("Error creando directorio destino: {}", e))?;
+    }
+    let response = reqwest_download(&url).await?;
+    fs::write(&target, response)
+        .map_err(|e| format!("Error guardando archivo descargado: {}", e))?;
+    Ok(format!("Descargado con éxito: {}", target_path))
+}
+
+#[tauri::command]
+async fn get_license_status(
+    guard: State<'_, Arc<LicenseGuard>>,
+) -> Result<LicenseSessionStatus, String> {
+    let st = guard.status.lock().await;
+    Ok(st.clone())
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn activate_license_key(
+    license_key: String,
+    guard: State<'_, Arc<LicenseGuard>>,
+) -> Result<LicenseSessionStatus, String> {
+    guard.activate_key(&license_key).await
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn login_with_password(
+    email: String,
+    password: String,
+    guard: State<'_, Arc<LicenseGuard>>,
+) -> Result<LicenseSessionStatus, String> {
+    guard.login_with_password(&email, &password).await
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn register_account(
+    email: String,
+    password: String,
+    tiktok_username: String,
+) -> Result<String, String> {
+    LicenseGuard::register_account(&email, &password, &tiktok_username).await
+}
+
+#[tauri::command]
+async fn logout_session(
+    guard: State<'_, Arc<LicenseGuard>>,
+) -> Result<LicenseSessionStatus, String> {
+    LicenseGuard::clear_encrypted_session();
+    let mut st = guard.status.lock().await;
+    st.verified = false;
+    st.username = String::new();
+    st.role = "GUEST".to_string();
+    st.bound_hwid = String::new();
+    st.allow_mc_plugins = false;
+    st.expires_at = 0;
+    st.message = "Sesión cerrada. Inicia sesión para continuar.".to_string();
+    st.cloud_connected = true;
+    Ok(st.clone())
+}
+
+#[tauri::command]
+async fn logout_license_session(
+    guard: State<'_, Arc<LicenseGuard>>,
+) -> Result<LicenseSessionStatus, String> {
+    logout_session(guard).await
+}
+
+#[tauri::command]
+async fn check_for_updates(app: tauri::AppHandle) -> Result<AppUpdateInfo, String> {
+    let current_version = app.package_info().version.to_string();
+    let updater = match app.updater() {
+        Ok(u) => u,
+        Err(e) => {
+            return Ok(AppUpdateInfo {
+                available: false,
+                current_version: current_version.clone(),
+                version: current_version,
+                body: format!("Updater no disponible: {}", e),
+                date: String::new(),
+            });
+        }
+    };
+
+    match updater.check().await {
+        Ok(Some(upd)) => Ok(AppUpdateInfo {
+            available: true,
+            current_version,
+            version: upd.version,
+            body: upd.body.unwrap_or_default(),
+            date: upd.date.map(|d| d.to_string()).unwrap_or_default(),
+        }),
+        Ok(None) => Ok(AppUpdateInfo {
+            available: false,
+            current_version: current_version.clone(),
+            version: current_version,
+            body: String::new(),
+            date: String::new(),
+        }),
+        Err(e) => Ok(AppUpdateInfo {
+            available: false,
+            current_version: current_version.clone(),
+            version: current_version,
+            body: format!("Error verificando actualizaciones: {}", e),
+            date: String::new(),
+        }),
+    }
+}
+
+#[tauri::command]
+async fn install_update_with_progress(app: tauri::AppHandle) -> Result<(), String> {
+    let updater = app.updater().map_err(|e| e.to_string())?;
+    let update = updater
+        .check()
+        .await
+        .map_err(|e| e.to_string())?
+        .ok_or_else(|| "No hay actualización disponible para instalar".to_string())?;
+
+    let app_handle = app.clone();
+    let mut downloaded = 0u64;
+
+    update
+        .download_and_install(
+            move |chunk_length, content_length| {
+                downloaded += chunk_length as u64;
+                let pct = if let Some(total) = content_length {
+                    if total > 0 {
+                        ((downloaded as f64 / total as f64) * 100.0) as f32
+                    } else {
+                        0.0
+                    }
+                } else {
+                    0.0
+                };
+                let _ = app_handle.emit(
+                    "update-progress",
+                    UpdateProgressPayload {
+                        downloaded_bytes: downloaded,
+                        total_bytes: content_length,
+                        percentage: pct,
+                        status: "downloading".to_string(),
+                    },
+                );
+            },
+            {
+                let app_handle = app.clone();
+                move || {
+                    let _ = app_handle.emit(
+                        "update-progress",
+                        UpdateProgressPayload {
+                            downloaded_bytes: downloaded,
+                            total_bytes: None,
+                            percentage: 100.0,
+                            status: "installing".to_string(),
+                        },
+                    );
+                }
+            },
+        )
+        .await
+        .map_err(|e| e.to_string())?;
+
+    let _ = app.emit(
+        "update-progress",
+        UpdateProgressPayload {
+            downloaded_bytes: downloaded,
+            total_bytes: None,
+            percentage: 100.0,
+            status: "ready".to_string(),
+        },
+    );
+
+    app.restart();
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn download_and_install_update(
+    download_url: String,
+    window: tauri::Window,
+) -> Result<String, String> {
+    let clean_url = download_url.trim().to_string();
+    if clean_url.is_empty() {
+        return Err("URL de descarga vacía".to_string());
+    }
+
+    let temp_exe = std::env::temp_dir().join("galactk-panel-update.exe");
+    let temp_str = temp_exe.to_string_lossy().to_string();
+
+    let _ = window.emit(
+        "update-progress",
+        UpdateProgressPayload {
+            downloaded_bytes: 0,
+            total_bytes: None,
+            percentage: 5.0,
+            status: "downloading".to_string(),
+        },
+    );
+
+    let ps_download_script = format!(
+        "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
+         $wc = New-Object System.Net.WebClient; \
+         $wc.Headers.Add('User-Agent', 'GALACTK-PANEL-Updater/2.0'); \
+         $wc.DownloadFile('{url}', '{target}');",
+        url = clean_url.replace('\'', "''"),
+        target = temp_str.replace('\'', "''")
+    );
+
+    let window_clone = window.clone();
+    tokio::task::spawn(async move {
+        for pct in [18.0, 35.0, 55.0, 75.0, 90.0] {
+            tokio::time::sleep(tokio::time::Duration::from_millis(500)).await;
+            let _ = window_clone.emit(
+                "update-progress",
+                UpdateProgressPayload {
+                    downloaded_bytes: 0,
+                    total_bytes: None,
+                    percentage: pct,
+                    status: "downloading".to_string(),
+                },
+            );
+        }
+    });
+
+    let res = tokio::task::spawn_blocking(move || {
+        Command::new(r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe")
+            .args(["-NoProfile", "-WindowStyle", "Hidden", "-Command", &ps_download_script])
+            .creation_flags(CREATE_NO_WINDOW)
+            .output()
+    })
+    .await
+    .map_err(|e| format!("Fallo en tarea de descarga: {}", e))?
+    .map_err(|e| format!("Error ejecutando PowerShell: {}", e))?;
+
+    if !res.status.success() || !temp_exe.exists() {
+        let err = String::from_utf8_lossy(&res.stderr);
+        return Err(format!("Error descargando archivo de actualización: {}", err));
+    }
+
+    let meta = std::fs::metadata(&temp_exe).map_err(|e| e.to_string())?;
+    if meta.len() < 1024 * 1024 {
+        let _ = std::fs::remove_file(&temp_exe);
+        return Err("El archivo descargado está incompleto o dañado.".to_string());
+    }
+
+    let _ = window.emit(
+        "update-progress",
+        UpdateProgressPayload {
+            downloaded_bytes: meta.len(),
+            total_bytes: Some(meta.len()),
+            percentage: 100.0,
+            status: "ready".to_string(),
+        },
+    );
+
+    let launcher_bat = std::env::temp_dir().join("run_galactk_update.bat");
+    let bat_content = format!(
+        "@echo off\r\n\
+         timeout /t 1 /nobreak >nul\r\n\
+         start \"\" \"{}\"\r\n",
+        temp_str
+    );
+    let _ = std::fs::write(&launcher_bat, bat_content);
+
+    let _ = Command::new("cmd")
+        .args(["/c", "start", "", launcher_bat.to_str().unwrap()])
+        .creation_flags(CREATE_NO_WINDOW)
+        .spawn();
+
+    tokio::task::spawn(async {
+        tokio::time::sleep(tokio::time::Duration::from_millis(400)).await;
+        std::process::exit(0);
+    });
+
+    Ok("Actualización descargada. Instalando...".to_string())
+}
+
+#[tauri::command]
+async fn admin_list_streamers(
+    guard: State<'_, Arc<LicenseGuard>>,
+) -> Result<Vec<StreamerRecord>, String> {
+    let st = guard.status.lock().await;
+    if !st.verified || st.role != "ADMIN" {
+        return Err(
+            "Solo la cuenta administradora (GZ7) puede gestionar usuarios y licencias.".to_string(),
+        );
+    }
+    drop(st);
+    let reg = guard.registry.lock().await;
+    Ok(reg.clone())
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn admin_create_streamer(
+    username: String,
+    days_valid: u64,
+    allow_mc_plugins: bool,
+    bind_hwid: Option<String>,
+    notes: String,
+    guard: State<'_, Arc<LicenseGuard>>,
+) -> Result<StreamerRecord, String> {
+    let st = guard.status.lock().await;
+    if !st.verified || st.role != "ADMIN" {
+        return Err("Acceso restringido al administrador GZ7.".to_string());
+    }
+    drop(st);
+    guard
+        .create_streamer_license(username, days_valid, allow_mc_plugins, bind_hwid, notes)
+        .await
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn admin_update_streamer(
+    username: String,
+    allow_mc_plugins: bool,
+    is_active: bool,
+    reset_hwid: bool,
+    guard: State<'_, Arc<LicenseGuard>>,
+) -> Result<StreamerRecord, String> {
+    let st = guard.status.lock().await;
+    if !st.verified || st.role != "ADMIN" {
+        return Err("Acceso restringido al administrador GZ7.".to_string());
+    }
+    drop(st);
+    guard
+        .update_streamer_permissions(username, allow_mc_plugins, is_active, reset_hwid)
+        .await
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn admin_delete_streamer(
+    username: String,
+    guard: State<'_, Arc<LicenseGuard>>,
+) -> Result<(), String> {
+    let st = guard.status.lock().await;
+    if !st.verified || st.role != "ADMIN" {
+        return Err("Acceso restringido al administrador GZ7.".to_string());
+    }
+    drop(st);
+    guard.delete_streamer(username).await
+}
+
+#[tauri::command]
+async fn admin_get_cloud_config(
+    guard: State<'_, Arc<LicenseGuard>>,
+) -> Result<CloudLicenseConfig, String> {
+    let cfg = guard.cloud_config.lock().await;
+    Ok(cfg.clone())
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn admin_save_cloud_config(
+    supabase_url: String,
+    supabase_anon_key: String,
+    assets_cdn_base_url: String,
+    plugins_base_url: String,
+    guard: State<'_, Arc<LicenseGuard>>,
+) -> Result<CloudLicenseConfig, String> {
+    let st = guard.status.lock().await;
+    if !st.verified || st.role != "ADMIN" {
+        return Err("Acceso restringido al administrador GZ7.".to_string());
+    }
+    drop(st);
+    let new_cfg = CloudLicenseConfig {
+        supabase_url: supabase_url.trim().to_string(),
+        supabase_anon_key: supabase_anon_key.trim().to_string(),
+        assets_cdn_base_url: assets_cdn_base_url.trim().to_string(),
+        plugins_base_url: plugins_base_url.trim().to_string(),
+    };
+    LicenseGuard::save_cloud_config_disk(&new_cfg);
+    let mut cfg = guard.cloud_config.lock().await;
+    *cfg = new_cfg.clone();
+    Ok(new_cfg)
+}
+
+#[tauri::command]
+async fn check_streamer_environment() -> Result<EnvironmentHealth, String> {
+    Ok(check_environment_health())
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn install_authorized_mc_plugins(
+    server_folder: String,
+    guard: State<'_, Arc<LicenseGuard>>,
+) -> Result<PluginDeployReport, String> {
+    deploy_authorized_mc_plugins(&server_folder, &guard).await
+}
+
+#[tauri::command]
+async fn set_gift_scale(
+    scale: u32,
+    state: State<'_, Arc<OverlayServerState>>,
+) -> Result<(), String> {
+    state.set_scale(scale).await;
+    Ok(())
+}
+
+#[tauri::command]
+async fn push_duel(
+    side: String,
+    power: f32,
+    donor: String,
+    gift_name: String,
+    state: State<'_, Arc<OverlayServerState>>,
+) -> Result<(), String> {
+    state.push_duel(&side, power, &donor, &gift_name).await;
+    Ok(())
+}
+
+#[tauri::command]
+async fn modify_gvg_win(
+    delta: i32,
+    state: State<'_, Arc<OverlayServerState>>,
+) -> Result<(), String> {
+    state.modify_win(delta).await;
+    Ok(())
+}
+
+#[tauri::command]
+async fn set_gvg_target_wins(
+    target: i32,
+    state: State<'_, Arc<OverlayServerState>>,
+) -> Result<(), String> {
+    state.set_target_wins(target).await;
+    Ok(())
+}
+
+#[tauri::command]
+async fn reset_gvg_wins(state: State<'_, Arc<OverlayServerState>>) -> Result<(), String> {
+    state.reset_wins().await;
+    Ok(())
+}
+
+#[tauri::command]
+async fn reset_gvg_ronda(state: State<'_, Arc<OverlayServerState>>) -> Result<(), String> {
+    state.reset_ronda().await;
+    Ok(())
+}
+
+#[tauri::command]
+async fn add_gvg_points(
+    team: String,
+    points: i32,
+    state: State<'_, Arc<OverlayServerState>>,
+) -> Result<(), String> {
+    state.add_gvg_points(&team, points).await;
+    Ok(())
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn update_roblox_overlay_config(
+    config_json: String,
+    state: State<'_, Arc<OverlayServerState>>,
+) -> Result<(), String> {
+    state.update_roblox_config(&config_json).await
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn update_mc_overlay_config(
+    config_json: String,
+    state: State<'_, Arc<OverlayServerState>>,
+) -> Result<(), String> {
+    state.update_mc_overlay(&config_json).await
+}
+
+#[tauri::command]
+async fn emit_overlay_gift(
+    user: String,
+    title: String,
+    coins: u32,
+    state: State<'_, Arc<OverlayServerState>>,
+) -> Result<(), String> {
+    state.emit_gift(&user, &title, coins).await;
+    Ok(())
+}
+
+#[tauri::command]
+async fn emit_overlay_like(
+    user: String,
+    count: u32,
+    state: State<'_, Arc<OverlayServerState>>,
+) -> Result<(), String> {
+    state.emit_like(&user, count).await;
+    Ok(())
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn emit_custom_alert(
+    alert_json: String,
+    state: State<'_, Arc<OverlayServerState>>,
+) -> Result<(), String> {
+    state.emit_custom_alert(&alert_json).await
+}
+
+fn decode_base64_simple(input: &str) -> Result<Vec<u8>, String> {
+    let raw = if let Some(idx) = input.find(',') {
+        &input[idx + 1..]
+    } else {
+        input
+    };
+    let mut out = Vec::with_capacity(raw.len() * 3 / 4);
+    let mut buf: u32 = 0;
+    let mut bits: u8 = 0;
+    for b in raw.bytes() {
+        let val = match b {
+            b'A'..=b'Z' => b - b'A',
+            b'a'..=b'z' => b - b'a' + 26,
+            b'0'..=b'9' => b - b'0' + 52,
+            b'+' => 62,
+            b'/' => 63,
+            b'=' | b'\r' | b'\n' | b' ' => continue,
+            _ => continue,
+        };
+        buf = (buf << 6) | (val as u32);
+        bits += 6;
+        if bits >= 8 {
+            bits -= 8;
+            out.push(((buf >> bits) & 0xFF) as u8);
+        }
+    }
+    Ok(out)
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn save_uploaded_media(filename: String, base64_data: String) -> Result<String, String> {
+    let safe_name: String = filename
+        .chars()
+        .map(|c| {
+            if c.is_alphanumeric() || "._-".contains(c) {
+                c
+            } else {
+                '_'
+            }
+        })
+        .collect();
+    let final_name = format!(
+        "{}_{}",
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|d| d.as_millis())
+            .unwrap_or(0),
+        safe_name
+    );
+    let custom_dir = resolve_custom_media_dir();
+    fs::create_dir_all(&custom_dir).map_err(|e| format!("Error creando carpeta custom: {}", e))?;
+    let bytes = decode_base64_simple(&base64_data)?;
+    let target = custom_dir.join(&final_name);
+    fs::write(&target, bytes).map_err(|e| format!("Error guardando media personalizado: {}", e))?;
+    Ok(format!(
+        "http://localhost:4000/s2e_media/custom/{}",
+        final_name
+    ))
+}
+
+#[tauri::command]
+async fn speak_tts_native(text: String, rate: i32, volume: u32) -> Result<(), String> {
+    let clean: String = text
+        .chars()
+        .filter(|c| c.is_alphanumeric() || c.is_whitespace() || ",.!?¡¿@-_:;()'\"".contains(*c))
+        .take(240)
+        .collect();
+    let trimmed = clean.trim();
+    if trimmed.is_empty() {
+        return Ok(());
+    }
+    let clamped_rate = rate.clamp(-5, 5);
+    let clamped_vol = volume.clamp(0, 100);
+    let safe_text = trimmed
+        .replace('\'', "''")
+        .replace('\n', " ")
+        .replace('\r', " ");
+    let ps_cmd = format!(
+        "[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; Add-Type -AssemblyName System.Speech; $s = New-Object System.Speech.Synthesis.SpeechSynthesizer; $s.Rate = {}; $s.Volume = {}; $s.Speak('{}');",
+        clamped_rate,
+        clamped_vol,
+        safe_text
+    );
+    tokio::task::spawn_blocking(move || {
+        let _ = Command::new(r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe")
+            .args(["-NoProfile", "-WindowStyle", "Hidden", "-Command", &ps_cmd])
+            .creation_flags(CREATE_NO_WINDOW)
+            .output();
+    });
+    Ok(())
+}
+
+#[tauri::command]
+async fn start_tiktok_sidecar(username: String) -> Result<String, String> {
+    let clean: String = username
+        .trim()
+        .trim_start_matches('@')
+        .chars()
+        .filter(|c| c.is_alphanumeric() || "._-".contains(*c))
+        .take(64)
+        .collect();
+    if clean.is_empty() {
+        return Err("Usuario inválido".to_string());
+    }
+
+    // Auto-kill cualquier sidecar Node previo antes de lanzar uno nuevo.
+    // Evita que el proceso viejo bloquee el puerto 21219 y obligue al streamer
+    // a matar node.exe manualmente desde el Task Manager.
+    let _ = Command::new(r"C:\Windows\System32\taskkill.exe")
+        .args(["/F", "/IM", "node.exe"])
+        .creation_flags(CREATE_NO_WINDOW)
+        .output();
+
+    // Pausa mínima para que el SO libere el puerto 21219
+    tokio::time::sleep(tokio::time::Duration::from_millis(600)).await;
+
+    let script_path =
+        PathBuf::from(r"C:\Users\GZ7\AppData\Local\Programs\GZ7Live\tiktok-sidecar.mjs");
+    if script_path.exists() {
+        let node_candidates = [r"C:\Program Files\nodejs\node.exe", "node"];
+        for node_bin in node_candidates {
+            if Command::new(node_bin)
+                .arg(&script_path)
+                .arg(&clean)
+                .current_dir(r"C:\Users\GZ7\AppData\Local\Programs\GZ7Live")
+                .creation_flags(CREATE_NO_WINDOW)
+                .spawn()
+                .is_ok()
+            {
+                return Ok(format!("Sidecar TikTok activo para @{}", clean));
+            }
+        }
+    }
+    Ok(format!("Motor directo activo para @{}", clean))
+}
+
+async fn reqwest_download(url: &str) -> Result<Vec<u8>, String> {
+    let output = Command::new(r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe")
+        .args([
+            "-NoProfile",
+            "-Command",
+            &format!(
+                "& {{[Net.ServicePointManager]::SecurityProtocol='Tls12'; (New-Object Net.WebClient).DownloadData('{}')}}",
+                url
+            ),
+        ])
+        .creation_flags(CREATE_NO_WINDOW)
+        .output()
+        .map_err(|e| format!("Error ejecutando descarga: {}", e))?;
+    if !output.status.success() {
+        return Err(String::from_utf8_lossy(&output.stderr).to_string());
+    }
+    Ok(output.stdout)
+}
+
+fn main() {
+    let overlay_state = Arc::new(OverlayServerState::new());
+    let license_guard = LicenseGuard::new();
+    start_overlay_http_server(Arc::clone(&overlay_state));
+    preload_core_soundpack();
+
+    tauri::Builder::default()
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_process::init())
+        .manage(overlay_state)
+        .manage(license_guard)
+        .invoke_handler(tauri::generate_handler![
+            check_for_updates,
+            install_update_with_progress,
+            download_and_install_update,
+            login_with_password,
+            register_account,
+            logout_session,
+            send_rcon,
+            inject_mc_session_pass,
+            save_config,
+            load_config,
+            write_server_file,
+            launch_server_bat,
+            download_file,
+            get_license_status,
+            activate_license_key,
+            logout_license_session,
+            admin_list_streamers,
+            admin_create_streamer,
+            admin_update_streamer,
+            admin_delete_streamer,
+            admin_get_cloud_config,
+            admin_save_cloud_config,
+            check_streamer_environment,
+            install_authorized_mc_plugins,
+            set_gift_scale,
+            push_duel,
+            modify_gvg_win,
+            set_gvg_target_wins,
+            reset_gvg_wins,
+            reset_gvg_ronda,
+            add_gvg_points,
+            update_roblox_overlay_config,
+            update_mc_overlay_config,
+            emit_overlay_gift,
+            emit_overlay_like,
+            emit_custom_alert,
+            save_uploaded_media,
+            speak_tts_native,
+            start_tiktok_sidecar
+        ])
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
+}

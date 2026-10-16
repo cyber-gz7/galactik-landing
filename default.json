@@ -1,0 +1,33 @@
+{
+  "nombre": "default",
+  "nickMinecraft": "CAMBIAR_NICK",
+  "reglas": [
+    {
+      "id": "like-zombie",
+      "disparador": "like",
+      "gift": null,
+      "likesCada": 10,
+      "mob": "zombie",
+      "cantidad": 1,
+      "armadura": "ninguna"
+    },
+    {
+      "id": "gift-rose",
+      "disparador": "gift",
+      "gift": "Rose",
+      "likesCada": 10,
+      "mob": "skeleton",
+      "cantidad": 1,
+      "armadura": "ninguna"
+    },
+    {
+      "id": "gift-galaxy",
+      "disparador": "gift",
+      "gift": "Galaxy",
+      "likesCada": 10,
+      "mob": "ender_dragon",
+      "cantidad": 1,
+      "armadura": "ninguna"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cronómetro de Supervivencia</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@700;900&family=JetBrains+Mono:wght@700&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: transparent; font-family: 'Rajdhani', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; color: #fff; overflow: hidden; }
+    .timer-card {
+      background: rgba(18, 18, 26, 0.92);
+      border: 2px solid #4fc3f7;
+      border-radius: 18px;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 8px 35px rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+    }
+    .timer-label { font-size: 18px; font-weight: 900; color: #4fc3f7; letter-spacing: 1px; }
+    .timer-val { font-family: 'JetBrains Mono', monospace; font-size: 32px; font-weight: 700; color: #ffd700; }
+  </style>
+</head>
+<body>
+  <div class="timer-card" id="card">
+    <div class="timer-label">⏱ TIEMPO EN VIVO:</div>
+    <div class="timer-val" id="time-display">00:00:00</div>
+  </div>
+  <script>
+    let seconds = 0;
+    const disp = document.getElementById('time-display');
+    setInterval(() => {
+      seconds++;
+      const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
+      const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+      const s = String(seconds % 60).padStart(2, '0');
+      disp.textContent = `${h}:${m}:${s}`;
+    }, 1000);
+
+    const evt = new EventSource('/api/eventos');
+    evt.onmessage = e => {
+      try {
+        const d = JSON.parse(e.data);
+        if (d.duel?.gift_scale) {
+          document.getElementById('card').style.transform = 'scale(' + (d.duel.gift_scale / 100) + ')';
+        }
+      } catch (err) {}
+    };
+  </script>
+</body>
+</html>

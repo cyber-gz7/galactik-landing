@@ -1,0 +1,3864 @@
+{
+  "activeProfile": "roblox",
+  "rcon": {
+    "host": "127.0.0.1",
+    "port": 25575,
+    "password": ""
+  },
+  "streamerUsername": "bygerardguzman",
+  "activeFaction": "BUENOS",
+  "totems": 0,
+  "currentPreset": "minecraft_chaos",
+  "gifts": [
+    {
+      "id": "spawn_zombie",
+      "name": "Rosa",
+      "icon_file": "rose-1-coins.webp",
+      "tiktokGiftId": 5655,
+      "coins": 1,
+      "faction": "MALOS",
+      "command": "execute at {donador} run summon zombie ~ ~ ~",
+      "totemDelta": -1
+    },
+    {
+      "id": "spawn_creeper",
+      "name": "GG",
+      "icon_file": "gg-1-coins.webp",
+      "tiktokGiftId": 6064,
+      "coins": 1,
+      "faction": "MALOS",
+      "command": "execute at {donador} run summon creeper ~ ~ ~",
+      "totemDelta": -2
+    },
+    {
+      "id": "give_diamond",
+      "name": "Diamantes de Ayuda",
+      "icon_file": "power-of-diamond-1-coins.webp",
+      "tiktokGiftId": 5034,
+      "coins": 15,
+      "faction": "BUENOS",
+      "command": "give {donador} diamond 5",
+      "totemDelta": 3
+    },
+    {
+      "id": "spawn_tnt",
+      "name": "Lluvia TNT",
+      "icon_file": "fireball-5-coins.webp",
+      "tiktokGiftId": 8913,
+      "coins": 20,
+      "faction": "MALOS",
+      "command": "execute at {donador} run summon tnt ~ ~3 ~",
+      "totemDelta": -5
+    },
+    {
+      "id": "spawn_warden",
+      "name": "Warden Destructor",
+      "icon_file": "firelight-beast-4000-coins.webp",
+      "tiktokGiftId": 6748,
+      "coins": 99,
+      "faction": "MALOS",
+      "command": "execute at {donador} run summon warden ~ ~ ~",
+      "totemDelta": -20
+    },
+    {
+      "id": "give_netherite",
+      "name": "Kit Dios Celestial",
+      "icon_file": "fairy-wings-1000-coins.webp",
+      "tiktokGiftId": 9234,
+      "coins": 199,
+      "faction": "BUENOS",
+      "command": "give {donador} netherite_chestplate",
+      "totemDelta": 20
+    }
+  ],
+  "giftSoundMap": {
+    "Rosa": "🪙 Moneda Arcade 8-Bits",
+    "Rose": "mario_coin",
+    "GG": "vine_boom",
+    "Doughnut": "taco_bell",
+    "Game Controller": "airhorn_mlg",
+    "Lion": "sirena_nuclear",
+    "Falcon": "victoria_epica",
+    "Galaxy": "phonk_drift",
+    "Bear with Rose": "asian-gong-music.mp3"
+  },
+  "robloxOverlayConfig": {
+    "target_wins": 5,
+    "center_red_name": "Rose",
+    "center_red_icon": "rose-1-coins.webp",
+    "center_red_coins": 1,
+    "center_red_sound_name": "",
+    "center_red_sound_url": "",
+    "center_blue_name": "GG",
+    "center_blue_icon": "gg-1-coins.webp",
+    "center_blue_coins": 1,
+    "center_blue_sound_name": "",
+    "center_blue_sound_url": "",
+    "theme_style": "SOL",
+    "win_label": "WIN",
+    "win_theme": "GALACTIC",
+    "show_win_in_sides": true,
+    "icon_size": 88,
+    "text_size": 20,
+    "item_gap": 20,
+    "sharpness": 220,
+    "win_scale": 100,
+    "duel_scale": 105,
+    "left_rules": [
+      {
+        "id": "L1",
+        "gift_name": "Lion",
+        "icon_file": "lion-29999-coins.webp",
+        "coins": 29999,
+        "label": "-20 WIN",
+        "action_type": "WIN",
+        "value": -20,
+        "is_bottom": false,
+        "sound_name": "",
+        "sound_url": "",
+        "sound_volume": 1
+      },
+      {
+        "id": "L2",
+        "gift_name": "Rosa",
+        "icon_file": "rosa-10-coins.webp",
+        "coins": 10,
+        "label": "-10 PTS",
+        "action_type": "PTS",
+        "value": -10,
+        "is_bottom": false,
+        "sound_name": "🪙 Moneda Arcade 8-Bits",
+        "sound_url": "",
+        "sound_volume": 1
+      },
+      {
+        "id": "L3",
+        "gift_name": "Doughnut",
+        "icon_file": "doughnut-30-coins.webp",
+        "coins": 30,
+        "label": "-30",
+        "action_type": "PTS",
+        "value": -30,
+        "is_bottom": false,
+        "sound_name": "",
+        "sound_url": "",
+        "sound_volume": 1
+      },
+      {
+        "id": "L4",
+        "gift_name": "Game Controller",
+        "icon_file": "game-controller-100-coins.webp",
+        "coins": 100,
+        "label": "-100",
+        "action_type": "PTS",
+        "value": -100,
+        "is_bottom": false,
+        "sound_name": "",
+        "sound_url": "",
+        "sound_volume": 1
+      },
+      {
+        "id": "L5",
+        "gift_name": "Love You",
+        "icon_file": "love-you-199-coins.webp",
+        "coins": 199,
+        "label": "-300",
+        "action_type": "PTS",
+        "value": -300,
+        "is_bottom": false,
+        "sound_name": "",
+        "sound_url": "",
+        "sound_volume": 1
+      },
+      {
+        "id": "L6",
+        "gift_name": "Money Gun",
+        "icon_file": "money-gun-500-coins.webp",
+        "coins": 500,
+        "label": "-500",
+        "action_type": "PTS",
+        "value": -500,
+        "is_bottom": false,
+        "sound_name": "",
+        "sound_url": "",
+        "sound_volume": 1
+      },
+      {
+        "id": "L7",
+        "gift_name": "Sunset Speedway",
+        "icon_file": "sunset-speedway-10000-coins.webp",
+        "coins": 10000,
+        "label": "-1000",
+        "action_type": "PTS",
+        "value": -1000,
+        "is_bottom": false,
+        "sound_name": "",
+        "sound_url": "",
+        "sound_volume": 1
+      },
+      {
+        "id": "L8",
+        "gift_name": "Bear with Rose",
+        "icon_file": "bear-with-rose-400-coins.webp",
+        "coins": 400,
+        "label": "-1 WIN",
+        "action_type": "WIN",
+        "value": -1,
+        "is_bottom": true,
+        "sound_name": "asian-gong-music.mp3",
+        "sound_url": "http://localhost:4000/s2e_media/audio/public/1730117924313_asian-gong-music.mp3",
+        "sound_volume": 1
+      },
+      {
+        "id": "L9",
+        "gift_name": "Fireworks",
+        "icon_file": "fireworks-1088-coins.webp",
+        "coins": 1088,
+        "label": "-3 WIN",
+        "action_type": "WIN",
+        "value": -3,
+        "is_bottom": true,
+        "sound_name": "",
+        "sound_url": "",
+        "sound_volume": 1
+      }
+    ],
+    "right_rules": [
+      {
+        "id": "R1",
+        "gift_name": "Falcon",
+        "icon_file": "falcon-10999-coins.webp",
+        "coins": 10999,
+        "label": "+20 WIN",
+        "action_type": "WIN",
+        "value": 20,
+        "is_bottom": false,
+        "sound_name": "",
+        "sound_url": "",
+        "sound_volume": 1
+      },
+      {
+        "id": "R2",
+        "gift_name": "Balloons",
+        "icon_file": "balloons-10-coins.webp",
+        "coins": 10,
+        "label": "+10 PTS",
+        "action_type": "PTS",
+        "value": 10,
+        "is_bottom": false,
+        "sound_name": "",
+        "sound_url": "",
+        "sound_volume": 1
+      },
+      {
+        "id": "R3",
+        "gift_name": "Capybara",
+        "icon_file": "capybara-30-coins.webp",
+        "coins": 30,
+        "label": "+30",
+        "action_type": "PTS",
+        "value": 30,
+        "is_bottom": false,
+        "sound_name": "",
+        "sound_url": "",
+        "sound_volume": 1
+      },
+      {
+        "id": "R4",
+        "gift_name": "Super GG",
+        "icon_file": "super-gg-100-coins.webp",
+        "coins": 100,
+        "label": "+100",
+        "action_type": "PTS",
+        "value": 100,
+        "is_bottom": false,
+        "sound_name": "",
+        "sound_url": "",
+        "sound_volume": 1
+      },
+      {
+        "id": "R5",
+        "gift_name": "Boxing Gloves",
+        "icon_file": "boxing-gloves-299-coins.webp",
+        "coins": 299,
+        "label": "+300",
+        "action_type": "PTS",
+        "value": 300,
+        "is_bottom": false,
+        "sound_name": "",
+        "sound_url": "",
+        "sound_volume": 1
+      },
+      {
+        "id": "R6",
+        "gift_name": "Treasure Chest",
+        "icon_file": "treasure-chest-1500-coins.webp",
+        "coins": 1500,
+        "label": "+500",
+        "action_type": "PTS",
+        "value": 500,
+        "is_bottom": false,
+        "sound_name": "",
+        "sound_url": "",
+        "sound_volume": 1
+      },
+      {
+        "id": "R7",
+        "gift_name": "Galaxy",
+        "icon_file": "galaxy-1000-coins.webp",
+        "coins": 1000,
+        "label": "+1000",
+        "action_type": "PTS",
+        "value": 1000,
+        "is_bottom": false,
+        "sound_name": "",
+        "sound_url": "",
+        "sound_volume": 1
+      },
+      {
+        "id": "R8",
+        "gift_name": "Cruiser",
+        "icon_file": "cruiser-150-coins.webp",
+        "coins": 150,
+        "label": "+1 WIN",
+        "action_type": "WIN",
+        "value": 1,
+        "is_bottom": true,
+        "sound_name": "",
+        "sound_url": "",
+        "sound_volume": 1
+      },
+      {
+        "id": "R9",
+        "gift_name": "Coral",
+        "icon_file": "coral-499-coins.webp",
+        "coins": 499,
+        "label": "+3 WIN",
+        "action_type": "WIN",
+        "value": 3,
+        "is_bottom": true,
+        "sound_name": "",
+        "sound_url": "",
+        "sound_volume": 1
+      }
+    ]
+  },
+  "mcOverlayStyle": "carousel",
+  "mcShowTotems": true,
+  "s2ePresets": [
+    {
+      "id": "6a9c4ab5a3f80f466f2d6f01",
+      "name": "Survival gz7",
+      "isUser": true,
+      "game": "Minecraft",
+      "playDelay": "Off",
+      "active": true,
+      "events": [
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "LikeForEach",
+            "value": "200",
+            "giftId": 19447,
+            "giftName": "200 Me gusta",
+            "coins": 1,
+            "iconUrl": "LIKE_HEART"
+          },
+          "func": {
+            "name": "DOG",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790942934823_b9d6caab-9133-4577-9bae-669dd2c4ce7d.webp",
+            "commands": [
+              "/survival zombie iron {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "crack_the_whip.mp3",
+            "path": "/audio/public/1708877462401_crack_the_whip.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1708877462401_crack_the_whip.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 5,
+            "multiplier": false,
+            "peaks": "J0RX7dPx2dejc1lJNi8fEAsICA9V//P5292znJ+nmod+eF9sSz4/KSYgIhsWGhkVFRITExUREhMRDg4PDg8MCggLCgwJCQgICAgICAgICAgICAgICAgICAgICAgICAgI"
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 7934,
+            "giftName": "Heart Me",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_7934.webp"
+          },
+          "func": {
+            "name": "kabom kaboom",
+            "repetition": 10,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1730216866942_creeper-charged.png",
+            "commands": [
+              "/execute at {playername} run summon creeper ~ ~ ~ {powered:1b}"
+            ]
+          },
+          "audio": {
+            "name": "sub2.mp3",
+            "path": "/audio/public/1715074679680_sub2.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1715074679680_sub2.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 6064,
+            "giftName": "GG",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_6064.webp"
+          },
+          "func": {
+            "name": "TNT",
+            "repetition": 10,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790934630867_17b89ca7-13af-4724-9f6e-f40bf42dd601.webp",
+            "commands": [
+              "/survival tnt 2 5 2 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "tnt2.mp3",
+            "path": "/audio/public/1699518601856_tnt2.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1699518601856_tnt2.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 15232,
+            "giftName": "You're awesome",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_15232.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 32,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1730217655332_Totem_of_Undying_JE2_BE2.webp",
+            "commands": [
+              "give {playername} totem_of_undying[max_stack_size=64,custom_name='{\"text\":\"[CYBER-TOTEM]\",\"color\":\"#00FFFF\",\"bold\":true}']"
+            ]
+          },
+          "audio": {
+            "name": "uuuh.mp3",
+            "path": "/audio/public/1730117742970_uuuh.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730117742970_uuuh.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 8239,
+            "giftName": "White Rose",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_8239.webp"
+          },
+          "func": {
+            "name": "thunder",
+            "repetition": 10,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790689296967_cfb08073-61ac-49ce-a040-31c874d48535.webp",
+            "commands": [
+              "/survival lightning {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "thunder-v1.mp3",
+            "path": "/audio/public/1699891902848_thunder-v1.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1699891902848_thunder-v1.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 7032,
+            "giftName": "Maracas",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_7032.webp"
+          },
+          "func": {
+            "name": "KIT",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/users/6a8a3541466456082538e291/images/1789707611564_ba0d9c14-4f20-44b2-b818-4f6bd129c74f.webp",
+            "commands": [
+              "title {playername} actionbar [\"\",{\"text\":\"◆ {nickname} \",\"color\":\"#00FFFF\",\"bold\":true},{\"text\":\"[\",\"color\":\"#008B8B\",\"bold\":true},{\"text\":\"es un nuevo CYBR\",\"color\":\"#5DF9FF\",\"bold\":true},{\"text\":\"] ◆\",\"color\":\"#008B8B\",\"bold\":true}]",
+              "execute at {playername} positioned ^ ^ ^ run setblock ~ ~ ~ chest{Items:[{Slot:0b,id:\"minecraft:netherite_helmet\",count:1,components:{\"minecraft:enchantments\":{levels:{\"minecraft:protection\":10,\"minecraft:fire_protection\":10,\"minecraft:blast_protection\":10,\"minecraft:projectile_protection\":10,\"minecraft:respiration\":10,\"minecraft:aqua_affinity\":1,\"minecraft:thorns\":10,\"minecraft:unbreaking\":10,\"minecraft:mending\":1}},\"minecraft:custom_name\":'{\"text\":\"[CYBR] Casco de {nickname}\",\"color\":\"#00FFFF\",\"bold\":true}'}},{Slot:1b,id:\"minecraft:netherite_chestplate\",count:1,components:{\"minecraft:enchantments\":{levels:{\"minecraft:protection\":10,\"minecraft:fire_protection\":10,\"minecraft:blast_protection\":10,\"minecraft:projectile_protection\":10,\"minecraft:thorns\":10,\"minecraft:unbreaking\":10,\"minecraft:mending\":1}},\"minecraft:custom_name\":'{\"text\":\"[CYBR] Core de {nickname}\",\"color\":\"#00FFFF\",\"bold\":true}'}},{Slot:2b,id:\"minecraft:netherite_leggings\",count:1,components:{\"minecraft:enchantments\":{levels:{\"minecraft:protection\":10,\"minecraft:fire_protection\":10,\"minecraft:blast_protection\":10,\"minecraft:projectile_protection\":10,\"minecraft:swift_sneak\":10,\"minecraft:thorns\":10,\"minecraft:unbreaking\":10,\"minecraft:mending\":1}},\"minecraft:custom_name\":'{\"text\":\"[CYBR] Grebas de {nickname}\",\"color\":\"#00FFFF\",\"bold\":true}'}},{Slot:3b,id:\"minecraft:netherite_boots\",count:1,components:{\"minecraft:enchantments\":{levels:{\"minecraft:protection\":10,\"minecraft:fire_protection\":10,\"minecraft:blast_protection\":10,\"minecraft:projectile_protection\":10,\"minecraft:feather_falling\":10,\"minecraft:depth_strider\":10,\"minecraft:soul_speed\":10,\"minecraft:thorns\":10,\"minecraft:unbreaking\":10,\"minecraft:mending\":1}},\"minecraft:custom_name\":'{\"text\":\"[CYBR] Boots de {nickname}\",\"color\":\"#00FFFF\",\"bold\":true}'}},{Slot:4b,id:\"minecraft:netherite_sword\",count:1,components:{\"minecraft:enchantments\":{levels:{\"minecraft:sharpness\":10,\"minecraft:smite\":10,\"minecraft:bane_of_arthropods\":10,\"minecraft:fire_aspect\":10,\"minecraft:looting\":10,\"minecraft:sweeping_edge\":10,\"minecraft:knockback\":10,\"minecraft:unbreaking\":10,\"minecraft:mending\":1}},\"minecraft:custom_name\":'{\"text\":\"[CYBR] Blade de {nickname}\",\"color\":\"#00FFFF\",\"bold\":true}'}},{Slot:5b,id:\"minecraft:netherite_pickaxe\",count:1,components:{\"minecraft:enchantments\":{levels:{\"minecraft:efficiency\":10,\"minecraft:fortune\":10,\"minecraft:unbreaking\":10,\"minecraft:mending\":1}},\"minecraft:custom_name\":'{\"text\":\"[CYBR] Drill de {nickname}\",\"color\":\"#00FFFF\",\"bold\":true}'}},{Slot:6b,id:\"minecraft:netherite_axe\",count:1,components:{\"minecraft:enchantments\":{levels:{\"minecraft:sharpness\":10,\"minecraft:efficiency\":10,\"minecraft:fortune\":10,\"minecraft:unbreaking\":10,\"minecraft:mending\":1}},\"minecraft:custom_name\":'{\"text\":\"[CYBR] Axe de {nickname}\",\"color\":\"#00FFFF\",\"bold\":true}'}},{Slot:7b,id:\"minecraft:netherite_shovel\",count:1,components:{\"minecraft:enchantments\":{levels:{\"minecraft:efficiency\":10,\"minecraft:fortune\":10,\"minecraft:unbreaking\":10,\"minecraft:mending\":1}},\"minecraft:custom_name\":'{\"text\":\"[CYBR] Shovel de {nickname}\",\"color\":\"#00FFFF\",\"bold\":true}'}},{Slot:8b,id:\"minecraft:enchanted_golden_apple\",count:16},{Slot:9b,id:\"minecraft:ender_pearl\",count:16}]} replace"
+            ]
+          },
+          "audio": {
+            "name": "romantic-v1.mp3",
+            "path": "/audio/public/1704698265714_romantic-v1.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1704698265714_romantic-v1.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 8913,
+            "giftName": "Rosa",
+            "coins": 10,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_8913.webp"
+          },
+          "func": {
+            "name": "Nou",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/minecraft/1699702101175_minecraft_steve_dirt-stone-2x2.png",
+            "commands": [
+              "/survival pit 8 12 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "yooo.mp3",
+            "path": "/audio/public/1730118151504_yooo.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730118151504_yooo.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 10,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5879,
+            "giftName": "Doughnut",
+            "coins": 30,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_5879.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/minecraft/1699559845595_Wither.webp",
+            "commands": [
+              "/survival wither {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "report_bobdyfound_1.mp3",
+            "path": "/audio/public/1715074542579_report_bobdyfound_1.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1715074542579_report_bobdyfound_1.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 200,
+            "multiplier": false,
+            "peaks": "6f/ivYqtzsOkw591XEVnZyUtHh8oM3pGQzQsLykoI09mMy4kIyQdGBcZEBFkKCIUIRwUFRkXEhAPDQ8LDAkKCQgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgI"
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5660,
+            "giftName": "Hand Heart",
+            "coins": 100,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_5660.webp"
+          },
+          "func": {
+            "name": "zombies",
+            "repetition": 500,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790760297923_893df655-6a75-4d5e-ad96-d66c0c6d7127.webp",
+            "commands": [
+              "/survival tnt 2 5 20 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "ayasa-the-reason-why.mp3",
+            "path": "/audio/public/1730118041015_ayasa-the-reason-why.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730118041015_ayasa-the-reason-why.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": "9efC593T/tbO7uzc8d3S98Pyy8Hj5ejk9efHOGWUc6CfufH04f7x9vfq3O3k5erV59a9+ubu3u7n5tnt/+zn4dz39O3r5eL4su7l8ezT8fnD4+js4vHY59fv+vDm5Na+"
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 7122,
+            "giftName": "Gem Gun",
+            "coins": 500,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_7122.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790952598929_cccdfcc0-2568-4529-8ec9-da69e2674cee.webp",
+            "commands": [
+              "summon fireball ~ ~5 ~ {ExplosionPower:20,direction:[0.0,-1.0,0.0]}"
+            ]
+          },
+          "audio": {
+            "name": "nyan_cat_compressed.mp3",
+            "path": "/audio/public/1730117973002_nyan_cat_compressed.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730117973002_nyan_cat_compressed.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 5,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 7168,
+            "giftName": "Money Gun",
+            "coins": 500,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_7168.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 500,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684995375_a6e4c212-5bac-43aa-968d-6650d3bd47a9.webp",
+            "commands": [
+              "/survival tntbox {nickname} "
+            ]
+          },
+          "audio": {
+            "name": "epic-song-30s.mp3",
+            "path": "/users/654b933af1f22668f590cb83/audio/1702383908724_epic-song-30s.mp3",
+            "url": "http://localhost:4000/s2e_media/users/654b933af1f22668f590cb83/audio/1702383908724_epic-song-30s.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 500,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 11046,
+            "giftName": "Galaxy",
+            "coins": 1000,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_11046.webp"
+          },
+          "func": {
+            "name": "Dragon",
+            "repetition": 10,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790687046579_b6278b65-e8f9-471b-8101-435921917be0.webp",
+            "commands": [
+              "/summon ender_dragon ",
+              "/survival tnt 1 55 12 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "gangstas-paradise-scream-sound-effect-1.mp3",
+            "path": "/audio/public/1702225037739_gangstas-paradise-scream-sound-effect-1.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1702225037739_gangstas-paradise-scream-sound-effect-1.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 99,
+            "multiplier": false,
+            "peaks": "CAgIMoK2y6vnzqPCzrrRqM3L8dzg3vXY6vD9+P/k8Of6vufw2rS0sKzBtdnJ3ebwyPf2x/7TzqCksMTVrLazyKTO0aa10/O50sDk9teeu9S04cWu0KLmycWru+fz9e/T"
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "Follow",
+            "value": "",
+            "giftId": 19447,
+            "giftName": "Seguir",
+            "coins": 1,
+            "iconUrl": "FOLLOW_ICON"
+          },
+          "func": {
+            "name": "DOG",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790685645140_c0c391fb-7076-410f-8e35-9dba48b74484.webp",
+            "commands": [
+              "/survival dog {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "crack_the_whip.mp3",
+            "path": "/audio/public/1708877462401_crack_the_whip.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1708877462401_crack_the_whip.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 5,
+            "multiplier": false,
+            "peaks": "J0RX7dPx2dejc1lJNi8fEAsICA9V//P5292znJ+nmod+eF9sSz4/KSYgIhsWGhkVFRITExUREhMRDg4PDg8MCggLCgwJCQgICAgICAgICAgICAgICAgICAgICAgICAgI"
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5576,
+            "giftName": "Heart",
+            "coins": 10,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_5576.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/minecraft/1699604456105_warden.webp",
+            "commands": [
+              "/survival warden {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "tom-and-jerry-scream-sound-effect.mp3",
+            "path": "/audio/public/1789988363358_tom-and-jerry-scream-sound-effect.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1789988363358_tom-and-jerry-scream-sound-effect.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 200,
+            "multiplier": false,
+            "peaks": "CBC+/8/MfmdIJzI2PDxWgrGs7tjE18PNt6yftbWtnZNvcVE8TFlwp9nW0+HOJxwdIikeGODb8svCKBt/tqPOtpqtu8u5ytvizfXuu8nFv7GioZd7gXZUTVZRMEVELCYT"
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 637990,
+            "giftName": "Treasure Clover",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_637990.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 10,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1730216866942_creeper-charged.png",
+            "commands": [
+              "/survival creeper_charged {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "japanese-goblin.mp3",
+            "path": "/audio/public/1730118106297_japanese-goblin.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730118106297_japanese-goblin.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 5,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 9947,
+            "giftName": "Friendship Necklace",
+            "coins": 10,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_9947.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/minecraft/1708972933456_tnt-area-blue.png",
+            "commands": [
+              "/survival tntbox {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "auughhh-sound-effect.mp3",
+            "path": "/audio/public/1789983109649_auughhh-sound-effect.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1789983109649_auughhh-sound-effect.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 9,
+            "multiplier": false,
+            "peaks": "CAgKD0BLRXScwtv18Ovo6O/s5e3t6/Lz9eju8+zt+Pb75ef08vX49/b/9/vt5/Lw5+/w7/L2+Pfx+vP+9f3u8/Lr9ejc6by4i35FSk5CJBgOCQkICAgICAgICAkICAsJ"
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 6104,
+            "giftName": "Cap",
+            "coins": 99,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_6104.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/users/654b933af1f22668f590cb83/images/1730220203320_70-70-35.png",
+            "commands": [
+              "/survival pit 40 100",
+              "/effect give @e minecraft:slow_falling 100 1"
+            ]
+          },
+          "audio": {
+            "name": "diggy-hole.mp3",
+            "path": "/audio/public/1730220362299_diggy-hole.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730220362299_diggy-hole.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 300,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 7934,
+            "giftName": "Heart Me",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_7934.webp"
+          },
+          "func": {
+            "name": "TNT Tower",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/minecraft/1699703178936_tnt-3x3x3v2.png",
+            "commands": [
+              "execute as {playername} at @s run fill ~-2 ~-3 ~-2 ~2 ~-1 ~2 minecraft:tnt[unstable=true] replace",
+              "execute as {playername} at @s run summon tnt ~ ~ ~ {fuse:50}"
+            ]
+          },
+          "audio": {
+            "name": "three-two-one-deep-voice.mp3",
+            "path": "/audio/public/1699703704786_three-two-one-deep-voice.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1699703704786_three-two-one-deep-voice.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 33,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5269,
+            "giftName": "TikTok",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_5269.webp"
+          },
+          "func": {
+            "name": "Skeleton",
+            "repetition": 5,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/minecraft/1699518799034_Skeleton_Aiming.webp",
+            "commands": [
+              "/survival skeleton {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "drip-goku-meme-song-original-dragon-ball-super-music-clash-of-gods.mp3",
+            "path": "/audio/public/1702224976485_drip-goku-meme-song-original-dragon-ball-super-music-clash-of-gods.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1702224976485_drip-goku-meme-song-original-dragon-ball-super-music-clash-of-gods.mp3",
+            "volume": 70,
+            "playerType": "priority",
+            "priority": 5,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 15231,
+            "giftName": "Love you so much",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_15231.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 10,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1784218687052_d5d00b14-8581-488a-a8ab-0944498c0b63.webp",
+            "commands": [
+              "/survival meteors 10 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "Drama.mp3",
+            "path": "/audio/public/1717178194080_Drama.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1717178194080_Drama.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 5,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 15104,
+            "giftName": "Guardian Wings",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_15104.webp"
+          },
+          "func": {
+            "name": "Congelado",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1784218687052_dbf791f3-7c6e-4ea6-8bf8-e833d1d13501.webp",
+            "commands": [
+              "execute at {playername} run fill ~-1 ~-1 ~-1 ~1 ~2 ~1 diamond_block hollow",
+              "title {playername} title {\"text\":\"¡CAJA DE DIAMANTE!\",\"color\":\"aqua\",\"bold\":true}"
+            ]
+          },
+          "audio": {
+            "name": "sub.mp3",
+            "path": "/audio/public/1699561824035_sub.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1699561824035_sub.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 5,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5827,
+            "giftName": "Ice Cream Cone",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_5827.webp"
+          },
+          "func": {
+            "name": "thunder",
+            "repetition": 5,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1781891152923_e34b5b8a-b251-4a33-a8f4-06a9f6657dc3.webp",
+            "commands": [
+              "/execute at {playername} run summon lightning_bolt ~ ~ ~",
+              "/tellraw @a [{\"text\":\"⚡ ¡\",\"color\":\"yellow\"},{\"text\":\"{nickname}\",\"color\":\"gold\",\"bold\":true},{\"text\":\" te mandó un rayo del cielo! ⚡\",\"color\":\"yellow\"}]"
+            ]
+          },
+          "audio": {
+            "name": "thunder-v1.mp3",
+            "path": "/audio/public/1699891902848_thunder-v1.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1699891902848_thunder-v1.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 8243,
+            "giftName": "Cheer You Up",
+            "coins": 9,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_8243.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 3,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1726322653892_spider.png",
+            "commands": []
+          },
+          "audio": {
+            "name": "spider!.mp3",
+            "path": "/users/654b933af1f22668f590cb83/audio/1699894862977_spider!.mp3",
+            "url": "http://localhost:4000/s2e_media/users/654b933af1f22668f590cb83/audio/1699894862977_spider!.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 10,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 637990,
+            "giftName": "Treasure Clover",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_637990.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1730218656050_web-trap.png",
+            "commands": []
+          },
+          "audio": {
+            "name": "galaxy-brain-made.mp3",
+            "path": "/users/654b933af1f22668f590cb83/audio/1699892603553_galaxy-brain-made.mp3",
+            "url": "http://localhost:4000/s2e_media/users/654b933af1f22668f590cb83/audio/1699892603553_galaxy-brain-made.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 100,
+            "multiplier": false,
+            "peaks": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "6ac164d2d5b8207a1b73cbc8",
+      "name": "Survival",
+      "isUser": true,
+      "game": "Minecraft",
+      "playDelay": "Off",
+      "active": true,
+      "events": [
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "Follow",
+            "value": "",
+            "giftId": 5655,
+            "giftName": "Seguir",
+            "coins": 1,
+            "iconUrl": "FOLLOW_ICON"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790334922863_71818866-5d8c-4862-a728-93eda2e1dd19.webp",
+            "commands": [
+              "/survival villager {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "sub.mp3",
+            "path": "/audio/public/1699561824035_sub.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1699561824035_sub.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 5,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5655,
+            "giftName": "Rose",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_5655.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790938291298_06ebd835-5744-4ea0-aaad-cd93cf6196c1.webp",
+            "commands": [
+              "/survival zombie null {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "zombie-minecraft.mp3",
+            "path": "/audio/public/1699891800834_zombie-minecraft.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1699891800834_zombie-minecraft.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "LikeForEach",
+            "value": "80",
+            "giftId": 5655,
+            "giftName": "80 Me gusta",
+            "coins": 1,
+            "iconUrl": "LIKE_HEART"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790938291298_fa97603b-cf05-430d-8a55-d01a01ca6063.webp",
+            "commands": [
+              "/survival zombie null {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "zombie-minecraft.mp3",
+            "path": "/audio/public/1699891800834_zombie-minecraft.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1699891800834_zombie-minecraft.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 19446,
+            "giftName": "Wink wink",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_19446.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790938291298_9ea02d5d-88a5-4bea-a9c8-89a20383ef31.webp",
+            "commands": [
+              "/survival zombie jack {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "halloween-impact.mp3",
+            "path": "/audio/public/1730118440603_halloween-impact.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730118440603_halloween-impact.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 6064,
+            "giftName": "GG",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_6064.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790334917226_60bd734c-c9ad-42d0-8fc4-a26b3c1e4c99.webp",
+            "commands": [
+              "/survival tnt 2 5 3 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "tnt2.mp3",
+            "path": "/audio/public/1699518601856_tnt2.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1699518601856_tnt2.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5827,
+            "giftName": "Ice Cream Cone",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_5827.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 3,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790334898090_091219b9-2c7b-475d-9efe-52ce814c1bf3.webp",
+            "commands": [
+              "/survival bee {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "pop.mp3",
+            "path": "/audio/public/1715074526733_pop.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1715074526733_pop.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 7934,
+            "giftName": "Heart Me",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_7934.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790334922863_870853b8-837a-45f4-b91a-7afbe03e52d1.webp",
+            "commands": [
+              "/survival totem {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "happy-halloween.mp3",
+            "path": "/audio/public/1730119764998_happy-halloween.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730119764998_happy-halloween.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 11434,
+            "giftName": "Flame heart",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_11434.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790334898089_dd17ba4f-66b7-4d39-9884-2694fe8feaa5.webp",
+            "commands": [
+              "/survival apple_enchanted {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "uuuh.mp3",
+            "path": "/audio/public/1730117742970_uuuh.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730117742970_uuuh.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 15231,
+            "giftName": "Love you so much",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_15231.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790938291297_697f71b2-4111-415c-a6f5-4b328ea569cc.webp",
+            "commands": [
+              "/survival iron_golem {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "angels-singing.mp3",
+            "path": "/audio/public/1699561708367_angels-singing.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1699561708367_angels-singing.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 5,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5269,
+            "giftName": "TikTok",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_5269.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 3,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790334917226_5adfd389-4d1e-4891-a757-5841adc3e6ba.webp",
+            "commands": [
+              "/survival skeleton {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "japanese-goblin.mp3",
+            "path": "/audio/public/1730118106297_japanese-goblin.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730118106297_japanese-goblin.mp3",
+            "volume": 70,
+            "playerType": "priority",
+            "priority": 5,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 19446,
+            "giftName": "Wink wink",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_19446.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790334904767_54b24781-8a80-4194-9822-cda21616b740.webp",
+            "commands": [
+              "/survival creeper_charged {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "japanese-goblin.mp3",
+            "path": "/audio/public/1730118106297_japanese-goblin.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730118106297_japanese-goblin.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 5,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 8239,
+            "giftName": "White Rose",
+            "coins": 1,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_8239.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790334904767_9ff08516-4f84-4c25-a52c-2de7b488f8dd.webp",
+            "commands": [
+              "/survival dog {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "I love you patrick star.mp3",
+            "path": "/audio/public/1717178346318_I love you patrick star.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1717178346318_I love you patrick star.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 5,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 8243,
+            "giftName": "Cheer You Up",
+            "coins": 9,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_8243.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 3,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790334917226_5b5585db-0c28-4de1-94d8-c8c0ac3b45dc.webp",
+            "commands": [
+              "/survival spider {nickname} "
+            ]
+          },
+          "audio": {
+            "name": "spider!.mp3",
+            "path": "/users/654b933af1f22668f590cb83/audio/1699894862977_spider!.mp3",
+            "url": "http://localhost:4000/s2e_media/users/654b933af1f22668f590cb83/audio/1699894862977_spider!.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 10,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 8913,
+            "giftName": "Rosa",
+            "coins": 10,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_8913.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 180,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790938291297_88c46948-c45b-4462-8072-53b0b02ff257.webp",
+            "commands": [
+              "/execute at {playername} run setblock ~{random:-4 4} ~{random:6 20} ~{random:-4 4} minecraft:sand",
+              "/execute at {playername} run setblock  ~{random:-4 4} ~{random:6 20} ~{random:-4 4} minecraft:white_concrete_powder",
+              "/execute at {playername} run setblock  ~{random:-4 4} ~{random:6 20} ~{random:-4 4} minecraft:light_gray_concrete_powder",
+              "/execute at {playername} run setblock  ~{random:-4 4} ~{random:6 20} ~{random:-4 4} minecraft:red_sand"
+            ]
+          },
+          "audio": {
+            "name": "slow-sax.mp3",
+            "path": "/audio/public/1730117542542_slow-sax.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730117542542_slow-sax.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 10,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 8243,
+            "giftName": "Cheer You Up",
+            "coins": 9,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_8243.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 3,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790334904767_5cd1ff01-e0e2-429c-9e8a-22ac7095e532.webp",
+            "commands": [
+              "/survival ghast {nickname} "
+            ]
+          },
+          "audio": {
+            "name": "nya-ichi-ni-san-lower-quality.mp3",
+            "path": "/audio/public/1730196608561_nya-ichi-ni-san-lower-quality.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730196608561_nya-ichi-ni-san-lower-quality.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 9,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 9947,
+            "giftName": "Friendship Necklace",
+            "coins": 10,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_9947.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790334922863_c7f56ca0-55c8-44e0-8445-b78f19369991.webp",
+            "commands": [
+              "/survival water_drop {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "fly-me-to-the-moon.mp3",
+            "path": "/users/654b933af1f22668f590cb83/audio/1699893732589_fly-me-to-the-moon.mp3",
+            "url": "http://localhost:4000/s2e_media/users/654b933af1f22668f590cb83/audio/1699893732589_fly-me-to-the-moon.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 10,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 12356,
+            "giftName": "Team Power",
+            "coins": 9,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_12356.webp"
+          },
+          "func": {
+            "name": "Pit",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790334911365_9047fddb-3d07-4587-ad28-4ac3edea9892.webp",
+            "commands": [
+              "/survival pit 3 8 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "yooo.mp3",
+            "path": "/audio/public/1730118151504_yooo.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730118151504_yooo.mp3",
+            "volume": 85,
+            "playerType": "priority",
+            "priority": 10,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5658,
+            "giftName": "Perfume",
+            "coins": 20,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_5658.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790334911365_8bb59718-618e-47dc-b964-61d4da469048.webp",
+            "commands": [
+              "/survival ravager {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "take-my-horse---lil-nas-x-made-with-Voicemod.mp3",
+            "path": "/users/654b933af1f22668f590cb83/audio/1716651625973_take-my-horse---lil-nas-x-made-with-Voicemod.mp3",
+            "url": "http://localhost:4000/s2e_media/users/654b933af1f22668f590cb83/audio/1716651625973_take-my-horse---lil-nas-x-made-with-Voicemod.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 20,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5879,
+            "giftName": "Doughnut",
+            "coins": 30,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_5879.webp"
+          },
+          "func": {
+            "name": "TNT Tower",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790938291298_564b5a3f-b22b-4a93-9068-0c5d85745d93.webp",
+            "commands": [
+              "execute as {playername} at @s run fill ~-2 ~-3 ~-2 ~2 ~-1 ~2 minecraft:tnt[unstable=true] replace",
+              "execute as {playername} at @s run summon tnt ~ ~ ~ {fuse:50}"
+            ]
+          },
+          "audio": {
+            "name": "three-two-one-deep-voice.mp3",
+            "path": "/audio/public/1699703704786_three-two-one-deep-voice.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1699703704786_three-two-one-deep-voice.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 33,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 6097,
+            "giftName": "Little Crown",
+            "coins": 99,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_6097.webp"
+          },
+          "func": {
+            "name": "TNT",
+            "repetition": 100,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790938291299_1df311d0-d87b-4633-b11c-91de73cd0ce6.webp",
+            "commands": [
+              "execute at {playername} run summon area_effect_cloud ~{random:-{radius} {radius}} ~ ~{random:-{radius} {radius}} {Passengers:[{id:tnt,fuse:{fuse}}]}"
+            ]
+          },
+          "audio": {
+            "name": "this_is_halloween_-_marilyn_manson_wlyrics_mp3cut.mp3",
+            "path": "/audio/public/1730118493592_this_is_halloween_-_marilyn_manson_wlyrics_mp3cut.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730118493592_this_is_halloween_-_marilyn_manson_wlyrics_mp3cut.mp3",
+            "volume": 75,
+            "playerType": "priority",
+            "priority": 99,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5524,
+            "giftName": "Tsar",
+            "coins": 100,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_5524.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790334922863_a8e8ce9d-6bf6-4c93-bc42-a3fb30c74b1e.webp",
+            "commands": [
+              "/survival trap {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "galaxy-brain-made.mp3",
+            "path": "/users/654b933af1f22668f590cb83/audio/1699892603553_galaxy-brain-made.mp3",
+            "url": "http://localhost:4000/s2e_media/users/654b933af1f22668f590cb83/audio/1699892603553_galaxy-brain-made.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 100,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 11177,
+            "giftName": "Coffee Magic",
+            "coins": 199,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_11177.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790334898090_e1887538-f691-4f45-bb61-1511b5e97825.webp",
+            "commands": [
+              "/survival bee_cage {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "nyan_cat_compressed.mp3",
+            "path": "/audio/public/1730117973002_nyan_cat_compressed.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730117973002_nyan_cat_compressed.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 5,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 9465,
+            "giftName": "Fruit Friends",
+            "coins": 299,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_9465.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790334922863_f80a8c2a-90f8-4d32-84d8-28ea90936e1c.webp",
+            "commands": [
+              "/survival warden {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "el-matador-made-with-Voicemod.mp3",
+            "path": "/users/654b933af1f22668f590cb83/audio/1716651897812_el-matador-made-with-Voicemod.mp3",
+            "url": "http://localhost:4000/s2e_media/users/654b933af1f22668f590cb83/audio/1716651897812_el-matador-made-with-Voicemod.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 200,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 6007,
+            "giftName": "Boxing Gloves",
+            "coins": 299,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_6007.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790334898089_bb9fd34c-1cbf-47e6-b6a6-2213648b661b.webp",
+            "commands": [
+              "/survival wither {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "ayasa-the-reason-why.mp3",
+            "path": "/audio/public/1730118041015_ayasa-the-reason-why.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730118041015_ayasa-the-reason-why.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 200,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 6267,
+            "giftName": "Corgi",
+            "coins": 299,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_6267.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790938489412_9af5840c-cc1e-43de-89a5-921fa015b455.webp",
+            "commands": [
+              "/survival pit 35 35",
+              "/effect give @e minecraft:slow_falling 10 1"
+            ]
+          },
+          "audio": {
+            "name": "diggy-hole.mp3",
+            "path": "/audio/public/1730220362299_diggy-hole.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730220362299_diggy-hole.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 300,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "6721019c315480d81598a2be",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 7168,
+            "giftName": "Money Gun",
+            "coins": 500,
+            "iconUrl": "http://localhost:4000/s2e_media/tiktok_gifts/gift_7168.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790938291299_e5c6d6e9-340f-40ab-b50c-a5d99ce874ad.webp",
+            "commands": [
+              "/survival tntbox {nickname} "
+            ]
+          },
+          "audio": {
+            "name": "epic-song-30s.mp3",
+            "path": "/users/654b933af1f22668f590cb83/audio/1702383908724_epic-song-30s.mp3",
+            "url": "http://localhost:4000/s2e_media/users/654b933af1f22668f590cb83/audio/1702383908724_epic-song-30s.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 500,
+            "multiplier": false,
+            "peaks": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "68349bd15b79d842294c2649",
+      "name": "Shooting Gallery",
+      "isUser": false,
+      "game": "Minecraft",
+      "playDelay": "Off",
+      "active": true,
+      "events": [
+        {
+          "id": "680bae072e6bd9e62f73460b",
+          "active": true,
+          "trigger": {
+            "action": "LikeForEach",
+            "value": "200",
+            "giftId": 9111,
+            "giftName": "200 Me gusta",
+            "coins": 1,
+            "iconUrl": "LIKE_HEART"
+          },
+          "func": {
+            "name": "Pumpkin ",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684580675_ebe79570-1a2e-45b3-95f0-89c1f88c4320.webp",
+            "commands": [
+              "/shoot pumpkin 5 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "uuuh.mp3",
+            "path": "/audio/public/1730117742970_uuuh.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730117742970_uuuh.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "680bae072e6bd9e62f73460b",
+          "active": true,
+          "trigger": {
+            "action": "Follow",
+            "value": "",
+            "giftId": 9111,
+            "giftName": "Seguir",
+            "coins": 1,
+            "iconUrl": "FOLLOW_ICON"
+          },
+          "func": {
+            "name": " Watermelon",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684580677_80a75ced-eed1-4a14-b540-4aba26a1c175.webp",
+            "commands": [
+              "/shoot watermelon 5 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "sub.mp3",
+            "path": "/audio/public/1699561824035_sub.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1699561824035_sub.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "680bae072e6bd9e62f73460b",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "200",
+            "giftId": 5655,
+            "giftName": "Rose",
+            "coins": 1,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Pumpkin",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1791192349944_7c2d81a7-8e04-4a65-bac0-91a9155bc23d.webp",
+            "commands": [
+              "/shoot pumpkin 3 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "Level-up.mp3",
+            "path": "/audio/public/1720699727764_Level-up.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1720699727764_Level-up.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "680bae072e6bd9e62f73460b",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5827,
+            "giftName": "Ice Cream Cone",
+            "coins": 1,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Silverfish",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684580676_f6b83bf9-9315-4626-bbfe-8fe42de1b49e.webp",
+            "commands": [
+              "/shoot silverfish 1 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "GULP GULP GULP.mp3",
+            "path": "/audio/public/1717178528946_GULP GULP GULP.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1717178528946_GULP GULP GULP.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "680bae072e6bd9e62f73460b",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 6064,
+            "giftName": "GG",
+            "coins": 1,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Target",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684580676_a5aa879b-d167-47ac-8213-31714d715cd1.webp",
+            "commands": [
+              "/shoot target 3 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "huh.mp3",
+            "path": "/audio/public/1717177911839_huh.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1717177911839_huh.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "680bae072e6bd9e62f73460b",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 9139,
+            "giftName": "Team Bracelet",
+            "coins": 2,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Watermelon",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1791192349943_a7c68007-dea3-42ab-bd45-b9295847e6d5.webp",
+            "commands": [
+              "/shoot watermelon 5 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "pop.mp3",
+            "path": "/audio/public/1715074526733_pop.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1715074526733_pop.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 2,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "680bae072e6bd9e62f734609",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5487,
+            "giftName": "Finger Heart",
+            "coins": 5,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Head",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684580675_3cefa2d8-b4d1-4b6b-9a22-1590e0fa0775.webp",
+            "commands": [
+              "/shoot head 8 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "TikTok ending sound effect.mp3",
+            "path": "/audio/public/1717177784310_TikTok ending sound effect.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1717177784310_TikTok ending sound effect.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 5,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "680bae072e6bd9e62f734605",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 9111,
+            "giftName": "Popcorn",
+            "coins": 5,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Friendly skeleton",
+            "repetition": 5,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684580674_52de8dfc-0899-4023-ba08-7ac63e3b4655.webp",
+            "commands": [
+              "/shoot friendly_skeleton 1 8 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "Tam!.mp3",
+            "path": "/audio/public/1717177467512_Tam!.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1717177467512_Tam!.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 5,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "680bae072e6bd9e62f73460b",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 9947,
+            "giftName": "Friendship Necklace",
+            "coins": 10,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Skeleton",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684580676_d7e819a3-560b-432c-8034-438be01b70e1.webp",
+            "commands": [
+              "/shoot skeleton 12 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "no-no-wait-wait.mp3",
+            "path": "/audio/public/1715074415490_no-no-wait-wait.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1715074415490_no-no-wait-wait.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 10,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "680bae072e6bd9e62f73460b",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 8913,
+            "giftName": "Rosa",
+            "coins": 10,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Zombie",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684580677_2cd22074-15e6-4787-bf8e-dbe4eef3a4cf.webp",
+            "commands": [
+              "/shoot zombie 12 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "Badum_Tss.mp3",
+            "path": "/audio/public/1720814039851_Badum_Tss.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1720814039851_Badum_Tss.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 10,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "680bae072e6bd9e62f73460b",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5658,
+            "giftName": "Perfume",
+            "coins": 20,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Mask",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684580675_48d8edc3-617a-4bc1-8f9a-ae8c5e1b1146.webp",
+            "commands": [
+              "/shoot mask 20 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "cristiano ronaldo .mp3",
+            "path": "/audio/public/1717178011754_cristiano ronaldo .mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1717178011754_cristiano ronaldo .mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 20,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "680bae072e6bd9e62f73460b",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5879,
+            "giftName": "Doughnut",
+            "coins": 30,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Upgrade",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684580677_5dad3f85-93e8-4942-bb65-224ef75e89fb.webp",
+            "commands": [
+              "/shoot upgrade"
+            ]
+          },
+          "audio": {
+            "name": "wrong-buzzer.mp3",
+            "path": "/audio/public/1708877687386_wrong-buzzer.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1708877687386_wrong-buzzer.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 30,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "680baddb2e6bd9e62f7323a5",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "100",
+            "giftId": 5659,
+            "giftName": "Paper Crane",
+            "coins": 99,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Exp. arrow",
+            "repetition": 10,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684580674_6e9b83e0-530d-48dd-bb13-940ff62190d3.webp",
+            "commands": [
+              "/shoot exp_arrow"
+            ]
+          },
+          "audio": {
+            "name": "arrow-effect.mp3",
+            "path": "/audio/public/1721738047576_arrow-effect.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1721738047576_arrow-effect.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 99,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "680bae072e6bd9e62f73460b",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 6427,
+            "giftName": "Hat and Mustache",
+            "coins": 99,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Shrink",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684580675_e47a0033-c45a-4a8b-934a-b1ad00b3abe2.webp",
+            "commands": [
+              "/shoot shrink"
+            ]
+          },
+          "audio": {
+            "name": "slime.mp3",
+            "path": "/audio/public/1723044404918_slime.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1723044404918_slime.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 99,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "680bae072e6bd9e62f734607",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5585,
+            "giftName": "Confetti",
+            "coins": 100,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Guardian",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684580674_21704ea7-a7ef-43f0-b2c9-7204117c4cb5.webp",
+            "commands": [
+              "/shoot guardian 8 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "Illuminati sound effect.mp3",
+            "path": "/audio/public/1717177596767_Illuminati sound effect.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1717177596767_Illuminati sound effect.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 100,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "680bae072e6bd9e62f73460b",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 6104,
+            "giftName": "Cap",
+            "coins": 99,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Speed up",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684580676_2925564e-0de7-4614-82d2-1c80ba5d7490.webp",
+            "commands": [
+              "/shoot speed_up"
+            ]
+          },
+          "audio": {
+            "name": "gta-menu.mp3",
+            "path": "/audio/public/1715074315369_gta-menu.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1715074315369_gta-menu.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 99,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "680bae072e6bd9e62f73460b",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5524,
+            "giftName": "Tsar",
+            "coins": 100,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Target delete",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684580677_589c2e9d-4ef3-4be1-8c06-6051b13b14ea.webp",
+            "commands": [
+              "/shoot target_delete",
+              "/shoot kill"
+            ]
+          },
+          "audio": {
+            "name": "vine-boom.mp3",
+            "path": "/audio/public/1708877312612_vine-boom.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1708877312612_vine-boom.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 100,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "680bae072e6bd9e62f73460b",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 8589,
+            "giftName": "Suitcase",
+            "coins": 199,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Unfill",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684580677_e5cfbf0a-1abd-4d64-9bba-2c5119e44fa8.webp",
+            "commands": [
+              "/shoot unfill",
+              "/shoot target_delete",
+              "/shoot kill"
+            ]
+          },
+          "audio": {
+            "name": "pedro-pedro-pe.mp3",
+            "path": "/audio/public/1715074454519_pedro-pedro-pe.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1715074454519_pedro-pedro-pe.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 199,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "680bae072e6bd9e62f734603",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 8358,
+            "giftName": "Panther Paws",
+            "coins": 199,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Fill",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684580674_f953c1b9-5d5d-45b3-9ebd-1fe43058e06e.webp",
+            "commands": [
+              "/shoot fill",
+              "/shoot kill"
+            ]
+          },
+          "audio": {
+            "name": "godfather.mp3",
+            "path": "/audio/public/1702225847635_godfather.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1702225847635_godfather.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 199,
+            "multiplier": false,
+            "peaks": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "67d84be9e12ebeba1486f764",
+      "name": "Pots Arena",
+      "isUser": false,
+      "game": "Minecraft",
+      "playDelay": "Off",
+      "active": true,
+      "events": [
+        {
+          "id": "67bc13490704478b95bfe66a",
+          "active": true,
+          "trigger": {
+            "action": "LikeForEach",
+            "value": "100",
+            "giftId": 5655,
+            "giftName": "100 Me gusta",
+            "coins": 1,
+            "iconUrl": "LIKE_HEART"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684309490_54b656ae-991b-4076-82c3-99cdd4cd9969.webp",
+            "commands": [
+              "/pots skeleton 1 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "twitch-Follower-Alert.mp3",
+            "path": "/audio/public/1716384965481_twitch-Follower-Alert.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1716384965481_twitch-Follower-Alert.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 5,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "67bc13490704478b95bfe66a",
+          "active": true,
+          "trigger": {
+            "action": "Follow",
+            "value": "100",
+            "giftId": 5655,
+            "giftName": "Seguir",
+            "coins": 1,
+            "iconUrl": "FOLLOW_ICON"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684309488_c73fa792-34c0-4848-9d1c-d2b3fc8569cc.webp",
+            "commands": [
+              "/pots creeper 1 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "GULP GULP GULP.mp3",
+            "path": "/audio/public/1717178528946_GULP GULP GULP.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1717178528946_GULP GULP GULP.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 5,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "67bc1c070704478b95c35abc",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5655,
+            "giftName": "Rose",
+            "coins": 1,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 2,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684309492_9b5a6023-d14b-47f1-a11a-d0dde9cbde4e.webp",
+            "commands": [
+              "/pots zombie_pot 1"
+            ]
+          },
+          "audio": {
+            "name": "zombie-minecraft.mp3",
+            "path": "/audio/public/1699891800834_zombie-minecraft.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1699891800834_zombie-minecraft.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "67bc13490704478b95bfe66a",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "100",
+            "giftId": 5827,
+            "giftName": "Ice Cream Cone",
+            "coins": 1,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1791185493740_75e1b481-42bc-4642-a646-c91ec06fe2bd.webp",
+            "commands": [
+              "/pots skeleton 1 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "arrow-effect.mp3",
+            "path": "/audio/public/1721738047576_arrow-effect.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1721738047576_arrow-effect.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 5,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "67bc1c070704478b95c35abc",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5269,
+            "giftName": "TikTok",
+            "coins": 1,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 2,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684309489_e6daeb17-2763-43a6-9b0e-5bb91fa856a9.webp",
+            "commands": [
+              "/pots defolt_pot 5 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "Tam!.mp3",
+            "path": "/audio/public/1717177467512_Tam!.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1717177467512_Tam!.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "67bc1c070704478b95c35ac0",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 6064,
+            "giftName": "GG",
+            "coins": 1,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684309488_f65aee9f-d65d-41e2-8c13-66332b777561.webp",
+            "commands": [
+              "/pots creeper_pot 1"
+            ]
+          },
+          "audio": {
+            "name": "wilhelm-scream.mp3",
+            "path": "/audio/public/1701804998094_wilhelm-scream.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1701804998094_wilhelm-scream.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "67bc1c070704478b95c35ac4",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 11434,
+            "giftName": "Flame heart",
+            "coins": 1,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684309488_2c78f6a1-dece-4933-aa50-030ab314d683.webp",
+            "commands": [
+              "/pots apple 1"
+            ]
+          },
+          "audio": {
+            "name": "Badum_Tss.mp3",
+            "path": "/audio/public/1720814039851_Badum_Tss.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1720814039851_Badum_Tss.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "67bc1c070704478b95c35ac4",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 9139,
+            "giftName": "Team Bracelet",
+            "coins": 2,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684309492_d9d1474e-1212-41fd-b160-44e1baee8f44.webp",
+            "commands": [
+              "/pots wolf_pot 3"
+            ]
+          },
+          "audio": {
+            "name": "Badum_Tss.mp3",
+            "path": "/audio/public/1720814039851_Badum_Tss.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1720814039851_Badum_Tss.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "67bc13490704478b95bfe66a",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "100",
+            "giftId": 8913,
+            "giftName": "Rosa",
+            "coins": 10,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 2,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1791185493740_f5ddbade-7fad-48be-bae2-276f09b438ba.webp",
+            "commands": [
+              "/pots creeper 1 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "GULP GULP GULP.mp3",
+            "path": "/audio/public/1717178528946_GULP GULP GULP.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1717178528946_GULP GULP GULP.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 5,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "67bc1c070704478b95c35ad0",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 9947,
+            "giftName": "Friendship Necklace",
+            "coins": 10,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684309490_4bbdd50f-0871-4d3f-bc9b-51691787c240.webp",
+            "commands": [
+              "/pots skeletonup 3 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "Scary-Skeletons.mp3",
+            "path": "/audio/public/1717929409617_Scary-Skeletons.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1717929409617_Scary-Skeletons.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "67bc1c070704478b95c35ad4",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 8913,
+            "giftName": "Rosa",
+            "coins": 10,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684309488_65cc0e43-4402-464e-817a-6329f5de3660.webp",
+            "commands": [
+              "/pots arrows 20"
+            ]
+          },
+          "audio": {
+            "name": "arrow-effect.mp3",
+            "path": "/audio/public/1721738047576_arrow-effect.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1721738047576_arrow-effect.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "67bc1c070704478b95c35ad4",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 6426,
+            "giftName": "Dombra",
+            "coins": 20,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790683119606_6289ead4-fb45-4dcd-ac6c-4262ca21622a.webp",
+            "commands": [
+              "/pots prison 10 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "diggy-hole.mp3",
+            "path": "/audio/public/1730220362299_diggy-hole.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730220362299_diggy-hole.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "67bc1c070704478b95c35ad8",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5658,
+            "giftName": "Perfume",
+            "coins": 20,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 20,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684309489_a729f63c-1f42-4658-9a93-90f128bf2d74.webp",
+            "commands": [
+              "/pots rand_pot 1"
+            ]
+          },
+          "audio": {
+            "name": "slow-sax.mp3",
+            "path": "/audio/public/1730117542542_slow-sax.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730117542542_slow-sax.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "67bc1c070704478b95c35adc",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5879,
+            "giftName": "Doughnut",
+            "coins": 30,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684309492_8dfce145-09bb-4404-9d27-0d7b8458b33a.webp",
+            "commands": [
+              "/pots wither_skeleton 10 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "japanese-goblin.mp3",
+            "path": "/audio/public/1730118106297_japanese-goblin.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730118106297_japanese-goblin.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "67bc1c070704478b95c35adc",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5659,
+            "giftName": "Paper Crane",
+            "coins": 99,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684309487_d5c2234d-5a00-4f39-9fe2-6efa19093637.webp",
+            "commands": [
+              "/pots goat 100"
+            ]
+          },
+          "audio": {
+            "name": "You Touch My Tralala.mp3",
+            "path": "/audio/public/1717178126999_You Touch My Tralala.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1717178126999_You Touch My Tralala.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "67bc1c070704478b95c35ae0",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 6427,
+            "giftName": "Hat and Mustache",
+            "coins": 99,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 5,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684309487_ebb2affb-e8b6-4c86-b755-ecc1ad67de3e.webp",
+            "commands": [
+              "/pots golem 1 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "asian-gong-music.mp3",
+            "path": "/audio/public/1730117924313_asian-gong-music.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730117924313_asian-gong-music.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "67bc1c070704478b95c35ae0",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 11177,
+            "giftName": "Coffee Magic",
+            "coins": 199,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684309487_87ce5fc2-c23e-4323-ba9e-58fd0ca12268.webp",
+            "commands": [
+              "/pots fill"
+            ]
+          },
+          "audio": {
+            "name": "diggy-hole.mp3",
+            "path": "/audio/public/1730220362299_diggy-hole.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730220362299_diggy-hole.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "67bc1c070704478b95c35ae0",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 11435,
+            "giftName": "Meerkat",
+            "coins": 199,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684309488_cf87aad5-ec51-4261-b5b0-4182e3bb5baa.webp",
+            "commands": [
+              "/pots arrowbomb "
+            ]
+          },
+          "audio": {
+            "name": "evil-laugh-sound.mp3",
+            "path": "/audio/public/1730118414977_evil-laugh-sound.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730118414977_evil-laugh-sound.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "67bc1c070704478b95c35ae0",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 6267,
+            "giftName": "Corgi",
+            "coins": 299,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790684309486_37c1baeb-2ea9-42b6-a6ac-27252d92b562.webp",
+            "commands": [
+              "/pots dragon 20"
+            ]
+          },
+          "audio": {
+            "name": "nya-ichi-ni-san-lower-quality.mp3",
+            "path": "/audio/public/1730196608561_nya-ichi-ni-san-lower-quality.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1730196608561_nya-ichi-ni-san-lower-quality.mp3",
+            "volume": 100,
+            "playerType": "short",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "68a736d23401e23afa6a7beb",
+      "name": "Border",
+      "isUser": false,
+      "game": "Minecraft",
+      "playDelay": "Off",
+      "active": true,
+      "events": [
+        {
+          "id": "689f3ca68cc6cad7e9acdce4",
+          "active": true,
+          "trigger": {
+            "action": "LikeForEach",
+            "value": "50",
+            "giftId": 5655,
+            "giftName": "50 Me gusta",
+            "coins": 1,
+            "iconUrl": "LIKE_HEART"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790935334454_d9b311ab-a40a-4b87-8ec2-8ffba67dbe2d.webp",
+            "commands": [
+              "/execute as @a at @s run summon zombie ~ ~ ~ {Health:1f,Attributes:[{Name:\"generic.max_health\",Base:1}],CustomName:'{\"text\":\"{nickname}\"}',CustomNameVisible:1b,Silent:1b,IsBaby:0b,ArmorItems:[{},{},{},{id:\"minecraft:leather_helmet\",Count:1b}],ArmorDropChances:[0.0f,0.0f,0.0f,0.0f]}\n"
+            ]
+          },
+          "audio": null
+        },
+        {
+          "id": "689f3ca68cc6cad7e9acdce6",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 6890,
+            "giftName": "Love you",
+            "coins": 1,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790935334452_b9d09500-bd16-4634-b6dc-c1c9a7707efa.webp",
+            "commands": [
+              "execute as @a at @s run fill ~-1 ~3 ~-1 ~1 ~3 ~1 minecraft:sand\n"
+            ]
+          },
+          "audio": null
+        },
+        {
+          "id": "689f3ca68cc6cad7e9acdce8",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5487,
+            "giftName": "Finger Heart",
+            "coins": 5,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 3,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790935334453_db30ecf6-0e72-442d-970f-e02947599ac9.webp",
+            "commands": [
+              "/border tnt {nickname} 1 3 2"
+            ]
+          },
+          "audio": null
+        },
+        {
+          "id": "689f3ca68cc6cad7e9acdcea",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "10",
+            "giftId": 5655,
+            "giftName": "Rose",
+            "coins": 1,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 10,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790935334453_4db199cf-81ee-4e0d-8ef1-2c2f73678e97.webp",
+            "commands": [
+              "/border tnt {nickname} 1 10 2"
+            ]
+          },
+          "audio": null
+        },
+        {
+          "id": "689f3ca68cc6cad7e9acdcec",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5658,
+            "giftName": "Perfume",
+            "coins": 20,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 3,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790935334453_605a36f7-ac1b-44f8-9860-da1a7c0f7654.webp",
+            "commands": [
+              "execute as @a at @s run summon minecraft:sheep ~ ~ ~ {NoAI:0b,Attributes:[{Name:\"generic.movement_speed\",Base:0.5}],Tags:[\"zombie_rider\"],Passengers:[{id:\"minecraft:zombie\",IsBaby:1b,CustomName:'{\"text\":\"{nickname}\"}',CustomNameVisible:1b,Silent:0b,ArmorItems:[{},{},{},{id:\"minecraft:leather_helmet\",Count:1b}],ArmorDropChances:[0.0f,0.0f,0.0f,0.0f],HandItems:[{id:\"minecraft:wooden_sword\",Count:1b},{}],HandDropChances:[0.0f,0.0f],Attributes:[{Name:\"generic.movement_speed\",Base:0.6}]}]}\n"
+            ]
+          },
+          "audio": null
+        },
+        {
+          "id": "689f3ca68cc6cad7e9acdcee",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5879,
+            "giftName": "Doughnut",
+            "coins": 30,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 5,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790935334454_a4932b20-1b42-47c9-8d3e-d68406746cf7.webp",
+            "commands": [
+              "/execute as @a at @s run summon pig ~ ~1 ~ {Saddle:1b,Passengers:[{id:\"minecraft:creeper\",powered:1b,CustomName:'{\"text\":\"{nickname}\"}',CustomNameVisible:1b}]}\n"
+            ]
+          },
+          "audio": null
+        },
+        {
+          "id": "689f3ca68cc6cad7e9acdcf0",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5659,
+            "giftName": "Paper Crane",
+            "coins": 99,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790935334452_560d0bc4-1ce2-4dbd-972f-da9c5f5fd034.webp",
+            "commands": [
+              "/border shrink 20"
+            ]
+          },
+          "audio": null
+        },
+        {
+          "id": "689f3ca68cc6cad7e9acdcf2",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 6104,
+            "giftName": "Cap",
+            "coins": 99,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790935334451_ba1ba70d-719d-4308-98ff-b41707416458.webp",
+            "commands": [
+              "/border expand 20"
+            ]
+          },
+          "audio": null
+        },
+        {
+          "id": "689f3ca68cc6cad7e9acdcf4",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 6267,
+            "giftName": "Corgi",
+            "coins": 299,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 500,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790935334453_0ade23b2-9352-4e8d-a117-19e8cb1dd9fe.webp",
+            "commands": [
+              "/execute as @a at @s run summon tnt ~{random:-5 5} ~10 ~{random:-5 5} {fuse:40,CustomName:'{\"text\":\"{nickname}\"}',CustomNameVisible:1b}"
+            ]
+          },
+          "audio": null
+        }
+      ]
+    },
+    {
+      "id": "6613cedef6094a1b1c76adb8",
+      "name": "SheepOut For PRO",
+      "isUser": false,
+      "game": "Minecraft",
+      "playDelay": "Off",
+      "active": true,
+      "events": [
+        {
+          "id": "660c252377e2f8fa80426379",
+          "active": true,
+          "trigger": {
+            "action": "LikeForEach",
+            "value": "70",
+            "giftId": 5655,
+            "giftName": "70 Me gusta",
+            "coins": 1,
+            "iconUrl": "LIKE_HEART"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1791188813911_0defd4ed-8690-4f6b-b9e6-e70ae27c166e.webp",
+            "commands": [
+              "sheepout sheep white 1 {nickname}"
+            ]
+          },
+          "audio": null
+        },
+        {
+          "id": "660c252377e2f8fa80426379",
+          "active": true,
+          "trigger": {
+            "action": "Follow",
+            "value": "60",
+            "giftId": 5655,
+            "giftName": "Seguir",
+            "coins": 1,
+            "iconUrl": "FOLLOW_ICON"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1791188813910_cfac3216-9a30-4eb6-ae95-01c9545b26d7.webp",
+            "commands": [
+              "sheepout sheep lime 1 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "sub.mp3",
+            "path": "/audio/public/1699561824035_sub.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1699561824035_sub.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 5,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "660c252377e2f8fa80426379",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5655,
+            "giftName": "Rose",
+            "coins": 1,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1791188813910_378d3493-3b33-4abf-a95b-6cb0bb80ed10.webp",
+            "commands": [
+              "sheepout sheep blue 1 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "sheep---sound-2.mp3",
+            "path": "/audio/public/1704894565383_sheep---sound-2.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1704894565383_sheep---sound-2.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "660c252377e2f8fa80426379",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5487,
+            "giftName": "Finger Heart",
+            "coins": 5,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1791188813911_3d643ed4-6596-4624-b202-4579b81319a7.webp",
+            "commands": [
+              "sheepout sheep yellow 1 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "deja-vu.mp3",
+            "path": "/audio/public/1702224870406_deja-vu.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1702224870406_deja-vu.mp3",
+            "volume": 85,
+            "playerType": "priority",
+            "priority": 5,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "660c252377e2f8fa80426379",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 8913,
+            "giftName": "Rosa",
+            "coins": 10,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1791188813910_e7d57128-1b76-49b4-a2e7-3aaf9d62f971.webp",
+            "commands": [
+              "sheepout sheep red 1 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "romantic-v1.mp3",
+            "path": "/audio/public/1704698265714_romantic-v1.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1704698265714_romantic-v1.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 10,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "660c252377e2f8fa80426379",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5658,
+            "giftName": "Perfume",
+            "coins": 20,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 3,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1791188813910_df166dd1-2cb9-4e69-b4db-82e78ada54be.webp",
+            "commands": [
+              "sheepout sheep orange 1 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "hello-adel.mp3",
+            "path": "/audio/public/1702225642108_hello-adel.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1702225642108_hello-adel.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 20,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "660c252377e2f8fa80426379",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5879,
+            "giftName": "Doughnut",
+            "coins": 30,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 2,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1791188813909_779fc6bf-e521-486b-94af-d6c9bf846e00.webp",
+            "commands": [
+              "sheepout sheep black 1 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "epic-organ.mp3",
+            "path": "/audio/public/1702225518211_epic-organ.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1702225518211_epic-organ.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 30,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "660c252377e2f8fa80426379",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 6426,
+            "giftName": "Dombra",
+            "coins": 20,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790597353964_d86cb3b1-3b86-4d41-bb1a-ce739472bccd.webp",
+            "commands": [
+              "sheepout evoker 1 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "fortnite-default-dance-sound.mp3",
+            "path": "/audio/public/1704453335129_fortnite-default-dance-sound.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1704453335129_fortnite-default-dance-sound.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 25,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "660c252377e2f8fa80426379",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 10595,
+            "giftName": "Sushi Set",
+            "coins": 20,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790597353965_fb41dc69-ba07-4ca5-8897-967337822d58.webp",
+            "commands": [
+              "sheepout updateall 25"
+            ]
+          },
+          "audio": {
+            "name": "gangstas-paradise-scream-sound-effect-1.mp3",
+            "path": "/audio/public/1702225037739_gangstas-paradise-scream-sound-effect-1.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1702225037739_gangstas-paradise-scream-sound-effect-1.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 25,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "660c252377e2f8fa80426379",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 19447,
+            "giftName": "Overreact",
+            "coins": 5,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 1,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790597353965_f3703b79-e403-49a3-98ff-138eff4edc94.webp",
+            "commands": [
+              "sheepout tnt 1 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "tnt2.mp3",
+            "path": "/audio/public/1699518601856_tnt2.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1699518601856_tnt2.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 25,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "660c252377e2f8fa80426379",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5269,
+            "giftName": "TikTok",
+            "coins": 1,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 5,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1790597353965_702fa1b0-5d51-47dd-987d-c79b93134647.webp",
+            "commands": [
+              "sheepout shoot 1 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "Bow_shoot.ogg.mp3",
+            "path": "/audio/public/1712240803587_Bow_shoot.ogg.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1712240803587_Bow_shoot.ogg.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 1,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "660c252377e2f8fa80426379",
+          "active": true,
+          "trigger": {
+            "action": "LikeAmount",
+            "value": "14000",
+            "giftId": 6097,
+            "giftName": "Rose",
+            "coins": 1,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 3,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1791188813911_c54ac6c4-2264-4957-95bd-5ecea182dc11.webp",
+            "commands": [
+              "sheepout sheeprow white 1 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "one-piece-cornered-sfx.mp3",
+            "path": "/audio/public/1704453339021_one-piece-cornered-sfx.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1704453339021_one-piece-cornered-sfx.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 40,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "660c252377e2f8fa80426379",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 6097,
+            "giftName": "Little Crown",
+            "coins": 99,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 8,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1791188813911_f9da5bd3-8bf1-4431-86bd-d9d8c59e29c3.webp",
+            "commands": [
+              "sheepout sheeprow white 1 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "10-second-intro-music.mp3",
+            "path": "/audio/public/1704453324936_10-second-intro-music.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1704453324936_10-second-intro-music.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 99,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "660c252377e2f8fa80426379",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5509,
+            "giftName": "Sunglasses",
+            "coins": 199,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 8,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1791188813911_60ae3825-f283-4e3f-8f55-a3fad3f8418e.webp",
+            "commands": [
+              "sheepout sheeprow blue 1 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "galaxy-brain-made.mp3",
+            "path": "/users/654b933af1f22668f590cb83/audio/1699892603553_galaxy-brain-made.mp3",
+            "url": "http://localhost:4000/s2e_media/users/654b933af1f22668f590cb83/audio/1699892603553_galaxy-brain-made.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 199,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "660c252377e2f8fa80426379",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 6267,
+            "giftName": "Corgi",
+            "coins": 299,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 4,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/Minecraft/1791188813911_6fb2ee0a-0564-46cb-b8b3-cb2be15e4aa5.webp",
+            "commands": [
+              "sheepout sheeprow random 1 {nickname}"
+            ]
+          },
+          "audio": {
+            "name": "Coffin Dance Meme.mp3",
+            "path": "/audio/public/1712241505415_Coffin Dance Meme.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1712241505415_Coffin Dance Meme.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 299,
+            "multiplier": false,
+            "peaks": ""
+          }
+        },
+        {
+          "id": "660c252377e2f8fa80426379",
+          "active": true,
+          "trigger": {
+            "action": "SelectedGift",
+            "value": "",
+            "giftId": 5585,
+            "giftName": "Confetti",
+            "coins": 100,
+            "iconUrl": "/gifts/rose-1-coins.webp"
+          },
+          "func": {
+            "name": "Custom",
+            "repetition": 22,
+            "imageUrl": "http://localhost:4000/s2e_media/images/public/minecraft/1708972115132_tnt-300x300px.webp",
+            "commands": []
+          },
+          "audio": {
+            "name": "tnt2.mp3",
+            "path": "/audio/public/1699518601856_tnt2.mp3",
+            "url": "http://localhost:4000/s2e_media/audio/public/1699518601856_tnt2.mp3",
+            "volume": 100,
+            "playerType": "priority",
+            "priority": 25,
+            "multiplier": false,
+            "peaks": ""
+          }
+        }
+      ]
+    }
+  ],
+  "activeS2EPresetId": "6a9c4ab5a3f80f466f2d6f01",
+  "alertAlbums": [
+    {
+      "id": "album_quiereme",
+      "name": "Quiereme",
+      "triggers": [
+        {
+          "id": "trig_1",
+          "active": true,
+          "name": "Alerta Croma Personalizada GZ7",
+          "triggerType": "SelectedGift",
+          "giftName": "Quiereme",
+          "giftCoins": 1,
+          "likeThreshold": 100,
+          "videoUrl": "http://localhost:4000/s2e_media/users/6a8a3541466456082538e291/videos/1791064113135_Sin título - 03 de octubre de 2026 a las 16.32.57.mp4",
+          "videoName": "Sin título - 03 de octubre de 2026 a las 16.32.57.mp4",
+          "chromaEnabled": true,
+          "chromaMode": "auto",
+          "chromaColor": "#00ff00",
+          "similarity": 5,
+          "smoothness": 2,
+          "audioName": "cristiano ronaldo .mp3",
+          "audioUrl": "http://localhost:4000/s2e_media/audio/public/1717178011754_cristiano ronaldo .mp3",
+          "audioVolume": 100,
+          "playerType": "priority",
+          "priority": 5,
+          "multiplier": false,
+          "ttsEnabled": true,
+          "ttsTemplate": "¡{user} ha enviado {gift} en el directo!",
+          "titleTemplate": "⚡ {user}",
+          "subtitleTemplate": "Envió {gift} ({coins} 💎)",
+          "duration": 5
+        },
+        {
+          "id": "trig_2",
+          "active": true,
+          "name": "Jumpscare Boo Rush (Croma Auto)",
+          "triggerType": "SelectedGift",
+          "giftName": "GG",
+          "giftCoins": 1,
+          "likeThreshold": 200,
+          "videoUrl": "http://localhost:4000/s2e_media/videos/public/any/1789666307528_screen-cover-boo-rush.webm",
+          "videoName": "screen-cover-boo-rush.webm",
+          "chromaEnabled": true,
+          "chromaMode": "auto",
+          "chromaColor": "#00ff00",
+          "similarity": 36,
+          "smoothness": 14,
+          "audioName": "police-siren-sound-effect.mp3",
+          "audioUrl": "http://localhost:4000/s2e_media/audio/public/1791367188643_police-siren-sound-effect.mp3",
+          "audioVolume": 100,
+          "playerType": "priority",
+          "priority": 8,
+          "multiplier": false,
+          "ttsEnabled": true,
+          "ttsTemplate": "¡Alerta máxima! {user} activó {gift}",
+          "titleTemplate": "👻 {user}",
+          "subtitleTemplate": "¡Activó Jumpscare con {gift}!",
+          "duration": 4.5
+        },
+        {
+          "id": "trig_3",
+          "active": true,
+          "name": "Martillo de Thor Épico",
+          "triggerType": "SelectedGift",
+          "giftName": "Heart Me",
+          "giftCoins": 1,
+          "likeThreshold": 500,
+          "videoUrl": "http://localhost:4000/s2e_media/videos/public/any/1778416864780_pd-thor-hammer-flyby.webm",
+          "videoName": "pd-thor-hammer-flyby.webm",
+          "chromaEnabled": true,
+          "chromaMode": "auto",
+          "chromaColor": "#00ff00",
+          "similarity": 35,
+          "smoothness": 10,
+          "audioName": "thunder-v1.mp3",
+          "audioUrl": "http://localhost:4000/s2e_media/audio/public/1699891902848_thunder-v1.mp3",
+          "audioVolume": 100,
+          "playerType": "priority",
+          "priority": 7,
+          "multiplier": false,
+          "ttsEnabled": true,
+          "ttsTemplate": "{user} invocó el poder del trueno con {gift}",
+          "titleTemplate": "🔨 {user}",
+          "subtitleTemplate": "¡Invocó el Martillo de Thor!",
+          "duration": 4.5
+        }
+      ]
+    },
+    {
+      "id": "album_minecraft_vip",
+      "name": "Alertas Bosses Minecraft",
+      "triggers": [
+        {
+          "id": "trig_mc_1",
+          "active": true,
+          "name": "Cañón Alienígena Sci-Fi",
+          "triggerType": "AnyGift",
+          "giftName": "Galaxy",
+          "giftCoins": 100,
+          "likeThreshold": 500,
+          "videoUrl": "http://localhost:4000/s2e_media/videos/public/any/1778416867025_pro-sci-fi-alien-bubble-cannon.webm",
+          "videoName": "pro-sci-fi-alien-bubble-cannon.webm",
+          "chromaEnabled": true,
+          "chromaMode": "auto",
+          "chromaColor": "#00ff00",
+          "similarity": 38,
+          "smoothness": 12,
+          "audioName": "epic-song-30s.mp3",
+          "audioUrl": "http://localhost:4000/s2e_media/audio/public/1709334254471_epic-song-30s.mp3",
+          "audioVolume": 100,
+          "playerType": "priority",
+          "priority": 10,
+          "multiplier": false,
+          "ttsEnabled": true,
+          "ttsTemplate": "¡Increíble! {user} donó {gift} con {coins} diamantes",
+          "titleTemplate": "🌌 {user}",
+          "subtitleTemplate": "Mega Donación: {gift} ({coins} 💎)",
+          "duration": 6
+        }
+      ]
+    }
+  ],
+  "activeAlertAlbumId": "album_quiereme",
+  "ttsConfig": {
+    "enabled": true,
+    "engine": "local",
+    "language": "es-ES",
+    "voiceName": "Microsoft Pablo - Spanish (Spain)",
+    "randomVoice": true,
+    "speed": 1.5,
+    "pitch": 1,
+    "volume": 100,
+    "readGifts": true,
+    "allowAll": true,
+    "allowFollowers": true,
+    "allowSuperFans": true,
+    "allowMods": true,
+    "allowTeamMembers": false,
+    "teamMemberLevel": 1,
+    "allowTopGifters": false,
+    "topGifterRank": 1,
+    "topGiftLimit": 10,
+    "topLikesLimit": 10
+  }
+}

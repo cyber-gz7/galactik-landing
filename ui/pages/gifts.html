@@ -1,0 +1,35 @@
+<div class="section-card">
+  <div class="panel-header">
+    <div>
+      <h2 style="font-size: 20px; font-weight: 700;">Configuración de Regalos (Buenos vs Malos)</h2>
+      <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
+        Configura los comandos RCON de Minecraft y la variación de tótems para cada regalo de TikTok Live.
+      </p>
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <button type="button" class="btn-secondary" id="btn-add-gift-row">+ Nuevo Regalo</button>
+      <button type="button" class="btn-secondary" id="btn-restore-gifts-default">Restaurar Defaults</button>
+      <button type="button" class="btn-primary" id="btn-save-gifts" style="width: auto;">Guardar Cambios</button>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="custom-table" id="gifts-config-table">
+      <thead>
+        <tr>
+          <th style="width: 140px;">Identificador</th>
+          <th style="width: 160px;">Nombre</th>
+          <th style="width: 100px;">TikTok ID</th>
+          <th style="width: 80px;">Monedas</th>
+          <th style="width: 110px;">Facción</th>
+          <th>Comando RCON (/bm gift...)</th>
+          <th style="width: 90px;">Δ Tótems</th>
+          <th style="width: 50px;">Acción</th>
+        </tr>
+      </thead>
+      <tbody id="gifts-table-body">
+        <!-- Generado dinámicamente -->
+      </tbody>
+    </table>
+  </div>
+</div>

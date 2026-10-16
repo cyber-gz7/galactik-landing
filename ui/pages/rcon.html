@@ -1,0 +1,53 @@
+<div class="section-card" style="max-width: 800px; margin: 0 auto;">
+  <div class="panel-header">
+    <div>
+      <h2 style="font-size: 20px; font-weight: 700;">Conexión Minecraft RCON</h2>
+      <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
+        Configura los parámetros para conectar con el servidor Minecraft (Spigot, Paper, Fabric o Vanilla).
+      </p>
+    </div>
+    <div class="status-badge" id="rcon-page-status-badge">
+      <span class="status-indicator disconnected" id="rcon-status-indicator"></span>
+      <span id="rcon-status-label">DESCONECTADO</span>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-top: 16px;">
+    <div class="input-group">
+      <label class="input-label" for="rcon-host-input">Servidor / Host</label>
+      <input type="text" id="rcon-host-input" class="input-field" placeholder="127.0.0.1" value="127.0.0.1" />
+    </div>
+
+    <div class="input-group">
+      <label class="input-label" for="rcon-port-input">Puerto RCON</label>
+      <input type="number" id="rcon-port-input" class="input-field" placeholder="25575" value="25575" />
+    </div>
+  </div>
+
+  <div class="input-group" style="margin-top: 10px;">
+    <label class="input-label" for="rcon-pass-input">Contraseña RCON (rcon.password)</label>
+    <div style="position: relative;">
+      <input type="password" id="rcon-pass-input" class="input-field" placeholder="Tu contraseña RCON segura" style="width: 100%; padding-right: 80px;" />
+      <button type="button" id="btn-toggle-rcon-pass" class="btn-micro" style="position: absolute; right: 8px; top: 8px;">
+        Ver
+      </button>
+    </div>
+  </div>
+
+  <div class="actions-row">
+    <button type="button" class="btn-secondary" id="btn-test-rcon">
+      Probar Conexión (/list)
+    </button>
+    <button type="button" class="btn-primary" id="btn-save-rcon" style="width: auto;">
+      Guardar Configuración
+    </button>
+  </div>
+
+  <div style="margin-top: 24px;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <span class="input-label">Consola de Respuestas RCON</span>
+      <button type="button" class="btn-micro" id="btn-clear-rcon-log">Limpiar Consola</button>
+    </div>
+    <pre class="console-output" id="rcon-console-log">[RCON] Listo para probar conexión...</pre>
+  </div>
+</div>

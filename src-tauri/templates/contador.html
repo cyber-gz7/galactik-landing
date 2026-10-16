@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Contador Victorias / Derrotas</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@700;900&family=JetBrains+Mono:wght@700&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: transparent; font-family: 'Rajdhani', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; color: #fff; overflow: hidden; }
+    .badge-box {
+      background: rgba(18, 18, 26, 0.92);
+      border: 2px solid #2e2e42;
+      border-radius: 18px;
+      padding: 16px 32px;
+      display: flex;
+      gap: 36px;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.85);
+      font-size: 26px;
+      font-weight: 900;
+      backdrop-filter: blur(8px);
+      transition: transform 0.3s ease;
+    }
+    .vic { color: #2ee59d; text-shadow: 0 0 12px rgba(46,229,157,0.4); }
+    .der { color: #ef5350; text-shadow: 0 0 12px rgba(239,83,80,0.4); }
+    .num { font-family: 'JetBrains Mono', monospace; font-size: 30px; }
+  </style>
+</head>
+<body>
+  <div class="badge-box" id="box">
+    <div class="vic">🏆 VICTORIAS: <span class="num" id="v-count">0</span></div>
+    <div class="der">💀 DERROTAS: <span class="num" id="d-count">0</span></div>
+  </div>
+  <script>
+    const evt = new EventSource('/api/eventos');
+    const box = document.getElementById('box');
+    evt.onmessage = e => {
+      try {
+        const d = JSON.parse(e.data);
+        if (d.duel) {
+          document.getElementById('v-count').textContent = d.duel.wins_right || 0;
+          document.getElementById('d-count').textContent = d.duel.wins_left || 0;
+          if (d.duel.gift_scale) {
+            box.style.transform = 'scale(' + (d.duel.gift_scale / 100) + ')';
+          }
+        }
+      } catch (err) {}
+    };
+  </script>
+</body>
+</html>

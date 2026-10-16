@@ -1,0 +1,33 @@
+# Rust / Tauri build artifacts
+src-tauri/target/
+src-tauri/**/target/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Mass gift assets & data (strict guardrails)
+ui/gifts-data.json
+ui/src/gifts-data.js
+ui/src/gifts-data.json
+**/gifts-data.*
+ui/gifts/
+*.webm
+*.mp4
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+*.tmp
+*.log
+
+# Temp updates & runtime scripts
+galactk-panel-update.exe
+run_galactk_update.bat

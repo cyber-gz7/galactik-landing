@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gift vs Gift & Villanos vs Héroes — 720x1080 Pro Overlay (GALACTK PANEL by GZ7)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,800;0,900;1,900&family=Orbitron:ital,wght@0,800;0,900;1,900&family=Rajdhani:wght@700;800;900&display=swap');
+
+    :root {
+      --stage-scale: 1;
+      --ui-scale: 1;
+      --win-scale: 1;
+      --duel-scale: 1;
+      --col-fit-scale: 1;
+      --icon-size: 48px;
+      --text-size: 20px;
+      --item-gap: 8px;
+
+      --theme-bg-pill: rgba(5, 12, 26, 0.78);
+      --theme-bg-win: rgba(4, 10, 24, 0.85);
+      --theme-bg-duel: rgba(4, 10, 24, 0.82);
+      --theme-border-left: rgba(255, 42, 95, 0.65);
+      --theme-border-right: rgba(0, 240, 255, 0.65);
+      --theme-border-win: rgba(0, 240, 255, 0.75);
+      --theme-glow-left: rgba(255, 42, 95, 0.42);
+      --theme-glow-right: rgba(0, 240, 255, 0.42);
+      --theme-glow-win: rgba(0, 240, 255, 0.45);
+      --theme-text-left: #ffe600;
+      --theme-text-right: #00f0ff;
+      --theme-win-label: #ffe600;
+      --theme-win-slash: #00f0ff;
+      --theme-bar-red: linear-gradient(90deg, #ff0844 0%, #ff2a5f 60%, #ff6b8b 100%);
+      --theme-bar-blue: linear-gradient(90deg, #0077ff 0%, #00c6ff 50%, #00f0ff 100%);
+      --theme-pill-border-width: 1.8px;
+      --theme-pill-radius: 14px;
+    }
+
+    body[data-theme="GALACTIC"] {
+      --theme-bg-pill: linear-gradient(135deg, rgba(6, 15, 32, 0.82) 0%, rgba(3, 8, 18, 0.88) 100%);
+      --theme-bg-win: linear-gradient(135deg, rgba(5, 14, 30, 0.9) 0%, rgba(2, 7, 16, 0.94) 100%);
+      --theme-bg-duel: linear-gradient(180deg, rgba(6, 15, 32, 0.84) 0%, rgba(3, 8, 18, 0.9) 100%);
+      --theme-border-left: rgba(255, 42, 95, 0.72);
+      --theme-border-right: rgba(0, 240, 255, 0.72);
+      --theme-border-win: rgba(0, 240, 255, 0.85);
+      --theme-glow-left: rgba(255, 42, 95, 0.45);
+      --theme-glow-right: rgba(0, 240, 255, 0.45);
+      --theme-glow-win: rgba(0, 240, 255, 0.55);
+      --theme-text-left: #ffe600;
+      --theme-text-right: #00f0ff;
+      --theme-win-label: #ffe600;
+      --theme-win-slash: #00f0ff;
+    }
+
+    body[data-theme="SOL"] {
+      --theme-bg-pill: linear-gradient(135deg, rgba(34, 12, 2, 0.88) 0%, rgba(16, 5, 0, 0.92) 100%);
+      --theme-bg-win: linear-gradient(135deg, rgba(42, 14, 2, 0.92) 0%, rgba(18, 6, 0, 0.96) 100%);
+      --theme-bg-duel: linear-gradient(180deg, rgba(36, 12, 2, 0.9) 0%, rgba(16, 4, 0, 0.94) 100%);
+      --theme-border-left: #ff4500;
+      --theme-border-right: #ffcc00;
+      --theme-border-win: #ffd700;
+      --theme-glow-left: rgba(255, 69, 0, 0.62);
+      --theme-glow-right: rgba(255, 204, 0, 0.62);
+      --theme-glow-win: rgba(255, 180, 0, 0.72);
+      --theme-text-left: #ff9900;
+      --theme-text-right: #fff066;
+      --theme-win-label: #ffcc00;
+      --theme-win-slash: #ff5500;
+      --theme-bar-red: linear-gradient(90deg, #b80000 0%, #ff3300 60%, #ff8800 100%);
+      --theme-bar-blue: linear-gradient(90deg, #ff8800 0%, #ffcc00 55%, #ffffaa 100%);
+      --theme-pill-border-width: 2px;
+    }
+
+    body[data-theme="CONTRASTE"] {
+      --theme-bg-pill: rgba(0, 0, 0, 0.94);
+      --theme-bg-win: rgba(0, 0, 0, 0.96);
+      --theme-bg-duel: rgba(0, 0, 0, 0.95);
+      --theme-border-left: #ff2a5f;
+      --theme-border-right: #00f0ff;
+      --theme-border-win: #ffffff;
+      --theme-glow-left: rgba(0, 0, 0, 0.98);
+      --theme-glow-right: rgba(0, 0, 0, 0.98);
+      --theme-glow-win: rgba(0, 0, 0, 0.98);
+      --theme-text-left: #ffee00;
+      --theme-text-right: #00ffff;
+      --theme-win-label: #ffee00;
+      --theme-win-slash: #00ffff;
+      --theme-pill-border-width: 2.5px;
+      --theme-pill-radius: 12px;
+    }
+
+    body[data-theme="MOVIMIENTO"] {
+      --theme-bg-pill: linear-gradient(135deg, rgba(8, 18, 38, 0.85) 0%, rgba(18, 6, 34, 0.88) 100%);
+      --theme-bg-win: linear-gradient(90deg, rgba(6, 16, 36, 0.92), rgba(24, 6, 40, 0.92));
+      --theme-bg-duel: linear-gradient(135deg, rgba(6, 16, 36, 0.88), rgba(22, 6, 38, 0.9));
+      --theme-border-left: #ff2a85;
+      --theme-border-right: #00f0ff;
+      --theme-border-win: #00ffa3;
+      --theme-glow-left: rgba(255, 42, 133, 0.55);
+      --theme-glow-right: rgba(0, 240, 255, 0.55);
+      --theme-glow-win: rgba(0, 255, 163, 0.55);
+      --theme-text-left: #ffe600;
+      --theme-text-right: #00ffa3;
+      --theme-win-label: #00ffa3;
+      --theme-win-slash: #ff2a85;
+    }
+
+    body[data-theme="NEON"] {
+      --theme-bg-pill: rgba(8, 3, 22, 0.82);
+      --theme-bg-win: rgba(10, 4, 28, 0.88);
+      --theme-bg-duel: rgba(8, 3, 24, 0.85);
+      --theme-border-left: #ff00aa;
+      --theme-border-right: #00f0ff;
+      --theme-border-win: #00f0ff;
+      --theme-glow-left: rgba(255, 0, 170, 0.78);
+      --theme-glow-right: rgba(0, 240, 255, 0.78);
+      --theme-glow-win: rgba(0, 240, 255, 0.82);
+      --theme-text-left: #ff55cc;
+      --theme-text-right: #00ffff;
+      --theme-win-label: #ff00aa;
+      --theme-win-slash: #00ffff;
+      --theme-bar-red: linear-gradient(90deg, #b8007a 0%, #ff00aa 60%, #ff77dd 100%);
+      --theme-bar-blue: linear-gradient(90deg, #0066ff 0%, #00f0ff 60%, #99ffff 100%);
+      --theme-pill-border-width: 2px;
+    }
+
+    body[data-theme="TRANSPARENT"] .win-counter,
+    body[data-theme="TRANSPARENT"] .center-duel-arena,
+    body[data-theme="TRANSPARENT"] .columns-container,
+    body[data-theme="TRANSPARENT"] .side-col-wrapper,
+    body[data-theme="TRANSPARENT"] .faction-col-badge,
+    body[data-theme="TRANSPARENT"] .rule-item,
+    body[data-theme="TRANSPARENT"] .tug-of-war-track,
+    body[data-theme="TRANSPARENT"] .tug-of-war-bar-red,
+    body[data-theme="TRANSPARENT"] #manual-control-dock,
+    body[data-theme="TRANSPARENT"] .manual-dock-btn {
+      background: transparent !important;
+      border: none !important;
+      backdrop-filter: none !important;
+      box-shadow: none !important;
+    }
+    body[data-theme="TRANSPARENT"] .team-count,
+    body[data-theme="TRANSPARENT"] .team-gift-name,
+    body[data-theme="TRANSPARENT"] .vs-emblem,
+    body[data-theme="TRANSPARENT"] .duel-subtext,
+    body[data-theme="TRANSPARENT"] .win-counter,
+    body[data-theme="TRANSPARENT"] .faction-col-badge,
+    body[data-theme="TRANSPARENT"] .rule-tag,
+    body[data-theme="TRANSPARENT"] .rule-sound-badge {
+      text-shadow: 0 3px 8px rgba(0,0,0,0.95), 0 0 4px rgba(0,0,0,0.9) !important;
+    }
+    body[data-theme="TRANSPARENT"] img {
+      filter: drop-shadow(0 3px 8px rgba(0,0,0,0.95)) drop-shadow(0 0 4px rgba(0,0,0,0.9)) !important;
+    }
+
+    @keyframes winsDebtShake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-5px)} 40%{transform:translateX(5px)} 60%{transform:translateX(-3px)} 80%{transform:translateX(3px)} }
+    .win-current.wins-negative { color:#ff1744 !important; text-shadow:0 0 8px #ff1744,0 0 22px rgba(255,23,68,.95) !important; }
+    .win-current.wins-decreased { animation:winsDebtShake .38s ease-in-out; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    html, body {
+      color-scheme: none !important;
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      background: transparent !important;
+      background-color: rgba(0, 0, 0, 0) !important;
+      overflow: hidden;
+      font-family: 'Montserrat', sans-serif;
+      position: relative;
+    }
+
+    #stage-720x1080 {
+      position: absolute;
+      width: 720px;
+      height: 1080px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) scale(var(--stage-scale, 1));
+      transform-origin: center center;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    body[data-mode="wins"] .center-duel-arena,
+    body[data-mode="wins"] .columns-container {
+      display: none !important;
+    }
+
+    body[data-mode="wins"] .top-win-wrapper {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: max-content;
+    }
+
+    body[data-mode="sides"] .center-duel-arena {
+      display: none !important;
+    }
+
+    body[data-mode="sides"][data-sides-win="false"] .top-win-wrapper {
+      display: none !important;
+    }
+
+    body[data-mode="sides"][data-sides-win="false"] .columns-container {
+      top: 18px;
+    }
+
+    body[data-mode="sides"][data-sides-win="true"] .columns-container {
+      top: 88px;
+    }
+
+    body[data-mode="left"] .top-win-wrapper,
+    body[data-mode="left"] .center-duel-arena,
+    body[data-mode="left"] .side-col-wrapper.right {
+      display: none !important;
+    }
+
+    body[data-mode="left"] .columns-container {
+      top: 18px;
+    }
+
+    body[data-mode="right"] .top-win-wrapper,
+    body[data-mode="right"] .center-duel-arena,
+    body[data-mode="right"] .side-col-wrapper.left {
+      display: none !important;
+    }
+
+    body[data-mode="right"] .columns-container {
+      top: 18px;
+      justify-content: flex-end;
+    }
+
+    body[data-mode="duel"] .top-win-wrapper,
+    body[data-mode="duel"] .columns-container {
+      display: none !important;
+    }
+
+    body[data-mode="duel"] .center-duel-arena {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(var(--duel-scale, 1));
+    }
+
+    .top-win-wrapper {
+      position: absolute;
+      top: 14px;
+      left: 0;
+      width: 720px;
+      display: flex;
+      justify-content: center;
+      z-index: 20;
+    }
+
+    .win-counter {
+      font-family: 'Orbitron', 'Montserrat', sans-serif;
+      font-size: 34px;
+      font-weight: 900;
+      font-style: italic;
+      letter-spacing: 2px;
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      padding: 6px 26px;
+      border-radius: 999px;
+      background: var(--theme-bg-win);
+      border: var(--theme-pill-border-width) solid var(--theme-border-win);
+      box-shadow: 0 0 24px var(--theme-glow-win), inset 0 0 14px rgba(255, 255, 255, 0.12);
+      filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.95));
+      text-shadow:
+        2.5px 2.5px 0 #000,
+        -2.5px -2.5px 0 #000,
+        2.5px -2.5px 0 #000,
+        -2.5px 2.5px 0 #000,
+        0 4px 10px rgba(0, 0, 0, 0.95);
+      transform: scale(var(--win-scale, 1));
+      transform-origin: center center;
+      transition: transform 0.07s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .win-counter[data-win-theme="GALACTIC"] {
+      background: linear-gradient(135deg, rgba(5, 14, 30, 0.9) 0%, rgba(2, 7, 16, 0.94) 100%);
+      border-color: rgba(0, 240, 255, 0.85);
+      box-shadow: 0 0 24px rgba(0, 240, 255, 0.55), inset 0 0 14px rgba(255, 255, 255, 0.12);
+      --theme-win-label: #ffe600;
+      --theme-win-slash: #00f0ff;
+    }
+
+    .win-counter[data-win-theme="SOL"] {
+      background: linear-gradient(135deg, rgba(42, 14, 2, 0.92) 0%, rgba(18, 6, 0, 0.96) 100%);
+      border-color: #ffd700;
+      box-shadow: 0 0 26px rgba(255, 180, 0, 0.72), inset 0 0 14px rgba(255, 215, 0, 0.22);
+      --theme-win-label: #ffcc00;
+      --theme-win-slash: #ff5500;
+    }
+
+    .win-counter[data-win-theme="CONTRASTE"] {
+      background: rgba(0, 0, 0, 0.96);
+      border: 2.5px solid #ffffff;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.98);
+      --theme-win-label: #ffee00;
+      --theme-win-slash: #00ffff;
+    }
+
+    .win-counter[data-win-theme="MOVIMIENTO"] {
+      background: linear-gradient(90deg, rgba(6, 16, 36, 0.92), rgba(24, 6, 40, 0.92));
+      border-color: #00ffa3;
+      box-shadow: 0 0 24px rgba(0, 255, 163, 0.6);
+      animation: kineticPulseGlow 3s ease-in-out infinite;
+      --theme-win-label: #00ffa3;
+      --theme-win-slash: #ff2a85;
+    }
+
+    .win-counter[data-win-theme="NEON"] {
+      background: rgba(10, 4, 28, 0.88);
+      border-color: #00f0ff;
+      box-shadow: 0 0 26px rgba(0, 240, 255, 0.82), 0 0 42px rgba(255, 0, 170, 0.45);
+      --theme-win-label: #ff00aa;
+      --theme-win-slash: #00ffff;
+    }
+
+    .win-counter.bump {
+      transform: scale(calc(var(--win-scale, 1) * 1.18));
+    }
+
+    .win-label {
+      color: var(--theme-win-label);
+    }
+
+    .win-current,
+    .win-target {
+      color: #ffffff;
+    }
+
+    .win-slash {
+      color: var(--theme-win-slash);
+    }
+
+    .center-duel-arena {
+      position: absolute;
+      top: 84px;
+      left: 360px;
+      transform: translateX(-50%) scale(var(--duel-scale, 1));
+      transform-origin: top center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--theme-bg-duel);
+      border: var(--theme-pill-border-width) solid var(--theme-border-right);
+      border-radius: 20px;
+      padding: 8px 22px 10px;
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.92), 0 0 20px var(--theme-glow-right);
+      width: 410px;
+      z-index: 15;
+    }
+
+    .duel-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .team-block {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.07s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .team-block.flash {
+      transform: scale(1.22);
+    }
+
+    .team-gift-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .team-img {
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      image-rendering: -webkit-optimize-contrast;
+      filter: url(#gz7-fullhd-filter) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.9));
+    }
+
+    .team-gift-name {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: #e2f4ff;
+      text-shadow: 1.5px 1.5px 0 #000, -1.5px -1.5px 0 #000;
+      margin-top: -2px;
+      max-width: 78px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .team-count {
+      font-size: 34px;
+      font-weight: 900;
+      color: #ffffff;
+      text-shadow:
+        2.5px 2.5px 0 #000,
+        -2.5px -2.5px 0 #000,
+        2.5px -2.5px 0 #000,
+        -2.5px 2.5px 0 #000,
+        0 3px 8px rgba(0, 0, 0, 0.95);
+    }
+
+    .vs-emblem {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 24px;
+      font-weight: 900;
+      font-style: italic;
+      color: var(--theme-win-slash);
+      text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 0 0 14px var(--theme-glow-right);
+    }
+
+    .tug-of-war-track {
+      width: 100%;
+      height: 12px;
+      background: var(--theme-bar-blue);
+      border-radius: 99px;
+      margin: 6px 0 5px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 12px var(--theme-glow-right);
+      border: 2px solid #000000;
+      position: relative;
+    }
+
+    .tug-of-war-bar-red {
+      height: 100%;
+      background: var(--theme-bar-red);
+      box-shadow: 0 0 12px var(--theme-glow-left);
+      transition: width 0.06s ease-out;
+      position: relative;
+    }
+
+    .duel-subtext {
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      text-shadow:
+        2px 2px 0 #000,
+        -2px -2px 0 #000,
+        2px -2px 0 #000,
+        -2px 2px 0 #000,
+        0 2px 6px rgba(0, 0, 0, 0.95);
+      white-space: nowrap;
+    }
+
+    .subtext-contra {
+      color: #ff3366;
+    }
+
+    .subtext-favor {
+      color: #00f0ff;
+    }
+
+    .columns-container {
+      position: absolute;
+      top: 214px;
+      bottom: 16px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .side-col-wrapper {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      max-width: 334px;
+    }
+
+    .side-col-wrapper.left {
+      align-items: flex-start;
+    }
+
+    .side-col-wrapper.right {
+      align-items: flex-end;
+    }
+
+    .faction-col-badge {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 1.6px;
+      padding: 3px 12px;
+      border-radius: 99px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      text-shadow: 1.5px 1.5px 0 #000, -1.5px -1.5px 0 #000;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.85);
+      flex-shrink: 0;
+    }
+
+    .faction-col-badge.villanos {
+      background: var(--theme-bg-pill);
+      border: 1.5px solid var(--theme-border-left);
+      color: #ff4d79;
+      box-shadow: 0 0 12px var(--theme-glow-left);
+    }
+
+    .faction-col-badge.heroes {
+      background: var(--theme-bg-pill);
+      border: 1.5px solid var(--theme-border-right);
+      color: #00f0ff;
+      box-shadow: 0 0 12px var(--theme-glow-right);
+    }
+
+    .side-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: var(--item-gap, 8px);
+      transform: scale(var(--col-fit-scale, 1));
+      transition: transform 0.07s ease;
+    }
+
+    .col-left {
+      align-items: flex-start;
+      transform-origin: top left;
+    }
+
+    .col-right {
+      align-items: flex-end;
+      transform-origin: top right;
+    }
+
+    .rule-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 11px 4px 7px;
+      border-radius: var(--theme-pill-radius);
+      background: var(--theme-bg-pill);
+      border: var(--theme-pill-border-width) solid var(--theme-border-left);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.88), 0 0 12px var(--theme-glow-left);
+      transition: transform 0.07s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.07s ease;
+    }
+
+    .col-right .rule-item {
+      flex-direction: row-reverse;
+      padding: 4px 7px 4px 11px;
+      border-color: var(--theme-border-right);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.88), 0 0 12px var(--theme-glow-right);
+    }
+
+    .rule-item.flash {
+      transform: scale(1.24);
+      box-shadow: 0 0 26px #ffe600, 0 0 40px #00f0ff;
+      z-index: 30;
+    }
+
+    .rule-icon {
+      width: var(--icon-size, 48px);
+      height: var(--icon-size, 48px);
+      object-fit: contain;
+      flex-shrink: 0;
+      image-rendering: -webkit-optimize-contrast;
+      filter: url(#gz7-fullhd-filter) drop-shadow(0 3px 6px rgba(0, 0, 0, 0.92));
+    }
+
+    .rule-tag {
+      font-size: var(--text-size, 20px);
+      font-weight: 900;
+      color: var(--theme-text-left);
+      letter-spacing: 0.5px;
+      text-shadow:
+        2.2px 2.2px 0 #000,
+        -2.2px -2.2px 0 #000,
+        2.2px -2.2px 0 #000,
+        -2.2px 2.2px 0 #000,
+        0 3px 7px rgba(0, 0, 0, 0.95);
+      white-space: nowrap;
+      line-height: 1.05;
+    }
+
+    .col-right .rule-tag {
+      color: var(--theme-text-right);
+    }
+
+    .rule-sound-badge {
+      font-size: 11px;
+      opacity: 0.78;
+      filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.95));
+      margin-left: -2px;
+    }
+
+    .rule-item.flash .rule-sound-badge {
+      opacity: 1;
+      transform: scale(1.25);
+    }
+
+    .bottom-row-rules {
+      display: flex;
+      gap: 8px;
+      margin-top: 2px;
+      flex-wrap: nowrap;
+    }
+
+    .col-right .bottom-row-rules {
+      justify-content: flex-end;
+    }
+
+    @keyframes kineticFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-3px); }
+    }
+
+    @keyframes kineticPulseGlow {
+      0%, 100% { filter: drop-shadow(0 4px 10px rgba(0, 240, 255, 0.45)); }
+      50% { filter: drop-shadow(0 4px 18px rgba(255, 42, 133, 0.75)); }
+    }
+
+    body[data-theme="MOVIMIENTO"] .rule-icon,
+    body[data-theme="MOVIMIENTO"] .team-img {
+      animation: kineticFloat 2.4s ease-in-out infinite;
+    }
+
+    body[data-theme="MOVIMIENTO"] .win-counter,
+    body[data-theme="MOVIMIENTO"] .center-duel-arena {
+      animation: kineticPulseGlow 3s ease-in-out infinite;
+    }
+
+    body[data-theme="NEON"] .rule-tag,
+    body[data-theme="NEON"] .win-counter {
+      text-shadow:
+        2px 2px 0 #000,
+        -2px -2px 0 #000,
+        0 0 10px currentColor,
+        0 0 20px currentColor;
+    }
+
+    /* MINI-BARRA MANUAL AUTO-OCULTABLE */
+    #manual-control-dock {
+      position: fixed;
+      bottom: 12px;
+      right: 12px;
+      z-index: 99999;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      background: rgba(3, 10, 24, 0.88);
+      border: 1.5px solid rgba(0, 240, 255, 0.4);
+      padding: 6px 10px;
+      border-radius: 999px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.85), 0 0 16px rgba(0,240,255,0.25);
+      backdrop-filter: blur(12px);
+      opacity: 0;
+      pointer-events: auto;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      transform: translateY(6px);
+    }
+
+    #manual-control-dock:hover,
+    #manual-control-dock.force-show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .manual-dock-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 11px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .manual-dock-btn:hover {
+      background: rgba(255, 255, 255, 0.22);
+      transform: scale(1.06);
+    }
+
+    .manual-dock-btn.red {
+      border-color: rgba(255, 42, 95, 0.6);
+      color: #ff6b8b;
+    }
+    .manual-dock-btn.red:hover {
+      background: rgba(255, 42, 95, 0.35);
+      box-shadow: 0 0 12px rgba(255, 42, 95, 0.6);
+    }
+
+    .manual-dock-btn.blue {
+      border-color: rgba(0, 240, 255, 0.6);
+      color: #00f0ff;
+    }
+    .manual-dock-btn.blue:hover {
+      background: rgba(0, 240, 255, 0.35);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+    }
+
+    .manual-dock-btn.reset {
+      border-color: rgba(255, 215, 0, 0.5);
+      color: #ffd700;
+    }
+    .manual-dock-btn.reset:hover {
+      background: rgba(255, 215, 0, 0.3);
+      box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+    }
+  </style>
+</head>
+<body data-mode="full" data-theme="GALACTIC">
+  <svg width="0" height="0" style="position:absolute;pointer-events:none;overflow:hidden;" aria-hidden="true">
+    <defs>
+      <filter id="gz7-fullhd-filter" color-interpolation-filters="sRGB">
+        <feConvolveMatrix id="gz7-convolve" order="3" kernelMatrix="0 -0.35 0 -0.35 2.4 -0.35 0 -0.35 0" preserveAlpha="true" result="sharp" />
+        <feComponentTransfer in="sharp">
+          <feFuncR type="linear" slope="1.06" intercept="-0.02" />
+          <feFuncG type="linear" slope="1.06" intercept="-0.02" />
+          <feFuncB type="linear" slope="1.06" intercept="-0.02" />
+        </feComponentTransfer>
+      </filter>
+    </defs>
+  </svg>
+
+  <div id="stage-720x1080">
+    <div class="top-win-wrapper" id="top-win-module">
+      <div class="win-counter" id="win-counter" data-win-theme="GALACTIC">
+        <span class="win-label" id="win-label-text">🏆 WINS:</span>
+        <span class="win-current" id="val-wins">0</span>
+        <span class="win-slash">/</span>
+        <span class="win-target" id="val-target-wins">10</span>
+      </div>
+    </div>
+
+    <div class="center-duel-arena" id="duel-arena">
+      <div class="duel-header-row">
+        <div class="team-block" id="team-block-red">
+          <div class="team-gift-wrap">
+            <img id="center-red-img" src="/gifts/rose-1-coins.webp" alt="Red" class="team-img" onerror="this.src='/gifts/rose-1-coins.webp'" />
+            <span class="team-gift-name" id="center-red-label">Rose</span>
+          </div>
+          <span class="team-count" id="count-red">0</span>
+        </div>
+
+        <div class="vs-emblem">VS</div>
+
+        <div class="team-block" id="team-block-blue">
+          <span class="team-count" id="count-blue">0</span>
+          <div class="team-gift-wrap">
+            <img id="center-blue-img" src="/gifts/gg-1-coins.webp" alt="Blue" class="team-img" onerror="this.src='/gifts/gg-1-coins.webp'" />
+            <span class="team-gift-name" id="center-blue-label">GG</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tug-of-war-track">
+        <div class="tug-of-war-bar-red" id="tug-bar-red" style="width: 76.5%;"></div>
+      </div>
+
+      <div class="duel-subtext" id="duel-subtext">⚖️ EMPATE · MANTENER</div>
+    </div>
+
+    <div class="columns-container" id="side-rules">
+      <div class="side-col-wrapper left">
+        <div class="faction-col-badge villanos">💀 VILLANOS</div>
+        <div class="side-col col-left" id="col-left-container"></div>
+      </div>
+      <div class="side-col-wrapper right">
+        <div class="faction-col-badge heroes">🛡️ HÉROES</div>
+        <div class="side-col col-right" id="col-right-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MINI-BARRA DE CONTROL MANUAL & INYECCIÓN EN VIVO (Auto-ocultable / Tecla M) -->
+  <div id="manual-control-dock" title="Control Manual de Pruebas (Atajos: 1 = Rosa, 2 = GG, 0 = Reset, M = Mostrar/Ocultar)">
+    <button type="button" class="manual-dock-btn red" id="btn-dock-rose" title="Inyectar +1 Rosa / Bando Izquierdo (Tecla 1)">
+      🌹 +1 Rosa
+    </button>
+    <button type="button" class="manual-dock-btn blue" id="btn-dock-gg" title="Inyectar +1 GG / Bando Derecho (Tecla 2)">
+      🎮 +1 GG
+    </button>
+    <button type="button" class="manual-dock-btn red" id="btn-dock-plus10-red" title="+10 Puntos Izquierda">
+      🔥 +10
+    </button>
+    <button type="button" class="manual-dock-btn blue" id="btn-dock-plus10-blue" title="+10 Puntos Derecha">
+      ⚡ +10
+    </button>
+    <button type="button" class="manual-dock-btn reset" id="btn-dock-reset" title="Reiniciar Marcador (Tecla 0)">
+      🔄 Reset
+    </button>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const pathName = window.location.pathname.toLowerCase();
+
+    function detectOverlayMode() {
+      const m = (urlParams.get('mode') || '').toLowerCase();
+      if (m === 'wins' || m === 'win' || pathName.endsWith('/wins.html') || pathName.endsWith('/win.html')) {
+        return 'wins';
+      }
+      if (m === 'left' || m === 'villanos' || pathName.endsWith('/villanos.html')) {
+        return 'left';
+      }
+      if (m === 'right' || m === 'heroes' || pathName.endsWith('/heroes.html')) {
+        return 'right';
+      }
+      if (m === 'sides' || m === 'lados' || pathName.includes('villanos-heroes') || pathName.includes('roblox-lados')) {
+        return 'sides';
+      }
+      if (m === 'duel' || m === 'duelo' || pathName.includes('rosas-vs-ggs') || pathName.includes('duelo')) {
+        return 'duel';
+      }
+      return 'full';
+    }
+
+    const OVERLAY_MODE = detectOverlayMode();
+    document.body.setAttribute('data-mode', OVERLAY_MODE);
+
+    const DEFAULT_LEFT_RULES = [
+      { id: 'L1', gift_name: 'Lion', icon_file: 'lion-29999-coins.webp', label: '-20 WIN', is_bottom: false },
+      { id: 'L2', gift_name: 'Rose', icon_file: 'rose-1-coins.webp', label: '+1 PTS', is_bottom: false },
+      { id: 'L3', gift_name: 'Doughnut', icon_file: 'doughnut-30-coins.webp', label: '-30', is_bottom: false },
+      { id: 'L4', gift_name: 'Game Controller', icon_file: 'game-controller-100-coins.webp', label: '-100', is_bottom: false },
+      { id: 'L5', gift_name: 'Cat', icon_file: 'cat-222-coins.webp', label: '-300', is_bottom: false },
+      { id: 'L6', gift_name: 'Money Gun', icon_file: 'money-gun-500-coins.webp', label: '-500', is_bottom: false },
+      { id: 'L7', gift_name: 'Sunset Speedway', icon_file: 'sunset-speedway-10000-coins.webp', label: '-1000', is_bottom: false },
+      { id: 'L8', gift_name: 'Bear with Rose', icon_file: 'bear-with-rose-400-coins.webp', label: '-1 WIN', is_bottom: true },
+      { id: 'L9', gift_name: 'Fireworks', icon_file: 'fireworks-1088-coins.webp', label: '-3 WIN', is_bottom: true }
+    ];
+
+    const DEFAULT_RIGHT_RULES = [
+      { id: 'R1', gift_name: 'Falcon', icon_file: 'falcon-10999-coins.webp', label: '+20 WIN', is_bottom: false },
+      { id: 'R2', gift_name: 'Heart Me', icon_file: 'heart-me-1-coins.webp', label: '+10 PTS', is_bottom: false },
+      { id: 'R3', gift_name: 'Capybara', icon_file: 'capybara-30-coins.webp', label: '+30', is_bottom: false },
+      { id: 'R4', gift_name: 'GG', icon_file: 'gg-1-coins.webp', label: '+1', is_bottom: false },
+      { id: 'R5', gift_name: 'Whale Diving', icon_file: 'whale-diving-2150-coins.webp', label: '+300', is_bottom: false },
+      { id: 'R6', gift_name: 'Treasure Chest', icon_file: 'treasure-chest-1500-coins.webp', label: '+500', is_bottom: false },
+      { id: 'R7', gift_name: 'Galaxy', icon_file: 'galaxy-1000-coins.webp', label: '+1000', is_bottom: false },
+      { id: 'R8', gift_name: 'Cruiser', icon_file: 'cruiser-150-coins.webp', label: '+3 WIN', is_bottom: true },
+      { id: 'R9', gift_name: 'Coral', icon_file: 'coral-499-coins.webp', label: '+1 WIN', is_bottom: true }
+    ];
+
+    let state = {
+      wins: 0,
+      targetWins: 10,
+      redPoints: 0,
+      bluePoints: 0,
+      goalAction: 'INCREASE_TARGET',
+      showSideColumns: true,
+      centerRedName: 'Rose',
+      centerRedIcon: 'rose-1-coins.webp',
+      centerRedCoins: 1,
+      centerRedSoundName: '',
+      centerRedSoundUrl: '',
+      centerBlueName: 'GG',
+      centerBlueIcon: 'gg-1-coins.webp',
+      centerBlueCoins: 1,
+      centerBlueSoundName: '',
+      centerBlueSoundUrl: '',
+      themeStyle: urlParams.get('theme')?.toUpperCase() || 'GALACTIC',
+      winLabel: 'WIN',
+      winTheme: 'AUTO',
+      showWinInSides: false,
+      iconSize: 48,
+      textSize: 20,
+      itemGap: 8,
+      sharpness: 140,
+      winScale: 100,
+      duelScale: 100,
+      uiScale: 100,
+      leftRules: DEFAULT_LEFT_RULES,
+      rightRules: DEFAULT_RIGHT_RULES
+    };
+
+    const AUDIO_ENABLED = urlParams.get('audio') === '1';
+    let overlayAudioEl = null;
+
+    function playOverlayAudio(rawUrl, vol = 1.0) {
+      if (!AUDIO_ENABLED || !rawUrl) return;
+      try {
+        if (overlayAudioEl) {
+          overlayAudioEl.pause();
+          overlayAudioEl = null;
+        }
+        let cleanUrl = String(rawUrl).trim();
+        if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://') && !cleanUrl.startsWith('data:') && !cleanUrl.startsWith('/')) {
+          cleanUrl = '/' + cleanUrl.replace(/^\.\//, '');
+        }
+        overlayAudioEl = new Audio(cleanUrl);
+        overlayAudioEl.volume = Math.max(0, Math.min(1, Number(vol) || 1.0));
+        overlayAudioEl.play().catch(() => {});
+      } catch (e) {}
+    }
+
+    const stageEl = document.getElementById('stage-720x1080');
+    const winLabelEl = document.getElementById('win-label-text');
+    const valWins = document.getElementById('val-wins');
+    const valTargetWins = document.getElementById('val-target-wins');
+    const countRed = document.getElementById('count-red');
+    const countBlue = document.getElementById('count-blue');
+    const tugBarRed = document.getElementById('tug-bar-red');
+    const duelSubtext = document.getElementById('duel-subtext');
+    const colLeft = document.getElementById('col-left-container');
+    const colRight = document.getElementById('col-right-container');
+    const centerRedImg = document.getElementById('center-red-img');
+    const centerBlueImg = document.getElementById('center-blue-img');
+    const centerRedLabel = document.getElementById('center-red-label');
+    const centerBlueLabel = document.getElementById('center-blue-label');
+    const winCounterEl = document.getElementById('win-counter');
+    const convolveEl = document.getElementById('gz7-convolve');
+
+    function cleanGiftPath(raw) {
+      if (!raw) return '/gifts/rose-1-coins.webp';
+      const s = String(raw).trim();
+      if (s.startsWith('http://') || s.startsWith('https://')) return s;
+      const clean = s.replace(/^(\.?\/)?gifts\//i, '');
+      return `/gifts/${clean || 'rose-1-coins.webp'}`;
+    }
+
+    function updateSharpnessFilter(sharpVal) {
+      if (!convolveEl) return;
+      const s = Math.max(100, Math.min(240, Number(sharpVal) || 140));
+      const amt = ((s - 100) / 100) * 0.55;
+      const center = (1 + 4 * amt).toFixed(3);
+      const edge = (-amt).toFixed(3);
+      convolveEl.setAttribute('kernelMatrix', `0 ${edge} 0 ${edge} ${center} ${edge} 0 ${edge} 0`);
+    }
+
+    function updateStageAndMathematicalFit() {
+      const vw = Math.max(100, window.innerWidth);
+      const vh = Math.max(100, window.innerHeight);
+
+      let baseScale = Math.min(vw / 720, vh / 1080);
+      if (OVERLAY_MODE === 'duel' && (vh < 520 || (vw / vh) > 1.25)) {
+        baseScale = Math.min(vw / 450, vh / 165);
+      } else if (OVERLAY_MODE === 'wins' && (vh < 480 || (vw / vh) > 1.25)) {
+        baseScale = Math.min(vw / 320, vh / 110);
+      }
+
+      const finalStageScale = baseScale * (state.uiScale / 100);
+      document.documentElement.style.setProperty('--stage-scale', finalStageScale.toFixed(4));
+      document.documentElement.style.setProperty('--win-scale', (state.winScale / 100).toFixed(2));
+      document.documentElement.style.setProperty('--duel-scale', (state.duelScale / 100).toFixed(2));
+      document.documentElement.style.setProperty('--icon-size', `${state.iconSize}px`);
+      document.documentElement.style.setProperty('--text-size', `${state.textSize}px`);
+      document.documentElement.style.setProperty('--item-gap', `${state.itemGap}px`);
+
+      const includeWinsInSides = state.showWinInSides || urlParams.get('wins') === '1';
+      document.body.setAttribute('data-sides-win', includeWinsInSides ? 'true' : 'false');
+
+      let topOffset = 214;
+      if (OVERLAY_MODE === 'sides') {
+        topOffset = includeWinsInSides ? 88 : 18;
+      } else if (OVERLAY_MODE === 'left' || OVERLAY_MODE === 'right') {
+        topOffset = 18;
+      }
+      const availHeight = 1080 - topOffset - 16 - 30;
+      const leftMainCount = state.leftRules.filter(r => !r.is_bottom).length;
+      const rightMainCount = state.rightRules.filter(r => !r.is_bottom).length;
+      const hasBottomRow = (state.leftRules.some(r => r.is_bottom) || state.rightRules.some(r => r.is_bottom)) ? 1 : 0;
+      const totalRows = Math.max(1, Math.max(leftMainCount, rightMainCount) + hasBottomRow);
+
+      const rowHeight = Math.max(state.iconSize, state.textSize * 1.25) + 12;
+      const neededHeight = totalRows * rowHeight + Math.max(0, totalRows - 1) * state.itemGap;
+
+      let fitScale = 1;
+      if (neededHeight > availHeight) {
+        fitScale = Math.max(0.01, availHeight / neededHeight);
+      }
+      document.documentElement.style.setProperty('--col-fit-scale', fitScale.toFixed(3));
+    }
+
+    function applyVisualTheme() {
+      const validThemes = ['GALACTIC', 'SOL', 'CONTRASTE', 'MOVIMIENTO', 'NEON', 'TRANSPARENT'];
+      const chosen = validThemes.includes(String(state.themeStyle).toUpperCase())
+        ? String(state.themeStyle).toUpperCase()
+        : 'GALACTIC';
+      document.body.setAttribute('data-theme', chosen);
+
+      const rawWinTheme = String(state.winTheme || 'AUTO').toUpperCase();
+      const effectiveWinTheme = validThemes.includes(rawWinTheme) ? rawWinTheme : chosen;
+      if (winCounterEl) {
+        winCounterEl.setAttribute('data-win-theme', effectiveWinTheme);
+      }
+      if (winLabelEl) {
+        winLabelEl.textContent = state.winLabel || 'WIN';
+      }
+
+      updateSharpnessFilter(state.sharpness);
+      updateStageAndMathematicalFit();
+    }
+
+    function renderColumns() {
+      const renderRulePill = (r) => {
+        const hasSound = Boolean(r.sound_name || r.sound_url);
+        const soundBadge = hasSound ? `<span class="rule-sound-badge" title="${r.sound_name || 'Audio'}">🔊</span>` : '';
+        return `
+          <div class="rule-item" data-rule-id="${r.id}" data-gift-name="${(r.gift_name || '').toLowerCase()}" data-sound-url="${r.sound_url || ''}" data-sound-vol="${r.sound_volume ?? 1.0}" data-duration="${r.duration_seconds ?? 5}">
+            <img src="${cleanGiftPath(r.icon_file)}" class="rule-icon" onerror="this.src='/gifts/rose-1-coins.webp'" />
+            <span class="rule-tag">${r.label}</span>
+            ${soundBadge}
+          </div>
+        `;
+      };
+
+      const renderSide = (rules) => {
+        const mainItems = rules.filter(r => !r.is_bottom);
+        const bottomItems = rules.filter(r => r.is_bottom);
+        let html = mainItems.map(renderRulePill).join('');
+        if (bottomItems.length > 0) {
+          html += `<div class="bottom-row-rules">` + bottomItems.map(renderRulePill).join('') + `</div>`;
+        }
+        return html;
+      };
+
+      colLeft.innerHTML = renderSide(state.leftRules);
+      colRight.innerHTML = renderSide(state.rightRules);
+      centerRedImg.src = cleanGiftPath(state.centerRedIcon || 'rose-1-coins.webp');
+      centerBlueImg.src = cleanGiftPath(state.centerBlueIcon || 'gg-1-coins.webp');
+      if (centerRedLabel) centerRedLabel.textContent = state.centerRedName || 'Rose';
+      if (centerBlueLabel) centerBlueLabel.textContent = state.centerBlueName || 'GG';
+      updateStageAndMathematicalFit();
+    }
+
+    function renderState(prevWins) {
+      if (prevWins !== undefined && prevWins !== state.wins) {
+        winCounterEl.classList.remove('bump');
+        void winCounterEl.offsetWidth;
+        winCounterEl.classList.add('bump');
+        setTimeout(() => winCounterEl.classList.remove('bump'), 350);
+      }
+      const goalReached = state.wins >= state.targetWins;
+      if (winLabelEl) winLabelEl.textContent = goalReached && state.goalAction === 'SHOW_VICTORY' ? '🏆 ¡VICTORIA!' : `🏆 ${state.winLabel || 'WINS'}:`;
+      valWins.textContent = state.wins;
+      valWins.classList.toggle('wins-negative', state.wins < 0);
+      if (prevWins !== undefined && state.wins < prevWins) {
+        valWins.classList.remove('wins-decreased');
+        void valWins.offsetWidth;
+        valWins.classList.add('wins-decreased');
+      }
+      valTargetWins.textContent = state.targetWins;
+      countRed.textContent = state.redPoints.toLocaleString();
+      countBlue.textContent = state.bluePoints.toLocaleString();
+      document.getElementById('side-rules').style.display = state.showSideColumns ? '' : 'none';
+
+      const total = state.redPoints + state.bluePoints;
+      let redPct = 50;
+      if (total > 0) {
+        redPct = Math.min(96, Math.max(4, (state.redPoints / total) * 100));
+      }
+      tugBarRed.style.width = redPct + '%';
+
+      const diff = state.redPoints - state.bluePoints;
+      if (diff > 0) {
+        duelSubtext.className = 'duel-subtext subtext-contra';
+        duelSubtext.style.color = '';
+        duelSubtext.textContent = `⏸ FRENAR / REINICIO · ROSA +${diff.toLocaleString()}`;
+      } else if (diff < 0) {
+        duelSubtext.className = 'duel-subtext subtext-favor';
+        duelSubtext.style.color = '';
+        duelSubtext.textContent = `🚲 AVANZAR · GG +${Math.abs(diff).toLocaleString()}`;
+      } else {
+        duelSubtext.className = 'duel-subtext';
+        duelSubtext.style.color = '#ffe600';
+        duelSubtext.textContent = '⚖️ EMPATE · MANTENER';
+      }
+    }
+
+    function namesEquivalent(a, b) {
+      const ca = String(a || '').toLowerCase().replace(/\s*\(x\d+\)\s*$/i, '').trim();
+      const cb = String(b || '').toLowerCase().replace(/\s*\(x\d+\)\s*$/i, '').trim();
+      if (!ca || !cb) return false;
+      if (ca === cb) return true;
+
+      const isSuperGgA = ca.includes('super gg') || ca.includes('supergg');
+      const isSuperGgB = cb.includes('super gg') || cb.includes('supergg');
+      if (isSuperGgA || isSuperGgB) {
+        return isSuperGgA && isSuperGgB;
+      }
+
+      const isGiantRoseA = ca.includes('gigante') || ca.includes('giant') || ca === 'rosa (10)' || ca === 'rosa 10';
+      const isGiantRoseB = cb.includes('gigante') || cb.includes('giant') || cb === 'rosa (10)' || cb === 'rosa 10';
+      if (isGiantRoseA || isGiantRoseB) {
+        return isGiantRoseA && isGiantRoseB;
+      }
+
+      const isRoseA = ca === 'rose' || ca === 'rosa' || ca === 'rosa oscura' || ca === 'rosa de luz' || ca === 'rosa roja' || ca === 'red rose';
+      const isRoseB = cb === 'rose' || cb === 'rosa' || cb === 'rosa oscura' || cb === 'rosa de luz' || cb === 'rosa roja' || cb === 'red rose';
+      if (isRoseA && isRoseB) return true;
+
+      const isGgA = ca === 'gg' || ca === 'gg 2025' || ca === 'gg bendicion';
+      const isGgB = cb === 'gg' || cb === 'gg 2025' || cb === 'gg bendicion';
+      if (isGgA && isGgB) return true;
+
+      if (ca.length >= 4 && cb.length >= 4 && (ca.includes(cb) || cb.includes(ca))) return true;
+      return false;
+    }
+
+    function flashMatchingGift(giftTitle, eventSoundUrl) {
+      if (!giftTitle) return;
+      const g = String(giftTitle).toLowerCase().replace(/\s*\(x\d+\)\s*$/i, '').trim();
+      let matchedSoundUrl = eventSoundUrl || '';
+      let matchedSoundVol = 1.0;
+
+      document.querySelectorAll('.rule-item').forEach(el => {
+        const rn = el.getAttribute('data-gift-name') || '';
+        if (namesEquivalent(rn, g)) {
+          el.classList.remove('flash');
+          void el.offsetWidth;
+          el.classList.add('flash');
+          const durationMs = Math.max(150, Number(el.getAttribute('data-duration') || 5) * 1000);
+          setTimeout(() => el.classList.remove('flash'), durationMs);
+          if (!matchedSoundUrl && el.getAttribute('data-sound-url')) {
+            matchedSoundUrl = el.getAttribute('data-sound-url');
+            matchedSoundVol = Number(el.getAttribute('data-sound-vol')) || 1.0;
+          }
+        }
+      });
+
+      const redName = String(state.centerRedName || 'rose').toLowerCase();
+      const blueName = String(state.centerBlueName || 'gg').toLowerCase();
+      if (namesEquivalent(redName, g)) {
+        const b = document.getElementById('team-block-red');
+        b?.classList.add('flash');
+        setTimeout(() => b?.classList.remove('flash'), 500);
+        if (!matchedSoundUrl && state.centerRedSoundUrl) {
+          matchedSoundUrl = state.centerRedSoundUrl;
+        }
+      }
+      if (namesEquivalent(blueName, g)) {
+        const b = document.getElementById('team-block-blue');
+        b?.classList.add('flash');
+        setTimeout(() => b?.classList.remove('flash'), 500);
+        if (!matchedSoundUrl && state.centerBlueSoundUrl) {
+          matchedSoundUrl = state.centerBlueSoundUrl;
+        }
+      }
+
+      if (matchedSoundUrl) {
+        playOverlayAudio(matchedSoundUrl, matchedSoundVol);
+      }
+    }
+
+    function applyServerPayload(gvg, duel, eventData) {
+      if (duel && duel.gift_scale) {
+        state.uiScale = Number(duel.gift_scale) || 100;
+      }
+      const gTitle = eventData?.giftName || eventData?.title || '';
+      if (gTitle) {
+        flashMatchingGift(gTitle, eventData.sound_url || eventData.audio_url || '');
+      }
+      if (!gvg) {
+        updateStageAndMathematicalFit();
+        return;
+      }
+      const prevWins = state.wins;
+      state.wins = gvg.wins ?? state.wins;
+      state.targetWins = gvg.target_wins ?? state.targetWins;
+      state.redPoints = gvg.red_points ?? state.redPoints;
+      state.bluePoints = gvg.blue_points ?? state.bluePoints;
+      state.goalAction = gvg.goal_action ?? state.goalAction;
+      state.showSideColumns = gvg.show_side_columns !== false;
+
+      let themeChanged = false;
+      if (!urlParams.get('theme') && gvg.theme_style && gvg.theme_style !== state.themeStyle) {
+        state.themeStyle = gvg.theme_style;
+        themeChanged = true;
+      }
+      if (gvg.win_label && gvg.win_label !== state.winLabel) {
+        state.winLabel = gvg.win_label;
+        themeChanged = true;
+      }
+      if (gvg.win_theme && gvg.win_theme !== state.winTheme) {
+        state.winTheme = gvg.win_theme;
+        themeChanged = true;
+      }
+      if (gvg.show_win_in_sides !== undefined && Boolean(gvg.show_win_in_sides) !== state.showWinInSides) {
+        state.showWinInSides = Boolean(gvg.show_win_in_sides);
+        themeChanged = true;
+      }
+      if (gvg.icon_size && Number(gvg.icon_size) !== state.iconSize) {
+        state.iconSize = Number(gvg.icon_size);
+        themeChanged = true;
+      }
+      if (gvg.text_size && Number(gvg.text_size) !== state.textSize) {
+        state.textSize = Number(gvg.text_size);
+        themeChanged = true;
+      }
+      if (gvg.item_gap !== undefined && Number(gvg.item_gap) !== state.itemGap) {
+        state.itemGap = Number(gvg.item_gap);
+        themeChanged = true;
+      }
+      if (gvg.sharpness && Number(gvg.sharpness) !== state.sharpness) {
+        state.sharpness = Number(gvg.sharpness);
+        themeChanged = true;
+      }
+      if (gvg.win_scale && Number(gvg.win_scale) !== state.winScale) {
+        state.winScale = Number(gvg.win_scale);
+        themeChanged = true;
+      }
+      if (gvg.duel_scale && Number(gvg.duel_scale) !== state.duelScale) {
+        state.duelScale = Number(gvg.duel_scale);
+        themeChanged = true;
+      }
+
+      let rulesChanged = false;
+      if (gvg.center_red_name && gvg.center_red_name !== state.centerRedName) {
+        state.centerRedName = gvg.center_red_name;
+        rulesChanged = true;
+      }
+      if (gvg.center_red_icon && gvg.center_red_icon !== state.centerRedIcon) {
+        state.centerRedIcon = gvg.center_red_icon;
+        rulesChanged = true;
+      }
+      if (gvg.center_red_sound_name !== undefined && gvg.center_red_sound_name !== state.centerRedSoundName) {
+        state.centerRedSoundName = gvg.center_red_sound_name || '';
+        rulesChanged = true;
+      }
+      if (gvg.center_red_sound_url !== undefined && gvg.center_red_sound_url !== state.centerRedSoundUrl) {
+        state.centerRedSoundUrl = gvg.center_red_sound_url || '';
+        rulesChanged = true;
+      }
+      if (gvg.center_blue_name && gvg.center_blue_name !== state.centerBlueName) {
+        state.centerBlueName = gvg.center_blue_name;
+        rulesChanged = true;
+      }
+      if (gvg.center_blue_icon && gvg.center_blue_icon !== state.centerBlueIcon) {
+        state.centerBlueIcon = gvg.center_blue_icon;
+        rulesChanged = true;
+      }
+      if (gvg.center_blue_sound_name !== undefined && gvg.center_blue_sound_name !== state.centerBlueSoundName) {
+        state.centerBlueSoundName = gvg.center_blue_sound_name || '';
+        rulesChanged = true;
+      }
+      if (gvg.center_blue_sound_url !== undefined && gvg.center_blue_sound_url !== state.centerBlueSoundUrl) {
+        state.centerBlueSoundUrl = gvg.center_blue_sound_url || '';
+        rulesChanged = true;
+      }
+      if (Array.isArray(gvg.left_rules)) {
+        state.leftRules = gvg.left_rules;
+        rulesChanged = true;
+      }
+      if (Array.isArray(gvg.right_rules)) {
+        state.rightRules = gvg.right_rules;
+        rulesChanged = true;
+      }
+
+      if (themeChanged || rulesChanged) {
+        applyVisualTheme();
+      }
+      if (rulesChanged) {
+        renderColumns();
+      }
+      renderState(prevWins);
+    }
+
+    window.addEventListener('resize', updateStageAndMathematicalFit);
+    applyVisualTheme();
+    renderColumns();
+    renderState();
+
+    fetch('/api/estado')
+      .then(res => res.json())
+      .then(d => {
+        if (d) applyServerPayload(d.gift_vs_gift, d.duel);
+      })
+      .catch(() => {});
+
+    const evt = new EventSource('/api/eventos');
+    evt.onmessage = e => {
+      try {
+        const d = JSON.parse(e.data);
+        applyServerPayload(d.gift_vs_gift, d.duel, d.data);
+      } catch (err) {}
+    };
+
+    // -----------------------------------------------------------------
+    // CONTROL MANUAL & INYECCIÓN DE PRUEBAS (+1 Rosa, +1 GG, Combos, Reset)
+    // -----------------------------------------------------------------
+    const dockEl = document.getElementById('manual-control-dock');
+
+    function sendManualGift(side, coins = 1, giftName = null) {
+      const gName = giftName || (side === 'LEFT' ? (state.centerRedName || 'Rose') : (state.centerBlueName || 'GG'));
+      const effectiveCoins = Math.max(1, Number(coins) || 1);
+
+      const prevWins = { red: state.redWins, blue: state.blueWins };
+      if (side === 'LEFT') {
+        state.redPoints = (Number(state.redPoints) || 0) + effectiveCoins;
+        triggerBump('red', gName, effectiveCoins);
+      } else if (side === 'RIGHT') {
+        state.bluePoints = (Number(state.bluePoints) || 0) + effectiveCoins;
+        triggerBump('blue', gName, effectiveCoins);
+      } else if (side === 'RESET') {
+        state.redPoints = 0;
+        state.bluePoints = 0;
+      }
+      renderState(prevWins);
+
+      fetch('/api/test-gift', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          side,
+          giftName: gName,
+          coins: effectiveCoins,
+          repeatCount: 1,
+          donor: 'Manual'
+        })
+      }).catch(() => {});
+    }
+
+    document.getElementById('btn-dock-rose')?.addEventListener('click', () => sendManualGift('LEFT', state.centerRedCoins || 1, state.centerRedName || 'Rose'));
+    document.getElementById('btn-dock-gg')?.addEventListener('click', () => sendManualGift('RIGHT', state.centerBlueCoins || 1, state.centerBlueName || 'GG'));
+    document.getElementById('btn-dock-plus10-red')?.addEventListener('click', () => sendManualGift('LEFT', 10, state.centerRedName || 'Rose'));
+    document.getElementById('btn-dock-plus10-blue')?.addEventListener('click', () => sendManualGift('RIGHT', 10, state.centerBlueName || 'GG'));
+    document.getElementById('btn-dock-reset')?.addEventListener('click', () => sendManualGift('RESET', 0));
+
+    // Atajos de Teclado Globales:
+    // 1 = +1 Rosa (Bando Izquierdo)
+    // 2 = +1 GG (Bando Derecho)
+    // 0 = Reset (0 - 0)
+    // M = Mostrar / Ocultar barra de control
+    window.addEventListener('keydown', (e) => {
+      if (e.target && ['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
+      if (e.key === '1') {
+        sendManualGift('LEFT', state.centerRedCoins || 1, state.centerRedName || 'Rose');
+      } else if (e.key === '2') {
+        sendManualGift('RIGHT', state.centerBlueCoins || 1, state.centerBlueName || 'GG');
+      } else if (e.key === '0') {
+        sendManualGift('RESET', 0);
+      } else if (e.key === 'm' || e.key === 'M') {
+        if (dockEl) dockEl.classList.toggle('force-show');
+      }
+    });
+  </script>
+</body>
+</html>
+
+

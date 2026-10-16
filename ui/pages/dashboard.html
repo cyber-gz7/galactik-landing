@@ -1,0 +1,88 @@
+<div class="dashboard-grid">
+  <!-- Columna Izquierda: TikTok Live Control & Stats -->
+  <div class="col-panel">
+    <div class="card-panel">
+      <div class="panel-header">
+        <span class="panel-title">TikTok Live</span>
+        <span class="status-indicator disconnected" id="dash-tiktok-indicator"></span>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label" for="dash-tiktok-username">Streamer Username</label>
+        <input type="text" id="dash-tiktok-username" class="input-field" placeholder="@usuario o usuario" />
+      </div>
+
+      <div style="display: flex; gap: 8px;">
+        <button type="button" class="btn-primary" id="dash-btn-connect-tiktok">
+          Conectar Live
+        </button>
+        <button type="button" class="btn-danger" id="dash-btn-disconnect-tiktok" style="display: none;">
+          Desconectar
+        </button>
+      </div>
+
+      <div id="dash-tiktok-status-text" style="font-size: 12px; color: var(--text-muted); margin-top: 10px; text-align: center;">
+        Estado: DESCONECTADO
+      </div>
+    </div>
+
+    <div class="card-panel">
+      <div class="panel-header">
+        <span class="panel-title">Estadísticas de Sesión</span>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <span class="stat-value" id="stat-likes">0</span>
+          <span class="stat-label">Likes</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-value" id="stat-gifts">0</span>
+          <span class="stat-label">Regalos</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-value" id="stat-coins">0</span>
+          <span class="stat-label">Monedas</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-value" id="stat-followers">0</span>
+          <span class="stat-label">Seguidores</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Columna Centro: Barra de Tótems, Toggle Ficción, Historial -->
+  <div class="col-panel">
+    <!-- Faction Toggle -->
+    <div class="faction-toggle-panel buenos" id="faction-banner">
+      <div class="faction-meta">
+        <span class="faction-current-title buenos" id="faction-name-display">FACCIÓN: BUENOS</span>
+        <span class="faction-current-sub">Los regalos invocan bendiciones y suman tótems</span>
+      </div>
+      <button type="button" class="faction-btn-toggle" id="btn-toggle-faction">
+        CAMBIAR A MALOS
+      </button>
+    </div>
+
+    <!-- Web Component de Tótems -->
+    <totem-bar></totem-bar>
+
+    <!-- Historial de Últimos Eventos -->
+    <div class="history-panel">
+      <div class="panel-header">
+        <span class="panel-title">Últimas Acciones en Minecraft</span>
+        <span style="font-size: 11px; color: var(--text-dim);">Últimos 10</span>
+      </div>
+      <div class="history-list" id="dashboard-history-list">
+        <div style="text-align: center; color: var(--text-dim); padding: 20px 0; font-size: 13px;">
+          Sin acciones registradas aún
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Columna Derecha: Live Feed Component -->
+  <div class="col-panel">
+    <event-feed></event-feed>
+  </div>
+</div>

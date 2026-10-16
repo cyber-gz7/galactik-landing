@@ -1,0 +1,1808 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GALACTK PANEL ⚡ — Interactive Stream Suite (Developed by GZ7)</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="panel.css" />
+  <style>
+    @keyframes winsDebtShake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-3px)} 40%{transform:translateX(3px)} 60%{transform:translateX(-2px)} 80%{transform:translateX(2px)} }
+    .wins-negative { color:#ff1744 !important; text-shadow:0 0 7px #ff1744,0 0 18px rgba(255,23,68,.85) !important; animation:winsDebtShake .34s ease-in-out; border-color:rgba(255,23,68,.8) !important; }
+  </style>
+  <script type="module" src="./src/license-client.js"></script>
+  <script type="module" src="./components/totem-bar.js"></script>
+  <script type="module" src="./components/event-feed.js"></script>
+  <script type="module" src="./components/gift-monitor.js"></script>
+</head>
+<body>
+  <div id="galactk-loading" role="status"><img src="./galactk-logo.png" alt="GALACTK PANEL"><span>Preparando tu estudio…</span></div>
+  <!-- Fondo Galáctico Animado -->
+  <canvas id="galaxy-canvas"></canvas>
+
+  <!-- ================= LAYOUT PRINCIPAL (ESTILO MACOS SEQUOIA / IPADOS) ================= -->
+  <div class="app-layout" id="app-layout">
+
+    <!-- ================= SIDEBAR LATERAL IZQUIERDO ================= -->
+    <aside class="app-sidebar" id="app-sidebar">
+      <!-- Encabezado del Sidebar con Logo Flotante y Botón Toggle -->
+      <div class="sidebar-header">
+        <div class="brand-wrapper">
+          <div class="brand-logo-wrap" title="GALACTK PANEL Suite">
+            <img src="./galactic-logo.png" alt="GALACTK PANEL Logo" class="brand-logo-img" onerror="this.style.display='none'" />
+          </div>
+          <div class="brand-info">
+            <div class="app-title">GALACTK PANEL</div>
+            <div class="app-subtitle">By <span class="gz7-badge">GZ7</span> &bull; Panel Suite</div>
+          </div>
+        </div>
+        <button type="button" class="sidebar-toggle-btn" id="sidebar-toggle-btn" title="Colapsar / Expandir barra lateral (macOS Sequoia)" aria-label="Toggle Sidebar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="18" x="3" y="3" rx="3" ry="3"/>
+            <path d="M9 3v18"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Selector Rápido de Perfil / Juego -->
+      <div class="sidebar-section mode-section">
+        <div class="sidebar-section-title">PERFIL STREAM</div>
+        <div class="mode-switcher-pill" title="Cambia el perfil del panel para adaptar las herramientas al juego">
+          <button type="button" class="mode-btn active" data-profile="minecraft" title="Modo Minecraft">
+            <svg class="mode-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+              <line x1="12" y1="22.08" x2="12" y2="12"/>
+            </svg>
+            <span class="mode-btn-label">Minecraft</span>
+          </button>
+          <button type="button" class="mode-btn" data-profile="roblox" title="Modo Roblox Obby">
+            <svg class="mode-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="5.5" cy="17.5" r="3.5"/>
+              <circle cx="18.5" cy="17.5" r="3.5"/>
+              <path d="M15 6h4l-3 6.5H9L12 6h3"/>
+              <path d="M12 17.5V14l-3-4"/>
+              <path d="m16.5 17.5-2.5-5"/>
+            </svg>
+            <span class="mode-btn-label">Roblox</span>
+          </button>
+          <button type="button" class="mode-btn" data-profile="universal" title="Modo Universal / IRL">
+            <svg class="mode-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            <span class="mode-btn-label">Universal</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Navegación Contextual por Pestañas con Iconos SVG Limpios -->
+      <nav class="sidebar-nav" id="main-nav-tabs">
+        <div class="sidebar-section-title">HERRAMIENTAS</div>
+
+        <!-- 1. Inicio -->
+        <button type="button" class="nav-tab-btn active" data-tab="tab-inicio" title="Inicio • Conexión & Estado">
+          <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <span class="tab-label">Inicio &amp; Panel</span>
+        </button>
+
+        <!-- 2. Minecraft Overlays -->
+        <button type="button" class="nav-tab-btn mode-only-minecraft" data-tab="tab-minecraft" title="Panel & Overlays Minecraft">
+          <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+            <line x1="12" y1="22.08" x2="12" y2="12"/>
+          </svg>
+          <span class="tab-label">Minecraft Overlays</span>
+        </button>
+
+        <!-- 3. Roblox Obby -->
+        <button type="button" class="nav-tab-btn mode-only-roblox hidden-by-mode" data-tab="tab-roblox" title="Overlay Roblox (Bicicleta Obby)">
+          <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="5.5" cy="17.5" r="3.5"/>
+            <circle cx="18.5" cy="17.5" r="3.5"/>
+            <path d="M15 6h4l-3 6.5H9L12 6h3"/>
+            <path d="M12 17.5V14l-3-4"/>
+            <path d="m16.5 17.5-2.5-5"/>
+          </svg>
+          <span class="tab-label">Roblox Obby</span>
+        </button>
+
+        <!-- 4. Regalos -->
+        <button type="button" class="nav-tab-btn" data-tab="tab-catalog" title="Catálogo de 1,770 Regalos">
+          <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="8" width="18" height="4" rx="1"/>
+            <path d="M12 8v13"/>
+            <path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/>
+            <path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 4.8 0 0 1 12 8a4.8 4.8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/>
+          </svg>
+          <span class="tab-label">Catálogo Regalos</span>
+        </button>
+
+        <!-- 5. Sonidos & Memes -->
+        <button type="button" class="nav-tab-btn" data-tab="tab-sounds" title="Sonidos & Memes (Banco Gratis)">
+          <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+          <span class="tab-label">Sonidos &amp; Memes</span>
+        </button>
+
+        <!-- 6. TTS Chat -->
+        <button type="button" class="nav-tab-btn" data-tab="tab-tts" title="TTS Chat & Donaciones">
+          <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="22"/>
+          </svg>
+          <span class="tab-label">TTS Chat en Vivo</span>
+        </button>
+
+        <!-- 7. Tops, Metas y MVP -->
+        <button type="button" class="nav-tab-btn" data-tab="tab-tops" title="Tops, Metas y MVP">
+          <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/>
+          </svg>
+          <span class="tab-label">Tops, Metas &amp; MVP</span>
+        </button>
+
+        <!-- 8. RCON & Servidor MC -->
+        <button type="button" class="nav-tab-btn mode-only-minecraft" data-tab="tab-rcon" title="RCON & Servidor Minecraft">
+          <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="20" height="8" x="2" y="2" rx="2" ry="2"/>
+            <rect width="20" height="8" x="2" y="14" rx="2" ry="2"/>
+            <line x1="6" y1="6" x2="6.01" y2="6"/>
+            <line x1="6" y1="18" x2="6.01" y2="18"/>
+          </svg>
+          <span class="tab-label">RCON &amp; Servidor</span>
+        </button>
+
+        <!-- 9. Licencias & HWID -->
+        <div class="sidebar-section-title" style="margin-top: 10px;">SISTEMA</div>
+        <button type="button" class="sidebar-action-btn" id="btn-sidebar-license" title="Gestión de Licencias Oficiales & HWID">
+          <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+          <span class="tab-label">Licencias &amp; HWID</span>
+        </button>
+
+        <!-- Pestaña Exclusiva ADMIN: Solicitudes & Licencias -->
+        <button type="button" class="nav-tab-btn" data-tab="tab-admin-licenses" id="nav-btn-admin-licenses" title="Panel de Aprobación de Licencias Streamers" style="display: none; border: 1px solid rgba(245, 158, 11, 0.45); color: #fbbf24; background: rgba(245, 158, 11, 0.08); margin-top: 6px;">
+          <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.201a4 4 0 0 1-3.856 2.93H8.709a4 4 0 0 1-3.856-2.93L2.019 6.019a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/>
+          </svg>
+          <span class="tab-label">👑 Licencias &amp; Solicitudes</span>
+          <span class="module-badge" id="badge-admin-pending-count" style="background: rgba(245, 158, 11, 0.25); color: #fbbf24; border-color: rgba(245, 158, 11, 0.6);">ADMIN</span>
+        </button>
+      </nav>
+
+      <!-- Pie del Sidebar con Estado Stream -->
+      <div class="sidebar-footer">
+        <div class="sidebar-footer-badge">
+          <span class="pulse-indicator"></span>
+          <span class="footer-stream-label">STREAM ENGINE READY</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ================= CONTENEDOR DE TRABAJO DERECHO (WORKSPACE) ================= -->
+    <div class="app-workspace">
+
+      <!-- ================= TOPBAR MODERNA (ESTILO MACOS SEQUOIA) ================= -->
+      <header class="app-header">
+        <div class="topbar-left">
+          <button type="button" class="topbar-toggle-btn" id="topbar-toggle-btn" title="Alternar panel lateral" aria-label="Toggle Sidebar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="18" x="3" y="3" rx="3" ry="3"/>
+              <path d="M9 3v18"/>
+            </svg>
+          </button>
+          <div class="topbar-title-wrap">
+            <span class="topbar-app-name">GALACTK PANEL</span>
+            <span class="topbar-separator">/</span>
+            <span class="topbar-active-tab" id="topbar-active-tab-label">Inicio &bull; Panel</span>
+          </div>
+        </div>
+
+        <!-- Indicadores de Estado y Licencia -->
+        <div class="header-status-area header-actions topbar-right">
+          <div class="status-badge" id="header-tiktok-badge" title="Estado TikTok Live">
+            <span class="status-indicator disconnected" id="header-tiktok-indicator"></span>
+            <span id="header-tiktok-text">TIKTOK: DESCONECTADO</span>
+          </div>
+          <div class="status-badge mode-only-minecraft" id="header-rcon-badge" title="Estado RCON Minecraft">
+            <span class="status-indicator disconnected" id="header-rcon-indicator"></span>
+            <span id="header-rcon-text">RCON: OFF</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- ================= CONTENEDOR PRINCIPAL DE VISTAS ================= -->
+      <main class="main-view-container">
+
+    <!-- ===================================================================
+         1. PESTAÑA: INICIO (BIENVENIDA GALACTK PANEL + PERFILES + CONEXIÓN)
+         =================================================================== -->
+    <section class="tab-pane active" id="tab-inicio">
+      <div class="inicio-layout">
+        <div class="page-hero-title">
+          <span>INICIO &bull; GALACTK PANEL</span>
+          <span style="font-size: 13px; font-style: normal; font-family: var(--font-mono); color: var(--neon-cyan);">
+            Derechos & Arquitectura por GZ7
+          </span>
+        </div>
+
+        <!-- Selector de Perfil / Juego para no mezclar herramientas -->
+        <div class="section-card">
+          <div class="panel-header">
+            <div>
+              <span class="panel-title">🌌 1. Selecciona tu Perfil de Transmisión</span>
+              <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
+                El panel adapta automáticamente sus pestañas y herramientas según el juego que vayas a transmitir para que todo sea súper limpio y fácil de usar.
+              </p>
+            </div>
+          </div>
+
+          <div class="profile-cards-grid">
+            <!-- Perfil 1: Minecraft -->
+            <div class="profile-select-card active" data-select-profile="minecraft">
+              <span class="profile-card-badge" id="badge-prof-minecraft">ACTIVO</span>
+              <div style="font-size: 28px;">⛏️</div>
+              <h3 style="font-family: var(--font-display); font-size: 16px; color: var(--neon-cyan);">Modo Minecraft</h3>
+              <p style="font-size: 13px; color: var(--text-muted); line-height: 1.4;">
+                Activa el sistema Buenos vs Malos, Tótems (0-20), Overlays de Minecraft (Carrusel Dinámico, Estático y Plano/Recto), RCON e Instalador Paper 1.20.1.
+              </p>
+            </div>
+
+            <!-- Perfil 2: Roblox Obby Bicicleta -->
+            <div class="profile-select-card" data-select-profile="roblox">
+              <span class="profile-card-badge" id="badge-prof-roblox">ELEGIR</span>
+              <div style="font-size: 28px;">🚴</div>
+              <h3 style="font-family: var(--font-display); font-size: 16px; color: var(--neon-cyan);">Modo Roblox (Obby Bicicleta)</h3>
+              <p style="font-size: 13px; color: var(--text-muted); line-height: 1.4;">
+                Oculta todo lo de Minecraft y activa el Editor Interactivo del Overlay Gift vs Gift (cambia el León, Ballena, WINS y puntos a tu gusto).
+              </p>
+            </div>
+
+            <!-- Perfil 3: Stream Universal / IRL -->
+            <div class="profile-select-card" data-select-profile="universal">
+              <span class="profile-card-badge" id="badge-prof-universal">ELEGIR</span>
+              <div style="font-size: 28px;">🌐</div>
+              <h3 style="font-family: var(--font-display); font-size: 16px; color: var(--neon-cyan);">Modo Universal / IRL</h3>
+              <p style="font-size: 13px; color: var(--text-muted); line-height: 1.4;">
+                Panel limpio solo con TTS Chat en vivo, Sonidos y Memes interactivos, Catálogo de Regalos, Alertas y Tops/MVP para cualquier juego.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card de Conexión a TikTok Live (Motor Único Macizo GZ7) -->
+        <div class="section-card" id="tiktok-main-connect-card">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; border-bottom: 1px solid var(--border-subtle); padding-bottom: 14px; margin-bottom: 18px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div class="connector-pill-btn active" style="cursor: default; pointer-events: none;">
+                <span>⚡</span> <strong>Motor Directo TikTok Live</strong> <span style="color: var(--neon-cyan);">Webcast GZ7</span>
+              </div>
+              <span style="font-size: 12px; color: var(--text-muted); font-family: var(--font-mono);">
+                Conexión única directa &bull; Sin caídas
+              </span>
+            </div>
+
+            <!-- Indicador lateral de estado en vivo (Verde al conectar) -->
+            <div id="dash-side-status-badge" style="display: inline-flex; align-items: center; gap: 9px; padding: 7px 16px; border-radius: 999px; font-family: var(--font-mono); font-size: 12px; font-weight: 800; background: rgba(255, 42, 95, 0.12); border: 1.5px solid rgba(255, 42, 95, 0.45); color: #ff6b8b; transition: all 0.25s ease;">
+              <span class="status-indicator disconnected" id="dash-side-status-dot"></span>
+              <span id="dash-side-status-label">DESCONECTADO</span>
+            </div>
+          </div>
+
+          <p style="font-size: 14px; color: var(--text-main); margin-bottom: 16px;">
+            Ingresa tu <strong>@usuario</strong> de TikTok (o usuario de prueba) y haz clic en <strong>Conectar</strong> para activar la recepción en tiempo real de regalos, alertas con Croma Key, TTS y eventos.
+          </p>
+
+          <div class="tiktok-connect-form-row">
+            <label for="dash-tiktok-username" style="font-size: 14px; font-weight: 700;">
+              Tu usuario de TikTok <span style="color: var(--color-malos);">(Requerido!)</span>
+            </label>
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+              <input type="text" id="dash-tiktok-username" class="input-field" placeholder="TikTok @username (ej. @gz7)" style="font-size: 15px; padding: 11px 14px; flex: 1; min-width: 240px;" />
+              <span id="dash-tiktok-status-text" style="font-family: var(--font-mono); font-size: 12px; font-weight: 800; padding: 8px 14px; border-radius: 999px; background: rgba(255, 42, 95, 0.12); border: 1px solid rgba(255, 42, 95, 0.4); color: #ff6b8b; white-space: nowrap;">
+                ● DESCONECTADO
+              </span>
+            </div>
+          </div>
+
+          <div class="tiktok-connect-form-row">
+            <div>
+              <span style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);">
+                Control de Enlace &amp; Pruebas
+              </span>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button type="button" class="btn-primary" id="dash-btn-connect-tiktok" style="min-width: 155px;">
+                ⚡ Conectar TikTok
+              </button>
+              <button type="button" class="btn-danger" id="dash-btn-disconnect-tiktok" style="min-width: 140px; display: none;">
+                ✕ Desconectar
+              </button>
+              <button type="button" class="btn-secondary" id="btn-quick-test-gift">
+                🧪 Simular Regalo (Rose)
+              </button>
+              <button type="button" class="btn-secondary" id="btn-open-gift-monitor" style="border-color: rgba(56, 189, 248, 0.4); color: var(--neon-cyan);">
+                📡 Monitor &amp; Simulador
+              </button>
+              <button type="button" class="btn-secondary" id="btn-quick-test-chroma">
+                🎬 Probar Alerta Croma
+              </button>
+              <button type="button" class="btn-secondary" id="btn-fetch-emotes">
+                😎 Sincronizar Emotes
+              </button>
+            </div>
+          </div>
+
+          <div class="retry-help-banner" id="dash-connection-footer-banner" style="background: rgba(0, 240, 255, 0.06); border-color: rgba(0, 240, 255, 0.3);">
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+              <span id="dash-engine-pill" style="background: rgba(0, 240, 255, 0.18); color: var(--neon-cyan); border: 1px solid rgba(0, 240, 255, 0.45); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 800;">
+                MOTOR ÚNICO GZ7
+              </span>
+              <strong id="dash-engine-msg" style="font-size: 13px; letter-spacing: 0.5px; color: var(--text-main);">
+                CONECTOR DIRECTO WEBCAST + MODO PRUEBA INTERACTIVO ACTIVO (CROMA, RCON Y OVERLAYS LISTOS)
+              </strong>
+            </div>
+            <span style="font-family: var(--font-mono); font-size: 12px; color: var(--neon-cyan);">
+              Overlays activos en: http://localhost:4000
+            </span>
+          </div>
+        </div>
+
+        <!-- Estadísticas Rápidas de la Sesión -->
+        <div class="section-card">
+          <div class="panel-header">
+            <span class="panel-title">📊 Estadísticas Globales de la Sesión en Vivo</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;">
+            <div class="stat-box">
+              <span class="stat-value" id="stat-likes">0</span>
+              <span class="stat-label">❤️ Likes Totales</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-value" id="stat-gifts">0</span>
+              <span class="stat-label">🎁 Regalos Recibidos</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-value" id="stat-coins">0</span>
+              <span class="stat-label">💎 Diamantes / Monedas</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-value" id="stat-followers">0</span>
+              <span class="stat-label">➕ Nuevos Seguidores</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         2A. PESTAÑA MODO MINECRAFT: OVERLAYS (CARRUSEL/ESTÁTICO/PLANO) & TÓTEMS
+         =================================================================== -->
+    <section class="tab-pane" id="tab-minecraft">
+      <div class="page-hero-title">
+        <span>⛏️ PANEL MINECRAFT &bull; OVERLAYS & TÓTEMS</span>
+        <div style="display: flex; gap: 8px;">
+          <button type="button" class="btn-secondary btn-load-preset" data-preset="minecraft_bm">
+            🛡️ Cargar Preset Buenos vs Malos
+          </button>
+          <button type="button" class="btn-secondary btn-load-preset" data-preset="minecraft_chaos">
+            💥 Cargar Preset Caos Mob Spawner
+          </button>
+        </div>
+      </div>
+
+      <!-- Configurador de los 3 Estilos de Overlay para Minecraft -->
+      <div class="section-card" style="margin-bottom: 18px;">
+        <div class="panel-header">
+          <div>
+            <span class="panel-title">🎨 Configurador de Overlay para Minecraft (OBS / TikTok LIVE Studio)</span>
+            <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
+              Elige entre un <strong>Overlay Dinámico como Carrusel</strong>, uno <strong>Estático en Cuadrícula</strong> o uno <strong>Plano / Recto</strong> súper fácil de usar y poner. Todos muestran los regalos que configures abajo.
+            </p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <label style="font-size: 12px; color: var(--text-muted); font-weight: 700;">Escala OBS:</label>
+            <input type="range" id="mc-overlay-scale-slider" min="50" max="220" value="100" style="width: 130px; accent-color: var(--neon-cyan); cursor: pointer;" />
+            <span id="mc-overlay-scale-label" style="font-family: var(--font-mono); font-size: 13px; color: var(--neon-cyan); font-weight: 800;">100%</span>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 10px;">
+          <!-- Estilo 1: Carrusel Dinámico -->
+          <div class="card-panel mc-style-card" data-mc-style="carousel" style="border: 2px solid var(--neon-cyan);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <strong style="font-family: var(--font-display); font-size: 14px; color: var(--neon-cyan);">🎠 1. Carrusel Dinámico</strong>
+              <span class="btn-micro">RECOMENDADO</span>
+            </div>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
+              Desfila automáticamente tus regalos de Minecraft con giro continuo y alerta emergente.
+            </p>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--neon-cyan); background: #02060d; padding: 7px 10px; border-radius: 6px; margin-bottom: 10px;">
+              http://localhost:4000/mc_carrusel.html
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" class="btn-primary btn-copy-url" data-url="http://localhost:4000/mc_carrusel.html" style="flex: 1; padding: 8px;">
+                📋 Copiar Link
+              </button>
+              <button type="button" class="btn-secondary btn-set-mc-style" data-style="carousel">
+                Activar
+              </button>
+            </div>
+          </div>
+
+          <!-- Estilo 2: Estático Grid -->
+          <div class="card-panel mc-style-card" data-mc-style="static">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <strong style="font-family: var(--font-display); font-size: 14px; color: #fff;">🔲 2. Overlay Estático (Grid)</strong>
+              <span class="btn-micro">FIJO</span>
+            </div>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
+              Muestra todos los regalos y lo que invocan en una tabla/cuadrícula fija sin movimiento.
+            </p>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--neon-cyan); background: #02060d; padding: 7px 10px; border-radius: 6px; margin-bottom: 10px;">
+              http://localhost:4000/mc_estatico.html
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" class="btn-primary btn-copy-url" data-url="http://localhost:4000/mc_estatico.html" style="flex: 1; padding: 8px;">
+                📋 Copiar Link
+              </button>
+              <button type="button" class="btn-secondary btn-set-mc-style" data-style="static">
+                Activar
+              </button>
+            </div>
+          </div>
+
+          <!-- Estilo 3: Plano / Recto -->
+          <div class="card-panel mc-style-card" data-mc-style="flat">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <strong style="font-family: var(--font-display); font-size: 14px; color: #fff;">📏 3. Overlay Plano / Recto</strong>
+              <span class="btn-micro">MINIMALISTA</span>
+            </div>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
+              Cinta horizontal recta, compacta y súper fácil de colocar arriba o abajo de tu stream.
+            </p>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--neon-cyan); background: #02060d; padding: 7px 10px; border-radius: 6px; margin-bottom: 10px;">
+              http://localhost:4000/mc_plano.html
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" class="btn-primary btn-copy-url" data-url="http://localhost:4000/mc_plano.html" style="flex: 1; padding: 8px;">
+                📋 Copiar Link
+              </button>
+              <button type="button" class="btn-secondary btn-set-mc-style" data-style="flat">
+                Activar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fila Central: Tótems + Live Feed + Simulador Rápido -->
+      <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 18px; margin-bottom: 18px;">
+        <div>
+          <div class="faction-toggle-panel buenos" id="faction-banner">
+            <div>
+              <div style="font-family: var(--font-display); font-size: 18px; font-weight: 900; color: var(--neon-cyan);" id="faction-name-display">
+                FACCIÓN: BUENOS
+              </div>
+              <div style="font-size: 12px; color: var(--text-muted);" id="faction-sub-display">
+                Los regalos invocan bendiciones y suman tótems
+              </div>
+            </div>
+            <button type="button" class="btn-secondary" id="btn-toggle-faction">
+              🔄 CAMBIAR FACCIÓN
+            </button>
+          </div>
+
+          <totem-bar></totem-bar>
+        </div>
+
+        <div style="height: 310px;">
+          <event-feed></event-feed>
+        </div>
+      </div>
+
+      <!-- Tabla Configurable de Regalos de Minecraft -->
+      <div class="section-card">
+        <div class="panel-header">
+          <div>
+            <span class="panel-title">🎁 Regalos y Comandos Configurados en el Overlay de Minecraft</span>
+            <p style="font-size: 13px; color: var(--text-muted); margin-top: 3px;">
+              Cualquier cambio aquí actualiza instantáneamente el Overlay de Minecraft (Carrusel, Estático y Plano) y los comandos RCON.
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="btn-primary" id="btn-open-catalog-from-gifts">
+              🎁 + Elegir Regalo del Catálogo Visual
+            </button>
+            <button type="button" class="btn-secondary" id="btn-add-gift-row">+ Fila Manual</button>
+            <button type="button" class="btn-secondary" id="btn-restore-gifts-default">Restaurar Defaults</button>
+            <button type="button" class="btn-primary" id="btn-save-gifts">💾 Guardar y Actualizar Overlay</button>
+          </div>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="custom-table" id="gifts-config-table">
+            <thead>
+              <tr>
+                <th style="width: 240px;">Regalo TikTok (Click para cambiar)</th>
+                <th style="width: 90px;">Diamantes</th>
+                <th style="width: 115px;">Facción</th>
+                <th>Comando RCON / Etiqueta en Overlay ({donador})</th>
+                <th style="width: 90px;">Δ Tótems</th>
+                <th style="width: 90px;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="gifts-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         2B. PESTAÑA MODO ROBLOX: EDITOR OBBY BICICLETA (GIFT VS GIFT EDITABLE)
+         =================================================================== -->
+    <section class="tab-pane" id="tab-roblox">
+      <div class="page-hero-title">
+        <span>🚴 ROBLOX OBBY BICICLETA &bull; SUITE DE OVERLAYS 720:1080</span>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <button type="button" class="btn-secondary" id="btn-import-obby-json">📥 Importar JSON</button>
+          <button type="button" class="btn-secondary" id="btn-export-obby-json">📤 Exportar JSON</button>
+          <button type="button" class="btn-secondary" id="btn-reset-roblox-overlay">🔄 Restaurar Originales</button>
+          <button type="button" class="btn-primary" id="btn-save-roblox-overlay">💾 Guardar Todo en Vivo</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin:-8px 0 14px;align-items:center;">
+        <input id="obby-profile-code" class="input-field" placeholder="Pega aquí JSON o Código de Perfil (opcional)" style="flex:1;" />
+        <button type="button" class="btn-secondary" id="btn-import-obby-code">Aplicar código</button>
+        <input type="file" id="obby-json-file" accept=".json,application/json" hidden />
+      </div>
+
+      <div class="section-card" style="margin-bottom:16px; border:1.5px solid rgba(0,240,255,.45);">
+        <div class="panel-header" style="margin-bottom:12px;">
+          <div><span class="panel-title">🎮 GIFT VS GIFT · CONTROL DIRECTO OBBY BICICLETA</span><p style="font-size:12px;color:var(--text-muted);margin-top:3px;">Panel → estado Rust → SSE → overlay de OBS / TikTok LIVE Studio.</p></div>
+          <span id="gvg-live-status" class="btn-micro">🟢 OVERLAY LOCAL</span>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(260px,1fr) auto auto auto;gap:8px;margin-bottom:14px;">
+          <input id="gvg-overlay-url" class="input-field" value="http://127.0.0.1:4000/gift-vs-gift.html" readonly />
+          <button type="button" class="btn-secondary" id="btn-gvg-copy-url">📋 Copiar URL</button>
+          <button type="button" class="btn-primary" id="btn-gvg-open-overlay">▶ Probar / Abrir</button>
+          <button type="button" class="btn-danger" id="btn-gvg-reset-points">🔄 Reset Contadores (0 - 0)</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+          <div style="padding:12px;border-radius:12px;background:rgba(255,42,95,.07);border:1px solid rgba(255,42,95,.4);"><strong style="color:#ff6b8b;">💀 Villanos / Rosa · Izquierda</strong><div style="display:flex;gap:7px;margin-top:8px;align-items:center;"><input type="number" min="0" id="gvg-red-points" class="input-field" value="0" style="width:100px;text-align:center;font-size:18px;font-weight:900;" /><button class="btn-secondary gvg-point-delta" data-team="RED" data-delta="1">+1</button><button class="btn-secondary gvg-point-delta" data-team="RED" data-delta="-1">-1</button><button class="btn-secondary gvg-point-delta" data-team="RED" data-delta="10">+10</button></div></div>
+          <div style="padding:12px;border-radius:12px;background:rgba(0,240,255,.07);border:1px solid rgba(0,240,255,.4);"><strong style="color:var(--neon-cyan);">🛡️ Héroes / GG · Derecha</strong><div style="display:flex;gap:7px;margin-top:8px;align-items:center;"><input type="number" min="0" id="gvg-blue-points" class="input-field" value="0" style="width:100px;text-align:center;font-size:18px;font-weight:900;" /><button class="btn-secondary gvg-point-delta" data-team="BLUE" data-delta="1">+1</button><button class="btn-secondary gvg-point-delta" data-team="BLUE" data-delta="-1">-1</button><button class="btn-secondary gvg-point-delta" data-team="BLUE" data-delta="10">+10</button></div></div>
+        </div>
+        <div style="padding:12px;border-radius:12px;background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.35);"><div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap;">
+          <label style="font-size:12px;font-weight:800;">Wins actuales<br><input type="number" id="gvg-current-wins" class="input-field" value="0" style="width:95px;margin-top:5px;" /></label>
+          <label style="font-size:12px;font-weight:800;">Meta total de Wins<br><input type="number" min="1" id="gvg-target-wins" class="input-field" value="10" style="width:110px;margin-top:5px;" /></label>
+          <button class="btn-secondary gvg-win-delta" data-delta="1">+1 Win</button><button class="btn-secondary gvg-win-delta" data-delta="-1">-1 Win</button><button class="btn-secondary gvg-win-delta" data-delta="-5">-5 Wins</button><button class="btn-danger" id="btn-gvg-reset-wins">Reset Wins</button>
+          <label style="font-size:12px;font-weight:800;flex:1;min-width:190px;">Cuando se alcanza la meta<select id="gvg-goal-action" class="table-select" style="width:100%;margin-top:5px;"><option value="INCREASE_TARGET">Aumentar Meta</option><option value="SHOW_VICTORY">Mostrar Victoria</option><option value="HOLD">Mantener</option></select></label>
+          <label style="display:flex;gap:7px;align-items:center;font-size:12px;font-weight:800;"><input type="checkbox" id="gvg-show-columns" checked> Mostrar columnas laterales</label>
+        </div></div>
+      </div>
+
+      <!-- 1. LAS 4 TARJETAS DE OVERLAYS MODULARES INDEPENDIENTES PARA LIBERTAD TOTAL DE DISEÑO -->
+      <div class="section-card" style="margin-bottom: 16px;">
+        <div class="panel-header" style="margin-bottom: 10px;">
+          <div>
+            <span class="panel-title">🔗 1. Links de Overlays Modulares Independientes (100% Libertad de Diseño en OBS / Live Studio)</span>
+            <p style="font-size: 13px; color: var(--text-muted); margin-top: 3px;">
+              Coloca cada módulo por separado donde quieras en tu escena: <strong>Solo Contador WIN</strong>, <strong>Regalos Lados (Villanos vs Héroes)</strong>, <strong>Duelo Gift vs Gift</strong> o <strong>Todo Unido</strong>.
+            </p>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+          <!-- Overlay 1: Solo Contador WIN Individual -->
+          <div class="card-panel" style="padding: 13px; border: 1.5px solid var(--color-gold);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+              <strong style="font-family: var(--font-display); font-size: 12px; color: var(--color-gold);">🏆 1. Solo Contador WIN</strong>
+              <span class="btn-micro" style="color: var(--color-gold); border-color: rgba(255,215,0,0.45);">INDIVIDUAL</span>
+            </div>
+            <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 8px; line-height: 1.35;">
+              Muestra <strong>solo las WINs</strong> para moverlas y escalarlas con libertad total.
+            </p>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--color-gold); background: #02060d; padding: 6px 8px; border-radius: 6px; margin-bottom: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+              http://localhost:4000/wins.html
+            </div>
+            <button type="button" class="btn-primary btn-copy-url" data-url="http://localhost:4000/wins.html" style="width: 100%; padding: 8px; font-size: 11px;">
+              📋 Copiar Link Solo WINs
+            </button>
+          </div>
+
+          <!-- Overlay 2: Solo Lados (Villanos vs Héroes) + Botones por Columna -->
+          <div class="card-panel" style="padding: 13px; border: 1.5px solid var(--neon-cyan);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+              <strong style="font-family: var(--font-display); font-size: 12px; color: var(--neon-cyan);">💀🛡️ 2. Lados Villanos/Héroes</strong>
+              <span class="btn-micro">720:1080</span>
+            </div>
+            <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 8px; line-height: 1.35;">
+              Columnas laterales fijas 720:1080 (centro libre) o por columna separada.
+            </p>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--neon-cyan); background: #02060d; padding: 6px 8px; border-radius: 6px; margin-bottom: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+              http://localhost:4000/villanos-heroes.html
+            </div>
+            <div style="display: flex; gap: 5px;">
+              <button type="button" class="btn-primary btn-copy-url" data-url="http://localhost:4000/villanos-heroes.html" style="flex: 1; padding: 8px 6px; font-size: 11px;">
+                📋 Ambos Lados
+              </button>
+              <button type="button" class="btn-micro btn-copy-url" data-url="http://localhost:4000/villanos.html" title="Copiar solo columna izquierda (Villanos)">
+                💀 Izq
+              </button>
+              <button type="button" class="btn-micro btn-copy-url" data-url="http://localhost:4000/heroes.html" title="Copiar solo columna derecha (Héroes)">
+                🛡️ Der
+              </button>
+            </div>
+          </div>
+
+          <!-- Overlay 3: Solo Duelo Gift vs Gift (Rosas vs GGs) -->
+          <div class="card-panel" style="padding: 13px; border: 1.5px solid var(--color-malos);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+              <strong style="font-family: var(--font-display); font-size: 12px; color: #ff6b8b;">🌹⚔️🎮 3. Duelo Gift vs Gift</strong>
+              <span class="btn-micro" style="color: #ff6b8b; border-color: rgba(255,42,95,0.4);">INDIVIDUAL</span>
+            </div>
+            <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 8px; line-height: 1.35;">
+              Solo la barra <strong>Gift vs Gift (Rosas vs GGs)</strong> para ubicarla donde quieras.
+            </p>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: #ff6b8b; background: #02060d; padding: 6px 8px; border-radius: 6px; margin-bottom: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+              http://localhost:4000/rosas-vs-ggs.html
+            </div>
+            <button type="button" class="btn-primary btn-copy-url" data-url="http://localhost:4000/rosas-vs-ggs.html" style="width: 100%; padding: 8px; font-size: 11px;">
+              📋 Copiar Link Gift vs Gift
+            </button>
+          </div>
+
+          <!-- Overlay 4: Completo Unido -->
+          <div class="card-panel" style="padding: 13px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+              <strong style="font-family: var(--font-display); font-size: 12px; color: #fff;">🌌 4. Todo-en-Uno Unido</strong>
+              <span class="btn-micro">720:1080</span>
+            </div>
+            <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 8px; line-height: 1.35;">
+              Une <strong>WIN + Gift vs Gift + Villanos/Héroes</strong> en un solo lienzo 720x1080.
+            </p>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--neon-cyan); background: #02060d; padding: 6px 8px; border-radius: 6px; margin-bottom: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+              http://localhost:4000/gift-vs-gift.html
+            </div>
+            <button type="button" class="btn-secondary btn-copy-url" data-url="http://localhost:4000/gift-vs-gift.html" style="width: 100%; padding: 8px; font-size: 11px;">
+              📋 Copiar Todo Unido
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. SELECTOR DE 5 ESTILOS ÉPICOS + SLIDERS DE ESCALADO MATEMÁTICO 720:1080 -->
+      <div class="section-card" style="margin-bottom: 16px;">
+        <div class="panel-header" style="margin-bottom: 12px;">
+          <div>
+            <span class="panel-title">🎨 2. Selector de 5 Estilos Visuales &amp; Escalado Fijo 720:1080 (No se Desconfigura)</span>
+            <p style="font-size: 13px; color: var(--text-muted); margin-top: 3px;">
+              Aumenta el tamaño de los regalos, el texto de lo que activan o su separación: el motor matemático 720:1080 los mantiene siempre alineados sin salirse de la pantalla.
+            </p>
+          </div>
+        </div>
+
+        <!-- Botonera de los 5 Estilos Épicos -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); gap: 8px; margin-bottom: 16px;" id="roblox-theme-selector">
+          <button type="button" class="connector-pill-btn rbx-theme-btn active" data-theme="GALACTIC" style="justify-content: center; padding: 10px 8px;">
+            🌌 <strong>GALACTIC</strong>
+          </button>
+          <button type="button" class="connector-pill-btn rbx-theme-btn" data-theme="SOL" style="justify-content: center; padding: 10px 8px;">
+            ☀️ <strong>SOL / MAGMA</strong>
+          </button>
+          <button type="button" class="connector-pill-btn rbx-theme-btn" data-theme="CONTRASTE" style="justify-content: center; padding: 10px 8px;">
+            👁️ <strong>CONTRASTE PRO</strong>
+          </button>
+          <button type="button" class="connector-pill-btn rbx-theme-btn" data-theme="MOVIMIENTO" style="justify-content: center; padding: 10px 8px;">
+            ⚡ <strong>MOVIMIENTO</strong>
+          </button>
+          <button type="button" class="connector-pill-btn rbx-theme-btn" data-theme="NEON" style="justify-content: center; padding: 10px 8px;">
+            💎 <strong>NEÓN LÁSER</strong>
+          </button>
+          <button type="button" class="connector-pill-btn rbx-theme-btn" data-theme="transparent" style="justify-content: center; padding: 10px 8px;">
+            🫥 <strong>TRANSPARENTE · SOLO ICONOS Y TEXTO</strong>
+          </button>
+        </div>
+
+        <!-- Sliders de Personalización en Tiempo Real -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; background: rgba(3, 8, 18, 0.72); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 14px;">
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; margin-bottom: 5px;">
+              <span>🎁 Tamaño Iconos de Regalos:</span>
+              <span id="rbx-val-icon-size" style="font-family: var(--font-mono); color: var(--neon-cyan);">48px</span>
+            </div>
+            <input type="range" id="rbx-slider-icon-size" min="28" max="88" value="48" style="width: 100%; accent-color: var(--neon-cyan); cursor: pointer;" />
+          </div>
+
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; margin-bottom: 5px;">
+              <span>🔤 Tamaño Texto (Lo que activa):</span>
+              <span id="rbx-val-text-size" style="font-family: var(--font-mono); color: var(--color-gold);">20px</span>
+            </div>
+            <input type="range" id="rbx-slider-text-size" min="12" max="38" value="20" style="width: 100%; accent-color: var(--color-gold); cursor: pointer;" />
+          </div>
+
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; margin-bottom: 5px;">
+              <span>↕️ Separación entre Regalos:</span>
+              <span id="rbx-val-item-gap" style="font-family: var(--font-mono); color: var(--neon-cyan);">8px</span>
+            </div>
+            <input type="range" id="rbx-slider-item-gap" min="0" max="28" value="8" style="width: 100%; accent-color: var(--neon-cyan); cursor: pointer;" />
+          </div>
+
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; margin-bottom: 5px;">
+              <span>✨ Nitidez Full HD Iconos:</span>
+              <span id="rbx-val-sharpness" style="font-family: var(--font-mono); color: var(--color-success);">140%</span>
+            </div>
+            <input type="range" id="rbx-slider-sharpness" min="100" max="220" value="140" style="width: 100%; accent-color: var(--color-success); cursor: pointer;" />
+          </div>
+
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; margin-bottom: 5px;">
+              <span>🏆 Escala Individual Contador WIN:</span>
+              <span id="rbx-val-win-scale" style="font-family: var(--font-mono); color: var(--neon-cyan);">100%</span>
+            </div>
+            <input type="range" id="rbx-slider-win-scale" min="70" max="165" value="100" style="width: 100%; accent-color: var(--neon-cyan); cursor: pointer;" />
+          </div>
+
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; margin-bottom: 5px;">
+              <span>📐 Escala Global Lienzo OBS:</span>
+              <span id="overlay-gift-scale-val" style="font-family: var(--font-mono); color: var(--neon-cyan);">100%</span>
+            </div>
+            <input type="range" id="overlay-gift-scale-slider" min="50" max="220" value="100" style="width: 100%; accent-color: var(--neon-cyan); cursor: pointer;" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. CONTROL INDIVIDUAL DE WINS + PERSONALIZADOR GIFT VS GIFT (ROSAS VS GGS) -->
+      <div class="section-card" style="margin-bottom: 16px;">
+        <div class="panel-header">
+          <div>
+            <span class="panel-title">🏆⚔️ 3. Diseño Individual de WINs &amp; Personalizador Duelo Gift vs Gift</span>
+            <p style="font-size: 13px; color: var(--text-muted); margin-top: 3px;">
+              Personaliza las WINs de forma independiente (título, estilo propio, meta) y elige cualquier regalo del catálogo para el duelo central.
+            </p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <label style="font-size: 12px; color: var(--text-muted); font-weight: 700;">Meta WINS:</label>
+            <input type="number" id="roblox-target-wins-input" class="input-field" value="10" min="1" max="999" style="width: 72px; text-align: center; font-weight: 800;" />
+            <button type="button" class="btn-secondary" id="btn-save-target-wins">Fijar Meta</button>
+          </div>
+        </div>
+
+        <!-- Barra de Opciones Individuales para el Contador de WINs -->
+        <div style="display: grid; grid-template-columns: 1fr 1.2fr 1.3fr; gap: 12px; align-items: center; background: rgba(255, 215, 0, 0.05); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 12px; padding: 12px 14px; margin-bottom: 14px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label style="font-size: 12px; font-weight: 800; color: var(--color-gold); white-space: nowrap;">🏆 Texto WIN:</label>
+            <input type="text" id="rbx-win-label-input" class="input-field" value="WIN" placeholder="WIN / NIVEL / META" style="width: 100%; font-weight: 800; text-transform: uppercase;" />
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label style="font-size: 12px; font-weight: 800; color: var(--color-gold); white-space: nowrap;">🎨 Estilo WIN:</label>
+            <select id="rbx-win-theme-select" class="table-select" style="width: 100%;">
+              <option value="AUTO">🔗 Igual al Estilo Global</option>
+              <option value="GALACTIC">🌌 GALACTIC (Solo WIN)</option>
+              <option value="SOL">☀️ SOL / MAGMA (Solo WIN)</option>
+              <option value="CONTRASTE">👁️ CONTRASTE PRO (Solo WIN)</option>
+              <option value="MOVIMIENTO">⚡ MOVIMIENTO (Solo WIN)</option>
+              <option value="NEON">💎 NEÓN LÁSER (Solo WIN)</option>
+            </select>
+          </div>
+
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 12px; font-weight: 700; color: var(--text-main);">
+            <input type="checkbox" id="rbx-show-win-in-sides-check" style="width: 16px; height: 16px; accent-color: var(--color-gold); cursor: pointer;" />
+            <span>Mostrar WIN también dentro de <code>/villanos-heroes.html</code></span>
+          </label>
+        </div>
+
+        <!-- Tarjetas de los 2 Regalos del Duelo Central -->
+        <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 14px; align-items: center; margin-bottom: 14px;">
+          <!-- Regalo Rojo (En Contra) -->
+          <div class="roblox-slot-row" style="margin-bottom: 0; border-color: rgba(255,42,95,0.5); background: rgba(255,42,95,0.06);">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <img id="rbx-center-red-img" src="./gifts/rose-1-coins.webp" class="roblox-slot-icon gift-hd-img" alt="Red Gift" />
+              <div>
+                <div style="font-size: 11px; font-weight: 800; color: #ff6b8b; text-transform: uppercase;">🔴 Regalo En Contra (Izquierda)</div>
+                <div id="rbx-center-red-name" style="font-size: 16px; font-weight: 900; color: #fff;">Rose</div>
+                <div id="rbx-center-red-coins" style="font-family: var(--font-mono); font-size: 11px; color: var(--color-gold);">1 💎</div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end;">
+              <button type="button" class="btn-micro btn-sound-roblox-slot" id="btn-sound-center-red" data-slot-id="CENTER_RED" style="color: var(--neon-cyan); border-color: rgba(0,240,255,0.4);">
+                🔊 Elegir sonido
+              </button>
+              <button type="button" class="btn-micro btn-change-roblox-gift" data-slot-id="CENTER_RED">
+                🔄 Cambiar Regalo
+              </button>
+              <button type="button" class="btn-secondary" id="btn-test-roblox-red" style="padding: 6px 10px; font-size: 12px;">
+                ▶ +10 Pts
+              </button>
+            </div>
+          </div>
+
+          <div style="font-family: var(--font-display); font-weight: 900; font-size: 20px; color: var(--neon-cyan); font-style: italic;">
+            VS
+          </div>
+
+          <!-- Regalo Azul (A Favor) -->
+          <div class="roblox-slot-row" style="margin-bottom: 0; border-color: rgba(0,240,255,0.5); background: rgba(0,240,255,0.06);">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <img id="rbx-center-blue-img" src="./gifts/gg-1-coins.webp" class="roblox-slot-icon gift-hd-img" alt="Blue Gift" />
+              <div>
+                <div style="font-size: 11px; font-weight: 800; color: var(--neon-cyan); text-transform: uppercase;">🔵 Regalo A Favor (Derecha)</div>
+                <div id="rbx-center-blue-name" style="font-size: 16px; font-weight: 900; color: #fff;">GG</div>
+                <div id="rbx-center-blue-coins" style="font-family: var(--font-mono); font-size: 11px; color: var(--color-gold);">1 💎</div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end;">
+              <button type="button" class="btn-micro btn-sound-roblox-slot" id="btn-sound-center-blue" data-slot-id="CENTER_BLUE" style="color: var(--neon-cyan); border-color: rgba(0,240,255,0.4);">
+                🔊 Elegir sonido
+              </button>
+              <button type="button" class="btn-micro btn-change-roblox-gift" data-slot-id="CENTER_BLUE">
+                🔄 Cambiar Regalo
+              </button>
+              <button type="button" class="btn-secondary" id="btn-test-roblox-blue" style="padding: 6px 10px; font-size: 12px;">
+                ▶ +10 Pts
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 14px;">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="btn-primary btn-gvg-action" data-action="add_win">➕ +1 WIN</button>
+            <button type="button" class="btn-danger btn-gvg-action" data-action="sub_win">➖ -1 WIN</button>
+            <button type="button" class="btn-secondary btn-gvg-action" data-action="reset_wins">🔄 Reset WINS (0)</button>
+            <button type="button" class="btn-secondary btn-gvg-action" data-action="reset_ronda">⚡ Reset Duelo (0 - 0)</button>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 12px; color: var(--text-muted); font-weight: 700;">Escala Duelo Central:</span>
+            <input type="range" id="rbx-slider-duel-scale" min="70" max="165" value="100" style="width: 130px; accent-color: var(--neon-cyan); cursor: pointer;" />
+            <span id="rbx-val-duel-scale" style="font-family: var(--font-mono); font-size: 12px; color: var(--neon-cyan); font-weight: 800;">100%</span>
+          </div>
+        </div>
+
+        <!-- 🕹️ Tarjeta de Control Manual en Vivo (Respaldo & Pruebas) -->
+        <div style="background: rgba(2, 6, 18, 0.92); border: 1.5px solid rgba(0, 240, 255, 0.4); border-radius: 12px; padding: 12px 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.6);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
+            <div style="font-family: var(--font-display); font-size: 12.5px; font-weight: 900; color: var(--neon-cyan); display: flex; align-items: center; gap: 6px;">
+              <span>🕹️ CONTROL MANUAL EN VIVO (RESPALDO &amp; PRUEBAS)</span>
+              <span class="btn-micro" style="color: var(--color-success); border-color: rgba(0,255,163,0.4);">CONEXIÓN DIRECTA</span>
+            </div>
+            <span style="font-size: 11.5px; color: var(--text-muted);">Inyecta puntos y disparos en vivo en OBS / TikTok Live Studio</span>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="btn-primary" id="btn-manual-rose-left" style="background: linear-gradient(135deg, #b8007a, #ff00aa); border: none; padding: 8px 14px; font-weight: 800; font-size: 12px;">
+              🌹 +1 Rosa (Izq)
+            </button>
+            <button type="button" class="btn-primary" id="btn-manual-gg-right" style="background: linear-gradient(135deg, #0066ff, #00f0ff); border: none; color: #020617; padding: 8px 14px; font-weight: 900; font-size: 12px;">
+              🎮 +1 GG (Der)
+            </button>
+            <button type="button" class="btn-secondary" id="btn-manual-plus10-left" style="border-color: rgba(255,42,95,0.6); color: #ff6b8b; padding: 8px 12px; font-weight: 800; font-size: 12px;">
+              🔥 +10 Izq
+            </button>
+            <button type="button" class="btn-secondary" id="btn-manual-plus10-right" style="border-color: rgba(0,240,255,0.6); color: #00f0ff; padding: 8px 12px; font-weight: 800; font-size: 12px;">
+              ⚡ +10 Der
+            </button>
+            <button type="button" class="btn-secondary" id="btn-manual-reset-duel" style="border-color: rgba(255,215,0,0.5); color: #ffd700; padding: 8px 14px; font-weight: 800; font-size: 12px;">
+              🔄 Reiniciar Duelo (0 - 0)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. EDITOR DE LAS COLUMNAS LATERALES: VILLANOS (IZQUIERDA) VS HÉROES (DERECHA) -->
+      <div class="section-card">
+        <div class="panel-header">
+          <div>
+            <span class="panel-title">💀🛡️ 4. Regalos Laterales: Villanos (Izquierda) vs Héroes (Derecha)</span>
+            <p style="font-size: 13px; color: var(--text-muted); margin-top: 3px;">
+              Haz clic en <strong>"🔄 Cambiar Regalo"</strong> en cualquier fila para elegir entre los 1,770 regalos o edita el texto de lo que activa (ej. <code>-20 WIN</code>, <code>+500</code>).
+            </p>
+          </div>
+        </div>
+
+        <div class="roblox-columns-editor">
+          <!-- Columna Izquierda: Villanos -->
+          <div>
+            <div style="font-family: var(--font-display); font-size: 13px; font-weight: 800; color: var(--color-malos); margin-bottom: 10px; display: flex; justify-content: space-between;">
+              <span>💀 COLUMNA IZQUIERDA: VILLANOS (EN CONTRA)</span>
+              <span>LO QUE ACTIVA / VALOR</span>
+            </div>
+            <div id="roblox-left-slots-list"></div>
+            <button type="button" class="btn-secondary btn-add-obby-action" data-kind="LEFT" style="width:100%;margin-top:8px;">+ Crear nueva acción / Añadir Regalo · Izquierda</button>
+          </div>
+
+          <!-- Columna Derecha: Héroes -->
+          <div>
+            <div style="font-family: var(--font-display); font-size: 13px; font-weight: 800; color: var(--neon-cyan); margin-bottom: 10px; display: flex; justify-content: space-between;">
+              <span>🛡️ COLUMNA DERECHA: HÉROES (A FAVOR)</span>
+              <span>LO QUE ACTIVA / VALOR</span>
+            </div>
+            <div id="roblox-right-slots-list"></div>
+            <button type="button" class="btn-secondary btn-add-obby-action" data-kind="RIGHT" style="width:100%;margin-top:8px;">+ Crear nueva acción / Añadir Regalo · Derecha</button>
+          </div>
+        </div>
+        <button type="button" class="btn-primary btn-add-obby-action" data-kind="WINS" style="width:100%;margin-top:12px;">+ Crear nueva acción / Añadir Regalo · Modificador de WINS</button>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         3. PESTAÑA: REGALOS (DISEÑO 3 COLUMNAS CON VISTA PREVIA COMO CAPTURA 2)
+         =================================================================== -->
+    <section class="tab-pane" id="tab-catalog">
+      <div class="page-hero-title">
+        <span>REGALOS</span>
+        <span style="font-size: 13px; font-style: normal; font-family: var(--font-mono); color: var(--neon-cyan);" id="catalog-top-badge">
+          Catálogo Oficial TikTok &bull; 1,770 Regalos
+        </span>
+      </div>
+
+      <!-- MONITOR Y SIMULADOR DE REGALOS EN TIEMPO REAL (APPLE DARK MODE) -->
+      <gift-monitor></gift-monitor>
+
+      <div class="regalos-pro-layout">
+        <!-- Columna 1: Sidebar de Filtros y Diamantes -->
+        <aside class="regalos-sidebar">
+          <div class="sidebar-section-title">FILTROS</div>
+          <div class="filter-nav-list" id="cat-category-filters">
+            <button type="button" class="filter-nav-item active" data-cat="todos">
+              <span>📦 Todos</span>
+              <span class="filter-count-pill" id="count-cat-todos">1770</span>
+            </button>
+            <button type="button" class="filter-nav-item" data-cat="populares">
+              <span>❤️ Populares</span>
+              <span class="filter-count-pill">45</span>
+            </button>
+            <button type="button" class="filter-nav-item" data-cat="basicos">
+              <span>🎁 Básicos</span>
+              <span class="filter-count-pill">320</span>
+            </button>
+            <button type="button" class="filter-nav-item" data-cat="animados">
+              <span>▶️ Animados</span>
+              <span class="filter-count-pill">410</span>
+            </button>
+            <button type="button" class="filter-nav-item" data-cat="destacados">
+              <span>⭐ Destacados</span>
+              <span class="filter-count-pill">95</span>
+            </button>
+            <button type="button" class="filter-nav-item" data-cat="premium">
+              <span>👑 Premium</span>
+              <span class="filter-count-pill">280</span>
+            </button>
+          </div>
+
+          <div class="sidebar-section-title" style="margin-top: 8px;">DIAMANTES</div>
+          <div class="filter-nav-list" id="catalog-coin-pills-container">
+            <button type="button" class="filter-nav-item catalog-pill-btn active" data-filter="todos">
+              <span>Todos</span>
+            </button>
+            <button type="button" class="filter-nav-item catalog-pill-btn" data-filter="1-10">
+              <span>1–10 💎</span>
+            </button>
+            <button type="button" class="filter-nav-item catalog-pill-btn" data-filter="11-99">
+              <span>11–99 💎</span>
+            </button>
+            <button type="button" class="filter-nav-item catalog-pill-btn" data-filter="100-499">
+              <span>100–499 💎</span>
+            </button>
+            <button type="button" class="filter-nav-item catalog-pill-btn" data-filter="500-999">
+              <span>500–999 💎</span>
+            </button>
+            <button type="button" class="filter-nav-item catalog-pill-btn" data-filter="1000+">
+              <span>1000+ 💎</span>
+            </button>
+          </div>
+
+          <div class="sidebar-section-title" style="margin-top: 8px;">REGIÓN / PAÍS</div>
+          <select id="catalog-country-select" class="table-select" style="width: 100%;"></select>
+        </aside>
+
+        <!-- Columna 2: Buscador + Grid de Regalos -->
+        <div class="regalos-center-panel">
+          <div class="regalos-search-header">
+            <input type="text" id="catalog-search-input" class="input-field" placeholder="🔍 Buscar regalo por nombre o diamantes (ej. Rosa, Lion, Whale, 1000)..." style="flex: 1;" />
+            <span id="catalog-total-display" style="font-family: var(--font-mono); font-weight: 800; font-size: 13px; color: var(--text-main); white-space: nowrap;">
+              1770 / 1770
+            </span>
+          </div>
+
+          <div class="regalos-grid-scroll" id="catalog-grid-container"></div>
+        </div>
+
+        <!-- Columna 3: Vista Previa y Colocación Directa en Overlay -->
+        <aside class="regalos-preview-panel">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px; font-family: var(--font-display); font-size: 13px; font-weight: 800; color: var(--neon-cyan); border-bottom: 1px solid var(--border-subtle); padding-bottom: 10px;">
+              <span>👁️ Vista previa</span>
+            </div>
+
+            <div class="preview-hero-box">
+              <img id="preview-gift-img" src="./gifts/rose-1-coins.webp" alt="Preview" class="preview-hero-img" />
+              <h3 id="preview-gift-name" style="font-size: 22px; font-weight: 900; color: #fff;">Rose</h3>
+            </div>
+
+            <div class="preview-meta-table">
+              <div class="preview-meta-row">
+                <span>ID:</span>
+                <span class="preview-meta-val" id="preview-gift-id">5655</span>
+              </div>
+              <div class="preview-meta-row">
+                <span>Diamantes:</span>
+                <span class="preview-meta-val" style="color: var(--neon-cyan);" id="preview-gift-coins">1 💎</span>
+              </div>
+              <div class="preview-meta-row">
+                <span>Categoría:</span>
+                <span class="preview-meta-val" style="background: rgba(0,240,255,0.15); color: var(--neon-cyan); padding: 2px 8px; border-radius: 6px; font-size: 11px;" id="preview-gift-cat">Básico</span>
+              </div>
+              <div class="preview-meta-row">
+                <span>Región:</span>
+                <span class="preview-meta-val" id="preview-gift-region">GLOBAL</span>
+              </div>
+              <div class="preview-meta-row">
+                <span>Sonido Asignado:</span>
+                <span class="preview-meta-val" style="color: var(--color-gold);" id="preview-gift-sound">Automático</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botones de Acción Directa (Colocar en Overlay / Sonido / Probar) -->
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <button type="button" class="btn-primary" id="btn-preview-place-overlay" style="width: 100%; padding: 12px;">
+              ⚡ Colocar en Overlay / Configurar
+            </button>
+            <button type="button" class="btn-secondary" id="btn-preview-assign-sound" style="width: 100%;">
+              🔊 Cambiar Sonido del Regalo
+            </button>
+            <button type="button" class="btn-secondary" id="btn-preview-fire-test" style="width: 100%;">
+              🧪 Disparar Prueba en Vivo
+            </button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         4. PESTAÑA: SONIDOS INTERACTIVOS, MEMES Y MÚSICA EN TENDENCIA
+         =================================================================== -->
+    <section class="tab-pane" id="tab-sounds">
+      <div class="page-hero-title">
+        <span>🔊 BIBLIOTECA DE SONIDOS GRATIS (258+ S2E), MEMES &amp; TENDENCIAS</span>
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <button type="button" class="btn-danger" id="btn-stop-all-sounds" style="padding: 6px 12px; font-size: 12px;">
+            ⏹ Detener Audio
+          </button>
+          <span style="font-size: 12px; font-style: normal; color: var(--text-muted);">Volumen Maestro:</span>
+          <input type="range" id="sound-master-vol" min="5" max="100" value="85" style="width: 120px; accent-color: var(--neon-cyan); cursor: pointer;" />
+          <span id="sound-master-vol-label" style="font-family: var(--font-mono); font-size: 12px; color: var(--neon-cyan); font-weight: 800; min-width: 38px;">85%</span>
+        </div>
+      </div>
+
+      <div class="info-banner-box">
+        Biblioteca interactiva completa con <strong>258 sonidos gratis locales</strong> (Stream To Earn), <strong>8 sonidos sintetizados/memes</strong> y tus <strong>sonidos personalizados</strong>. Pruébalos al instante con <strong>▶ Probar</strong> o asígnalos con un clic a cualquier slot de <strong>Roblox OBBY (L1..L9, R1..R9, Duelo Central)</strong> o regalo de <strong>Minecraft</strong>.
+      </div>
+
+      <!-- Barra para añadir nuevo sonido personalizado por Link o Archivo -->
+      <div class="section-card" style="margin-bottom: 16px;">
+        <div class="panel-header">
+          <span class="panel-title">➕ Agregar Sonido Propio (Por Enlace URL o Archivo Local MP3/WAV/OGG)</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 1.3fr 0.8fr 0.8fr 1.6fr auto auto; gap: 10px; align-items: center;">
+          <input type="text" id="custom-sound-name" class="input-field" placeholder="Nombre (ej. Risa Ardilla, Grito)" />
+          <select id="custom-sound-cat" class="table-select" style="padding: 9px;">
+            <option value="memes">🤣 Meme / Gracioso</option>
+            <option value="musica">🎵 Música / Tendencia</option>
+            <option value="alertas">🚨 Alerta</option>
+            <option value="juegos">🎮 Juego</option>
+          </select>
+          <select id="custom-sound-dur" class="table-select" style="padding: 9px;">
+            <option value="corto">⚡ Audio Corto</option>
+            <option value="largo">🎶 Audio Largo</option>
+          </select>
+          <input type="text" id="custom-sound-url" class="input-field" placeholder="https://.../sonido.mp3 o sube archivo 👉" />
+          <label class="btn-secondary" style="cursor: pointer; white-space: nowrap;">
+            📂 Subir MP3
+            <input type="file" id="custom-sound-file" accept="audio/*" style="display: none;" />
+          </label>
+          <button type="button" class="btn-primary" id="btn-add-custom-sound">
+            + Guardar Sonido
+          </button>
+        </div>
+      </div>
+
+      <!-- Buscador Instantáneo y Filtros por Píldoras -->
+      <div class="section-card" style="margin-bottom: 14px; padding: 12px 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px;">
+          <input type="text" id="soundboard-search-input" class="input-field" placeholder="🔍 Buscar sonido gratis por nombre o tag (ej. vine, siren, laugh, sponge, fart, tnt, win, anime)..." style="flex: 1; min-width: 260px;" />
+          <span id="soundboard-count-badge" style="font-family: var(--font-mono); font-size: 12px; color: var(--neon-cyan); background: rgba(0,240,255,0.1); border: 1px solid rgba(0,240,255,0.35); padding: 6px 12px; border-radius: 99px; font-weight: 800;">
+            266 Sonidos Disponibles
+          </span>
+        </div>
+
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="sound-filter-pills">
+          <button type="button" class="btn-secondary active-sound-filter" data-sfilter="todos" style="border-color: var(--neon-cyan); color: var(--neon-cyan);">Todos (266+)</button>
+          <button type="button" class="btn-secondary" data-sfilter="s2e">🎁 Banco Gratis (258)</button>
+          <button type="button" class="btn-secondary" data-sfilter="synth">🎹 Memes / Sintetizados (8)</button>
+          <button type="button" class="btn-secondary" data-sfilter="custom">📂 Mis Sonidos</button>
+          <button type="button" class="btn-secondary" data-sfilter="memes">🤣 Memes &amp; SFX</button>
+          <button type="button" class="btn-secondary" data-sfilter="musica">🎵 Música</button>
+          <button type="button" class="btn-secondary" data-sfilter="alertas">🚨 Alertas</button>
+          <button type="button" class="btn-secondary" data-sfilter="corto">⚡ Cortos</button>
+          <button type="button" class="btn-secondary" data-sfilter="largo">🎶 Largos</button>
+        </div>
+      </div>
+
+      <div class="soundboard-grid" id="soundboard-grid-container"></div>
+    </section>
+
+    <!-- ===================================================================
+         5. PESTAÑA: TTS CHAT LOCAL EN TAURI (ACTIVO POR DEFECTO + CONTROLES PRO)
+         =================================================================== -->
+    <section class="tab-pane" id="tab-tts">
+      <div class="page-hero-title">
+        <span>TTS CHAT &bull; SÍNTESIS DE VOZ</span>
+        <span style="font-size: 12px; font-style: normal; font-family: var(--font-mono); color: var(--color-success); background: rgba(0,255,163,0.12); padding: 4px 12px; border-radius: 99px; border: 1px solid var(--color-success);">
+          ● MOTOR TAURI &amp; WEBSPEECH INTEGRADO
+        </span>
+      </div>
+
+      <!-- Tarjeta Maestra Superior: Interruptor ON/OFF, Estado y Parada Rápida -->
+      <div class="section-card tts-master-card" style="margin-bottom: 18px; background: linear-gradient(135deg, rgba(8, 22, 44, 0.95), rgba(4, 10, 22, 0.98)); border: 1.5px solid var(--border-active); box-shadow: 0 0 25px rgba(0, 240, 255, 0.12);">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <!-- Interruptor Maestro Visual Switch -->
+            <label class="tts-master-switch-wrap" title="Activa o desactiva completamente el sistema TTS">
+              <input type="checkbox" id="tts-master-toggle" checked />
+              <span class="tts-switch-slider"></span>
+            </label>
+            <div>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-family: var(--font-display); font-size: 15px; font-weight: 900; color: #fff; letter-spacing: 0.5px;">
+                  INTERRUPTOR MAESTRO TTS
+                </span>
+                <span id="tts-master-status-badge" class="tts-live-badge active">
+                  <span class="tts-status-dot"></span>
+                  <span id="tts-master-status-text">ACTIVO</span>
+                </span>
+              </div>
+              <p style="font-size: 12px; color: var(--text-muted); margin-top: 3px;">
+                Control maestro global. Al desactivar, silencia inmediatamente el audio y vacía la cola de locuciones con persistencia en localStorage y config.json.
+              </p>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <button type="button" class="btn-danger" id="btn-tts-stop-voice" style="padding: 8px 14px; font-size: 13px; font-weight: 800; display: inline-flex; align-items: center; gap: 6px;" title="Detiene cualquier locución en curso y vacía la cola">
+              ⏹ Parar Voz
+            </button>
+            <button type="button" class="btn-secondary" id="btn-tts-reset-settings" style="padding: 8px 14px; font-size: 13px;" title="Restablece volumen 85%, velocidad 1.0x y tono 1.0">
+              ↺ Restablecer
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tts-two-col-grid">
+        <!-- Columna Izquierda: CONFIGURACIÓN GENERAL -->
+        <div class="section-card">
+          <div class="panel-header">
+            <span class="panel-title" style="font-size: 16px;">CONFIGURACIÓN GENERAL</span>
+            <button type="button" class="btn-secondary" id="btn-refresh-voices" style="padding: 5px 12px; font-size: 12px;">
+              + Voces
+            </button>
+          </div>
+
+          <!-- Selector de Motor -->
+          <div class="tts-form-row" style="align-items: flex-start;">
+            <span class="tts-label" style="margin-top: 4px;">Motor</span>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <label class="tts-radio-label" style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                <input type="radio" name="tts-engine" value="tiktok" checked />
+                <span>🎵 Voces Virales TikTok (Cloud Base64 - Latam / Clásica)</span>
+              </label>
+              <label class="tts-radio-label" style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                <input type="radio" name="tts-engine" value="edge" />
+                <span>⚡ Microsoft Edge Neural TTS (Online Natural Dalia / Alvaro)</span>
+              </label>
+              <label class="tts-radio-label" style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                <input type="radio" name="tts-engine" value="local" />
+                <span>💻 SAPI Windows / Motor Local</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Selector de Idioma -->
+          <div class="tts-form-row">
+            <span class="tts-label">Lenguaje</span>
+            <select id="tts-lang-select" class="table-select" style="width: 100%; padding: 9px;">
+              <option value="es-MX" selected>Español (Latinoamérica / Perú / México)</option>
+              <option value="es-ES">Español (España)</option>
+              <option value="en-US">English (US)</option>
+              <option value="pt-BR">Português (Brasil)</option>
+            </select>
+          </div>
+
+          <!-- Selector de Voces -->
+          <div class="tts-form-row">
+            <span class="tts-label">Voz TTS</span>
+            <select id="tts-voice-select" class="table-select" style="width: 100%; padding: 9px;">
+              <optgroup label="🌟 Voces Virales TikTok (Recomendado)">
+                <option value="tiktok:es_mx_002" selected>🎵 Voz TikTok Latam (Viral - Clásica)</option>
+                <option value="tiktok:es_002">🎙️ Voz TikTok Masculina (Viral)</option>
+                <option value="tiktok:es_mx_001">🎙️ Voz TikTok Femenina (Viral)</option>
+              </optgroup>
+              <optgroup label="⚡ Voces Naturales / Neurales (Edge / Google)">
+                <option value="system:natural_male">🎙️ Narrador Natural Masculino (Alvaro / Jorge)</option>
+                <option value="system:natural_female">🎙️ Narradora Natural Femenina (Dalia / Elvira)</option>
+              </optgroup>
+              <optgroup label="💻 Voces del Sistema (Locales SAPI)">
+                <option value="default">Voz del Sistema (Español Automático)</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <!-- Voz Aleatoria -->
+          <div class="tts-form-row">
+            <span class="tts-label">Voz aleatoria</span>
+            <label class="tts-check-box-card">
+              <input type="checkbox" id="tts-random-voice-check" />
+              <span style="font-size: 12px; color: var(--text-muted); font-style: italic;">
+                Alterna entre las voces instaladas del idioma elegido en cada mensaje.
+              </span>
+            </label>
+          </div>
+
+          <!-- 1. CONTROL DE VOLUMEN (0% a 100%) -->
+          <div class="tts-form-row">
+            <div style="display: flex; flex-direction: column;">
+              <span class="tts-label">Volumen TTS</span>
+              <span style="font-size: 11px; color: var(--text-muted);">0% a 100%</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span id="tts-volume-icon" style="font-size: 16px; min-width: 22px;">🔊</span>
+              <input type="range" id="tts-volume-slider" min="0" max="100" step="1" value="85" class="tts-slider-bar" style="flex: 1;" />
+              <span id="tts-volume-val" class="tts-val-badge">85%</span>
+            </div>
+          </div>
+
+          <!-- 2. CONTROL DE VELOCIDAD (0.5x a 2.0x) -->
+          <div class="tts-form-row">
+            <div style="display: flex; flex-direction: column;">
+              <span class="tts-label">Velocidad</span>
+              <span style="font-size: 11px; color: var(--text-muted);">0.5x a 2.0x</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 15px; min-width: 22px;">⚡</span>
+              <input type="range" id="tts-speed-slider" min="0.5" max="2.0" step="0.1" value="1.0" class="tts-slider-bar" style="flex: 1;" />
+              <span id="tts-speed-val" class="tts-val-badge">1.0x</span>
+            </div>
+          </div>
+
+          <!-- 3. CONTROL DE TONO / PITCH (0.5 a 1.5) -->
+          <div class="tts-form-row">
+            <div style="display: flex; flex-direction: column;">
+              <span class="tts-label">Tono (Pitch)</span>
+              <span style="font-size: 11px; color: var(--text-muted);">Grave / Agudo</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 15px; min-width: 22px;">🎵</span>
+              <input type="range" id="tts-pitch-slider" min="0.5" max="1.5" step="0.05" value="1.0" class="tts-slider-bar" style="flex: 1;" />
+              <span id="tts-pitch-val" class="tts-val-badge">1.0 (Normal)</span>
+            </div>
+          </div>
+
+          <!-- Tarjeta Informativa del Sanitizador Léxico Anti-Locuras -->
+          <div class="tts-sanitizer-info-card">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px;">
+              <span style="font-size: 15px;">🛡️</span>
+              <strong style="color: var(--neon-cyan); font-size: 12px; font-family: var(--font-display);">
+                SANITIZADOR LÉXICO ANTI-LOCURAS ACTIVO
+              </strong>
+            </div>
+            <p style="font-size: 11px; color: var(--text-muted); line-height: 1.45;">
+              Purifica en tiempo real emojis de TikTok, marcas zalgo, caracteres invisibles y spam repetitivo ('aaaa', '!!!!!'). Lee con fluidez en español, inglés o portugués y pronuncia perfectamente palabras largas reales como <em>esternocleidomastoideo</em> sin colgar la voz.
+            </p>
+          </div>
+
+          <!-- Probador de Síntesis y Sanitización -->
+          <div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-subtle);">
+            <label style="font-size: 12px; font-weight: 700; color: var(--text-main); display: block; margin-bottom: 6px;">
+              Probador de Síntesis y Sanitización
+            </label>
+            <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+              <input type="text" id="tts-test-input" class="input-field" value="Hola GZ7, bienvenido al panel de GALACTK PANEL" style="flex: 1; font-size: 13px;" />
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button type="button" class="btn-primary" id="btn-test-tts-speak" style="flex: 1; min-width: 130px;">
+                🔊 Probar Voz
+              </button>
+              <button type="button" class="btn-secondary" id="btn-test-tts-sanitize" style="flex: 1; min-width: 160px;" title="Carga y sintetiza una prueba con emojis, zalgo, spam y palabras largas">
+                🧪 Probar Anti-Locuras
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna Derecha: USUARIOS PERMITIDOS -->
+        <div class="section-card">
+          <div class="panel-header">
+            <span class="panel-title" style="font-size: 16px;">USUARIOS PERMITIDOS</span>
+          </div>
+
+          <div style="text-align: center; font-size: 11px; color: var(--text-muted); letter-spacing: 2px; margin: 6px 0 12px;">
+            ────────── TIKTOK ──────────
+          </div>
+
+          <div class="tts-users-grid">
+            <label class="tts-check-box-card">
+              <input type="checkbox" id="tts-allow-all" checked />
+              <strong>Todos</strong>
+            </label>
+
+            <div class="tts-check-box-card" style="justify-content: space-between;">
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                <input type="checkbox" id="tts-allow-team" />
+                <span>Team Members</span>
+              </label>
+              <input type="number" class="table-input" value="1" min="1" max="50" style="width: 55px; text-align: center;" />
+            </div>
+
+            <label class="tts-check-box-card">
+              <input type="checkbox" id="tts-allow-followers" checked />
+              <span>Seguidores</span>
+            </label>
+
+            <div class="tts-check-box-card" style="justify-content: space-between;">
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                <input type="checkbox" id="tts-allow-topgifters" />
+                <span>Top Gifters Rank</span>
+              </label>
+              <input type="number" class="table-input" value="1" min="1" max="10" style="width: 55px; text-align: center;" />
+            </div>
+
+            <label class="tts-check-box-card">
+              <input type="checkbox" id="tts-allow-superfans" checked />
+              <span>Super Fans / Subs</span>
+            </label>
+
+            <label class="tts-check-box-card">
+              <input type="checkbox" id="tts-allow-mods" checked />
+              <span>Moderadores</span>
+            </label>
+          </div>
+
+          <div style="margin-top: 12px;">
+            <label class="tts-check-box-card">
+              <input type="checkbox" id="tts-read-gifts" checked />
+              <div>
+                <div style="font-weight: 700;">Anunciar Regalos en Voz Alta</div>
+                <div style="font-size: 11px; color: var(--text-muted); font-style: italic;">
+                  Agradece automáticamente por voz cuando un espectador envía un regalo en el directo.
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div style="text-align: center; font-size: 11px; color: var(--text-muted); letter-spacing: 2px; margin: 18px 0 12px;">
+            ────────── TOPS INTERACTIVE 🎵 ──────────
+          </div>
+
+          <div class="tts-users-grid">
+            <div class="tts-check-box-card" style="justify-content: space-between;">
+              <label style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" checked />
+                <span>Top Gift</span>
+              </label>
+              <input type="number" class="table-input" value="10" style="width: 60px; text-align: center;" />
+            </div>
+
+            <div class="tts-check-box-card" style="justify-content: space-between;">
+              <label style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" checked />
+                <span>Top Likes</span>
+              </label>
+              <input type="number" class="table-input" value="10" style="width: 60px; text-align: center;" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         6. PESTAÑA: TOPS, METAS Y MVP (COMO CAPTURA 4)
+         =================================================================== -->
+    <section class="tab-pane" id="tab-tops">
+      <div class="page-hero-title">
+        <span>TOPS, METAS Y MVP</span>
+      </div>
+
+      <div class="info-banner-box">
+        Aquí puede encontrar los overlays de <strong>Tops, MVP, Metas y Racha</strong> para la integración en <strong>OBS (Browser Source)</strong> o <strong>TikTok LIVE Studio (Link)</strong>.<br />
+        Todas las funciones están divididas en widgets individuales con extensión <code>.html</code> para lograr la mayor flexibilidad posible en la alineación.
+      </div>
+
+      <div class="section-card">
+        <div class="tops-subtabs-bar" id="tops-subtabs">
+          <button type="button" class="tops-subtab-btn active" data-top-url="http://localhost:4000/top_rotativo.html" data-top-mode="rotativo">
+            TOP ROTATIVO 🎵
+          </button>
+          <button type="button" class="tops-subtab-btn" data-top-url="http://localhost:4000/mvp.html" data-top-mode="mvp">
+            MVP DEL DIRECTO 👑
+          </button>
+          <button type="button" class="tops-subtab-btn" data-top-url="http://localhost:4000/metas.html" data-top-mode="metas">
+            METAS INTERACTIVAS 🎯
+          </button>
+          <button type="button" class="tops-subtab-btn" data-top-url="http://localhost:4000/top_donadores.html" data-top-mode="donadores">
+            TOP DONADORES 🪙
+          </button>
+          <button type="button" class="tops-subtab-btn" data-top-url="http://localhost:4000/top_likes.html" data-top-mode="likes">
+            TOP LIKES 💖
+          </button>
+          <button type="button" class="tops-subtab-btn" data-top-url="http://localhost:4000/alerta.html" data-top-mode="alerta">
+            ALERTA POPUP 🎁
+          </button>
+        </div>
+
+        <!-- Barra de URL Copiable -->
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <input type="text" id="tops-active-url-input" class="input-field" value="http://localhost:4000/top_rotativo.html" readonly style="flex: 1; font-family: var(--font-mono); color: var(--neon-cyan);" />
+          <button type="button" class="btn-primary" id="btn-copy-tops-url">
+            📋 Copiar URL
+          </button>
+          <button type="button" class="btn-secondary" id="btn-test-tops-event">
+            ⚙️ Simular Datos en Top
+          </button>
+        </div>
+
+        <!-- Split Vista Previa (Izquierda) + Tops en Rotación (Derecha) -->
+        <div class="tops-preview-split">
+          <div class="card-panel" style="background: rgba(4, 10, 20, 0.85);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <span class="panel-title">👑 VISTA PREVIA DEL RANKING</span>
+              <span class="btn-micro">LIVE PREVIEW</span>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: linear-gradient(90deg, rgba(255,215,0,0.18), rgba(0,240,255,0.06)); border: 1px solid rgba(255,215,0,0.55); border-radius: 10px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <span style="font-size: 20px;">👑</span>
+                  <div>
+                    <div style="font-weight: 800; color: #fff;">#1 @GZ7_ProStreamer</div>
+                    <div style="font-size: 11px; color: var(--color-gold);">MVP Supremo del Stream</div>
+                  </div>
+                </div>
+                <span style="font-family: var(--font-mono); font-weight: 800; color: var(--color-gold);">15,400 🪙</span>
+              </div>
+
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 9px 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); border-radius: 10px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <span style="font-family: var(--font-display); font-weight: 800; color: var(--neon-cyan);">#2</span>
+                  <span style="font-weight: 700;">@GalacticViewer</span>
+                </div>
+                <span style="font-family: var(--font-mono); color: var(--neon-cyan);">4,200 🪙</span>
+              </div>
+
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 9px 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); border-radius: 10px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <span style="font-family: var(--font-display); font-weight: 800; color: var(--text-muted);">#3</span>
+                  <span style="font-weight: 700;">@TikTokKing_PE</span>
+                </div>
+                <span style="font-family: var(--font-mono); color: var(--text-muted);">1,850 🪙</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-panel" style="background: rgba(4, 10, 20, 0.85);">
+            <div style="font-weight: 800; font-size: 15px; margin-bottom: 4px;">Tops en rotación:</div>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+              Muestra un top detrás de otro automáticamente, cada uno con el estilo galáctico de su widget.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <label class="tts-check-box-card"><input type="checkbox" checked /> <span>🪙 Gifters (Top Donadores)</span></label>
+              <label class="tts-check-box-card"><input type="checkbox" checked /> <span>❤️ Likes (Top Tap-Tap)</span></label>
+              <label class="tts-check-box-card"><input type="checkbox" checked /> <span>👑 MVP del Directo</span></label>
+              <label class="tts-check-box-card"><input type="checkbox" checked /> <span>🎯 Barra de Metas Interactivas</span></label>
+              <label class="tts-check-box-card"><input type="checkbox" checked /> <span>🔥 Racha de Regalos</span></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         7. PESTAÑA EXCLUSIVA MODO MINECRAFT: RCON & INSTALADOR SERVIDOR LOCAL
+         =================================================================== -->
+    <section class="tab-pane" id="tab-rcon">
+      <div class="page-hero-title">
+        <span>🔌 MINECRAFT RCON &amp; CREADOR DE SERVIDOR LOCAL</span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+        <!-- Columna 1: Conexión RCON -->
+        <div class="section-card">
+          <div class="panel-header">
+            <span class="panel-title">⚡ Conexión RCON a Servidor Minecraft</span>
+            <div class="status-badge" id="rcon-page-status-badge">
+              <span class="status-indicator disconnected" id="rcon-status-indicator"></span>
+              <span id="rcon-status-label">DESCONECTADO</span>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <label style="font-size: 12px; color: var(--text-muted);">Host / IP</label>
+              <input type="text" id="rcon-host-input" class="input-field" value="127.0.0.1" style="width: 100%; margin-top: 4px;" />
+            </div>
+            <div>
+              <label style="font-size: 12px; color: var(--text-muted);">Puerto RCON</label>
+              <input type="number" id="rcon-port-input" class="input-field" value="25575" style="width: 100%; margin-top: 4px;" />
+            </div>
+          </div>
+
+          <div style="margin-bottom: 14px;">
+            <label style="font-size: 12px; color: var(--text-muted);">Contraseña RCON (rcon.password)</label>
+            <div style="display: flex; gap: 8px; margin-top: 4px;">
+              <input type="password" id="rcon-pass-input" class="input-field" placeholder="Contraseña RCON" style="flex: 1;" />
+              <button type="button" id="btn-toggle-rcon-pass" class="btn-secondary">Ver</button>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; margin-bottom: 14px;">
+            <button type="button" class="btn-secondary" id="btn-test-rcon" style="flex: 1;">Probar Conexión (/list)</button>
+            <button type="button" class="btn-primary" id="btn-save-rcon" style="flex: 1;">Guardar RCON</button>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <span style="font-size: 12px; color: var(--text-muted);">Consola RCON</span>
+            <button type="button" class="btn-micro" id="btn-clear-rcon-log">Limpiar</button>
+          </div>
+          <pre class="console-output" id="rcon-console-log">[RCON] Listo para conectar con tu servidor Minecraft...</pre>
+        </div>
+
+        <!-- Columna 2: Instalador Automático Paper 1.20.1 -->
+        <div class="section-card">
+          <div class="panel-header">
+            <span class="panel-title">🛠️ Instalador Automático Servidor Paper 1.20.1</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <label style="font-size: 12px; color: var(--text-muted);">Carpeta Destino</label>
+              <input type="text" id="mc-server-folder" class="input-field" value="C:\Users\GZ7\Desktop\ServidorMinecraft" style="width: 100%; margin-top: 4px;" />
+            </div>
+            <div>
+              <label style="font-size: 12px; color: var(--text-muted);">Tu Nick Minecraft (OP)</label>
+              <input type="text" id="mc-server-op" class="input-field" value="GZ7" style="width: 100%; margin-top: 4px;" />
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px;">
+            <div>
+              <label style="font-size: 12px; color: var(--text-muted);">Modo</label>
+              <select id="mc-server-mode" class="table-select" style="width: 100%; margin-top: 4px; padding: 9px;">
+                <option value="nopremium" selected>No-Premium</option>
+                <option value="premium">Premium</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size: 12px; color: var(--text-muted);">RAM</label>
+              <select id="mc-server-ram" class="table-select" style="width: 100%; margin-top: 4px; padding: 9px;">
+                <option value="2">2 GB</option>
+                <option value="4" selected>4 GB</option>
+                <option value="8">8 GB</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size: 12px; color: var(--text-muted);">Clave RCON</label>
+              <input type="text" id="mc-server-rcon-pass" class="input-field" value="gz7livepassword" style="width: 100%; margin-top: 4px;" />
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; margin-bottom: 14px;">
+            <button type="button" class="btn-primary" id="btn-create-mc-server" style="flex: 1.5;">
+              ⚡ Descargar y Configurar
+            </button>
+            <button type="button" class="btn-secondary" id="btn-run-mc-server" style="flex: 1;">
+              ▶ Iniciar Servidor
+            </button>
+          </div>
+
+          <span style="font-size: 12px; color: var(--text-muted);">Registro de Instalación</span>
+          <pre class="console-output" id="mc-installer-log" style="margin-top: 6px;">[INSTALADOR] Listo para crear servidor Paper 1.20.1...</pre>
+        </div>
+      </div>
+    <!-- ===================================================================
+         9. PESTAÑA: PANEL ADMIN DE APROBACIÓN DE LICENCIAS (SOLO ADMIN GZ7)
+         =================================================================== -->
+    <section class="tab-pane" id="tab-admin-licenses">
+      <div id="admin-licenses-view-container"></div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER CON CRÉDITOS OFICIALES DE GZ7 ================= -->
+  <footer class="app-footer">
+    <span>GALACTK PANEL v2.0 &bull; Desarrollado por <strong style="color: var(--neon-cyan);">GZ7</strong> &bull; Todos los derechos reservados &copy; GZ7</span>
+    <span id="footer-mode-indicator" style="color: var(--neon-cyan);">PERFIL ACTIVO: MODO MINECRAFT</span>
+  </footer>
+
+    </div> <!-- /.app-workspace -->
+  </div> <!-- /#app-layout -->
+
+  <!-- ================= MODAL UNIVERSAL DE SELECCIÓN DE REGALO Y ASIGNACIÓN ================= -->
+  <div id="modal-config-gift" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+      <div class="panel-header" style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <img id="modal-gift-icon" src="./gifts/rose-1-coins.webp" alt="" style="width: 48px; height: 48px; object-fit: contain;" />
+          <div>
+            <h3 id="modal-gift-title" style="font-size: 18px; font-weight: 900; color: #fff;">Seleccionar / Configurar Regalo</h3>
+            <div style="display: flex; gap: 8px; align-items: center; margin-top: 2px;">
+              <span id="modal-gift-coins-badge" class="btn-micro">💎 1</span>
+              <span id="modal-gift-id-badge" style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">Catálogo Oficial TikTok</span>
+            </div>
+          </div>
+        </div>
+        <button type="button" id="btn-close-gift-modal" class="btn-secondary" style="padding: 4px 10px;">✕</button>
+      </div>
+
+      <input type="hidden" id="modal-hidden-gift-id" value="" />
+      <input type="hidden" id="modal-hidden-tiktok-id" value="" />
+      <input type="hidden" id="modal-hidden-coins" value="" />
+      <input type="hidden" id="modal-hidden-name" value="" />
+      <input type="hidden" id="modal-hidden-roblox-slot-id" value="" />
+      <input type="hidden" id="modal-hidden-sound-name" value="" />
+      <input type="hidden" id="modal-hidden-sound-url" value="" />
+
+      <!-- Buscador visual de los 1,770 regalos -->
+      <div style="margin: 12px 0;">
+        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+          <input type="text" id="modal-picker-search" class="input-field" placeholder="🔍 Buscar entre los 1,770 regalos (ej. Whale, Ballena, Lion, Rosa, GG)..." style="flex: 1;" />
+          <select id="modal-picker-country" class="table-select"></select>
+        </div>
+
+        <div style="display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap;" id="modal-picker-pills-row">
+          <button type="button" class="btn-micro modal-picker-pill active" data-filter="todos">Todos</button>
+          <button type="button" class="btn-micro modal-picker-pill" data-filter="1-10">1–10 💎</button>
+          <button type="button" class="btn-micro modal-picker-pill" data-filter="11-99">11–99 💎</button>
+          <button type="button" class="btn-micro modal-picker-pill" data-filter="100-499">100–499 💎</button>
+          <button type="button" class="btn-micro modal-picker-pill" data-filter="500-999">500–999 💎</button>
+          <button type="button" class="btn-micro modal-picker-pill" data-filter="1000+">1000+ 💎</button>
+        </div>
+
+        <div class="modal-picker-grid" id="modal-picker-grid-container"></div>
+      </div>
+
+      <!-- Bloque Universal: Sonido al recibir este regalo (Banco Gratis / Custom) -->
+      <div style="background: rgba(4, 12, 26, 0.85); border: 1.5px solid rgba(0, 240, 255, 0.35); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px;">
+          <div>
+            <div style="font-size: 12px; font-weight: 800; color: var(--neon-cyan);">🔊 Sonido al recibir este regalo (Banco Gratis / Custom)</div>
+            <div id="modal-gift-sound-label" style="font-size: 14px; font-weight: 900; color: #fff; margin-top: 2px;">Sonido automático por defecto</div>
+          </div>
+          <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+            <button type="button" class="btn-primary" id="btn-modal-pick-sound" style="padding: 7px 12px; font-size: 12px;">
+              🎵 Elegir del Banco de Sonidos Gratis (258+)
+            </button>
+            <button type="button" class="btn-secondary" id="btn-modal-test-sound" style="padding: 7px 10px; font-size: 12px;" title="Probar sonido seleccionado">
+              ▶ Probar Sonido
+            </button>
+            <button type="button" class="btn-danger" id="btn-modal-clear-sound" style="padding: 7px 10px; font-size: 12px;" title="Quitar sonido personalizado">
+              ✖ Quitar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Opciones de Acción (Se adapta si estás editando un slot de Roblox o de Minecraft) -->
+      <div id="modal-mc-fields-section">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px;">
+          <div>
+            <label style="font-size: 12px; color: var(--text-muted);">Facción / Bando</label>
+            <select id="modal-gift-faction" class="table-select" style="width: 100%; margin-top: 4px; padding: 8px;">
+              <option value="BUENOS">BUENOS (Celeste / Ayuda)</option>
+              <option value="MALOS">MALOS (Rojo / Sabotaje)</option>
+              <option value="AMBOS">AMBOS</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size: 12px; color: var(--text-muted);">Δ Tótems / Puntos</label>
+            <input type="number" id="modal-gift-delta" class="input-field" value="1" style="width: 100%; margin-top: 4px;" />
+          </div>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+          <label style="font-size: 12px; color: var(--text-muted);">Comando RCON o Etiqueta en Overlay ({donador})</label>
+          <input type="text" id="modal-gift-command" class="input-field" placeholder="/summon zombie ~ ~ ~" style="width: 100%; margin-top: 4px; font-family: var(--font-mono);" />
+        </div>
+
+        <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;">
+          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/summon zombie ~ ~ ~">🧟 Zombie</button>
+          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/summon creeper ~ ~ ~">💣 Creeper</button>
+          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/summon tnt ~ ~ ~">💥 TNT</button>
+          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/summon warden ~ ~ ~">👹 Warden</button>
+          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/give @p diamond 5">💎 5 Diamantes</button>
+          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/bm gift la_parka {donador}">💀 La Parka</button>
+          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/bm gift arcangel_serafin {donador}">👼 Arcángel</button>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 12px;">
+        <button type="button" class="btn-primary" id="btn-save-gift" data-alias="btn-save-modal-gift" style="flex: 2; padding: 12px;">
+          ⚡ Guardar Cambios y Colocar en Overlay
+        </button>
+        <button type="button" class="btn-secondary" id="btn-cancel-modal-gift" style="flex: 1;">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL RÁPIDO PARA ASIGNAR UN SONIDO GRATIS A UN REGALO / SLOT (OBBY / MC) ================= -->
+  <div id="modal-assign-sound-target" class="modal-overlay" style="display: none; z-index: 10005;">
+    <div class="modal-card" style="max-width: 760px;">
+      <div class="panel-header" style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 10px; margin-bottom: 12px;">
+        <div>
+          <span class="panel-title">🎁 Asignar Sonido Gratis a Regalo (OBBY / Minecraft)</span>
+          <div id="assign-sound-target-subtitle" style="font-size: 12px; color: var(--neon-cyan); margin-top: 3px; font-weight: 800;">🔊 Sonido seleccionado</div>
+        </div>
+        <button type="button" id="btn-close-assign-sound-target" class="btn-secondary" style="padding: 4px 10px;">✕</button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-height: 440px; overflow-y: auto; padding-right: 4px;">
+        <div>
+          <div style="font-family: var(--font-display); font-size: 12px; font-weight: 800; color: #ff6b8b; margin-bottom: 8px;">
+            🚴 SLOTS DE ROBLOX OBBY (L1..L9, R1..R9, DUELO CENTRAL)
+          </div>
+          <div id="assign-target-roblox-list" style="display: flex; flex-direction: column; gap: 6px;"></div>
+        </div>
+        <div>
+          <div style="font-family: var(--font-display); font-size: 12px; font-weight: 800; color: var(--neon-cyan); margin-bottom: 8px;">
+            ⛏️ REGALOS DE MINECRAFT &amp; CATÁLOGO
+          </div>
+          <div id="assign-target-mc-list" style="display: flex; flex-direction: column; gap: 6px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Galáctico de Confirmación -->
+  <div id="galactic-toast" style="position: fixed; bottom: 48px; right: 24px; z-index: 99999; background: rgba(3, 12, 26, 0.96); border: 1.5px solid var(--neon-cyan); box-shadow: 0 0 24px rgba(0, 240, 255, 0.45); color: #fff; padding: 12px 20px; border-radius: 12px; font-weight: 800; font-size: 13px; display: none; align-items: center; gap: 10px; backdrop-filter: blur(12px); transition: all 0.25s ease;">
+    <span style="color: var(--neon-cyan); font-size: 16px;">⚡</span>
+    <span id="galactic-toast-text">Acción ejecutada</span>
+  </div>
+
+  <!-- Filtro SVG de Nitidez Full HD (Contrast Adaptive Sharpening) para Iconos de Regalos -->
+  <svg width="0" height="0" style="position: absolute; pointer-events: none; overflow: hidden;" aria-hidden="true">
+    <defs>
+      <filter id="gz7-fullhd-filter" color-interpolation-filters="sRGB">
+        <feConvolveMatrix order="3" kernelMatrix="0 -0.32 0 -0.32 2.28 -0.32 0 -0.32 0" preserveAlpha="true" result="sharp" />
+        <feComponentTransfer in="sharp">
+          <feFuncR type="linear" slope="1.05" intercept="-0.015" />
+          <feFuncG type="linear" slope="1.05" intercept="-0.015" />
+          <feFuncB type="linear" slope="1.05" intercept="-0.015" />
+        </feComponentTransfer>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- ================= LÓGICA PRINCIPAL DE LA INTERFAZ GALACTK PANEL ================= -->
+  <script type="module" src="./src/main.js"></script>
+
+
+</body>
+</html>
