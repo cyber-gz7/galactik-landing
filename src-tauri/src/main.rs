@@ -1056,23 +1056,36 @@ fn main() {
     preload_core_soundpack();
 
     // Bucle ligero de fondo para Visión Nocturna Infinita (anti-wipe por tótems)
-    tokio::spawn(async {
-        loop {
-            tokio::time::sleep(tokio::time::Duration::from_millis(2500)).await;
-            let cfg = {
-                let lock = NIGHT_VISION_CONFIG.lock().await;
-                lock.clone()
-            };
-            if cfg.enabled && !cfg.player.is_empty() && !cfg.host.is_empty() {
-                if let Ok(mut client) = rcon::RconClient::connect(&cfg.host, cfg.port, &cfg.password).await {
-                    let cmd1 = format!("effect give {} minecraft:night_vision infinite 0 true", cfg.player);
-                    if client.send_command(&cmd1).await.is_err() {
-                        let cmd2 = format!("effect give {} minecraft:night_vision 999999 0 true", cfg.player);
-                        let _ = client.send_command(&cmd2).await;
+    std::thread::spawn(|| {
+        let rt = match tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+        {
+            Ok(r) => r,
+            Err(e) => {
+                eprintln!("[NIGHT_VISION] Error iniciando runtime Tokio: {}", e);
+                return;
+            }
+        };
+
+        rt.block_on(async {
+            loop {
+                tokio::time::sleep(tokio::time::Duration::from_millis(2500)).await;
+                let cfg = {
+                    let lock = NIGHT_VISION_CONFIG.lock().await;
+                    lock.clone()
+                };
+                if cfg.enabled && !cfg.player.is_empty() && !cfg.host.is_empty() {
+                    if let Ok(mut client) = rcon::RconClient::connect(&cfg.host, cfg.port, &cfg.password).await {
+                        let cmd1 = format!("effect give {} minecraft:night_vision infinite 0 true", cfg.player);
+                        if client.send_command(&cmd1).await.is_err() {
+                            let cmd2 = format!("effect give {} minecraft:night_vision 999999 0 true", cfg.player);
+                            let _ = client.send_command(&cmd2).await;
+                        }
                     }
                 }
             }
-        }
+        });
     });
 
     tauri::Builder::default()
