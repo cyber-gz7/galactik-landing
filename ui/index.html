@@ -228,13 +228,20 @@
           </div>
         </div>
 
-        <!-- Indicadores de Estado y Licencia -->
-        <div class="header-status-area header-actions topbar-right">
-          <div class="status-badge" id="header-tiktok-badge" title="Estado TikTok Live">
-            <span class="status-indicator disconnected" id="header-tiktok-indicator"></span>
-            <span id="header-tiktok-text">TIKTOK: DESCONECTADO</span>
+        <!-- Indicadores de Estado y Quick-Connect Superior Derecho -->
+        <div class="header-status-area header-actions topbar-right" style="display: flex; align-items: center; gap: 8px;">
+          <!-- Quick-Connect TikTok Live -->
+          <div class="topbar-quick-connect" id="topbar-quick-connect" style="display: flex; align-items: center; gap: 6px; background: rgba(16, 24, 38, 0.6); padding: 3px 6px; border-radius: 8px; border: 1px solid var(--border-subtle);">
+            <input type="text" id="topbar-tiktok-user" class="input-field" placeholder="@tu_tiktok" style="width: 130px; padding: 5px 8px; font-size: 11px; height: 28px;" />
+            <button type="button" class="btn-primary" id="topbar-btn-connect" style="padding: 4px 10px; font-size: 11px; height: 28px; display: inline-flex; align-items: center; gap: 4px;">
+              <span>⚡</span> <span id="topbar-btn-connect-text">Conectar</span>
+            </button>
           </div>
-          <div class="status-badge mode-only-minecraft" id="header-rcon-badge" title="Estado RCON Minecraft">
+          <div class="status-badge" id="header-tiktok-badge" title="Estado TikTok Live" style="padding: 4px 8px; height: 28px; display: flex; align-items: center;">
+            <span class="status-indicator disconnected" id="header-tiktok-indicator"></span>
+            <span id="header-tiktok-text">TIKTOK: OFF</span>
+          </div>
+          <div class="status-badge mode-only-minecraft" id="header-rcon-badge" title="Estado RCON Minecraft" style="padding: 4px 8px; height: 28px; display: flex; align-items: center;">
             <span class="status-indicator disconnected" id="header-rcon-indicator"></span>
             <span id="header-rcon-text">RCON: OFF</span>
           </div>
@@ -274,7 +281,7 @@
               <div style="font-size: 28px;">⛏️</div>
               <h3 style="font-family: var(--font-display); font-size: 16px; color: var(--neon-cyan);">Modo Minecraft</h3>
               <p style="font-size: 13px; color: var(--text-muted); line-height: 1.4;">
-                Activa el sistema Buenos vs Malos, Tótems (0-20), Overlays de Minecraft (Carrusel Dinámico, Estático y Plano/Recto), RCON e Instalador Paper 1.20.1.
+                Overlays Transparentes (Carrusel Dinámico, Estático y Plano), Tótems Stackeables unificados, RCON, Visión Nocturna Infinita y Plugins Exclusivos.
               </p>
             </div>
 
@@ -413,13 +420,18 @@
          =================================================================== -->
     <section class="tab-pane" id="tab-minecraft">
       <div class="page-hero-title">
-        <span>⛏️ PANEL MINECRAFT &bull; OVERLAYS & TÓTEMS</span>
-        <div style="display: flex; gap: 8px;">
-          <button type="button" class="btn-secondary btn-load-preset" data-preset="minecraft_bm">
-            🛡️ Cargar Preset Buenos vs Malos
+        <span>⛏️ PANEL MINECRAFT &bull; OVERLAYS &amp; TÓTEMS UNIFICADOS</span>
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <!-- Switch de Visión Nocturna Infinita -->
+          <label style="display: inline-flex; align-items: center; gap: 7px; background: rgba(0, 240, 255, 0.1); border: 1px solid var(--neon-cyan); border-radius: 999px; padding: 5px 12px; font-size: 11.5px; font-weight: 700; color: #fff; cursor: pointer;">
+            <input type="checkbox" id="toggle-night-vision-mc" checked style="accent-color: var(--neon-cyan); cursor: pointer;" />
+            <span>👁️ Vista Nocturna Infinita (Auto-Fijada)</span>
+          </label>
+          <button type="button" class="btn-primary btn-load-preset" data-preset="survival_gz7">
+            ⭐ Cargar Preset Survival GZ7 (Universal)
           </button>
           <button type="button" class="btn-secondary btn-load-preset" data-preset="minecraft_chaos">
-            💥 Cargar Preset Caos Mob Spawner
+            💥 Cargar Preset Caos
           </button>
         </div>
       </div>
@@ -430,7 +442,7 @@
           <div>
             <span class="panel-title">🎨 Configurador de Overlay para Minecraft (OBS / TikTok LIVE Studio)</span>
             <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
-              Elige entre un <strong>Overlay Dinámico como Carrusel</strong>, uno <strong>Estático en Cuadrícula</strong> o uno <strong>Plano / Recto</strong> súper fácil de usar y poner. Todos muestran los regalos que configures abajo.
+              Elige entre un <strong>Overlay Dinámico como Carrusel</strong>, uno <strong>Estático en Cuadrícula</strong> o uno <strong>Plano / Recto</strong> 100% transparente sin marcos negros.
             </p>
           </div>
           <div style="display: flex; align-items: center; gap: 12px;">
@@ -470,7 +482,7 @@
               <span class="btn-micro">FIJO</span>
             </div>
             <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
-              Muestra todos los regalos y lo que invocan en una tabla/cuadrícula fija sin movimiento.
+              Muestra todos los regalos y lo que invocan en una tabla fija transparente.
             </p>
             <div style="font-family: var(--font-mono); font-size: 11px; color: var(--neon-cyan); background: #02060d; padding: 7px 10px; border-radius: 6px; margin-bottom: 10px;">
               http://localhost:4000/mc_estatico.html
@@ -509,23 +521,9 @@
         </div>
       </div>
 
-      <!-- Fila Central: Tótems + Live Feed + Simulador Rápido -->
+      <!-- Fila Central: Tótems + Live Feed (Sin Facciones) -->
       <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 18px; margin-bottom: 18px;">
         <div>
-          <div class="faction-toggle-panel buenos" id="faction-banner">
-            <div>
-              <div style="font-family: var(--font-display); font-size: 18px; font-weight: 900; color: var(--neon-cyan);" id="faction-name-display">
-                FACCIÓN: BUENOS
-              </div>
-              <div style="font-size: 12px; color: var(--text-muted);" id="faction-sub-display">
-                Los regalos invocan bendiciones y suman tótems
-              </div>
-            </div>
-            <button type="button" class="btn-secondary" id="btn-toggle-faction">
-              🔄 CAMBIAR FACCIÓN
-            </button>
-          </div>
-
           <totem-bar></totem-bar>
         </div>
 
@@ -557,12 +555,11 @@
           <table class="custom-table" id="gifts-config-table">
             <thead>
               <tr>
-                <th style="width: 240px;">Regalo TikTok (Click para cambiar)</th>
-                <th style="width: 90px;">Diamantes</th>
-                <th style="width: 115px;">Facción</th>
-                <th>Comando RCON / Etiqueta en Overlay ({donador})</th>
-                <th style="width: 90px;">Δ Tótems</th>
-                <th style="width: 90px;">Acciones</th>
+                <th style="width: 240px;">Regalo TikTok</th>
+                <th style="width: 90px;">Monedas</th>
+                <th>Comando RCON / Acción de Plugin ({donador})</th>
+                <th style="width: 100px;">Multiplicador</th>
+                <th style="width: 110px;">Acciones</th>
               </tr>
             </thead>
             <tbody id="gifts-table-body"></tbody>
@@ -1556,56 +1553,81 @@
           <pre class="console-output" id="rcon-console-log">[RCON] Listo para conectar con tu servidor Minecraft...</pre>
         </div>
 
-        <!-- Columna 2: Instalador Automático Paper 1.20.1 -->
+        <!-- Columna 2: Gestor y Detector Inteligente del Servidor Minecraft -->
         <div class="section-card">
           <div class="panel-header">
-            <span class="panel-title">🛠️ Instalador Automático Servidor Paper 1.20.1</span>
+            <span class="panel-title">🖥️ Servidor Minecraft Paper 1.20.1</span>
+            <div class="status-badge" id="mc-server-status-badge">
+              <span class="status-indicator disconnected" id="mc-server-status-indicator"></span>
+              <span id="mc-server-status-label">DETENIDO</span>
+            </div>
+          </div>
+
+          <div style="background: rgba(4, 10, 20, 0.7); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 10px 12px; margin-bottom: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <span style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Ruta del Servidor:</span>
+              <span id="mc-server-detected-tag" class="btn-micro" style="font-size: 10px;">DETECTADO LOCAL</span>
+            </div>
+            <input type="text" id="mc-server-folder" class="input-field" value="C:\Proyectos\GalacticLive\minecraft_server_1.20.1" style="width: 100%; font-family: var(--font-mono); font-size: 11.5px;" />
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
             <div>
-              <label style="font-size: 12px; color: var(--text-muted);">Carpeta Destino</label>
-              <input type="text" id="mc-server-folder" class="input-field" value="C:\Proyectos\GalacticLive\minecraft_server_1.20.1" style="width: 100%; margin-top: 4px;" />
+              <label style="font-size: 12px; color: var(--text-muted); font-weight: 700;">Tu Nick en Minecraft ({jugador}):</label>
+              <input type="text" id="mc-player-nick" class="input-field" value="GZ7" placeholder="Tu nick exacto" style="width: 100%; margin-top: 4px; font-weight: 700; color: var(--neon-cyan);" />
             </div>
             <div>
-              <label style="font-size: 12px; color: var(--text-muted);">Tu Nick Minecraft (OP)</label>
+              <label style="font-size: 12px; color: var(--text-muted); font-weight: 700;">Nick OP (Administrador):</label>
               <input type="text" id="mc-server-op" class="input-field" value="GZ7" style="width: 100%; margin-top: 4px;" />
             </div>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px;">
-            <div>
-              <label style="font-size: 12px; color: var(--text-muted);">Modo</label>
-              <select id="mc-server-mode" class="table-select" style="width: 100%; margin-top: 4px; padding: 9px;">
-                <option value="nopremium" selected>No-Premium</option>
-                <option value="premium">Premium</option>
-              </select>
-            </div>
-            <div>
-              <label style="font-size: 12px; color: var(--text-muted);">RAM</label>
-              <select id="mc-server-ram" class="table-select" style="width: 100%; margin-top: 4px; padding: 9px;">
-                <option value="2">2 GB</option>
-                <option value="4" selected>4 GB</option>
-                <option value="8">8 GB</option>
-              </select>
-            </div>
-            <div>
-              <label style="font-size: 12px; color: var(--text-muted);">Clave RCON</label>
-              <input type="text" id="mc-server-rcon-pass" class="input-field" value="gz7livepassword" style="width: 100%; margin-top: 4px;" />
-            </div>
-          </div>
-
-          <div style="display: flex; gap: 10px; margin-bottom: 14px;">
-            <button type="button" class="btn-primary" id="btn-create-mc-server" style="flex: 1.5;">
-              ⚡ Descargar y Configurar
-            </button>
-            <button type="button" class="btn-secondary" id="btn-run-mc-server" style="flex: 1;">
+          <!-- Botones de Control del Servidor -->
+          <div style="display: grid; grid-template-columns: 1.2fr 1.2fr 1fr; gap: 8px; margin-bottom: 12px;">
+            <button type="button" class="btn-primary" id="btn-run-mc-server" style="padding: 10px 12px;">
               ▶ Iniciar Servidor
             </button>
+            <button type="button" class="btn-danger" id="btn-stop-mc-server" style="padding: 10px 12px;">
+              ⏹ Detener Servidor
+            </button>
+            <button type="button" class="btn-secondary" id="btn-refresh-mc-server" title="Comprobar estado del servidor">
+              🔄 Estado
+            </button>
           </div>
 
-          <span style="font-size: 12px; color: var(--text-muted);">Registro de Instalación</span>
-          <pre class="console-output" id="mc-installer-log" style="margin-top: 6px;">[INSTALADOR] Listo para crear servidor Paper 1.20.1...</pre>
+          <!-- Opciones Avanzadas de Instalación / Servidor -->
+          <details style="margin-top: 8px; border-top: 1px solid var(--border-subtle); padding-top: 10px;">
+            <summary style="font-size: 11.5px; color: var(--text-muted); font-weight: 700; cursor: pointer; margin-bottom: 10px;">
+              ⚙️ Crear Nuevo Servidor / Descargar Paper 1.20.1
+            </summary>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px;">
+              <div>
+                <label style="font-size: 11px; color: var(--text-muted);">Modo</label>
+                <select id="mc-server-mode" class="table-select" style="width: 100%; margin-top: 3px; padding: 6px;">
+                  <option value="nopremium" selected>No-Premium</option>
+                  <option value="premium">Premium</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size: 11px; color: var(--text-muted);">RAM</label>
+                <select id="mc-server-ram" class="table-select" style="width: 100%; margin-top: 3px; padding: 6px;">
+                  <option value="2">2 GB</option>
+                  <option value="4" selected>4 GB</option>
+                  <option value="8">8 GB</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size: 11px; color: var(--text-muted);">Clave RCON</label>
+                <input type="text" id="mc-server-rcon-pass" class="input-field" value="gz7livepassword" style="width: 100%; margin-top: 3px; padding: 6px;" />
+              </div>
+            </div>
+            <button type="button" class="btn-secondary" id="btn-create-mc-server" style="width: 100%; padding: 8px; font-size: 11.5px;">
+              ⚡ Descargar y Reconfigurar Servidor Limpio
+            </button>
+          </details>
+
+          <span style="font-size: 11px; color: var(--text-muted); margin-top: 10px; display: block;">Registro del Servidor:</span>
+          <pre class="console-output" id="mc-installer-log" style="margin-top: 4px; height: 110px;">[SERVIDOR] Listo. Pulsa ▶ Iniciar Servidor para arrancar Paper 1.20.1.</pre>
         </div>
       </div>
     <!-- ===================================================================
@@ -1619,7 +1641,7 @@
 
   <!-- ================= FOOTER CON CRÉDITOS OFICIALES DE GZ7 ================= -->
   <footer class="app-footer">
-    <span>GALACTK PANEL v2.0 &bull; Desarrollado por <strong style="color: var(--neon-cyan);">GZ7</strong> &bull; Todos los derechos reservados &copy; GZ7</span>
+    <span>GALACTK PANEL v2.0.5 &bull; Desarrollado por <strong style="color: var(--neon-cyan);">GZ7</strong> &bull; Edición Comercial Definitiva &copy; GZ7</span>
     <span id="footer-mode-indicator" style="color: var(--neon-cyan);">PERFIL ACTIVO: MODO MINECRAFT</span>
   </footer>
 
@@ -1695,32 +1717,32 @@
       <div id="modal-mc-fields-section">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px;">
           <div>
-            <label style="font-size: 12px; color: var(--text-muted);">Facción / Bando</label>
-            <select id="modal-gift-faction" class="table-select" style="width: 100%; margin-top: 4px; padding: 8px;">
-              <option value="BUENOS">BUENOS (Celeste / Ayuda)</option>
-              <option value="MALOS">MALOS (Rojo / Sabotaje)</option>
-              <option value="AMBOS">AMBOS</option>
-            </select>
+            <label style="font-size: 12px; color: var(--text-muted);">Multiplicador / Badge en Overlay</label>
+            <input type="text" id="modal-gift-mult" class="input-field" placeholder="x10, +124, BOSS, KIT..." style="width: 100%; margin-top: 4px; font-weight: 700; color: var(--neon-cyan);" />
           </div>
           <div>
-            <label style="font-size: 12px; color: var(--text-muted);">Δ Tótems / Puntos</label>
+            <label style="font-size: 12px; color: var(--text-muted);">Δ Tótems Stackeables</label>
             <input type="number" id="modal-gift-delta" class="input-field" value="1" style="width: 100%; margin-top: 4px;" />
           </div>
         </div>
 
         <div style="margin-bottom: 10px;">
-          <label style="font-size: 12px; color: var(--text-muted);">Comando RCON o Etiqueta en Overlay ({donador})</label>
-          <input type="text" id="modal-gift-command" class="input-field" placeholder="/summon zombie ~ ~ ~" style="width: 100%; margin-top: 4px; font-family: var(--font-mono);" />
+          <label style="font-size: 12px; color: var(--text-muted);">Comando RCON / Plugin ({jugador}, {donador})</label>
+          <input type="text" id="modal-gift-command" class="input-field" placeholder="/totems dar {jugador} totems=25" style="width: 100%; margin-top: 4px; font-family: var(--font-mono);" />
         </div>
 
         <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;">
-          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/summon zombie ~ ~ ~">🧟 Zombie</button>
-          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/summon creeper ~ ~ ~">💣 Creeper</button>
-          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/summon tnt ~ ~ ~">💥 TNT</button>
-          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/summon warden ~ ~ ~">👹 Warden</button>
-          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/give @p diamond 5">💎 5 Diamantes</button>
-          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/bm gift la_parka {donador}">💀 La Parka</button>
-          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/bm gift arcangel_serafin {donador}">👼 Arcángel</button>
+          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/totems dar {jugador} totems=124">🛡️ Tótems Stack (+124)</button>
+          <button type="button" class="btn-micro quick-cmd-btn" data-cmd='execute at {jugador} run summon minecraft:wolf ~ ~ ~ {Tame:1b,Owner:"{jugador}",CollarColor:11b,CustomName:&apos;{"text":"🐺 {donador}","color":"aqua","bold":true}&apos;,CustomNameVisible:1b}'>🐺 Perro con Nick</button>
+          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/dragon {jugador}">🐉 Dragón Boss</button>
+          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/esqueleto {jugador}">💀 La Parka</button>
+          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/solcruel {jugador}">☀️ Sol Cruel</button>
+          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/trueno {jugador}">⚡ Rayo Thunder</button>
+          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/superrayo {jugador}">🔴 Súper Rayo</button>
+          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="execute at {jugador} run summon tnt ~ ~ ~">💥 Kaboom TNT</button>
+          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/kit armadura {jugador}">⚔️ Kit Armadura OP</button>
+          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/enjambre {jugador}">🧟 Horda Zombies</button>
+          <button type="button" class="btn-micro quick-cmd-btn" data-cmd="/escudo {jugador}">🛡️ Escudo Nou</button>
         </div>
       </div>
 

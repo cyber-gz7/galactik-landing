@@ -49,6 +49,23 @@ fn get_config_dir() -> Result<PathBuf, String> {
     Ok(PathBuf::from(home).join(".gz7live"))
 }
 
+#[derive(Clone, Default)]
+struct NightVisionConfig {
+    pub enabled: bool,
+    pub player: String,
+    pub host: String,
+    pub port: u16,
+    pub password: String,
+}
+
+static NIGHT_VISION_CONFIG: tokio::sync::Mutex<NightVisionConfig> = tokio::sync::Mutex::const_new(NightVisionConfig {
+    enabled: false,
+    player: String::new(),
+    host: String::new(),
+    port: 25575,
+    password: String::new(),
+});
+
 #[tauri::command]
 async fn send_rcon(
     host: String,
@@ -59,7 +76,52 @@ async fn send_rcon(
 ) -> Result<String, String> {
     guard.require_verified().await?;
     let mut client = rcon::RconClient::connect(&host, port, &password).await?;
-    client.send_command(&command).await
+    let res = client.send_command(&command).await;
+
+    // Inyección inmediata de Visión Nocturna Infinita anti-wipe si está activa
+    let nv_cfg = {
+        let lock = NIGHT_VISION_CONFIG.lock().await;
+        lock.clone()
+    };
+    if nv_cfg.enabled && !nv_cfg.player.is_empty() && nv_cfg.host == host && nv_cfg.port == port {
+        let nv_cmd = format!("effect give {} minecraft:night_vision infinite 0 true", nv_cfg.player);
+        let _ = client.send_command(&nv_cmd).await;
+    }
+
+    res
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn set_night_vision(
+    enabled: bool,
+    player: String,
+    host: String,
+    port: u16,
+    password: String,
+) -> Result<(), String> {
+    let mut lock = NIGHT_VISION_CONFIG.lock().await;
+    lock.enabled = enabled;
+    lock.player = player.trim().to_string();
+    lock.host = host.trim().to_string();
+    lock.port = port;
+    lock.password = password.clone();
+
+    if enabled && !lock.player.is_empty() && !lock.host.is_empty() {
+        let p = lock.player.clone();
+        let h = lock.host.clone();
+        let pw = password;
+        tokio::spawn(async move {
+            if let Ok(mut client) = rcon::RconClient::connect(&h, port, &pw).await {
+                let cmd1 = format!("effect give {} minecraft:night_vision infinite 0 true", p);
+                if client.send_command(&cmd1).await.is_err() {
+                    let cmd2 = format!("effect give {} minecraft:night_vision 999999 0 true", p);
+                    let _ = client.send_command(&cmd2).await;
+                }
+            }
+        });
+    }
+
+    Ok(())
 }
 
 #[tauri::command(rename_all = "snake_case")]
@@ -115,27 +177,153 @@ async fn write_server_file(
     Ok(())
 }
 
+fn cleanup_server_locks_and_zombies(folder: &str) {
+    let folder_path = PathBuf::from(folder);
+
+    // 1. Matar procesos java.exe/javaw.exe huérfanos que corran paper.jar o apunten a esa carpeta
+    let folder_name = folder_path
+        .file_name()
+        .map(|n| n.to_string_lossy().to_string())
+        .unwrap_or_else(|| "minecraft_server".to_string());
+
+    let ps_kill_cmd = format!(
+        "$procs = Get-CimInstance Win32_Process -Filter \"name = 'java.exe' or name = 'javaw.exe'\"; \
+         foreach ($p in $procs) {{ \
+             if ($p.CommandLine -like '*paper.jar*' -or $p.CommandLine -like '*{f_name}*') {{ \
+                 Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue; \
+             }} \
+         }}",
+        f_name = folder_name
+    );
+
+    let _ = Command::new("powershell")
+        .args(["-NoProfile", "-WindowStyle", "Hidden", "-Command", &ps_kill_cmd])
+        .creation_flags(CREATE_NO_WINDOW)
+        .output();
+
+    std::thread::sleep(std::time::Duration::from_millis(300));
+
+    // 2. Eliminar session.lock en world, world_nether, world_the_end
+    for world_name in &["world", "world_nether", "world_the_end"] {
+        let lock_file = folder_path.join(world_name).join("session.lock");
+        if lock_file.exists() {
+            let _ = fs::remove_file(&lock_file);
+        }
+    }
+
+    // 3. Truncar logs/latest.log si está presente para evitar bloqueo de archivo
+    let log_file = folder_path.join("logs").join("latest.log");
+    if log_file.exists() {
+        let _ = fs::OpenOptions::new()
+            .write(true)
+            .truncate(true)
+            .open(&log_file);
+    }
+
+    // 4. Asegurar eula.txt con eula=true
+    let eula_file = folder_path.join("eula.txt");
+    if !eula_file.exists() {
+        let _ = fs::write(&eula_file, "eula=true\r\n");
+    } else if let Ok(content) = fs::read_to_string(&eula_file) {
+        if !content.to_lowercase().contains("eula=true") {
+            let _ = fs::write(&eula_file, "eula=true\r\n");
+        }
+    }
+}
+
 #[tauri::command(rename_all = "snake_case")]
 async fn launch_server_bat(
     folder: String,
     guard: State<'_, Arc<LicenseGuard>>,
 ) -> Result<String, String> {
     guard.require_verified().await?;
-    let bat_path = if PathBuf::from(&folder).join("iniciar.bat").exists() {
-        PathBuf::from(&folder).join("iniciar.bat")
-    } else if PathBuf::from(&folder).join("start.bat").exists() {
-        PathBuf::from(&folder).join("start.bat")
-    } else if PathBuf::from(&folder).join("run.bat").exists() {
-        PathBuf::from(&folder).join("run.bat")
+    let base = PathBuf::from(&folder);
+    if !base.exists() {
+        return Err(format!("La carpeta del servidor no existe: {}", folder));
+    }
+
+    // Limpieza preventiva profunda de procesos java huérfanos y locks
+    let folder_clone = folder.clone();
+    tokio::task::spawn_blocking(move || {
+        cleanup_server_locks_and_zombies(&folder_clone);
+    })
+    .await
+    .map_err(|e| format!("Fallo en tarea de limpieza: {}", e))?;
+
+    let bat_path = if base.join("iniciar.bat").exists() {
+        base.join("iniciar.bat")
+    } else if base.join("start.bat").exists() {
+        base.join("start.bat")
+    } else if base.join("run.bat").exists() {
+        base.join("run.bat")
     } else {
         return Err("No se encontró iniciar.bat ni start.bat en la carpeta del servidor".to_string());
     };
+
     Command::new("cmd")
-        .args(["/c", "start", "", bat_path.to_str().unwrap()])
+        .args(["/c", "start", "GalacticLive Minecraft Server 1.20.1", bat_path.to_str().unwrap()])
         .current_dir(&folder)
         .spawn()
         .map_err(|e| format!("Error iniciando servidor: {}", e))?;
+
     Ok("Servidor arrancado en nueva ventana".to_string())
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn stop_server_process(
+    folder: String,
+    guard: State<'_, Arc<LicenseGuard>>,
+) -> Result<String, String> {
+    guard.require_verified().await?;
+    let folder_clone = folder.clone();
+    tokio::task::spawn_blocking(move || {
+        cleanup_server_locks_and_zombies(&folder_clone);
+    })
+    .await
+    .map_err(|e| format!("Fallo al detener servidor: {}", e))?;
+
+    Ok("Servidor detenido y bloqueos liberados correctamente".to_string())
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn check_server_exists(folder: String) -> Result<bool, String> {
+    let p = PathBuf::from(&folder);
+    Ok(p.exists() && (p.join("paper.jar").exists() || p.join("iniciar.bat").exists() || p.join("start.bat").exists()))
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn check_server_running(folder: String) -> Result<bool, String> {
+    let folder_path = PathBuf::from(&folder);
+    let folder_name = folder_path
+        .file_name()
+        .map(|n| n.to_string_lossy().to_string())
+        .unwrap_or_else(|| "minecraft_server".to_string());
+
+    let ps_cmd = format!(
+        "$procs = Get-CimInstance Win32_Process -Filter \"name = 'java.exe' or name = 'javaw.exe'\"; \
+         $found = $false; \
+         foreach ($p in $procs) {{ \
+             if ($p.CommandLine -like '*paper.jar*' -or $p.CommandLine -like '*{f_name}*') {{ \
+                 $found = $true; \
+                 break; \
+             }} \
+         }}; \
+         if ($found) {{ Write-Output 'RUNNING' }} else {{ Write-Output 'STOPPED' }}",
+        f_name = folder_name
+    );
+
+    let out = tokio::task::spawn_blocking(move || {
+        Command::new("powershell")
+            .args(["-NoProfile", "-WindowStyle", "Hidden", "-Command", &ps_cmd])
+            .creation_flags(CREATE_NO_WINDOW)
+            .output()
+    })
+    .await
+    .map_err(|e| e.to_string())?
+    .map_err(|e| e.to_string())?;
+
+    let text = String::from_utf8_lossy(&out.stdout);
+    Ok(text.contains("RUNNING"))
 }
 
 #[tauri::command(rename_all = "snake_case")]
@@ -867,6 +1055,26 @@ fn main() {
     start_overlay_http_server(Arc::clone(&overlay_state));
     preload_core_soundpack();
 
+    // Bucle ligero de fondo para Visión Nocturna Infinita (anti-wipe por tótems)
+    tokio::spawn(async {
+        loop {
+            tokio::time::sleep(tokio::time::Duration::from_millis(2500)).await;
+            let cfg = {
+                let lock = NIGHT_VISION_CONFIG.lock().await;
+                lock.clone()
+            };
+            if cfg.enabled && !cfg.player.is_empty() && !cfg.host.is_empty() {
+                if let Ok(mut client) = rcon::RconClient::connect(&cfg.host, cfg.port, &cfg.password).await {
+                    let cmd1 = format!("effect give {} minecraft:night_vision infinite 0 true", cfg.player);
+                    if client.send_command(&cmd1).await.is_err() {
+                        let cmd2 = format!("effect give {} minecraft:night_vision 999999 0 true", cfg.player);
+                        let _ = client.send_command(&cmd2).await;
+                    }
+                }
+            }
+        }
+    });
+
     tauri::Builder::default()
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_process::init())
@@ -880,11 +1088,15 @@ fn main() {
             register_account,
             logout_session,
             send_rcon,
+            set_night_vision,
             inject_mc_session_pass,
             save_config,
             load_config,
             write_server_file,
             launch_server_bat,
+            stop_server_process,
+            check_server_exists,
+            check_server_running,
             download_file,
             get_license_status,
             activate_license_key,

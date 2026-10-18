@@ -41,12 +41,17 @@ const dashSideStatusLabel = document.getElementById('dash-side-status-label');
 const headerTikTokBadge = document.getElementById('header-tiktok-badge');
 const headerTikTokIndicator = document.getElementById('header-tiktok-indicator');
 const headerTikTokText = document.getElementById('header-tiktok-text');
+const topbarUserField = document.getElementById('topbar-tiktok-user');
+const topbarBtnConnect = document.getElementById('topbar-btn-connect');
+const topbarIndicator = document.getElementById('topbar-tiktok-indicator');
+const topbarStatusText = document.getElementById('topbar-status-text');
 
 async function doConnectTikTok() {
-  const username = tiktokUserField.value.trim();
+  const username = (tiktokUserField?.value || topbarUserField?.value || '').trim();
   if (!username) {
     showToast('⚠️ Ingresa primero tu usuario de TikTok (ej. @gz7)');
-    tiktokUserField.focus();
+    if (tiktokUserField) tiktokUserField.focus();
+    else if (topbarUserField) topbarUserField.focus();
     return;
   }
   const cleanUser = username.replace(/^@+/, '').trim();
@@ -59,6 +64,36 @@ async function doConnectTikTok() {
     showToast(`⚠️ ${err?.message || 'Error al conectar'}`);
   }
 }
+
+if (topbarUserField && tiktokUserField) {
+  topbarUserField.value = tiktokUserField.value || 'cj7_tutoriales';
+  topbarUserField.addEventListener('input', () => {
+    tiktokUserField.value = topbarUserField.value;
+  });
+  tiktokUserField.addEventListener('input', () => {
+    topbarUserField.value = tiktokUserField.value;
+  });
+  topbarUserField.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      tiktokUserField.value = topbarUserField.value;
+      doConnectTikTok();
+    }
+  });
+}
+
+topbarBtnConnect?.addEventListener('click', () => {
+  const isConn = store.getState().tiktokStatus === 'CONECTADO';
+  if (isConn) {
+    tikTokBridge.disconnect();
+    showToast('Desconectado de TikTok Live');
+  } else {
+    if (topbarUserField && tiktokUserField) {
+      tiktokUserField.value = topbarUserField.value;
+    }
+    doConnectTikTok();
+  }
+});
 
 btnConnectTikTok?.addEventListener('click', doConnectTikTok);
 tiktokUserField?.addEventListener('keydown', e => {
@@ -244,6 +279,25 @@ store.on('tiktok:status', ({ status, username }) => {
 
   if (btnConnectTikTok) btnConnectTikTok.style.display = isConn ? 'none' : 'inline-flex';
   if (btnDisconnectTikTok) btnDisconnectTikTok.style.display = isConn ? 'inline-flex' : 'none';
+
+  if (topbarStatusText) {
+    topbarStatusText.textContent = isConn
+      ? `EN VIVO ${cleanUser ? '(@' + cleanUser + ')' : ''}`
+      : (isConnecting ? 'CONECTANDO...' : (isOffline ? 'NO TRANSMITE' : 'DESCONECTADO'));
+    topbarStatusText.style.color = isConn ? '#00ffa3' : (isConnecting ? '#ffab00' : (isOffline ? '#ffa500' : 'var(--text-muted)'));
+  }
+  if (topbarIndicator) {
+    topbarIndicator.className = `topbar-status-indicator ${cls}`;
+  }
+  if (topbarBtnConnect) {
+    topbarBtnConnect.textContent = isConn ? 'Desconectar' : (isConnecting ? 'Conectando...' : 'Conectar');
+    topbarBtnConnect.style.background = isConn ? 'rgba(255, 42, 95, 0.2)' : 'linear-gradient(135deg, #00f0ff, #7000ff)';
+    topbarBtnConnect.style.color = isConn ? '#ff6b8b' : '#fff';
+    topbarBtnConnect.style.borderColor = isConn ? 'rgba(255, 42, 95, 0.5)' : 'transparent';
+  }
+  if (topbarUserField && cleanUser && !topbarUserField.value) {
+    topbarUserField.value = cleanUser;
+  }
 });
 
 store.on('stats:change', stats => {
@@ -509,7 +563,7 @@ function openGiftConfigModal(giftObj = null) {
   document.getElementById('modal-hidden-roblox-slot-id').value = '';
   document.getElementById('modal-mc-fields-section').style.display = 'block';
 
-  const g = giftObj || { id: 'gift_' + Date.now(), name: 'Rose', coins: 1, faction: 'BUENOS', command: '/summon zombie ~ ~ ~', totemDelta: 1 };
+  const g = giftObj || { id: 'gift_' + Date.now(), name: 'Rose', coins: 1, command: '/totems dar {jugador} totems=10', mult: 'x10', totemDelta: 10 };
   const file = limpiarArchivoGift(g.icon_file || archivoDeGift(g.name, g.coins));
   const sName = g.audioName || soundManager.getSoundForGift(g.name) || '';
   const sUrl = g.audioUrl || '';
@@ -521,9 +575,15 @@ function openGiftConfigModal(giftObj = null) {
   document.getElementById('modal-gift-coins-badge').textContent = `💎 ${g.coins}`;
   document.getElementById('modal-gift-icon').src = giftUrl(file, g.name, g.coins);
   document.getElementById('modal-gift-icon').dataset.file = file;
-  document.getElementById('modal-gift-faction').value = g.faction || 'BUENOS';
-  document.getElementById('modal-gift-delta').value = g.totemDelta ?? 1;
-  document.getElementById('modal-gift-command').value = g.command || '/summon zombie ~ ~ ~';
+  
+  const multEl = document.getElementById('modal-gift-mult');
+  const badgeEl = document.getElementById('modal-gift-badge');
+  const deltaEl = document.getElementById('modal-gift-delta');
+  const cmdEl = document.getElementById('modal-gift-command');
+  if (multEl) multEl.value = g.mult || (g.badge ? g.badge : (g.totemDelta ? `+${g.totemDelta}` : ''));
+  if (badgeEl) badgeEl.value = g.badge || '';
+  if (deltaEl) deltaEl.value = g.totemDelta ?? 1;
+  if (cmdEl) cmdEl.value = g.command || '/totems dar {jugador} totems=1';
   updateModalSoundUI(sName, sUrl);
 
   modalEl.style.display = 'flex';
@@ -584,7 +644,22 @@ document.querySelectorAll('#modal-picker-pills-row .modal-picker-pill').forEach(
 
 document.querySelectorAll('.quick-cmd-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.getElementById('modal-gift-command').value = btn.getAttribute('data-cmd');
+    const cmd = btn.getAttribute('data-cmd');
+    const badge = btn.getAttribute('data-badge') || '';
+    const mult = btn.getAttribute('data-mult') || '';
+    const delta = btn.getAttribute('data-delta') || '';
+    if (cmd && document.getElementById('modal-gift-command')) {
+      document.getElementById('modal-gift-command').value = cmd;
+    }
+    if (badge && document.getElementById('modal-gift-badge')) {
+      document.getElementById('modal-gift-badge').value = badge;
+    }
+    if (mult && document.getElementById('modal-gift-mult')) {
+      document.getElementById('modal-gift-mult').value = mult;
+    }
+    if (delta && document.getElementById('modal-gift-delta')) {
+      document.getElementById('modal-gift-delta').value = delta;
+    }
   });
 });
 
@@ -632,9 +707,10 @@ const handleSaveGiftModal = async () => {
   }
 
   const id = document.getElementById('modal-hidden-gift-id').value || ('gift_' + Date.now());
-  const faction = document.getElementById('modal-gift-faction').value;
-  const totemDelta = Number(document.getElementById('modal-gift-delta').value) || 0;
-  const command = document.getElementById('modal-gift-command').value.trim();
+  const mult = document.getElementById('modal-gift-mult')?.value.trim() || '';
+  const badge = document.getElementById('modal-gift-badge')?.value.trim() || '';
+  const totemDelta = Number(document.getElementById('modal-gift-delta')?.value) || 0;
+  const command = document.getElementById('modal-gift-command')?.value.trim() || '';
 
   const current = giftRegistry.getAll();
   const idx = current.findIndex(x => x.id === id);
@@ -643,7 +719,8 @@ const handleSaveGiftModal = async () => {
     name: newName,
     tiktokGiftId: tiktokGiftIdDeNombre(newName, (idx >= 0 && current[idx]?.tiktokGiftId) ? current[idx].tiktokGiftId : 5655),
     coins: newCoins,
-    faction,
+    mult: mult || (badge ? badge : (totemDelta ? `+${totemDelta}` : '')),
+    badge,
     command,
     totemDelta,
     icon_file: newFile,
@@ -658,7 +735,7 @@ const handleSaveGiftModal = async () => {
   renderGiftsTable();
   await app.persistConfig();
   modalEl.style.display = 'none';
-  showToast(`✔ Regalo "${newName}" guardado en Overlay Minecraft y Preset S2E`);
+  showToast(`✔ Regalo "${newName}" guardado en Overlay Minecraft`);
 };
 
 document.getElementById('btn-save-gift')?.addEventListener('click', handleSaveGiftModal);
@@ -675,30 +752,25 @@ function renderGiftsTable() {
   tbody.innerHTML = gifts.map((g, idx) => {
     const imgUrl = giftUrl(g.icon_file, g.name, g.coins);
     const sndLabel = g.audioName || soundManager.getSoundForGift(g.name) || '';
+    const multVal = g.mult || g.badge || (g.totemDelta ? `+${g.totemDelta}` : '');
     return `
       <tr data-idx="${idx}">
         <td>
-          <button type="button" class="btn-secondary btn-pick-row-gift" data-idx="${idx}" style="width: 100%; justify-content: flex-start;">
-            <img src="${imgUrl}" class="gift-hd-img" style="width: 30px; height: 30px; object-fit: contain;" onerror="this.src='./gifts/rose-1-coins.webp'" />
-            <span>${g.name}</span>
+          <button type="button" class="btn-secondary btn-pick-row-gift" data-idx="${idx}" style="width: 100%; justify-content: flex-start; gap: 8px;">
+            <img src="${imgUrl}" class="gift-hd-img" style="width: 32px; height: 32px; object-fit: contain; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.4));" onerror="this.src='./gifts/rose-1-coins.webp'" />
+            <span style="font-weight: 700; color: #fff;">${g.name}</span>
           </button>
         </td>
         <td style="font-family: var(--font-mono); color: var(--color-gold); font-weight: 800;">${g.coins} 💎</td>
         <td>
-          <select class="table-select row-faction" data-idx="${idx}">
-            <option value="BUENOS" ${g.faction === 'BUENOS' ? 'selected' : ''}>BUENOS</option>
-            <option value="MALOS" ${g.faction === 'MALOS' ? 'selected' : ''}>MALOS</option>
-          </select>
+          <input type="text" class="table-input row-cmd" data-idx="${idx}" value="${g.command || ''}" placeholder="/totems dar {jugador} totems=124" style="width: 100%; font-family: var(--font-mono); font-size: 11px;" />
+        </td>
+        <td style="text-align: center;">
+          <input type="text" class="table-input row-mult" data-idx="${idx}" value="${multVal}" style="width: 75px; text-align: center; color: var(--neon-cyan); font-weight: 800; font-family: var(--font-mono);" placeholder="x10" />
         </td>
         <td>
-          <input type="text" class="table-input row-cmd" data-idx="${idx}" value="${g.command || ''}" />
-        </td>
-        <td>
-          <input type="number" class="table-input row-delta" data-idx="${idx}" value="${g.totemDelta ?? 0}" style="width: 70px;" />
-        </td>
-        <td>
-          <div style="display: flex; gap: 4px; align-items: center;">
-            <button type="button" class="btn-micro btn-sound-mc-row" data-idx="${idx}" title="Elegir sonido del banco gratis (258+ sonidos)" style="color: var(--neon-cyan); border-color: rgba(0,240,255,0.4); max-width: 138px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+          <div style="display: flex; gap: 6px; align-items: center; justify-content: flex-end;">
+            <button type="button" class="btn-micro btn-sound-mc-row" data-idx="${idx}" title="Elegir sonido" style="color: var(--neon-cyan); border-color: rgba(0,240,255,0.4); max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
               🔊 ${sndLabel || 'Sonido'}
             </button>
             <button type="button" class="btn-micro btn-test-mc-row" data-idx="${idx}" title="Probar regalo y sonido">▶</button>
@@ -740,22 +812,27 @@ function renderGiftsTable() {
         syncGiftWithActivePreset(g);
         renderGiftsTable();
         await app.persistConfig();
+        await app.syncMcOverlayToBackend();
       });
     });
   });
 
-  tbody.querySelectorAll('.row-faction, .row-cmd, .row-delta').forEach(inp => {
+  tbody.querySelectorAll('.row-cmd, .row-mult').forEach(inp => {
     inp.addEventListener('change', async () => {
       const list = giftRegistry.getAll();
       const idx = Number(inp.dataset.idx);
       const g = list[idx];
       if (!g) return;
-      if (inp.classList.contains('row-faction')) g.faction = inp.value;
       if (inp.classList.contains('row-cmd')) g.command = inp.value;
-      if (inp.classList.contains('row-delta')) g.totemDelta = Number(inp.value) || 0;
+      if (inp.classList.contains('row-mult')) {
+        g.mult = inp.value.trim();
+        const numDelta = parseInt(inp.value.replace(/[^0-9\-+]/g, ''), 10);
+        if (!isNaN(numDelta)) g.totemDelta = numDelta;
+      }
       giftRegistry.setAll(list);
       syncGiftWithActivePreset(g);
       await app.persistConfig();
+      await app.syncMcOverlayToBackend();
     });
   });
 
@@ -773,6 +850,7 @@ function renderGiftsTable() {
       giftRegistry.setAll(list);
       renderGiftsTable();
       await app.persistConfig();
+      await app.syncMcOverlayToBackend();
     });
   });
 }
@@ -784,6 +862,7 @@ document.querySelectorAll('.btn-load-preset').forEach(btn => {
     if (loaded) {
       renderGiftsTable();
       await app.persistConfig();
+      await app.syncMcOverlayToBackend();
       showToast(`✔ Preset cargado: ${loaded.nombre}`);
     }
   });
@@ -795,17 +874,27 @@ document.getElementById('btn-restore-gifts-default')?.addEventListener('click', 
   giftRegistry.resetDefaults();
   renderGiftsTable();
   await app.persistConfig();
+  await app.syncMcOverlayToBackend();
   showToast('✔ Regalos restaurados a valores por defecto');
 });
 document.getElementById('btn-save-gifts')?.addEventListener('click', async () => {
   const list = giftRegistry.getAll();
-  document.querySelectorAll('.row-faction').forEach(el => { list[Number(el.dataset.idx)].faction = el.value; });
-  document.querySelectorAll('.row-cmd').forEach(el => { list[Number(el.dataset.idx)].command = el.value; });
-  document.querySelectorAll('.row-delta').forEach(el => { list[Number(el.dataset.idx)].totemDelta = Number(el.value) || 0; });
+  document.querySelectorAll('.row-cmd').forEach(el => {
+    if (list[Number(el.dataset.idx)]) list[Number(el.dataset.idx)].command = el.value;
+  });
+  document.querySelectorAll('.row-mult').forEach(el => {
+    const item = list[Number(el.dataset.idx)];
+    if (item) {
+      item.mult = el.value.trim();
+      const numDelta = parseInt(el.value.replace(/[^0-9\-+]/g, ''), 10);
+      if (!isNaN(numDelta)) item.totemDelta = numDelta;
+    }
+  });
   giftRegistry.setAll(list);
   list.forEach(g => syncGiftWithActivePreset(g));
   await app.persistConfig();
-  showToast('✔ ¡Overlay de Minecraft, Preset S2E y comandos RCON actualizados!');
+  await app.syncMcOverlayToBackend();
+  showToast('✔ ¡Overlay de Minecraft y comandos RCON actualizados y guardados!');
 });
 
 document.querySelectorAll('.btn-set-mc-style').forEach(btn => {
@@ -815,24 +904,9 @@ document.querySelectorAll('.btn-set-mc-style').forEach(btn => {
       c.style.borderColor = c.getAttribute('data-mc-style') === app.mcOverlayStyle ? 'var(--neon-cyan)' : 'var(--border-subtle)';
     });
     await app.persistConfig();
+    await app.syncMcOverlayToBackend();
     showToast(`✔ Estilo de Overlay Minecraft activado: ${app.mcOverlayStyle.toUpperCase()}`);
   });
-});
-
-document.getElementById('btn-toggle-faction')?.addEventListener('click', () => {
-  store.toggleFaction();
-  app.persistConfig();
-  showToast(`🔄 Facción cambiada a: ${store.getState().activeFaction}`);
-});
-
-store.on('faction:change', faction => {
-  const banner = document.getElementById('faction-banner');
-  const title = document.getElementById('faction-name-display');
-  if (banner) banner.className = `faction-toggle-panel ${faction.toLowerCase()}`;
-  if (title) {
-    title.textContent = `FACCIÓN: ${faction}`;
-    title.style.color = faction === 'BUENOS' ? 'var(--neon-cyan)' : 'var(--color-malos)';
-  }
 });
 
 // -----------------------------------------------------------------

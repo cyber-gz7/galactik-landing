@@ -686,27 +686,26 @@ export function archivoDeGift(nombre, coins) {
 }
 
 export const PRESETS = {
-  minecraft_bm: {
-    id: 'minecraft_bm',
-    nombre: 'Minecraft: Buenos vs Malos (Tótems)',
+  survival_gz7: {
+    id: 'survival_gz7',
+    nombre: 'Minecraft: Survival GZ7 (Universal Progresivo)',
     juego: 'minecraft',
-    descripcion: 'Guerra de donaciones con Tótems, ángeles, La Parka y animaciones en Paper 1.20.1',
+    descripcion: 'Curva progresiva ascendente de intensidad con regalos 100% universales y plugins exclusivos',
     reglas: [
-      { id: 'rosa_oscura', name: 'Rosa', icon_file: 'rose-1-coins.webp', tiktokGiftId: 5655, coins: 1, faction: 'MALOS', command: '/bm gift rosa_oscura {donador}', totemDelta: 0 },
-      { id: 'gg_maldicion', name: 'GG', icon_file: 'gg-1-coins.webp', tiktokGiftId: 6064, coins: 1, faction: 'MALOS', command: '/bm gift gg_maldicion {donador}', totemDelta: -1 },
-      { id: 'hackai_lluvia', name: 'Haikai Lluvia', icon_file: 'umbrella-1-coins.webp', tiktokGiftId: 5034, coins: 15, faction: 'MALOS', command: '/bm gift hackai_lluvia {donador}', totemDelta: -3 },
-      { id: 'carrusel_inf', name: 'Carrusel Infierno', icon_file: 'carousel-1999-coins.webp', tiktokGiftId: 8913, coins: 20, faction: 'MALOS', command: '/bm gift carrusel_infierno {donador}', totemDelta: -2 },
-      { id: 'dragon_inv', name: 'Dragón Invocación', icon_file: 'rising-dragon-999-coins.webp', tiktokGiftId: 7521, coins: 50, faction: 'MALOS', command: '/bm gift dragon_invocacion {donador}', totemDelta: -5 },
-      { id: 'la_parka', name: 'La Parka (Instakill)', icon_file: 'firelight-beast-4000-coins.webp', tiktokGiftId: 6748, coins: 99, faction: 'MALOS', command: '/bm gift la_parka {donador}', totemDelta: -20 },
-      { id: 'sol_cruel', name: 'Sol Cruel (Mega)', icon_file: 'sun-crown-199-coins.webp', tiktokGiftId: 9234, coins: 199, faction: 'MALOS', command: '/bm gift sol_cruel {donador}', totemDelta: -20 },
-
-      { id: 'rosa_luz', name: 'Rosa de Luz', icon_file: 'white-rose-1-coins.webp', tiktokGiftId: 5655, coins: 1, faction: 'BUENOS', command: '/bm gift rosa_luz {donador}', totemDelta: 0 },
-      { id: 'gg_bendicion', name: 'GG Bendición', icon_file: 'gg-2025-1-coins.webp', tiktokGiftId: 6064, coins: 1, faction: 'BUENOS', command: '/bm gift gg_bendicion {donador}', totemDelta: 1 },
-      { id: 'hackai_sag', name: 'Haikai Sagrado', icon_file: 'rainbow-1-coins.webp', tiktokGiftId: 5034, coins: 15, faction: 'BUENOS', command: '/bm gift hackai_sagrado {donador}', totemDelta: 3 },
-      { id: 'carrusel_tot', name: 'Carrusel Tótems', icon_file: 'carousel-1999-coins.webp', tiktokGiftId: 8913, coins: 20, faction: 'BUENOS', command: '/bm gift carrusel_totems {donador}', totemDelta: 5 },
-      { id: 'fenix', name: 'Fénix Renaciente', icon_file: 'phoenix-25999-coins.webp', tiktokGiftId: 7521, coins: 50, faction: 'BUENOS', command: '/bm gift fenix_renaciente {donador}', totemDelta: 8 },
-      { id: 'arcangel', name: 'Arcángel Serafín', icon_file: 'angel-road-6999-coins.webp', tiktokGiftId: 6748, coins: 99, faction: 'BUENOS', command: '/bm gift arcangel_serafin {donador}', totemDelta: 20 },
-      { id: 'deidad_solar', name: 'Deidad Solar (Mega)', icon_file: 'suncatcher-800-coins.webp', tiktokGiftId: 9234, coins: 199, faction: 'BUENOS', command: '/bm gift deidad_solar {donador}', totemDelta: 20 }
+      { id: 't1_rosa', name: 'Rosa', icon_file: 'rose-1-coins.webp', tiktokGiftId: 5655, coins: 1, action_label: '💥 Kaboom x10', mult: 'x10', command: 'execute at {jugador} run summon tnt ~ ~ ~', totemDelta: 0 },
+      { id: 't1_gg', name: 'GG', icon_file: 'gg-1-coins.webp', tiktokGiftId: 6064, coins: 1, action_label: '🧨 TNT x10', mult: 'x10', command: 'execute at {jugador} run summon tnt ~ ~3 ~', totemDelta: 0 },
+      { id: 't1_heart_me', name: 'Heart Me', icon_file: 'heart-me-1-coins.webp', tiktokGiftId: 7934, coins: 1, action_label: '⚡ Thunder + Alerta', mult: 'PRIOR', command: '/trueno {jugador}', totemDelta: 1, priorityAlert: true },
+      { id: 't1_ice_cream', name: 'Ice Cream Cone', icon_file: 'ice-cream-cone-1-coins.webp', tiktokGiftId: 5827, coins: 1, action_label: '⚡ Thunder x1', mult: 'x1', command: '/trueno {jugador}', totemDelta: 0 },
+      { id: 't2_finger_heart', name: 'Finger Heart', icon_file: 'finger-heart-5-coins.webp', tiktokGiftId: 5487, coins: 5, action_label: '⚡ Thunder x10', mult: 'x10', command: '/trueno {jugador}', totemDelta: 0 },
+      { id: 't2_donut', name: 'Doughnut', icon_file: 'doughnut-30-coins.webp', tiktokGiftId: 5879, coins: 30, action_label: '⚔️ Kit Armadura OP', mult: 'KIT', command: '/kit armadura {jugador}', totemDelta: 5 },
+      { id: 't2_capybara', name: 'Capybara', icon_file: 'capybara-30-coins.webp', tiktokGiftId: 6562, coins: 30, action_label: '🛡️ +25 Tótems Stack', mult: '+25', command: '/totems dar {jugador} totems=25', totemDelta: 25 },
+      { id: 't3_cap', name: 'Cap', icon_file: 'cap-99-coins.webp', tiktokGiftId: 5660, coins: 99, action_label: '🔴 Súper Rayo', mult: 'RAYO', command: '/superrayo {jugador}', totemDelta: 0 },
+      { id: 't3_controller', name: 'Game Controller', icon_file: 'game-controller-100-coins.webp', tiktokGiftId: 6070, coins: 100, action_label: '🧟 Horda Zombies x500', mult: 'x500', command: '/enjambre {jugador}', totemDelta: -10 },
+      { id: 't3_sun_crown', name: 'Sun Crown', icon_file: 'sun-crown-199-coins.webp', tiktokGiftId: 9234, coins: 199, action_label: '☀️ Sol Cruel', mult: 'SOL', command: '/solcruel {jugador}', totemDelta: -15 },
+      { id: 't3_corgi', name: 'Corgi', icon_file: 'corgi-299-coins.webp', tiktokGiftId: 6563, coins: 299, action_label: '🛡️ +124 Tótems Stack', mult: '+124', command: '/totems dar {jugador} totems=124', totemDelta: 124 },
+      { id: 't4_money_gun', name: 'Money Gun', icon_file: 'money-gun-500-coins.webp', tiktokGiftId: 7168, coins: 500, action_label: '🐉 Invocación Dragón', mult: 'BOSS', command: '/dragon {jugador}', totemDelta: -25 },
+      { id: 't4_galaxy', name: 'Galaxy', icon_file: 'galaxy-1000-coins.webp', tiktokGiftId: 5994, coins: 1000, action_label: '💀 La Parka Final', mult: 'FINAL', command: '/esqueleto {jugador}', totemDelta: -50 },
+      { id: 't5_lion', name: 'Lion', icon_file: 'lion-29999-coins.webp', tiktokGiftId: 5509, coins: 29999, action_label: '🔥 Apocalipsis Total', mult: 'ULTRA', command: '/atomica {jugador}', totemDelta: -100 }
     ]
   },
 
@@ -716,12 +715,12 @@ export const PRESETS = {
     juego: 'roblox',
     descripcion: 'Duelo por equipos en Roblox/OBS: Rosa empuja a la Izquierda, GG empuja a la Derecha',
     reglas: [
-      { id: 'team_rojo_rosa', name: '🌹 Empuje Rojo (Rosa)', icon_file: 'rose-1-coins.webp', tiktokGiftId: 5655, coins: 1, faction: 'MALOS', side: 'LEFT', power: 5, command: 'ROBLOX_EVENT:PUSH_LEFT:5', totemDelta: -1 },
-      { id: 'team_azul_gg', name: '🎮 Empuje Azul (GG)', icon_file: 'gg-1-coins.webp', tiktokGiftId: 6064, coins: 1, faction: 'BUENOS', side: 'RIGHT', power: 15, command: 'ROBLOX_EVENT:PUSH_RIGHT:15', totemDelta: 1 },
-      { id: 'team_rojo_carrusel', name: '🎠 Turbo Rojo (Carrusel)', icon_file: 'carousel-1999-coins.webp', tiktokGiftId: 8913, coins: 20, faction: 'MALOS', side: 'LEFT', power: 50, command: 'ROBLOX_EVENT:PUSH_LEFT:50', totemDelta: -5 },
-      { id: 'team_azul_carrusel', name: '🏆 Turbo Azul (Carrusel)', icon_file: 'carousel-1999-coins.webp', tiktokGiftId: 8913, coins: 20, faction: 'BUENOS', side: 'RIGHT', power: 50, command: 'ROBLOX_EVENT:PUSH_RIGHT:50', totemDelta: 5 },
-      { id: 'team_rojo_nuke', name: '💀 Nuke Rojo (Parka)', icon_file: 'firelight-beast-4000-coins.webp', tiktokGiftId: 6748, coins: 99, faction: 'MALOS', side: 'LEFT', power: 200, command: 'ROBLOX_EVENT:PUSH_LEFT:200', totemDelta: -20 },
-      { id: 'team_azul_nuke', name: '👼 Guardián Azul (Arcángel)', icon_file: 'angel-road-6999-coins.webp', tiktokGiftId: 6748, coins: 99, faction: 'BUENOS', side: 'RIGHT', power: 200, command: 'ROBLOX_EVENT:PUSH_RIGHT:200', totemDelta: 20 }
+      { id: 'team_rojo_rosa', name: '🌹 Empuje Rojo (Rosa)', icon_file: 'rose-1-coins.webp', tiktokGiftId: 5655, coins: 1, side: 'LEFT', power: 5, command: 'ROBLOX_EVENT:PUSH_LEFT:5', totemDelta: -1 },
+      { id: 'team_azul_gg', name: '🎮 Empuje Azul (GG)', icon_file: 'gg-1-coins.webp', tiktokGiftId: 6064, coins: 1, side: 'RIGHT', power: 15, command: 'ROBLOX_EVENT:PUSH_RIGHT:15', totemDelta: 1 },
+      { id: 'team_rojo_carrusel', name: '🎠 Turbo Rojo (Carrusel)', icon_file: 'carousel-1999-coins.webp', tiktokGiftId: 8913, coins: 20, side: 'LEFT', power: 50, command: 'ROBLOX_EVENT:PUSH_LEFT:50', totemDelta: -5 },
+      { id: 'team_azul_carrusel', name: '🏆 Turbo Azul (Carrusel)', icon_file: 'carousel-1999-coins.webp', tiktokGiftId: 8913, coins: 20, side: 'RIGHT', power: 50, command: 'ROBLOX_EVENT:PUSH_RIGHT:50', totemDelta: 5 },
+      { id: 'team_rojo_nuke', name: '💀 Nuke Rojo (Parka)', icon_file: 'firelight-beast-4000-coins.webp', tiktokGiftId: 6748, coins: 99, side: 'LEFT', power: 200, command: 'ROBLOX_EVENT:PUSH_LEFT:200', totemDelta: -20 },
+      { id: 'team_azul_nuke', name: '👼 Guardián Azul (Arcángel)', icon_file: 'angel-road-6999-coins.webp', tiktokGiftId: 6748, coins: 99, side: 'RIGHT', power: 200, command: 'ROBLOX_EVENT:PUSH_RIGHT:200', totemDelta: 20 }
     ]
   },
 
@@ -731,56 +730,21 @@ export const PRESETS = {
     juego: 'minecraft',
     descripcion: 'Likes spawnean Zombies, Rosas Creepers y Regalos grandes TNT o Wardens',
     reglas: [
-      { id: 'spawn_zombie', name: 'Rosa', icon_file: 'rose-1-coins.webp', tiktokGiftId: 5655, coins: 1, faction: 'MALOS', command: 'execute at {donador} run summon zombie ~ ~ ~', totemDelta: -1 },
-      { id: 'spawn_creeper', name: 'GG', icon_file: 'gg-1-coins.webp', tiktokGiftId: 6064, coins: 1, faction: 'MALOS', command: 'execute at {donador} run summon creeper ~ ~ ~', totemDelta: -2 },
-      { id: 'give_diamond', name: 'Diamantes de Ayuda', icon_file: 'power-of-diamond-1-coins.webp', tiktokGiftId: 5034, coins: 15, faction: 'BUENOS', command: 'give {donador} diamond 5', totemDelta: 3 },
-      { id: 'spawn_tnt', name: 'Lluvia TNT', icon_file: 'fireball-5-coins.webp', tiktokGiftId: 8913, coins: 20, faction: 'MALOS', command: 'execute at {donador} run summon tnt ~ ~3 ~', totemDelta: -5 },
-      { id: 'spawn_warden', name: 'Warden Destructor', icon_file: 'firelight-beast-4000-coins.webp', tiktokGiftId: 6748, coins: 99, faction: 'MALOS', command: 'execute at {donador} run summon warden ~ ~ ~', totemDelta: -20 },
-      { id: 'give_netherite', name: 'Kit Dios Celestial', icon_file: 'fairy-wings-1000-coins.webp', tiktokGiftId: 9234, coins: 199, faction: 'BUENOS', command: 'give {donador} netherite_chestplate', totemDelta: 20 }
-    ]
-  },
-
-  minecraft_master: {
-    id: 'minecraft_master',
-    nombre: 'Minecraft: Survival GZ7 Factory (Master Live)',
-    juego: 'minecraft',
-    descripcion: 'Mapeo maestro calibrado: 5 tiers de regalos y comandos de survivalgz7 listos para jugar',
-    reglas: [
-      { id: 't1_rosa', name: 'Rosa', icon_file: 'rose-1-coins.webp', tiktokGiftId: 5655, coins: 1, faction: 'MALOS', command: '/survival tnt 30 2.5 3 {donor}', totemDelta: -1 },
-      { id: 't1_ponder', name: 'Ponder', icon_file: 'ponder-9-coins.webp', tiktokGiftId: 6059, coins: 9, faction: 'MALOS', command: '/survival tnt 30 2.5 3 {donor}', totemDelta: -1 },
-      { id: 't1_tiktok', name: 'TikTok', icon_file: 'tiktok-1-coins.webp', tiktokGiftId: 5269, coins: 1, faction: 'MALOS', command: '/survival tnt 30 2.5 3 {donor}', totemDelta: -1 },
-      { id: 't1_panda', name: 'Panda', icon_file: 'panda-5-coins.webp', tiktokGiftId: 5487, coins: 5, faction: 'MALOS', command: '/survival bee {donor}', totemDelta: -1 },
-      { id: 't1_finger_heart', name: 'Dedo Corazón', icon_file: 'finger-heart-5-coins.webp', tiktokGiftId: 5489, coins: 5, faction: 'MALOS', command: '/survival bee {donor}', totemDelta: -1 },
-
-      { id: 't2_cafe', name: 'Café', icon_file: 'coffee-10-coins.webp', tiktokGiftId: 5879, coins: 10, faction: 'MALOS', command: '/survival creeper_charged {donor}', totemDelta: -2 },
-      { id: 't2_donut', name: 'Donut', icon_file: 'doughnut-30-coins.webp', tiktokGiftId: 5270, coins: 30, faction: 'MALOS', command: '/survival creeper_charged {donor}', totemDelta: -3 },
-      { id: 't2_papel_picado', name: 'Papel Picado', icon_file: 'confetti-100-coins.webp', tiktokGiftId: 6104, coins: 100, faction: 'MALOS', command: '/survival creeper_charged {donor}', totemDelta: -5 },
-      { id: 't2_corona_flores', name: 'Corona de Flores', icon_file: 'garland-49-coins.webp', tiktokGiftId: 5912, coins: 49, faction: 'MALOS', command: '/survival spider {donor}', totemDelta: -3 },
-
-      { id: 't3_pesa', name: 'Pesa', icon_file: 'weights-50-coins.webp', tiktokGiftId: 6267, coins: 50, faction: 'MALOS', command: '/survival trap {target}', totemDelta: -5 },
-      { id: 't3_corazon_papel', name: 'Corazón de Papel', icon_file: 'paper-heart-50-coins.webp', tiktokGiftId: 6228, coins: 50, faction: 'MALOS', command: '/survival trap {target}', totemDelta: -5 },
-      { id: 't3_sombrero_bigote', name: 'Sombrero y Bigote', icon_file: 'hat-and-mustache-99-coins.webp', tiktokGiftId: 5878, coins: 99, faction: 'MALOS', command: '/survival bee_cage {target}', totemDelta: -10 },
-      { id: 't3_pato', name: 'Pato', icon_file: 'duck-100-coins.webp', tiktokGiftId: 5488, coins: 100, faction: 'MALOS', command: '/survival obsidian_box {target}', totemDelta: -10 },
-      { id: 't3_caja_sorpresa', name: 'Caja sorpresa', icon_file: 'mystery-box-100-coins.webp', tiktokGiftId: 6245, coins: 100, faction: 'MALOS', command: '/survival obsidian_box {target}', totemDelta: -10 },
-
-      { id: 't4_pistola_dinero', name: 'Pistola de Dinero', icon_file: 'money-gun-500-coins.webp', tiktokGiftId: 5658, coins: 500, faction: 'MALOS', command: '/survival water_drop {target}', totemDelta: -15 },
-      { id: 't4_tren', name: 'Tren', icon_file: 'train-899-coins.webp', tiktokGiftId: 6378, coins: 899, faction: 'MALOS', command: '/survival water_drop {target}', totemDelta: -20 },
-      { id: 't4_gafas_sol', name: 'Gafas de Sol', icon_file: 'sunglasses-199-coins.webp', tiktokGiftId: 5876, coins: 199, faction: 'MALOS', command: '/survival pit 5 10 {target}', totemDelta: -15 },
-      { id: 't4_fiesta', name: 'Fiesta', icon_file: 'party-299-coins.webp', tiktokGiftId: 6078, coins: 299, faction: 'MALOS', command: '/survival pit 5 10 {target}', totemDelta: -15 },
-
-      { id: 't5_leon', name: 'León', icon_file: 'lion-29999-coins.webp', tiktokGiftId: 5937, coins: 29999, faction: 'MALOS', command: '/survival tntbox {target}\n/arcangel {target} {donor}', totemDelta: -50 },
-      { id: 't5_ballena', name: 'Ballena', icon_file: 'whale-diving-2150-coins.webp', tiktokGiftId: 5760, coins: 2150, faction: 'MALOS', command: '/survival tntbox {target}\n/arcangel {target} {donor}', totemDelta: -30 },
-      { id: 't5_universo', name: 'Universo', icon_file: 'galaxy-1000-coins.webp', tiktokGiftId: 5875, coins: 1000, faction: 'MALOS', command: '/survival tntbox {target}\n/arcangel {target} {donor}', totemDelta: -30 },
-      { id: 't5_halcon', name: 'Halcón', icon_file: 'falcon-10999-coins.webp', tiktokGiftId: 6032, coins: 10999, faction: 'MALOS', command: '/survival tntbox {target}\n/arcangel {target} {donor}', totemDelta: -40 }
+      { id: 'spawn_zombie', name: 'Rosa', icon_file: 'rose-1-coins.webp', tiktokGiftId: 5655, coins: 1, command: 'execute at {jugador} run summon zombie ~ ~ ~', totemDelta: -1 },
+      { id: 'spawn_creeper', name: 'GG', icon_file: 'gg-1-coins.webp', tiktokGiftId: 6064, coins: 1, command: 'execute at {jugador} run summon creeper ~ ~ ~', totemDelta: -2 },
+      { id: 'give_diamond', name: 'Capybara', icon_file: 'capybara-30-coins.webp', tiktokGiftId: 6562, coins: 30, command: 'give {jugador} diamond 5', totemDelta: 5 },
+      { id: 'spawn_tnt', name: 'Lluvia TNT', icon_file: 'fireball-5-coins.webp', tiktokGiftId: 8913, coins: 20, command: 'execute at {jugador} run summon tnt ~ ~3 ~', totemDelta: -5 },
+      { id: 'spawn_warden', name: 'Warden Destructor', icon_file: 'firelight-beast-4000-coins.webp', tiktokGiftId: 6748, coins: 99, command: 'execute at {jugador} run summon warden ~ ~ ~', totemDelta: -20 },
+      { id: 'give_netherite', name: 'Kit Armadura OP', icon_file: 'fairy-wings-1000-coins.webp', tiktokGiftId: 9234, coins: 199, command: '/kit armadura {jugador}', totemDelta: 20 }
     ]
   }
 };
 
-export const DEFAULT_GIFTS = PRESETS.minecraft_master.reglas;
+export const DEFAULT_GIFTS = PRESETS.survival_gz7.reglas;
 
 export class GiftRegistry {
   constructor(initialGifts = null) {
-    this.currentPreset = 'minecraft_bm';
+    this.currentPreset = 'survival_gz7';
     this.gifts = initialGifts ? [...initialGifts] : [...DEFAULT_GIFTS];
   }
 
@@ -805,7 +769,7 @@ export class GiftRegistry {
 
   resetDefaults() {
     this.gifts = [...DEFAULT_GIFTS];
-    this.currentPreset = 'minecraft_bm';
+    this.currentPreset = 'survival_gz7';
   }
 
   resolveGift(giftIdOrName, faction = 'BUENOS', explicitGiftName = '') {
@@ -848,24 +812,28 @@ export class GiftRegistry {
     const targetPlayer = (storeState?.targetPlayer || storeState?.streamerUsername || 'GZ7').replace(/[^a-zA-Z0-9_]/g, '_') || 'GZ7';
     const rawCommand = gift.command || '';
     const command = rawCommand
+      .replace(/{jugador}/g, targetPlayer)
+      .replace(/{player}/g, targetPlayer)
       .replace(/{target}/g, targetPlayer)
       .replace(/{playername}/g, targetPlayer)
       .replace(/{donador}/g, cleanDonor)
       .replace(/{donor}/g, cleanDonor)
       .replace(/{faccion}/g, activeFaction)
-      .replace(/{delta}/g, String(gift.totemDelta));
+      .replace(/{cantidad}/g, String(gift.totemDelta || 1))
+      .replace(/{delta}/g, String(gift.totemDelta || 1));
 
     return {
       giftId: gift.id,
       giftName: explicitGiftName || gift.name,
       tiktokGiftId: gift.tiktokGiftId,
       coins: gift.coins || 1,
-      faction: gift.faction === 'AMBOS' ? activeFaction : gift.faction,
+      faction: gift.faction === 'AMBOS' ? activeFaction : (gift.faction || 'BUENOS'),
       totemDelta: Number(gift.totemDelta) || 0,
       side: gift.side || (gift.faction === 'MALOS' ? 'LEFT' : 'RIGHT'),
       power: gift.power || gift.coins || 1,
       command,
       shouldFire: Boolean(command.trim().length > 0),
+      priorityAlert: Boolean(gift.priorityAlert || gift.name?.toLowerCase().includes('heart me')),
       rawGift: gift
     };
   }

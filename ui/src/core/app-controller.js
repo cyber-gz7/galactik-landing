@@ -338,8 +338,9 @@ class AppController {
           action_image: g.action_image || '',
           repetition: Number(g.repetition) || 1,
           coins: Number(g.coins) || 1,
-          action_label: g.overlayLabel || this.formatMcCommandLabel(g.command, g.name),
-          faction: g.faction || 'BUENOS',
+          action_label: g.action_label || g.overlayLabel || this.formatMcCommandLabel(g.command, g.name),
+          mult: g.mult || (g.badge ? g.badge : (g.totemDelta ? `+${g.totemDelta}` : '')),
+          badge: g.badge || '',
           command: g.command || '',
           sound_name: mappedSound,
           sound_url: g.audioUrl || resolvedSoundObj?.url || ''
@@ -352,7 +353,6 @@ class AppController {
         showTotems: this.mcShowTotems,
         totems: st.totems,
         maxTotems: st.maxTotems,
-        faction: st.activeFaction,
         items
       };
       await invoke('update_mc_overlay_config', {
@@ -365,18 +365,23 @@ class AppController {
 
   formatMcCommandLabel(cmd = '', fallback = 'Acción') {
     const c = String(cmd).toLowerCase();
-    if (c.includes('zombie')) return 'Zombie';
-    if (c.includes('creeper')) return 'Creeper';
+    if (c.includes('totem')) return 'Tótems Stack';
+    if (c.includes('wolf') || c.includes('perro')) return 'Lobo Guardián';
+    if (c.includes('kit armadura') || c.includes('armadura')) return 'Kit Armadura OP';
+    if (c.includes('survival tools') || c.includes('tools')) return 'Survival Tools';
+    if (c.includes('dragon')) return 'Dragón Invocación';
+    if (c.includes('la_parka') || c.includes('reaper') || c.includes('parka')) return 'La Parka (Instakill)';
+    if (c.includes('solcruel') || c.includes('sol_cruel')) return 'Sol Cruel';
+    if (c.includes('superrayo') || c.includes('trueno') || c.includes('lightning') || c.includes('thunder')) return 'Rayo / Trueno';
+    if (c.includes('kaboom')) return 'Kaboom x10';
     if (c.includes('tnt')) return 'Lluvia TNT';
+    if (c.includes('zombie')) return 'Horda Zombies';
     if (c.includes('warden')) return 'Warden Boss';
-    if (c.includes('lightning')) return 'Rayo Divino';
+    if (c.includes('creeper')) return 'Creeper';
     if (c.includes('diamond')) return 'Diamantes';
-    if (c.includes('la_parka')) return 'La Parka';
-    if (c.includes('sol_cruel')) return 'Sol Cruel';
     if (c.includes('arcangel')) return 'Arcángel';
-    if (c.includes('deidad_solar')) return 'Deidad Solar';
     if (c.includes('fenix')) return 'Fénix';
-    return fallback.length > 16 ? fallback.slice(0, 16) : fallback;
+    return fallback.length > 20 ? fallback.slice(0, 20) : fallback;
   }
 
   async loadSavedConfig() {
