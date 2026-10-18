@@ -2,120 +2,208 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Top Likes - GZ7Live</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top Likes Transparente - Galactic Live</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@700;900&family=JetBrains+Mono:wght@700&display=swap');
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: transparent;
-      font-family: 'Rajdhani', sans-serif;
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Rajdhani:wght@600;700;800&family=Inter:wght@600;700;800&family=JetBrains+Mono:wght@700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      background: transparent !important;
       overflow: hidden;
+      font-family: 'Inter', system-ui, sans-serif;
+      color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100vh;
-      color: #fff;
+      pointer-events: none;
     }
-    .likes-card {
-      width: 360px;
-      background: rgba(18, 12, 16, 0.9);
-      border: 2px solid #ff4081;
-      border-radius: 20px;
-      padding: 18px 20px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.85), 0 0 25px rgba(255, 64, 129, 0.3);
-      backdrop-filter: blur(12px);
-      transition: transform 0.3s ease;
+
+    .likes-container {
+      width: 320px;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
       position: relative;
+      transform: translateZ(0);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .likes-title {
+
+    .likes-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid rgba(255, 64, 129, 0.3);
-      padding-bottom: 10px;
-      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 1.5px solid rgba(255, 42, 133, 0.35);
+      position: relative;
     }
-    .title-text {
-      font-size: 19px;
-      font-weight: 900;
-      color: #ff4081;
-      letter-spacing: 1px;
+
+    .header-left {
       display: flex;
       align-items: center;
       gap: 8px;
     }
-    .heart-pulse {
-      animation: beat 1s infinite alternate;
+
+    .svg-heart {
+      width: 24px;
+      height: 24px;
+      filter: drop-shadow(0 0 8px rgba(255, 42, 133, 0.85)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
     }
-    @keyframes beat { from { transform: scale(1); } to { transform: scale(1.25); } }
+
+    .heart-pulse {
+      animation: heartBeat 1.25s ease-in-out infinite;
+      transform-origin: center center;
+    }
+
+    @keyframes heartBeat {
+      0%, 100% { transform: scale(1); }
+      20% { transform: scale(1.18); }
+      40% { transform: scale(0.96); }
+      60% { transform: scale(1.12); }
+    }
+
+    .title-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 1.4px;
+      background: linear-gradient(135deg, #ff2a85 0%, #ff7300 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 2px 6px rgba(0, 0, 0, 0.85);
+    }
+
+    .total-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 800;
+      color: #ff99cc;
+      text-shadow: 0 1px 2px #000000, 0 2px 4px rgba(0, 0, 0, 0.9);
+      letter-spacing: 0.5px;
+    }
 
     .liker-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 6px;
     }
+
     .liker-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 8px 12px;
-      transition: all 0.3s ease;
+      background: transparent !important;
+      border: none !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 6px 4px;
+      transition: transform 0.25s ease, opacity 0.25s ease;
     }
-    .liker-row:first-child {
-      background: linear-gradient(90deg, rgba(255, 64, 129, 0.18) 0%, rgba(255, 64, 129, 0.04) 100%);
-      border-color: rgba(255, 64, 129, 0.6);
+
+    .liker-row.rank-1 {
+      border-bottom: 1px solid rgba(255, 42, 133, 0.45);
     }
+
     .liker-left {
       display: flex;
       align-items: center;
       gap: 10px;
       overflow: hidden;
     }
-    .liker-rank {
-      font-size: 16px;
-      font-weight: 900;
-      min-width: 24px;
-      text-align: center;
-    }
-    .rank-1 { color: #ff4081; text-shadow: 0 0 10px rgba(255,64,129,0.7); }
 
-    .liker-user {
-      font-size: 15px;
+    .rank-tag {
+      font-family: 'Orbitron', monospace;
+      font-size: 12px;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.7);
+      text-shadow: 0 1px 2px #000000, 0 2px 4px rgba(0, 0, 0, 0.9);
+      min-width: 22px;
+    }
+
+    .rank-1 .rank-tag {
+      color: #FFA751;
+      text-shadow: 0 0 10px rgba(255, 167, 81, 0.85), 0 2px 4px #000000;
+    }
+
+    .user-text {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 14px;
       font-weight: 700;
-      color: #fff;
+      color: #ffffff;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 170px;
+      max-width: 175px;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 2px 6px rgba(0, 0, 0, 0.85);
     }
-    .liker-count {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 15px;
-      font-weight: 700;
-      color: #ff4081;
+
+    .rank-1 .user-text {
+      color: #ffe8b3;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 2px 6px rgba(0, 0, 0, 0.9), 0 0 12px rgba(255, 167, 81, 0.4);
+    }
+
+    .count-box {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 800;
+      color: #ff66aa;
+      text-shadow: 0 1px 2px #000000, 0 2px 5px rgba(0, 0, 0, 0.9);
     }
+
+    .rank-1 .count-box {
+      color: #ff99cc;
+      text-shadow: 0 0 8px rgba(255, 42, 133, 0.75), 0 2px 4px #000000;
+    }
+
+    .mini-heart-svg {
+      width: 13px;
+      height: 13px;
+      filter: drop-shadow(0 0 5px rgba(255, 42, 133, 0.8));
+    }
+
     .empty-state {
       text-align: center;
-      color: #8888a4;
-      font-size: 13px;
-      padding: 16px 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.65);
+      padding: 10px 0;
+      text-shadow: 0 1px 2px #000000;
     }
   </style>
 </head>
 <body>
-  <div class="likes-card" id="card">
-    <div class="likes-title">
-      <div class="title-text">
-        <span class="heart-pulse">💖</span>
-        <span>TOP LIKES</span>
+  <div class="likes-container" id="card">
+    <div class="likes-header">
+      <div class="header-left">
+        <svg class="svg-heart heart-pulse" viewBox="0 0 24 24" fill="none">
+          <defs>
+            <linearGradient id="heartGradTop" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ff2a85"/>
+              <stop offset="100%" stop-color="#ff7300"/>
+            </linearGradient>
+          </defs>
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="url(#heartGradTop)"/>
+        </svg>
+        <span class="title-label">TOP LIKES</span>
       </div>
-      <span style="font-size: 12px; color: #ff80ab; font-weight: 700;" id="total-likes-badge">0 LIKES</span>
+      <span class="total-badge" id="total-likes-badge">0</span>
     </div>
 
     <div class="liker-list" id="liker-list">
@@ -130,21 +218,41 @@
     const likersMap = new Map();
     let totalLikes = 0;
 
+    const MINI_HEART_SVG = `
+      <svg class="mini-heart-svg" viewBox="0 0 24 24" fill="#ff2a85">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+    `;
+
+    function formatNumber(num) {
+      if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+      if (num >= 1000) return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+      return num.toLocaleString();
+    }
+
+    function addLikes(user, count = 1) {
+      const u = String(user || 'Viewer').replace(/^@+/, '').trim();
+      if (!u) return;
+      const c = Number(count) || 1;
+      totalLikes += c;
+      totalLikesBadge.textContent = formatNumber(totalLikes);
+
+      const current = likersMap.get(u) || 0;
+      likersMap.set(u, current + c);
+      updateLikers();
+    }
+
     const evt = new EventSource('/api/eventos');
     evt.onmessage = e => {
       try {
         const d = JSON.parse(e.data);
         if (d.duel?.gift_scale) {
-          card.style.transform = 'scale(' + (d.duel.gift_scale / 100) + ')';
+          card.style.transform = 'scale(' + (d.duel.gift_scale / 100).toFixed(2) + ')';
         }
         if (d.type === 'like' && d.data) {
-          const user = String(d.data.user || 'Viewer').replace(/^@/, '');
-          const count = Number(d.data.count) || 1;
-          totalLikes += count;
-          totalLikesBadge.textContent = totalLikes.toLocaleString() + ' LIKES';
-          const current = likersMap.get(user) || 0;
-          likersMap.set(user, current + count);
-          updateLikers();
+          addLikes(d.data.user, d.data.count);
+        } else if (d.type === 'tiktok_event' && d.event === 'like') {
+          addLikes(d.data?.nickname || d.data?.uniqueId, d.data?.likeCount || 1);
         }
       } catch (err) {}
     };
@@ -158,14 +266,17 @@
 
       likerList.innerHTML = sorted.map(([user, count], idx) => {
         const rank = idx + 1;
-        const medal = rank === 1 ? '💖' : (rank === 2 ? '🤍' : (rank === 3 ? '💜' : `#${rank}`));
+        const formattedRank = rank < 10 ? '0' + rank : String(rank);
         return `
-          <div class="liker-row">
+          <div class="liker-row ${rank === 1 ? 'rank-1' : ''}">
             <div class="liker-left">
-              <span class="liker-rank ${rank === 1 ? 'rank-1' : ''}">${medal}</span>
-              <span class="liker-user">@${user}</span>
+              <span class="rank-tag">${formattedRank}</span>
+              <span class="user-text">@${user}</span>
             </div>
-            <span class="liker-count">${count.toLocaleString()} ❤️</span>
+            <div class="count-box">
+              <span>${formatNumber(count)}</span>
+              ${MINI_HEART_SVG}
+            </div>
           </div>
         `;
       }).join('');

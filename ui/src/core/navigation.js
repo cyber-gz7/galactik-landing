@@ -15,6 +15,7 @@ const tabTitles = {
   'tab-tts': 'TTS Chat • Voz en Vivo',
   'tab-tops': 'Tops, Metas y MVP',
   'tab-rcon': 'Minecraft RCON & Servidor Local',
+  'tab-music-mods': '🎵 Música & Control de Moderadores',
   'tab-alertas': 'Alertas de pantalla · BETA',
   'tab-admin-licenses': '👑 Administración • Solicitudes & Licencias'
 };

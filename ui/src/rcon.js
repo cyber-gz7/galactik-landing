@@ -49,16 +49,22 @@ export class RconBridge {
       return Promise.resolve('');
     }
 
-    const trimmed = command.trim();
+    const lines = command.split(/[\r\n]+|;\s+/).map(l => l.trim()).filter(Boolean);
 
     return new Promise((resolve, reject) => {
       this.queue = this.queue
-        .then(() => this.rawSend(trimmed))
+        .then(async () => {
+          let lastRes = '';
+          for (const line of lines) {
+            lastRes = await this.rawSend(line);
+          }
+          return lastRes;
+        })
         .then(result => {
           resolve(result);
         })
         .catch(err => {
-          console.error(`Error ejecutando comando RCON "${trimmed}":`, err);
+          console.error(`Error ejecutando comando RCON "${command}":`, err);
           reject(err);
         });
     });

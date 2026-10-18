@@ -33,7 +33,7 @@ const GIFT_CANONICAL_GROUPS = [
     tiktokGiftIds: [7934],
     defaultCoins: 1,
     defaultFile: 'heart-me-1-coins.webp',
-    names: ['heart me', 'me gusta', 'corazon de equipo', 'team heart', 'gift#7934', '7934']
+    names: ['heart me', 'quiereme', 'quiere-me', 'love you', 'me gusta', 'corazon de equipo', 'team heart', 'gift#7934', '7934']
   },
   {
     key: 'heart',
@@ -184,6 +184,8 @@ const SPANISH_SEARCH_MAP = {
   ggs: ['gg', 'gg 2025'],
   corazon: ['heart', 'heart me', 'finger heart', 'hand hearts', 'heart gaze', 'heart hood', 'love'],
   corazones: ['heart', 'hearts', 'hand hearts', 'heart me'],
+  quiereme: ['heart me', 'love you', 'quiere-me', 'me gusta'],
+  'quiere-me': ['heart me', 'love you', 'quiereme'],
   'me gusta': ['heart me', 'like', 'thumbs up'],
   dedo: ['finger heart', 'thumbs up', 'finger'],
   dedos: ['finger heart', 'hand hearts'],
@@ -736,10 +738,45 @@ export const PRESETS = {
       { id: 'spawn_warden', name: 'Warden Destructor', icon_file: 'firelight-beast-4000-coins.webp', tiktokGiftId: 6748, coins: 99, faction: 'MALOS', command: 'execute at {donador} run summon warden ~ ~ ~', totemDelta: -20 },
       { id: 'give_netherite', name: 'Kit Dios Celestial', icon_file: 'fairy-wings-1000-coins.webp', tiktokGiftId: 9234, coins: 199, faction: 'BUENOS', command: 'give {donador} netherite_chestplate', totemDelta: 20 }
     ]
+  },
+
+  minecraft_master: {
+    id: 'minecraft_master',
+    nombre: 'Minecraft: Survival GZ7 Factory (Master Live)',
+    juego: 'minecraft',
+    descripcion: 'Mapeo maestro calibrado: 5 tiers de regalos y comandos de survivalgz7 listos para jugar',
+    reglas: [
+      { id: 't1_rosa', name: 'Rosa', icon_file: 'rose-1-coins.webp', tiktokGiftId: 5655, coins: 1, faction: 'MALOS', command: '/survival tnt 30 2.5 3 {donor}', totemDelta: -1 },
+      { id: 't1_ponder', name: 'Ponder', icon_file: 'ponder-9-coins.webp', tiktokGiftId: 6059, coins: 9, faction: 'MALOS', command: '/survival tnt 30 2.5 3 {donor}', totemDelta: -1 },
+      { id: 't1_tiktok', name: 'TikTok', icon_file: 'tiktok-1-coins.webp', tiktokGiftId: 5269, coins: 1, faction: 'MALOS', command: '/survival tnt 30 2.5 3 {donor}', totemDelta: -1 },
+      { id: 't1_panda', name: 'Panda', icon_file: 'panda-5-coins.webp', tiktokGiftId: 5487, coins: 5, faction: 'MALOS', command: '/survival bee {donor}', totemDelta: -1 },
+      { id: 't1_finger_heart', name: 'Dedo Corazón', icon_file: 'finger-heart-5-coins.webp', tiktokGiftId: 5489, coins: 5, faction: 'MALOS', command: '/survival bee {donor}', totemDelta: -1 },
+
+      { id: 't2_cafe', name: 'Café', icon_file: 'coffee-10-coins.webp', tiktokGiftId: 5879, coins: 10, faction: 'MALOS', command: '/survival creeper_charged {donor}', totemDelta: -2 },
+      { id: 't2_donut', name: 'Donut', icon_file: 'doughnut-30-coins.webp', tiktokGiftId: 5270, coins: 30, faction: 'MALOS', command: '/survival creeper_charged {donor}', totemDelta: -3 },
+      { id: 't2_papel_picado', name: 'Papel Picado', icon_file: 'confetti-100-coins.webp', tiktokGiftId: 6104, coins: 100, faction: 'MALOS', command: '/survival creeper_charged {donor}', totemDelta: -5 },
+      { id: 't2_corona_flores', name: 'Corona de Flores', icon_file: 'garland-49-coins.webp', tiktokGiftId: 5912, coins: 49, faction: 'MALOS', command: '/survival spider {donor}', totemDelta: -3 },
+
+      { id: 't3_pesa', name: 'Pesa', icon_file: 'weights-50-coins.webp', tiktokGiftId: 6267, coins: 50, faction: 'MALOS', command: '/survival trap {target}', totemDelta: -5 },
+      { id: 't3_corazon_papel', name: 'Corazón de Papel', icon_file: 'paper-heart-50-coins.webp', tiktokGiftId: 6228, coins: 50, faction: 'MALOS', command: '/survival trap {target}', totemDelta: -5 },
+      { id: 't3_sombrero_bigote', name: 'Sombrero y Bigote', icon_file: 'hat-and-mustache-99-coins.webp', tiktokGiftId: 5878, coins: 99, faction: 'MALOS', command: '/survival bee_cage {target}', totemDelta: -10 },
+      { id: 't3_pato', name: 'Pato', icon_file: 'duck-100-coins.webp', tiktokGiftId: 5488, coins: 100, faction: 'MALOS', command: '/survival obsidian_box {target}', totemDelta: -10 },
+      { id: 't3_caja_sorpresa', name: 'Caja sorpresa', icon_file: 'mystery-box-100-coins.webp', tiktokGiftId: 6245, coins: 100, faction: 'MALOS', command: '/survival obsidian_box {target}', totemDelta: -10 },
+
+      { id: 't4_pistola_dinero', name: 'Pistola de Dinero', icon_file: 'money-gun-500-coins.webp', tiktokGiftId: 5658, coins: 500, faction: 'MALOS', command: '/survival water_drop {target}', totemDelta: -15 },
+      { id: 't4_tren', name: 'Tren', icon_file: 'train-899-coins.webp', tiktokGiftId: 6378, coins: 899, faction: 'MALOS', command: '/survival water_drop {target}', totemDelta: -20 },
+      { id: 't4_gafas_sol', name: 'Gafas de Sol', icon_file: 'sunglasses-199-coins.webp', tiktokGiftId: 5876, coins: 199, faction: 'MALOS', command: '/survival pit 5 10 {target}', totemDelta: -15 },
+      { id: 't4_fiesta', name: 'Fiesta', icon_file: 'party-299-coins.webp', tiktokGiftId: 6078, coins: 299, faction: 'MALOS', command: '/survival pit 5 10 {target}', totemDelta: -15 },
+
+      { id: 't5_leon', name: 'León', icon_file: 'lion-29999-coins.webp', tiktokGiftId: 5937, coins: 29999, faction: 'MALOS', command: '/survival tntbox {target}\n/arcangel {target} {donor}', totemDelta: -50 },
+      { id: 't5_ballena', name: 'Ballena', icon_file: 'whale-diving-2150-coins.webp', tiktokGiftId: 5760, coins: 2150, faction: 'MALOS', command: '/survival tntbox {target}\n/arcangel {target} {donor}', totemDelta: -30 },
+      { id: 't5_universo', name: 'Universo', icon_file: 'galaxy-1000-coins.webp', tiktokGiftId: 5875, coins: 1000, faction: 'MALOS', command: '/survival tntbox {target}\n/arcangel {target} {donor}', totemDelta: -30 },
+      { id: 't5_halcon', name: 'Halcón', icon_file: 'falcon-10999-coins.webp', tiktokGiftId: 6032, coins: 10999, faction: 'MALOS', command: '/survival tntbox {target}\n/arcangel {target} {donor}', totemDelta: -40 }
+    ]
   }
 };
 
-export const DEFAULT_GIFTS = PRESETS.minecraft_bm.reglas;
+export const DEFAULT_GIFTS = PRESETS.minecraft_master.reglas;
 
 export class GiftRegistry {
   constructor(initialGifts = null) {
@@ -808,8 +845,11 @@ export class GiftRegistry {
     }
 
     const cleanDonor = String(donador).replace(/[^a-zA-Z0-9_]/g, '_').slice(0, 16) || 'Donador';
+    const targetPlayer = (storeState?.targetPlayer || storeState?.streamerUsername || 'GZ7').replace(/[^a-zA-Z0-9_]/g, '_') || 'GZ7';
     const rawCommand = gift.command || '';
     const command = rawCommand
+      .replace(/{target}/g, targetPlayer)
+      .replace(/{playername}/g, targetPlayer)
       .replace(/{donador}/g, cleanDonor)
       .replace(/{donor}/g, cleanDonor)
       .replace(/{faccion}/g, activeFaction)

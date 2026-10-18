@@ -182,21 +182,25 @@
     const bodyEl = document.getElementById('w-body');
     const shell = document.getElementById('shell');
 
+    const SVG_COIN = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffe600" stroke-width="2" style="display:inline-block;vertical-align:middle;margin-left:4px;"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 9.5h8M8 14.5h8"/></svg>`;
+    const SVG_CROWN = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFA751" stroke-width="2" style="display:inline-block;vertical-align:middle;margin-right:6px;"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>`;
+    const SVG_TARGET = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="2" style="display:inline-block;vertical-align:middle;margin-right:6px;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`;
+
     function renderView() {
       let mode = modes[currentTabIdx % modes.length];
       if (pathName.includes('mvp')) mode = 'mvp';
       if (pathName.includes('metas')) mode = 'metas';
 
       if (mode === 'metas') {
-        titleEl.innerHTML = '🎯 META DE MONEDAS';
+        titleEl.innerHTML = `${SVG_TARGET} META DE MONEDAS`;
         const target = 5000;
         const pct = Math.min(100, Math.round((totalCoins / target) * 100));
         badgeEl.textContent = pct + '%';
         bodyEl.innerHTML = `
           <div class="goal-bar-wrap">
             <div style="display:flex;justify-content:space-between;font-weight:800;font-size:15px;">
-              <span>Recaudado: ${totalCoins.toLocaleString()} 🪙</span>
-              <span style="color:#00f0ff;">Meta: ${target.toLocaleString()} 🪙</span>
+              <span>Recaudado: ${totalCoins.toLocaleString()} ${SVG_COIN}</span>
+              <span style="color:#00f0ff;">Meta: ${target.toLocaleString()} ${SVG_COIN}</span>
             </div>
             <div class="goal-track"><div class="goal-fill" style="width:${pct}%"></div></div>
           </div>
@@ -205,7 +209,7 @@
       }
 
       if (mode === 'mvp') {
-        titleEl.innerHTML = '👑 MVP DEL DIRECTO';
+        titleEl.innerHTML = `${SVG_CROWN} MVP DEL DIRECTO`;
         badgeEl.textContent = 'TOP #1';
         const topDonor = Array.from(donorsMap.entries()).sort((a,b) => b[1] - a[1])[0];
         if (!topDonor) {
@@ -214,13 +218,13 @@
           bodyEl.innerHTML = `
             <div class="rank-row rank-1" style="padding:14px;">
               <div class="rank-left">
-                <div class="rank-num">👑</div>
+                <div class="rank-num">${SVG_CROWN}</div>
                 <div>
                   <div class="rank-user" style="font-size:18px;">@${topDonor[0]}</div>
                   <div style="font-size:12px;color:#00f0ff;font-weight:700;">Líder Supremo de Donaciones</div>
                 </div>
               </div>
-              <div class="rank-val" style="font-size:17px;">${topDonor[1].toLocaleString()} 🪙</div>
+              <div class="rank-val" style="font-size:17px;">${topDonor[1].toLocaleString()} ${SVG_COIN}</div>
             </div>
           `;
         }
@@ -228,7 +232,18 @@
       }
 
       if (mode === 'likes') {
-        titleEl.innerHTML = '💖 TOP LIKES (TAP-TAP)';
+        titleEl.innerHTML = `
+          <svg class="svg-heart heart-pulse" viewBox="0 0 24 24" width="20" height="20" style="display:inline-block;vertical-align:middle;margin-right:6px;">
+            <defs>
+              <linearGradient id="rotHeartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ff2a85"/>
+                <stop offset="100%" stop-color="#ff7300"/>
+              </linearGradient>
+            </defs>
+            <path fill="url(#rotHeartGrad)" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+          TOP LIKES (TAP-TAP)
+        `;
         badgeEl.textContent = 'ROTATIVO';
         const sorted = Array.from(likesMap.entries()).sort((a,b) => b[1] - a[1]).slice(0, 5);
         if (!sorted.length) {
@@ -238,16 +253,19 @@
         bodyEl.innerHTML = sorted.map(([u, c], i) => `
           <div class="rank-row ${i === 0 ? 'rank-1' : ''}">
             <div class="rank-left">
-              <div class="rank-num">${i === 0 ? '👑' : (i + 1)}</div>
+              <div class="rank-num">${i === 0 ? SVG_CROWN : (i + 1)}</div>
               <div class="rank-user">@${u}</div>
             </div>
-            <div class="rank-val">${c.toLocaleString()} ❤️</div>
+            <div class="rank-val" style="display:flex;align-items:center;gap:4px;">
+              <span>${c.toLocaleString()}</span>
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="#ff2a85"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </div>
           </div>
         `).join('');
         return;
       }
 
-      titleEl.innerHTML = '🪙 TOP GIFTERS';
+      titleEl.innerHTML = `${SVG_COIN} TOP GIFTERS`;
       badgeEl.textContent = 'ROTATIVO';
       const sorted = Array.from(donorsMap.entries()).sort((a,b) => b[1] - a[1]).slice(0, 5);
       if (!sorted.length) {
@@ -257,10 +275,10 @@
       bodyEl.innerHTML = sorted.map(([u, c], i) => `
         <div class="rank-row ${i === 0 ? 'rank-1' : ''}">
           <div class="rank-left">
-            <div class="rank-num">${i === 0 ? '👑' : (i + 1)}</div>
+            <div class="rank-num">${i === 0 ? SVG_CROWN : (i + 1)}</div>
             <div class="rank-user">@${u}</div>
           </div>
-          <div class="rank-val">${c.toLocaleString()} 🪙</div>
+          <div class="rank-val">${c.toLocaleString()} ${SVG_COIN}</div>
         </div>
       `).join('');
     }

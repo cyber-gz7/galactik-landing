@@ -10,6 +10,8 @@ import { S2E_PRESETS_CATALOG, S2E_ALERT_VIDEOS } from '../s2e-catalog.js';
 import '../license-client.js';
 
 import { DEFAULT_ROBLOX_CONFIG } from '../modules/obby-config.js';
+import { commandDispatcher } from '../modules/command-dispatcher.js';
+import { permissionManager } from '../modules/permission-manager.js';
 
 export const DEFAULT_ALERT_ALBUMS = [
   {
@@ -19,13 +21,13 @@ export const DEFAULT_ALERT_ALBUMS = [
       {
         id: 'trig_1',
         active: true,
-        name: 'Alerta Croma Personalizada GZ7',
+        name: 'Alerta Croma Personalizada GZ7 (Quiéreme)',
         triggerType: 'SelectedGift',
-        giftName: 'Rose',
+        giftName: 'Quiereme',
         giftCoins: 1,
         likeThreshold: 100,
-        videoUrl: S2E_ALERT_VIDEOS[0]?.url || 'http://localhost:4000/s2e_media/videos/public/any/1789666307528_screen-cover-boo-rush.webm',
-        videoName: S2E_ALERT_VIDEOS[0]?.name || 'Animación Croma',
+        videoUrl: S2E_ALERT_VIDEOS[0]?.url || 'http://localhost:4000/s2e_media/users/6a8a3541466456082538e291/videos/1791064113135_Sin título - 03 de octubre de 2026 a las 16.32.57.mp4',
+        videoName: S2E_ALERT_VIDEOS[0]?.name || 'Sin título - 03 de octubre de 2026 a las 16.32.57.mp4',
         chromaEnabled: true,
         chromaMode: 'auto',
         chromaColor: '#00ff00',
@@ -37,10 +39,10 @@ export const DEFAULT_ALERT_ALBUMS = [
         playerType: 'priority',
         priority: 5,
         multiplier: false,
-        ttsEnabled: true,
-        ttsTemplate: '¡{user} ha enviado {gift} en el directo!',
-        titleTemplate: '⚡ {user}',
-        subtitleTemplate: 'Envió {gift} ({coins} 💎)',
+        ttsEnabled: false,
+        ttsTemplate: '',
+        titleTemplate: '',
+        subtitleTemplate: '',
         duration: 5
       },
       {
@@ -66,7 +68,7 @@ export const DEFAULT_ALERT_ALBUMS = [
         multiplier: false,
         ttsEnabled: true,
         ttsTemplate: '¡Alerta máxima! {user} activó {gift}',
-        titleTemplate: '👻 {user}',
+        titleTemplate: '{user}',
         subtitleTemplate: '¡Activó Jumpscare con {gift}!',
         duration: 4.5
       },
@@ -93,7 +95,7 @@ export const DEFAULT_ALERT_ALBUMS = [
         multiplier: false,
         ttsEnabled: true,
         ttsTemplate: '{user} invocó el poder del trueno con {gift}',
-        titleTemplate: '🔨 {user}',
+        titleTemplate: '{user}',
         subtitleTemplate: '¡Invocó el Martillo de Thor!',
         duration: 4.5
       }
@@ -126,11 +128,26 @@ export const DEFAULT_ALERT_ALBUMS = [
         multiplier: false,
         ttsEnabled: true,
         ttsTemplate: '¡Increíble! {user} donó {gift} con {coins} diamantes',
-        titleTemplate: '🌌 {user}',
-        subtitleTemplate: 'Mega Donación: {gift} ({coins} 💎)',
+        titleTemplate: '{user}',
+        subtitleTemplate: 'Mega Donación: {gift} ({coins} Diamantes)',
         duration: 6
       }
     ]
+  }
+];
+
+export const DEFAULT_GIFT_MAPPINGS = [
+  {
+    name: "Quiéreme",
+    english_name: "Heart Me",
+    tiktok_id: 7934,
+    coins: 1,
+    icon: "heart-me-1-coins.webp",
+    command: "/survival thor {target}",
+    description: "Alerta personalizada Quiéreme",
+    media_path: "http://localhost:4000/s2e_media/users/6a8a3541466456082538e291/videos/1791064113135_Sin título - 03 de octubre de 2026 a las 16.32.57.mp4",
+    video: "http://localhost:4000/s2e_media/users/6a8a3541466456082538e291/videos/1791064113135_Sin título - 03 de octubre de 2026 a las 16.32.57.mp4",
+    template: ""
   }
 ];
 
@@ -149,6 +166,7 @@ class AppController {
 
     this.alertAlbums = JSON.parse(JSON.stringify(DEFAULT_ALERT_ALBUMS));
     this.activeAlertAlbumId = this.alertAlbums[0]?.id || 'album_quiereme';
+    this.giftMappings = null;
   }
 
   getActiveS2EPreset() {
@@ -164,10 +182,117 @@ class AppController {
     this.isInitialized = true;
 
     await this.loadSavedConfig();
+    await this.loadGiftMappings();
     this.setupTikTokListeners();
     this.setupStoreOverlaySync();
     await this.syncAllOverlaysToBackend();
     // Modular auto-updater is loaded via ui/src/modules/auto-updater.js
+  }
+
+  async loadGiftMappings() {
+    try {
+      const urls = ['/gift_mappings.json', 'http://localhost:4000/gift_mappings.json', '../gift_mappings.json'];
+      for (const u of urls) {
+        try {
+          const res = await fetch(u);
+          if (res.ok) {
+            this.giftMappings = await res.json();
+            return;
+          }
+        } catch (_) {}
+      }
+    } catch (_) {}
+  }
+
+  resolveGiftMapping(normalizedName, giftId) {
+    const rawId = Number(giftId) || 0;
+    const cleanNorm = String(normalizedName || '')
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim();
+
+    const isQuiereme = (
+      rawId === 7934 ||
+      cleanNorm === 'quiereme' ||
+      cleanNorm === 'quiere-me' ||
+      cleanNorm === 'love you' ||
+      cleanNorm === 'heart me'
+    );
+
+    const items = [];
+    if (this.giftMappings) {
+      if (Array.isArray(this.giftMappings)) {
+        items.push(...this.giftMappings);
+      } else if (Array.isArray(this.giftMappings.items)) {
+        items.push(...this.giftMappings.items);
+      } else if (this.giftMappings.tiers && typeof this.giftMappings.tiers === 'object') {
+        for (const k of Object.keys(this.giftMappings.tiers)) {
+          const t = this.giftMappings.tiers[k];
+          if (Array.isArray(t?.items)) items.push(...t.items);
+        }
+      }
+    }
+
+    for (const def of DEFAULT_GIFT_MAPPINGS) {
+      if (!items.some(it => (it.tiktok_id && it.tiktok_id === def.tiktok_id) || it.name === def.name)) {
+        items.push(def);
+      }
+    }
+
+    for (const it of items) {
+      const itId = Number(it.tiktok_id || it.giftId || it.gift_id || it.id) || 0;
+      if (rawId > 0 && itId > 0 && rawId === itId) {
+        return it;
+      }
+      const itNorm = String(it.name || '')
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+      const itEnNorm = String(it.english_name || it.englishName || '')
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+
+      if (cleanNorm && (cleanNorm === itNorm || cleanNorm === itEnNorm)) {
+        return it;
+      }
+
+      if (isQuiereme) {
+        if (itId === 7934 || itNorm === 'quiereme' || itNorm === 'quiere-me' || itEnNorm === 'heart me' || itEnNorm === 'love you') {
+          return it;
+        }
+      }
+    }
+
+    if (isQuiereme) {
+      return DEFAULT_GIFT_MAPPINGS[0];
+    }
+
+    return null;
+  }
+
+  async emitCustomAlertPayload(payload) {
+    const invoke = window.__TAURI__?.core?.invoke || window.__TAURI__?.invoke;
+    if (invoke) {
+      try {
+        await invoke('emit_custom_alert', { alert_json: JSON.stringify(payload) });
+        return;
+      } catch (err) {
+        console.warn('[Alerts] Fallback invoke -> HTTP:', err);
+      }
+    }
+    try {
+      await fetch('http://localhost:4000/api/alerta/trigger', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (e) {
+      console.warn('[Alerts] Error enviando alerta HTTP:', e);
+    }
   }
 
   setupStoreOverlaySync() {
@@ -240,17 +365,17 @@ class AppController {
 
   formatMcCommandLabel(cmd = '', fallback = 'Acción') {
     const c = String(cmd).toLowerCase();
-    if (c.includes('zombie')) return '🧟 Zombie';
-    if (c.includes('creeper')) return '💣 Creeper';
-    if (c.includes('tnt')) return '💥 Lluvia TNT';
-    if (c.includes('warden')) return '👹 Warden Boss';
-    if (c.includes('lightning')) return '⚡ Rayo Divino';
-    if (c.includes('diamond')) return '💎 Diamantes';
-    if (c.includes('la_parka')) return '💀 La Parka';
-    if (c.includes('sol_cruel')) return '☀️ Sol Cruel';
-    if (c.includes('arcangel')) return '👼 Arcángel';
-    if (c.includes('deidad_solar')) return '🌟 Deidad Solar';
-    if (c.includes('fenix')) return '🦅 Fénix';
+    if (c.includes('zombie')) return 'Zombie';
+    if (c.includes('creeper')) return 'Creeper';
+    if (c.includes('tnt')) return 'Lluvia TNT';
+    if (c.includes('warden')) return 'Warden Boss';
+    if (c.includes('lightning')) return 'Rayo Divino';
+    if (c.includes('diamond')) return 'Diamantes';
+    if (c.includes('la_parka')) return 'La Parka';
+    if (c.includes('sol_cruel')) return 'Sol Cruel';
+    if (c.includes('arcangel')) return 'Arcángel';
+    if (c.includes('deidad_solar')) return 'Deidad Solar';
+    if (c.includes('fenix')) return 'Fénix';
     return fallback.length > 16 ? fallback.slice(0, 16) : fallback;
   }
 
@@ -402,6 +527,7 @@ class AppController {
       const user = chatEvent.nickname || chatEvent.uniqueId || 'Viewer';
       const comment = String(chatEvent.comment || '').trim();
 
+      commandDispatcher.dispatchChat(user, comment, chatEvent);
       ttsEngine.speakChat(user, comment, chatEvent);
       this.evaluateAlertTriggers('Comment', { user, comment });
     });
@@ -415,6 +541,7 @@ class AppController {
       const user = likeEvent.nickname || likeEvent.uniqueId || 'Viewer';
       store.incrementStats({ likes: count });
       overlayServer.emitLike(user, count);
+      permissionManager.addPoints(user, Math.max(1, Math.round(count / 5)));
       this.handleLikePresetEvents(user, count);
       this.evaluateAlertTriggers('Like', { user, count });
     });
@@ -513,6 +640,26 @@ class AppController {
   handleLikePresetEvents(user, count) {
     if (this.activeProfile !== 'minecraft') return;
     this.likeAccumulator += count;
+
+    // Meta de 5,000 taps / likes para balancear el juego
+    if (this.totalStreamLikes === undefined) this.totalStreamLikes = 0;
+    const oldMilestone = Math.floor(this.totalStreamLikes / 5000);
+    this.totalStreamLikes += count;
+    const newMilestone = Math.floor(this.totalStreamLikes / 5000);
+    if (newMilestone > oldMilestone) {
+      const targetPlayer = (store.getState()?.streamerUsername || 'GZ7').replace(/[^a-zA-Z0-9_]/g, '_') || 'GZ7';
+      const rewardCmd = Math.random() > 0.5 ? `survival totem ${targetPlayer}` : `survival apple_enchanted ${targetPlayer}`;
+      rconBridge.sendCommand(rewardCmd).catch(() => {});
+      store.addHistory({
+        type: 'like_milestone',
+        title: 'Meta 5,000 Likes',
+        user: user || 'Comunidad',
+        coins: 0,
+        command: rewardCmd,
+        detail: `Recompensa de Ayuda: /${rewardCmd}`
+      });
+    }
+
     const preset = this.getActiveS2EPreset();
     if (!preset || !preset.active) return;
     for (const ev of (preset.events || [])) {
@@ -541,6 +688,7 @@ class AppController {
 
   async fireAlertTrigger(trig, ctx = {}) {
     if (!trig) return;
+    const hasVisualMedia = Boolean(trig.videoUrl || trig.imageUrl || trig.isModeratorCommand);
     const user = ctx.user || 'GZ7_Viewer';
     const gift = ctx.gift || trig.giftName || 'Rose';
     const coins = ctx.coins || trig.giftCoins || 1;
@@ -556,8 +704,8 @@ class AppController {
       .replace(/\{count\}/gi, String(count))
       .replace(/\{cantidad\}/gi, String(count));
 
-    const titleText = replaceVars(trig.titleTemplate || '⚡ {user}');
-    const subText = replaceVars(trig.subtitleTemplate || 'Envió {gift} ({coins} 💎)');
+    const titleText = replaceVars(trig.titleTemplate || '{user}');
+    const subText = replaceVars(trig.subtitleTemplate || 'Envió {gift} ({coins} Diamantes)');
     const ttsMsg = replaceVars(trig.ttsTemplate || '{user} envió {gift}');
 
     if (trig.audioUrl) {
@@ -574,6 +722,9 @@ class AppController {
       ttsEngine.speak(ttsMsg);
     }
 
+    // Filtro estricto: Solo emitir overlay visual si tiene video, imagen o comando moderador
+    if (!hasVisualMedia) return;
+
     const invoke = window.__TAURI__?.core?.invoke || window.__TAURI__?.invoke;
     if (invoke) {
       await invoke('emit_custom_alert', {
@@ -581,6 +732,7 @@ class AppController {
           title: titleText,
           subtitle: subText,
           videoUrl: trig.videoUrl || '',
+          imageUrl: trig.imageUrl || '',
           chromaEnabled: trig.chromaEnabled !== false,
           chromaMode: trig.chromaMode || 'auto',
           chromaColor: trig.chromaColor || '#00ff00',
@@ -595,10 +747,16 @@ class AppController {
   }
 
   evaluateAlertTriggers(eventType, ctx = {}) {
+    // FILTRO ESTRICTO: Cero likes, follows, shares o comentarios en alertas visuales
+    if (eventType === 'Like' || eventType === 'Follow' || eventType === 'Share' || eventType === 'Comment') {
+      return;
+    }
     const album = this.getActiveAlertAlbum();
     if (!album || !Array.isArray(album.triggers)) return;
     for (const trig of album.triggers) {
       if (trig.active === false) continue;
+      // Descartar triggers sin media visual
+      if (!trig.videoUrl && !trig.imageUrl && !trig.isModeratorCommand) continue;
       if (eventType === 'Gift') {
         if (trig.triggerType === 'AnyGift') {
           this.fireAlertTrigger(trig, ctx);
@@ -616,14 +774,41 @@ class AppController {
   async handleGiftEvent(data) {
     const donor = data.nickname || data.uniqueId || 'Donador';
     const rawGiftId = Number(data.giftId) || 0;
+
+    // Normalizar el nombre del regalo entrante antes de buscar en gift_mappings.json:
+    // Eliminar tildes, caracteres especiales y convertir a minúsculas
+    const rawGiftName = String(data.giftName || data.name || '').trim();
+    const normalizedGiftName = rawGiftName
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+    // Permitir coincidencia tanto por giftId numérico como por nombre normalizado (quiereme, quiere-me, love you)
+    const mappedGift = this.resolveGiftMapping(normalizedGiftName, rawGiftId);
+    let handledMappedAlert = false;
+    if (mappedGift && (mappedGift.media_path || mappedGift.video || mappedGift.videoUrl)) {
+      handledMappedAlert = true;
+      const payload = {
+        type: "CUSTOM_ALERT",
+        video: mappedGift.media_path || mappedGift.video || mappedGift.videoUrl,
+        template: mappedGift.template || "" // Cadena vacía por defecto
+      };
+      await this.emitCustomAlertPayload(payload);
+    }
+
     const canonGroup = encontrarGrupoCanonicoGift(data.giftName, rawGiftId);
     const giftName = (data.giftName && !/^gift#\d+$/i.test(String(data.giftName).trim()))
       ? String(data.giftName).trim()
-      : (canonGroup ? (canonGroup.key === 'rose' ? 'Rose' : canonGroup.key === 'gg' ? 'GG' : canonGroup.names[0]) : 'Regalo');
-    const coins = Number(data.diamondCount) || (canonGroup ? canonGroup.defaultCoins : 1);
+      : (canonGroup ? (canonGroup.key === 'rose' ? 'Rose' : canonGroup.key === 'gg' ? 'GG' : canonGroup.names[0]) : (mappedGift?.name || 'Regalo'));
+    const coins = Number(data.diamondCount) || (mappedGift?.coins || (canonGroup ? canonGroup.defaultCoins : 1));
     const repeatCount = Math.max(1, Number(data.repeatCount) || 1);
     const activeFaction = store.getState().activeFaction;
     const isSim = Boolean(data.isLocalSimulation);
+
+    permissionManager.addPoints(donor, coins * repeatCount * 10);
+
+    const giftEconomicValue = Math.max(Number(data.diamondCount) || 0, coins * repeatCount);
+    permissionManager.evaluateSessionMVP(donor, giftName, giftEconomicValue);
 
     // Despacho de audio / puntos del duelo de inmediato
     const robloxSoundPlayed = await this.handleRobloxGiftVsGift(giftName, coins, repeatCount, donor, rawGiftId, isSim);
@@ -646,7 +831,9 @@ class AppController {
       }
     }
 
-    this.evaluateAlertTriggers('Gift', { user: donor, gift: giftName, giftId: rawGiftId, coins, count: repeatCount });
+    if (!handledMappedAlert) {
+      this.evaluateAlertTriggers('Gift', { user: donor, gift: giftName, giftId: rawGiftId, coins, count: repeatCount });
+    }
 
     const resolution = giftRegistry.applyGift(
       rawGiftId || giftName,
@@ -717,7 +904,7 @@ class AppController {
       totemDelta: effectiveDelta,
       command: resolution.command,
       commandResult,
-      detail: `${coins * repeatCount} 💎 • ${this.activeProfile.toUpperCase()}`
+      detail: `${coins * repeatCount} Diamantes • ${this.activeProfile.toUpperCase()}`
     });
   }
 
@@ -726,13 +913,25 @@ class AppController {
   }
 
   async triggerSimulation(giftId, donorName = 'GZ7_Tester', repeatCount = 1) {
-    const gift = giftRegistry.getAll().find(g => g.id === giftId);
-    if (!gift) return;
+    let gift = giftRegistry.getAll().find(g => g.id === giftId || g.tiktokGiftId == giftId);
+    if (!gift && typeof giftId === 'string') {
+      const normInput = giftId.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      gift = giftRegistry.getAll().find(g => {
+        const normG = String(g.name || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return normG === normInput || (normInput === 'quiereme' && (normG === 'heart me' || g.tiktokGiftId === 7934));
+      });
+    }
+
+    const mapped = this.resolveGiftMapping(typeof giftId === 'string' ? giftId : '', typeof giftId === 'number' ? giftId : 0);
+
+    const finalGiftName = gift?.name || (typeof giftId === 'string' ? giftId : (mapped?.name || 'Quiéreme'));
+    const finalGiftId = gift?.tiktokGiftId || (typeof giftId === 'number' ? giftId : (mapped?.tiktok_id || 7934));
+    const finalCoins = gift?.coins || (mapped?.coins || 1);
 
     await this.handleGiftEvent({
-      giftId: gift.tiktokGiftId,
-      giftName: gift.name,
-      diamondCount: gift.coins,
+      giftId: finalGiftId,
+      giftName: finalGiftName,
+      diamondCount: finalCoins,
       repeatCount: Number(repeatCount) || 1,
       uniqueId: donorName,
       nickname: donorName,
@@ -818,7 +1017,7 @@ export class AutoUpdaterClient {
     banner.innerHTML = `
       <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
         <div style="display:flex;align-items:center;gap:8px;">
-          <span style="font-size:16px;">⚡</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
           <span style="font-weight:800;font-size:13px;color:#38bdf8;">Nueva versión ${info.version}</span>
         </div>
         <button id="btn-close-updater-banner" type="button" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:18px;line-height:1;padding:0;">&times;</button>

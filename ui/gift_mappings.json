@@ -1,0 +1,269 @@
+{
+  "name": "Minecraft 1.20.1 Master Gift Mappings (Factory Preset)",
+  "version": "1.0.0",
+  "game": "Minecraft",
+  "targetPlayer": "GZ7",
+  "description": "Configuración de fábrica calibrada para streams de Minecraft 1.20.1 con survivalgz7 y animaciones",
+  "tiers": {
+    "tier1": {
+      "coins_range": "1-9",
+      "category": "Micro-Troleo",
+      "items": [
+        {
+          "name": "Quiéreme",
+          "english_name": "Heart Me",
+          "tiktok_id": 7934,
+          "coins": 1,
+          "icon": "heart-me-1-coins.webp",
+          "command": "/survival thor {target}",
+          "description": "Alerta personalizada Quiéreme",
+          "media_path": "http://localhost:4000/s2e_media/users/6a8a3541466456082538e291/videos/1791064113135_Sin título - 03 de octubre de 2026 a las 16.32.57.mp4",
+          "video": "http://localhost:4000/s2e_media/users/6a8a3541466456082538e291/videos/1791064113135_Sin título - 03 de octubre de 2026 a las 16.32.57.mp4",
+          "template": ""
+        },
+        {
+          "name": "Rosa",
+          "english_name": "Rose",
+          "tiktok_id": 5655,
+          "coins": 1,
+          "icon": "rose-1-coins.webp",
+          "command": "/survival tnt 30 2.5 3 {donor}",
+          "description": "TNT rápida de poco radio enfocada al donador"
+        },
+        {
+          "name": "Ponder",
+          "english_name": "Ponder",
+          "tiktok_id": 6059,
+          "coins": 9,
+          "icon": "ponder-9-coins.webp",
+          "command": "/survival tnt 30 2.5 3 {donor}",
+          "description": "TNT rápida de poco radio"
+        },
+        {
+          "name": "TikTok",
+          "english_name": "TikTok",
+          "tiktok_id": 5269,
+          "coins": 1,
+          "icon": "tiktok-1-coins.webp",
+          "command": "/survival tnt 30 2.5 3 {donor}",
+          "description": "TNT rápida de poco radio"
+        },
+        {
+          "name": "Panda",
+          "english_name": "Panda",
+          "tiktok_id": 5487,
+          "coins": 5,
+          "icon": "panda-5-coins.webp",
+          "command": "/survival bee {donor}",
+          "description": "Invoca abeja sobre el donador"
+        },
+        {
+          "name": "Dedo Corazón",
+          "english_name": "Finger Heart",
+          "tiktok_id": 5489,
+          "coins": 5,
+          "icon": "finger-heart-5-coins.webp",
+          "command": "/survival bee {donor}",
+          "description": "Invoca abeja sobre el donador"
+        }
+      ]
+    },
+    "tier2": {
+      "coins_range": "10-49",
+      "category": "Presión Media",
+      "items": [
+        {
+          "name": "Café",
+          "english_name": "Coffee",
+          "tiktok_id": 5879,
+          "coins": 10,
+          "icon": "coffee-10-coins.webp",
+          "command": "/survival creeper_charged {donor}",
+          "description": "Creeper electrificado"
+        },
+        {
+          "name": "Donut",
+          "english_name": "Doughnut",
+          "tiktok_id": 5270,
+          "coins": 30,
+          "icon": "doughnut-30-coins.webp",
+          "command": "/survival creeper_charged {donor}",
+          "description": "Creeper electrificado"
+        },
+        {
+          "name": "Papel Picado",
+          "english_name": "Confetti",
+          "tiktok_id": 6104,
+          "coins": 100,
+          "icon": "confetti-100-coins.webp",
+          "command": "/survival creeper_charged {donor}",
+          "description": "Creeper electrificado"
+        },
+        {
+          "name": "Corona de Flores",
+          "english_name": "Garland",
+          "tiktok_id": 5912,
+          "coins": 49,
+          "icon": "garland-49-coins.webp",
+          "command": "/survival spider {donor}",
+          "description": "Arañas venenosas"
+        }
+      ]
+    },
+    "tier3": {
+      "coins_range": "50-199",
+      "category": "Trampas Críticas",
+      "items": [
+        {
+          "name": "Pesa",
+          "english_name": "Weights",
+          "tiktok_id": 6267,
+          "coins": 50,
+          "icon": "weights-50-coins.webp",
+          "command": "/survival trap {target}",
+          "description": "Caja de telaraña 4x4 sobre el objetivo"
+        },
+        {
+          "name": "Corazón de Papel",
+          "english_name": "Paper Heart",
+          "tiktok_id": 6228,
+          "coins": 50,
+          "icon": "paper-heart-50-coins.webp",
+          "command": "/survival trap {target}",
+          "description": "Caja de telaraña 4x4 sobre el objetivo"
+        },
+        {
+          "name": "Sombrero y Bigote",
+          "english_name": "Hat and Mustache",
+          "tiktok_id": 5878,
+          "coins": 99,
+          "icon": "hat-and-mustache-99-coins.webp",
+          "command": "/survival bee_cage {target}",
+          "description": "Jaula de miel 3x3 con 8 abejas furiosas"
+        },
+        {
+          "name": "Pato",
+          "english_name": "Duck",
+          "tiktok_id": 5488,
+          "coins": 100,
+          "icon": "duck-100-coins.webp",
+          "command": "/survival obsidian_box {target}",
+          "description": "Caja de obsidiana 3x3"
+        },
+        {
+          "name": "Caja Sorpresa",
+          "english_name": "Mystery Box",
+          "tiktok_id": 6245,
+          "coins": 100,
+          "icon": "mystery-box-100-coins.webp",
+          "command": "/survival obsidian_box {target}",
+          "description": "Caja de obsidiana 3x3"
+        }
+      ]
+    },
+    "tier4": {
+      "coins_range": "200-499",
+      "category": "Desafíos Extremos",
+      "items": [
+        {
+          "name": "Pistola de Dinero",
+          "english_name": "Money Gun",
+          "tiktok_id": 5658,
+          "coins": 500,
+          "icon": "money-gun-500-coins.webp",
+          "command": "/survival water_drop {target}",
+          "description": "Water drop clutch a 200 bloques de altura"
+        },
+        {
+          "name": "Tren",
+          "english_name": "Train",
+          "tiktok_id": 6378,
+          "coins": 899,
+          "icon": "train-899-coins.webp",
+          "command": "/survival water_drop {target}",
+          "description": "Water drop clutch a 200 bloques de altura"
+        },
+        {
+          "name": "Gafas de Sol",
+          "english_name": "Sunglasses",
+          "tiktok_id": 5876,
+          "coins": 199,
+          "icon": "sunglasses-199-coins.webp",
+          "command": "/survival pit 5 10 {target}",
+          "description": "Pozo profundo bajo los pies que destruye bedrock"
+        },
+        {
+          "name": "Fiesta",
+          "english_name": "Party",
+          "tiktok_id": 6078,
+          "coins": 299,
+          "icon": "party-299-coins.webp",
+          "command": "/survival pit 5 10 {target}",
+          "description": "Pozo profundo bajo los pies que destruye bedrock"
+        }
+      ]
+    },
+    "tier5": {
+      "coins_range": "500+",
+      "category": "Caos Total (Legendarios)",
+      "items": [
+        {
+          "name": "León",
+          "english_name": "Lion",
+          "tiktok_id": 5937,
+          "coins": 29999,
+          "icon": "lion-29999-coins.webp",
+          "commands": [
+            "/survival tntbox {target}",
+            "/arcangel {target} {donor}"
+          ],
+          "description": "Caja 5x5 de 12 de alto con creepers cargados + Invocación celestial cinemática"
+        },
+        {
+          "name": "Ballena",
+          "english_name": "Whale Diving",
+          "tiktok_id": 5760,
+          "coins": 2150,
+          "icon": "whale-diving-2150-coins.webp",
+          "commands": [
+            "/survival tntbox {target}",
+            "/arcangel {target} {donor}"
+          ],
+          "description": "Caja 5x5 de 12 de alto con creepers cargados + Invocación celestial cinemática"
+        },
+        {
+          "name": "Universo",
+          "english_name": "Galaxy",
+          "tiktok_id": 5875,
+          "coins": 1000,
+          "icon": "galaxy-1000-coins.webp",
+          "commands": [
+            "/survival tntbox {target}",
+            "/arcangel {target} {donor}"
+          ],
+          "description": "Caja 5x5 de 12 de alto con creepers cargados + Invocación celestial cinemática"
+        },
+        {
+          "name": "Halcón",
+          "english_name": "Falcon",
+          "tiktok_id": 6032,
+          "coins": 10999,
+          "icon": "falcon-10999-coins.webp",
+          "commands": [
+            "/survival tntbox {target}",
+            "/arcangel {target} {donor}"
+          ],
+          "description": "Caja 5x5 de 12 de alto con creepers cargados + Invocación celestial cinemática"
+        }
+      ]
+    }
+  },
+  "likesGoal": {
+    "step": 5000,
+    "description": "Cada meta de 5,000 taps / likes en el stream",
+    "commands": [
+      "/survival totem {target}",
+      "/survival apple_enchanted {target}"
+    ]
+  }
+}

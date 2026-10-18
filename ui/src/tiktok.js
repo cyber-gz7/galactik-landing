@@ -77,7 +77,8 @@ export class TikTokBridge extends EventEmitter {
     try {
       const invoke = window.__TAURI__?.core?.invoke || window.__TAURI__?.invoke;
       if (invoke) {
-        invoke('start_tiktok_sidecar', { username: this.username }).catch(() => {});
+        const apiKey = localStorage.getItem('galactk_euler_key') || null;
+        invoke('start_tiktok_sidecar', { username: this.username, apiKey }).catch(() => {});
       }
     } catch (_) {}
 
@@ -107,6 +108,10 @@ export class TikTokBridge extends EventEmitter {
               this.emit('room_verified', data);
             } else if (ev === 'live_room_offline' || ev === 'standby_ready') {
               this.handleOffline(data);
+            } else if (ev === 'rate_limited') {
+              this.isConnecting = false;
+              this.isConnected = false;
+              this.emit('rate_limited', data);
             } else if (ev === 'tiktok_disconnected') {
               this.handleDisconnected(data.reason || 'Desconectado');
             } else {

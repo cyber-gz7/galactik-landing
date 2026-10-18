@@ -1,7 +1,18 @@
 import net from 'node:net';
-import { TikTokLiveConnection } from 'tiktok-live-connector';
+
+// Servidor de firma dual con Failover automático:
+// Primario: Servidor dedicado S2E (100% libre, sin registro, sin cuotas)
+// Secundario: EulerStream (Oficial / con o sin API key)
+if (!process.env.SIGN_API_URL) {
+  process.env.SIGN_API_URL = 'https://api.streamtoearn.io/apiserver/tiktok-signature';
+}
+
+const { TikTokLiveConnection } = await import('tiktok-live-connector');
 
 const rawUser = process.argv[2] || '';
+const apiKeyArg = process.argv[3] || process.env.SIGN_API_KEY || process.env.EULER_API_KEY || '';
+const cleanApiKey = String(apiKeyArg).trim();
+
 const cleanUser = (() => {
   let s = String(rawUser).trim();
   const urlMatch = s.match(/tiktok\.com\/@([^/?#\s]+)/i);
@@ -245,27 +256,41 @@ function isOfflineError(err) {
   return (
     msg.includes('live has ended') ||
     msg.includes('not currently live') ||
+    msg.includes("the requested user isn't online") ||
+    msg.includes('user not online') ||
     msg.includes('offline') ||
-    msg.includes('not found') ||
-    msg.includes('failed to extract room_id') ||
-    msg.includes('room not found') ||
-    msg.includes('user not found') ||
     msg.includes('empty room')
   );
 }
 
-function scheduleReconnect(reason = 'unknown') {
+function isRateLimitError(err) {
+  const msg = String(err?.message || err || '').toLowerCase();
+  const name = String(err?.name || '').toLowerCase();
+  return (
+    name.includes('ratelimit') ||
+    msg.includes('rate limit') ||
+    msg.includes('rate_limit') ||
+    msg.includes('too many connections') ||
+    msg.includes('sign server message')
+  );
+}
+
+function scheduleReconnect(reason = 'unknown', customDelay = null) {
   if (isReconnecting) return;
   isReconnecting = true;
   reconnectAttempts++;
 
+  const isRateLimit = typeof reason === 'string' && reason.startsWith('rate_limit');
   const isOffline = isOfflineError(reason);
-  postEvent(isOffline ? 'live_room_offline' : 'standby_ready', {
-    username: cleanUser,
-    reason: isOffline
-      ? `El usuario @${cleanUser} no está en directo actualmente.`
-      : `Reconectando (${reason}). Intento #${reconnectAttempts}...`
-  });
+
+  if (!isRateLimit) {
+    postEvent(isOffline ? 'live_room_offline' : 'standby_ready', {
+      username: cleanUser,
+      reason: isOffline
+        ? `El usuario @${cleanUser} no está en directo actualmente.`
+        : `Reconectando (${reason}). Intento #${reconnectAttempts}...`
+    });
+  }
 
   if (currentConnection) {
     try {
@@ -277,7 +302,10 @@ function scheduleReconnect(reason = 'unknown') {
 
   if (reconnectTimer) clearTimeout(reconnectTimer);
 
-  const delayMs = isOffline ? 12000 : Math.min(8000, 1500 + reconnectAttempts * 1000);
+  const delayMs = customDelay !== null
+    ? customDelay
+    : (isOffline ? 15000 : Math.min(30000, 3000 + reconnectAttempts * 2000));
+
   reconnectTimer = setTimeout(() => {
     isReconnecting = false;
     connectWithRetry();
@@ -324,6 +352,18 @@ function bindConnectionEvents(conn) {
   });
 
   conn.on('error', err => {
+    if (isRateLimitError(err)) {
+      const waitMs = Number(err?.retryAfter) > 0 ? Number(err.retryAfter) : 1800000;
+      const mins = Math.max(1, Math.ceil(waitMs / 60000));
+      postEvent('rate_limited', {
+        username: cleanUser,
+        minutes: mins,
+        retryAfterMs: waitMs,
+        message: `Límite horario de firmas de EulerStream alcanzado (${mins} min). Ingresa una API Key gratuita de EulerStream en Configuración para conectar sin límites.`
+      });
+      scheduleReconnect(`rate_limit_wait_${mins}m`, waitMs);
+      return;
+    }
     scheduleReconnect(err?.message || 'socket_error');
   });
 }
@@ -335,36 +375,55 @@ const BROWSER_HEADERS = {
 };
 
 async function connectWithRetry() {
+  const connOptions = {
+    processInitialData: false,
+    fetchRoomInfoOnConnect: true,
+    enableExtendedGiftInfo: false,
+    requestOptions: {
+      timeout: 10000,
+      headers: BROWSER_HEADERS
+    },
+    websocketOptions: {
+      timeout: 10000,
+      headers: BROWSER_HEADERS
+    }
+  };
+  if (cleanApiKey) {
+    connOptions.signApiKey = cleanApiKey;
+  }
+
   try {
-    const conn = new TikTokLiveConnection(cleanUser, {
-      processInitialData: false,
-      fetchRoomInfoOnConnect: true,
-      enableExtendedGiftInfo: false,
-      requestOptions: {
-        timeout: 10000,
-        headers: BROWSER_HEADERS
-      },
-      websocketOptions: {
-        timeout: 10000,
-        headers: BROWSER_HEADERS
-      }
-    });
+    const conn = new TikTokLiveConnection(cleanUser, connOptions);
     bindConnectionEvents(conn);
     currentConnection = conn;
 
     const state = await conn.connect();
     reconnectAttempts = 0;
-    await postEvent('live_room_connected', {
+    postEvent('live_room_connected', {
       username: cleanUser,
       roomId: String(state?.roomId || conn.roomId || '')
     });
   } catch (err) {
-    if (isOfflineError(err)) {
-      scheduleReconnect(err?.message || 'User is not currently live');
+    if (isRateLimitError(err)) {
+      const waitMs = Number(err?.retryAfter) > 0 ? Number(err.retryAfter) : 1800000;
+      const mins = Math.max(1, Math.ceil(waitMs / 60000));
+      postEvent('rate_limited', {
+        username: cleanUser,
+        minutes: mins,
+        retryAfterMs: waitMs,
+        message: `Límite horario de EulerStream alcanzado (${mins} min). Agrega una API Key gratuita de EulerStream en Configuración para conectar sin límite de peticiones.`
+      });
+      scheduleReconnect(`rate_limit_wait_${mins}m`, waitMs);
       return;
     }
+
+    if (isOfflineError(err)) {
+      scheduleReconnect(err?.message || 'User is not currently live', 15000);
+      return;
+    }
+
     try {
-      const fallbackConn = new TikTokLiveConnection(cleanUser, {
+      const fallbackOptions = {
         processInitialData: false,
         fetchRoomInfoOnConnect: false,
         enableExtendedGiftInfo: false,
@@ -376,17 +435,33 @@ async function connectWithRetry() {
           timeout: 12000,
           headers: BROWSER_HEADERS
         }
-      });
+      };
+      if (cleanApiKey) {
+        fallbackOptions.signApiKey = cleanApiKey;
+      }
+      const fallbackConn = new TikTokLiveConnection(cleanUser, fallbackOptions);
       bindConnectionEvents(fallbackConn);
       currentConnection = fallbackConn;
 
       const st2 = await fallbackConn.connect();
       reconnectAttempts = 0;
-      await postEvent('live_room_connected', {
+      postEvent('live_room_connected', {
         username: cleanUser,
         roomId: String(st2?.roomId || fallbackConn.roomId || '')
       });
     } catch (err2) {
+      if (isRateLimitError(err2)) {
+        const waitMs2 = Number(err2?.retryAfter) > 0 ? Number(err2.retryAfter) : 1800000;
+        const mins2 = Math.max(1, Math.ceil(waitMs2 / 60000));
+        postEvent('rate_limited', {
+          username: cleanUser,
+          minutes: mins2,
+          retryAfterMs: waitMs2,
+          message: `Límite horario de EulerStream alcanzado (${mins2} min). Agrega una API Key gratuita de EulerStream en Configuración.`
+        });
+        scheduleReconnect(`rate_limit_wait_${mins2}m`, waitMs2);
+        return;
+      }
       scheduleReconnect(err2?.message || err?.message || 'connect_failed');
     }
   }

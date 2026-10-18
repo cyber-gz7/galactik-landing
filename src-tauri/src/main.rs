@@ -121,10 +121,15 @@ async fn launch_server_bat(
     guard: State<'_, Arc<LicenseGuard>>,
 ) -> Result<String, String> {
     guard.require_verified().await?;
-    let bat_path = PathBuf::from(&folder).join("iniciar.bat");
-    if !bat_path.exists() {
-        return Err("No se encontró iniciar.bat en la carpeta del servidor".to_string());
-    }
+    let bat_path = if PathBuf::from(&folder).join("iniciar.bat").exists() {
+        PathBuf::from(&folder).join("iniciar.bat")
+    } else if PathBuf::from(&folder).join("start.bat").exists() {
+        PathBuf::from(&folder).join("start.bat")
+    } else if PathBuf::from(&folder).join("run.bat").exists() {
+        PathBuf::from(&folder).join("run.bat")
+    } else {
+        return Err("No se encontró iniciar.bat ni start.bat en la carpeta del servidor".to_string());
+    };
     Command::new("cmd")
         .args(["/c", "start", "", bat_path.to_str().unwrap()])
         .current_dir(&folder)
@@ -639,6 +644,33 @@ async fn emit_custom_alert(
     state.emit_custom_alert(&alert_json).await
 }
 
+#[tauri::command(rename_all = "snake_case")]
+async fn update_top_settings(
+    settings: serde_json::Value,
+    state: State<'_, Arc<OverlayServerState>>,
+) -> Result<(), String> {
+    let mut s = state.top_settings.lock().await;
+    *s = settings.clone();
+    let update_msg = serde_json::json!({
+        "type": "top_settings",
+        "settings": settings
+    })
+    .to_string();
+    let _ = state.tx.send(update_msg);
+    Ok(())
+}
+
+#[tauri::command(rename_all = "snake_case")]
+async fn emit_session_mvp(
+    username: String,
+    gift_name: String,
+    coins: u64,
+    state: State<'_, Arc<OverlayServerState>>,
+) -> Result<(), String> {
+    state.update_session_mvp(&username, &gift_name, coins).await;
+    Ok(())
+}
+
 fn decode_base64_simple(input: &str) -> Result<Vec<u8>, String> {
     let raw = if let Some(idx) = input.find(',') {
         &input[idx + 1..]
@@ -732,7 +764,7 @@ async fn speak_tts_native(text: String, rate: i32, volume: u32) -> Result<(), St
 }
 
 #[tauri::command]
-async fn start_tiktok_sidecar(username: String) -> Result<String, String> {
+async fn start_tiktok_sidecar(username: String, api_key: Option<String>) -> Result<String, String> {
     let clean: String = username
         .trim()
         .trim_start_matches('@')
@@ -755,15 +787,50 @@ async fn start_tiktok_sidecar(username: String) -> Result<String, String> {
     // Pausa mínima para que el SO libere el puerto 21219
     tokio::time::sleep(tokio::time::Duration::from_millis(600)).await;
 
-    let script_path =
-        PathBuf::from(r"C:\Users\GZ7\AppData\Local\Programs\GZ7Live\tiktok-sidecar.mjs");
-    if script_path.exists() {
+    // Resolución dinámica del script tiktok-sidecar.mjs
+    let mut resolved_script: Option<PathBuf> = None;
+    let mut resolved_cwd: Option<PathBuf> = None;
+
+    if let Ok(exe_dir) = std::env::current_exe().map(|p| p.parent().unwrap_or(&p).to_path_buf()) {
+        let p1 = exe_dir.join("tiktok-sidecar.mjs");
+        if p1.exists() {
+            resolved_script = Some(p1);
+            resolved_cwd = Some(exe_dir.clone());
+        } else {
+            let p2 = exe_dir.join("resources").join("tiktok-sidecar.mjs");
+            if p2.exists() {
+                resolved_script = Some(p2);
+                resolved_cwd = Some(exe_dir.join("resources"));
+            }
+        }
+    }
+
+    if resolved_script.is_none() {
+        let candidates = [
+            PathBuf::from(r"C:\Proyectos\GalacticLive\tiktok-sidecar.mjs"),
+            PathBuf::from(r"C:\Users\GZ7\AppData\Local\Programs\GZ7Live\tiktok-sidecar.mjs"),
+        ];
+        for c in &candidates {
+            if c.exists() {
+                resolved_script = Some(c.clone());
+                resolved_cwd = c.parent().map(|p| p.to_path_buf());
+                break;
+            }
+        }
+    }
+
+    if let (Some(script_path), Some(cwd)) = (resolved_script, resolved_cwd) {
         let node_candidates = [r"C:\Program Files\nodejs\node.exe", "node"];
         for node_bin in node_candidates {
-            if Command::new(node_bin)
-                .arg(&script_path)
-                .arg(&clean)
-                .current_dir(r"C:\Users\GZ7\AppData\Local\Programs\GZ7Live")
+            let mut cmd = Command::new(node_bin);
+            cmd.arg(&script_path).arg(&clean);
+            if let Some(ref k) = api_key {
+                let trimmed = k.trim();
+                if !trimmed.is_empty() {
+                    cmd.arg(trimmed);
+                }
+            }
+            if cmd.current_dir(&cwd)
                 .creation_flags(CREATE_NO_WINDOW)
                 .spawn()
                 .is_ok()
@@ -844,7 +911,9 @@ fn main() {
             emit_custom_alert,
             save_uploaded_media,
             speak_tts_native,
-            start_tiktok_sidecar
+            start_tiktok_sidecar,
+            update_top_settings,
+            emit_session_mvp
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

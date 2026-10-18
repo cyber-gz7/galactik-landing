@@ -18,7 +18,9 @@ async function boot() {
     ['sounds', './modules/soundboard.js', 'initSoundboard'],
     ['minecraft', './modules/minecraft-rcon.js', 'initMinecraftRcon'],
     ['admin', './modules/admin-licenses.js', 'initAdminLicenses'],
-    ['updater', './modules/auto-updater.js', 'initAutoUpdater']
+    ['updater', './modules/auto-updater.js', 'initAutoUpdater'],
+    ['musicMods', './modules/music-mods-ui.js', 'initMusicMods'],
+    ['tops', './modules/tops-widget.js', 'initTopsWidget']
   ];
   for (const [name, path, init] of entries) {
     try { modules[name] = (await import(path))[init](context); }

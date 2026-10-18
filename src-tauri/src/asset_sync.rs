@@ -53,6 +53,10 @@ pub fn resolve_s2e_media_dir() -> PathBuf {
             return local_prog_lower;
         }
     }
+    let dev_media = PathBuf::from(r"C:\Proyectos\GalacticLive\s2e_media");
+    if dev_media.exists() {
+        return dev_media;
+    }
     let fallback = get_app_data_root().join("s2e_media");
     let _ = fs::create_dir_all(fallback.join("audio").join("public"));
     let _ = fs::create_dir_all(fallback.join("custom"));

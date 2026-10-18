@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="boxGrad" x1="8" y1="20" x2="56" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#9d4edd" />
+      <stop offset="100%" stop-color="#5a189a" />
+    </linearGradient>
+    <linearGradient id="lidGrad" x1="6" y1="14" x2="58" y2="26" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#c77dff" />
+      <stop offset="100%" stop-color="#7b2cbf" />
+    </linearGradient>
+    <linearGradient id="ribbonGrad" x1="28" y1="4" x2="36" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffd166" />
+      <stop offset="50%" stop-color="#ffb703" />
+      <stop offset="100%" stop-color="#fb8500" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#ffb703" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+  <rect x="10" y="24" width="44" height="34" rx="4" fill="url(#boxGrad)" stroke="#3c096c" stroke-width="2"/>
+  <rect x="6" y="16" width="52" height="10" rx="3" fill="url(#lidGrad)" stroke="#3c096c" stroke-width="2"/>
+  <rect x="28" y="16" width="8" height="42" fill="url(#ribbonGrad)"/>
+  <rect x="6" y="20" width="52" height="4" fill="url(#ribbonGrad)" opacity="0.65"/>
+  <path d="M30 16 C22 8, 14 6, 20 16 C24 20, 29 17, 30 16 Z" fill="url(#ribbonGrad)" filter="url(#glow)"/>
+  <path d="M34 16 C42 8, 50 6, 44 16 C40 20, 35 17, 34 16 Z" fill="url(#ribbonGrad)" filter="url(#glow)"/>
+  <circle cx="32" cy="16" r="3.5" fill="#ffe49e" stroke="#fb8500" stroke-width="1.5"/>
+  <path d="M12 10 L13.5 13.5 L17 15 L13.5 16.5 L12 20 L10.5 16.5 L7 15 L10.5 13.5 Z" fill="#ffd166" opacity="0.9"/>
+  <path d="M52 28 L53 30.5 L55.5 31.5 L53 32.5 L52 35 L51 32.5 L48.5 31.5 L51 30.5 Z" fill="#ffd166" opacity="0.75"/>
+</svg>

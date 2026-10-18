@@ -1,0 +1,15 @@
+name: MiniLiveAtomica
+version: 1.0.0
+main: com.minelive.atomica.MiniLiveAtomicaPlugin
+api-version: "1.20"
+author: MiniLive
+description: Bomba atómica MiniLive por RCON (Optimizado Anti-Lag)
+commands:
+  atomica:
+    description: Hongo nuclear y explosión grande
+    usage: /atomica <jugador> [donador] [titulo=.. subtitulo=.. chat=.. potencia=.. radio=..]
+    permission: minelive.atomica
+permissions:
+  minelive.atomica:
+    description: Ejecutar /atomica (consola y OP)
+    default: op

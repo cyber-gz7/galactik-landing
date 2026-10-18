@@ -1,0 +1,55 @@
+{
+  "cooldowns": {
+    "globalSeconds": 10,
+    "individualSeconds": 30
+  },
+  "initialPoints": 100,
+  "mvp_alerts": {
+    "clean": {
+      "duration": 4,
+      "template": "",
+      "videoUrl": "/s2e_media/videos/public/any/mvp_entrada.mp4"
+    },
+    "cyber": {
+      "duration": 6,
+      "template": "{user} NUEVO CYBER MVP",
+      "videoUrl": "/s2e_media/videos/public/any/cyber_alerta.mp4"
+    },
+    "entrada": {
+      "duration": 5,
+      "template": "MODERADOR EN LINEA: {user}",
+      "videoUrl": "/s2e_media/videos/public/any/mvp_entrada.mp4"
+    },
+    "gg": {
+      "duration": 4.5,
+      "template": "{user} ACTIVO EL MODO HYPE",
+      "videoUrl": "/s2e_media/videos/public/any/mvp_gg.mp4"
+    }
+  },
+  "pointCosts": {
+    "alerta": 25,
+    "skip": 50,
+    "sr": 10
+  },
+  "points": {
+    "gz7": 9999,
+    "gz7_mvp": 20100,
+    "mod_cyber": 500,
+    "vip_gamer": 200
+  },
+  "roles": {
+    "default": [],
+    "mods": [
+      "gz7",
+      "admin",
+      "mod_cyber"
+    ],
+    "mvp": [
+      "vip_gamer",
+      "mvp_donor"
+    ],
+    "vip": [
+      "amigo_vip"
+    ]
+  }
+}

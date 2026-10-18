@@ -1,0 +1,31 @@
+# Configuración de MiniLiveArcangel (Paper 1.20.1 Display Entities)
+focal-height: 12.0
+core-material: "GLOWSTONE"
+core-glow-color: "#FFD700" # Oro celestial (255, 215, 0)
+
+ring1:
+  item: "GOLDEN_SWORD"
+  count: 8
+  radius: 4.0
+  speed-degrees: 6.0
+
+ring2:
+  item: "END_ROD"
+  count: 8
+  radius: 4.0
+  speed-degrees: 6.0
+  tilt-degrees: 45.0
+
+ring3:
+  radius: 5.5
+  particle-count: 32
+
+shockwave:
+  radius: 8.0
+  knockback-radius: 7.0
+  knockback-strength: 2.0
+
+messages:
+  title: "&e&l✧ OFANIM CELESTIAL ✧"
+  subtitle: "&fCastigo solar de &b{donor}"
+  chat: "&6&l[Arcángel] &e¡{donor} invocó el Ofanim Celestial sobre &f{target}&e!"

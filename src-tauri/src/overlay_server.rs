@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 use std::sync::Arc;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::{TcpListener, TcpStream};
@@ -21,8 +22,8 @@ impl Default for DuelState {
             position: 50.0,
             wins_left: 0,
             wins_right: 0,
-            team_left_name: "TEAM ROJO 🌹".to_string(),
-            team_right_name: "TEAM AZUL 🎮".to_string(),
+            team_left_name: "TEAM ROJO".to_string(),
+            team_right_name: "TEAM AZUL".to_string(),
             gift_scale: 100,
             last_event: None,
         }
@@ -358,6 +359,13 @@ pub struct OverlayServerState {
     pub duel: Arc<Mutex<DuelState>>,
     pub gift_vs_gift: Arc<Mutex<GiftVsGiftState>>,
     pub mc_overlay: Arc<Mutex<serde_json::Value>>,
+    pub roles: Arc<Mutex<serde_json::Value>>,
+    pub song_queue: Arc<Mutex<Vec<serde_json::Value>>>,
+    pub now_playing: Arc<Mutex<Option<serde_json::Value>>>,
+    pub last_global_alert_ms: Arc<Mutex<u64>>,
+    pub user_last_alert_ms: Arc<Mutex<HashMap<String, u64>>>,
+    pub top_settings: Arc<Mutex<serde_json::Value>>,
+    pub session_mvp: Arc<Mutex<serde_json::Value>>,
     pub tx: broadcast::Sender<String>,
 }
 
@@ -371,20 +379,53 @@ impl OverlayServerState {
             "maxTotems": 20,
             "faction": "BUENOS",
             "items": [
-                { "id": "1", "gift_name": "Rosa", "icon_file": "rose-1-coins.webp", "coins": 1, "action_label": "🧟 Zombie", "faction": "MALOS" },
-                { "id": "2", "gift_name": "GG", "icon_file": "gg-1-coins.webp", "coins": 5, "action_label": "💣 Creeper", "faction": "MALOS" },
-                { "id": "3", "gift_name": "Heart Me", "icon_file": "heart-me-1-coins.webp", "coins": 1, "action_label": "🛡️ +1 Tótem", "faction": "BUENOS" },
-                { "id": "4", "gift_name": "Doughnut", "icon_file": "doughnut-30-coins.webp", "coins": 30, "action_label": "💥 Lluvia TNT", "faction": "MALOS" },
-                { "id": "5", "gift_name": "Capybara", "icon_file": "capybara-30-coins.webp", "coins": 30, "action_label": "💎 5 Diamantes", "faction": "BUENOS" },
-                { "id": "6", "gift_name": "Game Controller", "icon_file": "game-controller-100-coins.webp", "coins": 100, "action_label": "👹 Warden Boss", "faction": "MALOS" },
-                { "id": "7", "gift_name": "Galaxy", "icon_file": "galaxy-1000-coins.webp", "coins": 1000, "action_label": "👼 Arcángel Solar", "faction": "BUENOS" },
-                { "id": "8", "gift_name": "Lion", "icon_file": "lion-29999-coins.webp", "coins": 29999, "action_label": "💀 La Parka Final", "faction": "MALOS" }
+                { "id": "1", "gift_name": "Rosa", "icon_file": "rose-1-coins.webp", "coins": 1, "action_label": "Zombie", "faction": "MALOS" },
+                { "id": "2", "gift_name": "GG", "icon_file": "gg-1-coins.webp", "coins": 5, "action_label": "Creeper", "faction": "MALOS" },
+                { "id": "3", "gift_name": "Heart Me", "icon_file": "heart-me-1-coins.webp", "coins": 1, "action_label": "+1 Totem", "faction": "BUENOS" },
+                { "id": "4", "gift_name": "Doughnut", "icon_file": "doughnut-30-coins.webp", "coins": 30, "action_label": "Lluvia TNT", "faction": "MALOS" },
+                { "id": "5", "gift_name": "Capybara", "icon_file": "capybara-30-coins.webp", "coins": 30, "action_label": "5 Diamantes", "faction": "BUENOS" },
+                { "id": "6", "gift_name": "Game Controller", "icon_file": "game-controller-100-coins.webp", "coins": 100, "action_label": "Warden Boss", "faction": "MALOS" },
+                { "id": "7", "gift_name": "Galaxy", "icon_file": "galaxy-1000-coins.webp", "coins": 1000, "action_label": "Arcangel Solar", "faction": "BUENOS" },
+                { "id": "8", "gift_name": "Lion", "icon_file": "lion-29999-coins.webp", "coins": 29999, "action_label": "La Parka Final", "faction": "MALOS" }
             ]
         });
+
+        let initial_roles = match std::fs::read_to_string(r"C:\Proyectos\GalacticLive\roles.json") {
+            Ok(content) => serde_json::from_str::<serde_json::Value>(&content).unwrap_or_else(|_| serde_json::json!({
+                "roles": { "mods": ["gz7", "admin", "mod_cyber"], "mvp": ["vip_gamer", "mvp_donor"], "vip": ["amigo_vip"], "default": [] },
+                "points": { "gz7": 9999, "mod_cyber": 500, "vip_gamer": 200 }
+            })),
+            Err(_) => serde_json::json!({
+                "roles": { "mods": ["gz7", "admin", "mod_cyber"], "mvp": ["vip_gamer", "mvp_donor"], "vip": ["amigo_vip"], "default": [] },
+                "points": { "gz7": 9999, "mod_cyber": 500, "vip_gamer": 200 }
+            }),
+        };
+
+        let default_top_settings = serde_json::json!({
+            "metric": "coins",
+            "limit": 5,
+            "showCrown": true,
+            "showShimmer": true,
+            "mockActive": false
+        });
+
+        let default_session_mvp = serde_json::json!({
+            "username": "Nadie aún",
+            "giftName": "",
+            "coins": 0
+        });
+
         Self {
             duel: Arc::new(Mutex::new(DuelState::default())),
             gift_vs_gift: Arc::new(Mutex::new(GiftVsGiftState::default())),
             mc_overlay: Arc::new(Mutex::new(default_mc)),
+            roles: Arc::new(Mutex::new(initial_roles)),
+            song_queue: Arc::new(Mutex::new(Vec::new())),
+            now_playing: Arc::new(Mutex::new(None)),
+            last_global_alert_ms: Arc::new(Mutex::new(0)),
+            user_last_alert_ms: Arc::new(Mutex::new(HashMap::new())),
+            top_settings: Arc::new(Mutex::new(default_top_settings)),
+            session_mvp: Arc::new(Mutex::new(default_session_mvp)),
             tx,
         }
     }
@@ -680,14 +721,58 @@ impl OverlayServerState {
         let parsed: serde_json::Value = serde_json::from_str(alert_json)
             .map_err(|e| format!("JSON inválido en emit_custom_alert: {}", e))?;
         let d = self.duel.lock().await;
+        let msg_val = if parsed.get("type").and_then(|t| t.as_str()) == Some("CUSTOM_ALERT") {
+            let mut obj = parsed.clone();
+            obj["duel"] = serde_json::json!(&*d);
+            obj["alert"] = parsed.clone();
+            obj
+        } else {
+            serde_json::json!({
+                "type": "custom_alert",
+                "duel": &*d,
+                "alert": parsed
+            })
+        };
+        let msg = msg_val.to_string();
+        let _ = self.tx.send(msg);
+        Ok(())
+    }
+
+    pub async fn check_visual_cooldown(&self, user: &str) -> Result<(), String> {
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|d| d.as_millis() as u64)
+            .unwrap_or(0);
+        let mut last_global = self.last_global_alert_ms.lock().await;
+        if now.saturating_sub(*last_global) < 10_000 {
+            let wait_sec = (10_000 - now.saturating_sub(*last_global) + 999) / 1000;
+            return Err(format!("Cooldown global activo. Espera {}s para no saturar OBS.", wait_sec));
+        }
+        let mut user_map = self.user_last_alert_ms.lock().await;
+        let clean_user = user.trim().trim_start_matches('@').to_ascii_lowercase();
+        let user_last = user_map.get(&clean_user).copied().unwrap_or(0);
+        if now.saturating_sub(user_last) < 30_000 {
+            let wait_sec = (30_000 - now.saturating_sub(user_last) + 999) / 1000;
+            return Err(format!("Cooldown personal activo (@{}). Espera {}s.", clean_user, wait_sec));
+        }
+        *last_global = now;
+        user_map.insert(clean_user, now);
+        Ok(())
+    }
+
+    pub async fn update_session_mvp(&self, username: &str, gift_name: &str, coins: u64) {
+        let mut mvp = self.session_mvp.lock().await;
+        *mvp = serde_json::json!({
+            "username": username,
+            "giftName": gift_name,
+            "coins": coins
+        });
         let msg = serde_json::json!({
-            "type": "custom_alert",
-            "duel": &*d,
-            "alert": parsed
+            "type": "NEW_SESSION_MVP",
+            "data": &*mvp
         })
         .to_string();
         let _ = self.tx.send(msg);
-        Ok(())
     }
 }
 
@@ -956,7 +1041,7 @@ async fn handle_connection(mut stream: TcpStream, state: Arc<OverlayServerState>
     if method == "OPTIONS" {
         let response = "HTTP/1.1 200 OK\r\n\
 Access-Control-Allow-Origin: *\r\n\
-Access-Control-Allow-Methods: GET, POST, OPTIONS\r\n\
+Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS\r\n\
 Access-Control-Allow-Headers: Content-Type, Range\r\n\
 Content-Length: 0\r\n\r\n";
         let _ = stream.write_all(response.as_bytes()).await;
@@ -1069,7 +1154,11 @@ Connection: close\r\n\r\n",
             );
             send_html_response(&mut stream, &body).await;
         }
-        "/top_rotativo.html" | "/mvp.html" | "/metas.html" | "/racha.html" => {
+        "/mvp.html" => {
+            let body = load_template("mvp.html", include_str!("../templates/mvp.html"));
+            send_html_response(&mut stream, &body).await;
+        }
+        "/top_rotativo.html" | "/metas.html" | "/racha.html" => {
             let body = load_template(
                 "top_rotativo.html",
                 include_str!("../templates/top_rotativo.html"),
@@ -1083,6 +1172,14 @@ Connection: close\r\n\r\n",
         "/alerta.html" => {
             let body = load_template("alerta.html", include_str!("../templates/alerta.html"));
             send_html_response(&mut stream, &body).await;
+        }
+        "/gift_mappings.json" => {
+            let file_path = std::path::PathBuf::from(r"C:\Proyectos\GalacticLive\gift_mappings.json");
+            if let Ok(content) = std::fs::read_to_string(&file_path) {
+                send_json_response(&mut stream, &content).await;
+            } else {
+                send_json_response(&mut stream, "{}").await;
+            }
         }
         "/cronometro.html" => {
             let body = load_template(
@@ -1099,8 +1196,29 @@ Connection: close\r\n\r\n",
             send_html_response(&mut stream, &body).await;
         }
         "/top_likes.html" => {
-            let body = include_str!("../templates/top_likes.html");
-            send_html_response(&mut stream, body).await;
+            let body = load_template("top_likes.html", include_str!("../templates/top_likes.html"));
+            send_html_response(&mut stream, &body).await;
+        }
+        "/overlay-top.html" | "/overlay-top" => {
+            let body = load_template(
+                "overlay-top.html",
+                include_str!("../templates/overlay-top.html"),
+            );
+            send_html_response(&mut stream, &body).await;
+        }
+        "/overlay_hud.html" | "/overlay_hud" | "/hud.html" | "/hud" => {
+            let body = load_template(
+                "overlay_hud.html",
+                include_str!("../templates/overlay_hud.html"),
+            );
+            send_html_response(&mut stream, &body).await;
+        }
+        "/overlay_cinematic.html" | "/overlay_cinematic" | "/cinematic.html" | "/cinematic" => {
+            let body = load_template(
+                "overlay_cinematic.html",
+                include_str!("../templates/overlay_cinematic.html"),
+            );
+            send_html_response(&mut stream, &body).await;
         }
         "/api/estado" => {
             let d = state.duel.lock().await;
@@ -1169,6 +1287,248 @@ Connection: close\r\n\r\n",
                 }
                 Err(_) => {
                     send_json_response(&mut stream, r#"{"ok":false,"error":"JSON inválido"}"#).await
+                }
+            }
+        }
+        "/api/roles" => {
+            if method == "POST" {
+                let raw_body = req_str
+                    .split_once("\r\n\r\n")
+                    .map(|(_, b)| b)
+                    .unwrap_or("")
+                    .trim();
+                match serde_json::from_str::<serde_json::Value>(raw_body) {
+                    Ok(payload) => {
+                        let mut r = state.roles.lock().await;
+                        *r = payload.clone();
+                        let _ = std::fs::write(
+                            r"C:\Proyectos\GalacticLive\roles.json",
+                            serde_json::to_string_pretty(&payload).unwrap_or_default(),
+                        );
+                        let update_msg = serde_json::json!({
+                            "type": "roles_updated",
+                            "roles": payload
+                        })
+                        .to_string();
+                        let _ = state.tx.send(update_msg);
+                        send_json_response(&mut stream, r#"{"ok":true}"#).await;
+                    }
+                    Err(_) => {
+                        send_json_response(&mut stream, r#"{"ok":false,"error":"JSON inválido"}"#).await;
+                    }
+                }
+            } else {
+                let r = state.roles.lock().await;
+                send_json_response(&mut stream, &r.to_string()).await;
+            }
+        }
+        "/api/music/queue" => {
+            if method == "POST" {
+                let raw_body = req_str
+                    .split_once("\r\n\r\n")
+                    .map(|(_, b)| b)
+                    .unwrap_or("")
+                    .trim();
+                match serde_json::from_str::<serde_json::Value>(raw_body) {
+                    Ok(track) => {
+                        let dur = track.get("duration").and_then(|v| v.as_u64()).unwrap_or(0);
+                        if dur > 300 {
+                            send_json_response(
+                                &mut stream,
+                                r#"{"ok":false,"error":"La canción supera el límite de 5 minutos permitidos."}"#,
+                            )
+                            .await;
+                            return;
+                        }
+                        let mut q = state.song_queue.lock().await;
+                        q.push(track.clone());
+                        let np = state.now_playing.lock().await;
+                        let msg = serde_json::json!({
+                            "type": "music_queue_update",
+                            "queue": &*q,
+                            "now_playing": &*np
+                        })
+                        .to_string();
+                        let _ = state.tx.send(msg);
+                        let resp = serde_json::json!({
+                            "ok": true,
+                            "track": track,
+                            "position": q.len()
+                        })
+                        .to_string();
+                        send_json_response(&mut stream, &resp).await;
+                    }
+                    Err(_) => {
+                        send_json_response(&mut stream, r#"{"ok":false,"error":"JSON inválido"}"#).await;
+                    }
+                }
+            } else if method == "DELETE" {
+                let mut q = state.song_queue.lock().await;
+                q.clear();
+                let np = state.now_playing.lock().await;
+                let msg = serde_json::json!({
+                    "type": "music_queue_update",
+                    "queue": &*q,
+                    "now_playing": &*np
+                })
+                .to_string();
+                let _ = state.tx.send(msg);
+                send_json_response(&mut stream, r#"{"ok":true,"queue":[]}"#).await;
+            } else {
+                let q = state.song_queue.lock().await;
+                let np = state.now_playing.lock().await;
+                let body = serde_json::json!({
+                    "now_playing": &*np,
+                    "queue": &*q
+                })
+                .to_string();
+                send_json_response(&mut stream, &body).await;
+            }
+        }
+        "/api/music/control" if method == "POST" => {
+            let raw_body = req_str
+                .split_once("\r\n\r\n")
+                .map(|(_, b)| b)
+                .unwrap_or("")
+                .trim();
+            match serde_json::from_str::<serde_json::Value>(raw_body) {
+                Ok(payload) => {
+                    let action = payload.get("action").and_then(|v| v.as_str()).unwrap_or("skip");
+                    let value = payload.get("value").cloned();
+                    let msg = serde_json::json!({
+                        "type": "music_control",
+                        "action": action,
+                        "value": value
+                    })
+                    .to_string();
+                    let _ = state.tx.send(msg);
+                    send_json_response(&mut stream, r#"{"ok":true}"#).await;
+                }
+                Err(_) => {
+                    send_json_response(&mut stream, r#"{"ok":false,"error":"JSON inválido"}"#).await;
+                }
+            }
+        }
+        "/api/music/now-playing" => {
+            if method == "POST" {
+                let raw_body = req_str
+                    .split_once("\r\n\r\n")
+                    .map(|(_, b)| b)
+                    .unwrap_or("")
+                    .trim();
+                match serde_json::from_str::<serde_json::Value>(raw_body) {
+                    Ok(payload) => {
+                        let track = payload.get("track").cloned().unwrap_or(serde_json::Value::Null);
+                        let mut np = state.now_playing.lock().await;
+                        *np = if track.is_null() { None } else { Some(track.clone()) };
+                        let msg = serde_json::json!({
+                            "type": "now_playing",
+                            "track": track
+                        })
+                        .to_string();
+                        let _ = state.tx.send(msg);
+                        send_json_response(&mut stream, r#"{"ok":true}"#).await;
+                    }
+                    Err(_) => {
+                        send_json_response(&mut stream, r#"{"ok":false,"error":"JSON inválido"}"#).await;
+                    }
+                }
+            } else {
+                let np = state.now_playing.lock().await;
+                let body = serde_json::json!({ "now_playing": &*np }).to_string();
+                send_json_response(&mut stream, &body).await;
+            }
+        }
+        "/api/top-settings" => {
+            if method == "POST" {
+                let raw_body = req_str
+                    .split_once("\r\n\r\n")
+                    .map(|(_, b)| b)
+                    .unwrap_or("")
+                    .trim();
+                match serde_json::from_str::<serde_json::Value>(raw_body) {
+                    Ok(payload) => {
+                        let mut s = state.top_settings.lock().await;
+                        *s = payload.clone();
+                        let update_msg = serde_json::json!({
+                            "type": "top_settings",
+                            "settings": payload
+                        })
+                        .to_string();
+                        let _ = state.tx.send(update_msg);
+                        send_json_response(&mut stream, r#"{"ok":true}"#).await;
+                    }
+                    Err(_) => {
+                        send_json_response(&mut stream, r#"{"ok":false,"error":"JSON inválido"}"#).await;
+                    }
+                }
+            } else {
+                let s = state.top_settings.lock().await;
+                send_json_response(&mut stream, &s.to_string()).await;
+            }
+        }
+        "/api/session-mvp" => {
+            if method == "POST" {
+                let raw_body = req_str
+                    .split_once("\r\n\r\n")
+                    .map(|(_, b)| b)
+                    .unwrap_or("")
+                    .trim();
+                match serde_json::from_str::<serde_json::Value>(raw_body) {
+                    Ok(payload) => {
+                        let username = payload.get("username").and_then(|v| v.as_str()).unwrap_or("Nadie aún");
+                        let gift_name = payload.get("giftName").and_then(|v| v.as_str()).unwrap_or("");
+                        let coins = payload.get("coins").and_then(|v| v.as_u64()).unwrap_or(0);
+                        state.update_session_mvp(username, gift_name, coins).await;
+                        send_json_response(&mut stream, r#"{"ok":true}"#).await;
+                    }
+                    Err(_) => {
+                        send_json_response(&mut stream, r#"{"ok":false,"error":"JSON inválido"}"#).await;
+                    }
+                }
+            } else {
+                let m = state.session_mvp.lock().await;
+                send_json_response(&mut stream, &m.to_string()).await;
+            }
+        }
+        "/api/alerta/trigger" if method == "POST" => {
+            let raw_body = req_str
+                .split_once("\r\n\r\n")
+                .map(|(_, b)| b)
+                .unwrap_or("")
+                .trim();
+            match serde_json::from_str::<serde_json::Value>(raw_body) {
+                Ok(payload) => {
+                    let is_custom_alert = payload.get("type").and_then(|v| v.as_str()) == Some("CUSTOM_ALERT");
+                    let skip_cd = payload.get("skip_cooldown").and_then(|v| v.as_bool()).unwrap_or(false) || is_custom_alert;
+                    let user = payload
+                        .get("user")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("Viewer");
+                    if !skip_cd {
+                        if let Err(cd_err) = state.check_visual_cooldown(user).await {
+                            let err_body = serde_json::json!({
+                                "ok": false,
+                                "error": cd_err
+                            })
+                            .to_string();
+                            send_json_response(&mut stream, &err_body).await;
+                            return;
+                        }
+                    }
+                    let alert_data = payload.get("alert").cloned().unwrap_or(payload.clone());
+                    let d = state.duel.lock().await;
+                    let msg = serde_json::json!({
+                        "type": if is_custom_alert { "CUSTOM_ALERT" } else { "custom_alert" },
+                        "duel": &*d,
+                        "alert": alert_data
+                    })
+                    .to_string();
+                    let _ = state.tx.send(msg);
+                    send_json_response(&mut stream, r#"{"ok":true}"#).await;
+                }
+                Err(_) => {
+                    send_json_response(&mut stream, r#"{"ok":false,"error":"JSON inválido"}"#).await;
                 }
             }
         }
@@ -1567,11 +1927,17 @@ Connection: keep-alive\r\n\r\n";
         let d = state.duel.lock().await;
         let gvg = state.gift_vs_gift.lock().await;
         let mc = state.mc_overlay.lock().await;
+        let np = state.now_playing.lock().await;
+        let tops = state.top_settings.lock().await;
+        let mvp = state.session_mvp.lock().await;
         serde_json::json!({
             "type": "init",
             "duel": &*d,
             "gift_vs_gift": &*gvg,
-            "mc_overlay": &*mc
+            "mc_overlay": &*mc,
+            "now_playing": &*np,
+            "top_settings": &*tops,
+            "session_mvp": &*mvp
         })
         .to_string()
     };

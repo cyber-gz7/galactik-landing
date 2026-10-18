@@ -1,0 +1,16 @@
+name: MiniLiveArcangel
+version: 1.0.0
+main: com.minelive.arcangel.MiniLiveArcangelPlugin
+api-version: '1.20'
+author: Antigravity
+description: Ofanim Celestial cinematografico masivo con Display Entities Paper 1.20.1
+commands:
+  arcangel:
+    description: Invoca el Ofanim Celestial sobre un jugador
+    aliases: [ofanin, serafin, angel]
+    permission: minelive.arcangel
+    usage: /<command> <jugador> [donador] [opciones...]
+permissions:
+  minelive.arcangel:
+    description: Permiso para invocar el Ofanim Celestial
+    default: op

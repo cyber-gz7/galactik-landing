@@ -118,7 +118,10 @@
   <div class="leaderboard-card" id="card">
     <div class="leaderboard-title">
       <div class="title-text">
-        <span>👑 TOP DONADORES</span>
+        <span style="display: flex; align-items: center; gap: 6px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFA751" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
+          TOP DONADORES
+        </span>
       </div>
       <div class="live-dot"></div>
     </div>
@@ -160,14 +163,17 @@
       donorList.innerHTML = sorted.map(([user, coins], idx) => {
         const rank = idx + 1;
         const rankClass = rank === 1 ? 'rank-1' : (rank === 2 ? 'rank-2' : (rank === 3 ? 'rank-3' : ''));
-        const medal = rank === 1 ? '🥇' : (rank === 2 ? '🥈' : (rank === 3 ? '🥉' : `#${rank}`));
+        const medal = rank === 1 ? '#01' : (rank === 2 ? '#02' : (rank === 3 ? '#03' : `#0${rank}`));
         return `
           <div class="donor-row">
             <div class="donor-left">
               <span class="donor-rank ${rankClass}">${medal}</span>
               <span class="donor-user">@${user}</span>
             </div>
-            <span class="donor-coins">${coins.toLocaleString()} 🪙</span>
+            <span class="donor-coins">
+              ${coins.toLocaleString()}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M11 3 8 9l4 12 4-12-3-6"/><path d="M2 9h20"/></svg>
+            </span>
           </div>
         `;
       }).join('');

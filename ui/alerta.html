@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Overlay de Alertas Vertical - GALACTK PANEL</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700;800&family=Inter:wght@400;600;700&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      background: transparent !important;
+      overflow: hidden;
+      font-family: 'Rajdhani', 'Inter', sans-serif;
+      color: #ffffff;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    #overlay-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .video-viewport {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      opacity: 0;
+      transform: scale(0.96);
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .video-viewport.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    #alert-video {
+      display: none !important;
+    }
+
+    #chroma-canvas {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+      display: block;
+      filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.85));
+    }
+
+    .alert-text-layer {
+      position: absolute;
+      bottom: 12%;
+      left: 5%;
+      right: 5%;
+      display: none !important;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      z-index: 30;
+      padding: 16px 24px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(28px) scale(0.95);
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .alert-text-layer.visible {
+      display: flex !important;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Supresión forzada de textos residuales y parásitos */
+    .alert-text-layer span,
+    .alert-text-layer h1,
+    .standard-card,
+    #standard-card {
+      display: none !important;
+    }
+
+    .alert-text-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(10, 15, 30, 0.82);
+      border: 1px solid rgba(0, 240, 255, 0.65);
+      border-radius: 999px;
+      padding: 6px 18px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #00f0ff;
+      box-shadow: 0 4px 20px rgba(0, 240, 255, 0.4), inset 0 0 12px rgba(0, 240, 255, 0.2);
+      backdrop-filter: blur(8px);
+      animation: pulseGlow 2s infinite ease-in-out;
+    }
+
+    .alert-text-content {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(24px, 4.2vw, 42px);
+      font-weight: 900;
+      line-height: 1.15;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-shadow: 
+        0 0 20px rgba(0, 240, 255, 0.9),
+        0 4px 12px rgba(0, 0, 0, 0.95),
+        2px 2px 0 #000,
+        -2px -2px 0 #000;
+      letter-spacing: 1px;
+      word-break: break-word;
+    }
+
+    .alert-text-sub {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(18px, 3vw, 26px);
+      font-weight: 700;
+      color: #ffe600;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.9), 0 0 12px rgba(255, 230, 0, 0.6);
+      margin-top: 6px;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow: 0 4px 20px rgba(0, 240, 255, 0.4), inset 0 0 12px rgba(0, 240, 255, 0.2);
+      }
+      50% {
+        box-shadow: 0 4px 30px rgba(0, 240, 255, 0.8), inset 0 0 18px rgba(0, 240, 255, 0.4);
+      }
+    }
+
+    .now-playing-banner {
+      position: absolute;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-120px);
+      background: rgba(13, 17, 28, 0.88);
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      border-radius: 16px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(0, 240, 255, 0.25);
+      backdrop-filter: blur(12px);
+      z-index: 50;
+      pointer-events: none;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
+      opacity: 0;
+      max-width: 90vw;
+    }
+
+    .now-playing-banner.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .now-playing-equalizer {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      width: 22px;
+      height: 20px;
+    }
+
+    .eq-bar {
+      flex: 1;
+      background: #00f0ff;
+      border-radius: 2px;
+      animation: eqBounce 1.2s infinite ease-in-out;
+    }
+    .eq-bar:nth-child(1) { height: 40%; animation-delay: 0.1s; }
+    .eq-bar:nth-child(2) { height: 90%; animation-delay: 0.3s; }
+    .eq-bar:nth-child(3) { height: 60%; animation-delay: 0.2s; }
+    .eq-bar:nth-child(4) { height: 100%; animation-delay: 0.4s; }
+
+    @keyframes eqBounce {
+      0%, 100% { transform: scaleY(0.3); }
+      50% { transform: scaleY(1); }
+    }
+
+    .np-details {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .np-tag {
+      font-size: 11px;
+      font-weight: 800;
+      color: #00f0ff;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .np-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 320px;
+    }
+
+    .np-requester {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .standard-card {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+      transform: scale(0.8) translateY(30px);
+      transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 20;
+    }
+
+    .standard-card.active {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    .standard-card-body {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 16px 28px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.8);
+    }
+
+    .standard-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      color: #00f0ff;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.8));
+    }
+  </style>
+</head>
+<body>
+  <div id="overlay-container">
+    <div class="video-viewport" id="video-viewport">
+      <video id="alert-video" crossorigin="anonymous" playsinline muted preload="auto"></video>
+      <canvas id="chroma-canvas"></canvas>
+    </div>
+
+    <div class="alert-text-layer" id="alert-text-layer" style="display: none !important;">
+      <div class="alert-text-badge" id="alert-badge" style="display: none !important;"></div>
+      <div class="alert-text-content" id="alert-main-text" style="display: none !important;"></div>
+      <div class="alert-text-sub" id="alert-sub-text" style="display: none !important;"></div>
+    </div>
+
+    <div class="standard-card" id="standard-card" style="display: none !important;">
+      <div class="standard-card-body" style="display: none !important;">
+        <div class="standard-icon" id="std-icon" style="display: none !important;"></div>
+        <div style="display: none !important;">
+          <div class="alert-text-content" id="std-title" style="display: none !important;"></div>
+          <div class="alert-text-sub" id="std-sub" style="display: none !important;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="now-playing-banner" id="now-playing-banner">
+      <div class="now-playing-equalizer">
+        <div class="eq-bar"></div>
+        <div class="eq-bar"></div>
+        <div class="eq-bar"></div>
+        <div class="eq-bar"></div>
+      </div>
+      <div class="np-details">
+        <span class="np-tag">REPRODUCIENDO AHORA</span>
+        <span class="np-title" id="np-title">Esperando solicitudes...</span>
+        <span class="np-requester" id="np-requester">Pedido por: Streamer</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SVG_ICONS = {
+      spark: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>',
+      gem: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M11 3 8 9l4 12 4-12-3-6"/><path d="M2 9h20"/></svg>',
+      heart: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
+      crown: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>'
+    };
+
+    const videoViewport = document.getElementById('video-viewport');
+    const alertVideo = document.getElementById('alert-video');
+    const chromaCanvas = document.getElementById('chroma-canvas');
+    const chromaCtx = chromaCanvas.getContext('2d', { willReadFrequently: true });
+    let chromaAnimId = null;
+    let isChromaRunning = false;
+
+    const textLayer = document.getElementById('alert-text-layer');
+    const alertBadge = document.getElementById('alert-badge');
+    const alertMainText = document.getElementById('alert-main-text');
+    const alertSubText = document.getElementById('alert-sub-text');
+
+    const standardCard = document.getElementById('standard-card');
+    const stdIcon = document.getElementById('std-icon');
+    const stdTitle = document.getElementById('std-title');
+    const stdSub = document.getElementById('std-sub');
+    const nowPlayingBanner = document.getElementById('now-playing-banner');
+    const npTitle = document.getElementById('np-title');
+    const npRequester = document.getElementById('np-requester');
+
+    let activeAudio = null;
+    let nowPlayingTimer = null;
+
+    function stopChromaLoop() {
+      if (chromaAnimId) {
+        cancelAnimationFrame(chromaAnimId);
+        chromaAnimId = null;
+      }
+      isChromaRunning = false;
+      if (chromaCanvas.width && chromaCanvas.height) {
+        chromaCtx.clearRect(0, 0, chromaCanvas.width, chromaCanvas.height);
+      }
+    }
+
+    let autoKeyColor = null;
+
+    function startChromaLoop(chromaKeyEnabled = true, chromaConfig = {}) {
+      stopChromaLoop();
+      isChromaRunning = true;
+      autoKeyColor = null;
+
+      function renderFrame() {
+        if (!isChromaRunning || alertVideo.paused || alertVideo.ended) {
+          stopChromaLoop();
+          return;
+        }
+
+        const width = alertVideo.videoWidth || 720;
+        const height = alertVideo.videoHeight || 1080;
+
+        if (chromaCanvas.width !== width || chromaCanvas.height !== height) {
+          chromaCanvas.width = width;
+          chromaCanvas.height = height;
+        }
+
+        chromaCtx.drawImage(alertVideo, 0, 0, width, height);
+
+        if (chromaKeyEnabled) {
+          const frame = chromaCtx.getImageData(0, 0, width, height);
+          const d = frame.data;
+          const cw = width;
+          const ch = height;
+
+          // Auto-detección inteligente del color de fondo muestreando las esquinas del video
+          if (!autoKeyColor && cw > 10 && ch > 10) {
+            const coords = [[4, 4], [cw - 5, 4], [4, ch - 5], [cw - 5, ch - 5]];
+            const samples = [];
+            for (const [x, y] of coords) {
+              const idx = (y * cw + x) * 4;
+              if (d[idx + 3] > 180) {
+                samples.push([d[idx], d[idx + 1], d[idx + 2]]);
+              }
+            }
+            if (samples.length > 0) {
+              const sum = samples.reduce((a, b) => [a[0] + b[0], a[1] + b[1], a[2] + b[2]], [0, 0, 0]);
+              autoKeyColor = {
+                r: Math.round(sum[0] / samples.length),
+                g: Math.round(sum[1] / samples.length),
+                b: Math.round(sum[2] / samples.length)
+              };
+            }
+          }
+
+          const key = autoKeyColor || { r: 0, g: 255, b: 0 };
+          const similarity = Number(chromaConfig.similarity) || 38;
+          const smoothness = Number(chromaConfig.smoothness) || 14;
+          const maxT = (similarity / 100) * 441.67;
+          const ramp = (smoothness / 100) * 441.67;
+          const isGreen = key.g > key.r + 30 && key.g > key.b + 30;
+          const isWhite = key.r > 210 && key.g > 210 && key.b > 210;
+
+          const len = d.length;
+          for (let i = 0; i < len; i += 4) {
+            const r = d[i];
+            const g = d[i + 1];
+            const b = d[i + 2];
+
+            const dist = Math.sqrt((r - key.r) ** 2 + (g - key.g) ** 2 + (b - key.b) ** 2);
+            if (dist < maxT) {
+              d[i + 3] = 0;
+            } else if (dist < maxT + ramp) {
+              d[i + 3] = Math.round(d[i + 3] * ((dist - maxT) / ramp));
+              if (isGreen && g > r && g > b) {
+                d[i + 1] = Math.round((r + b) * 0.5);
+              }
+            } else if (isGreen && g > 100 && g > r * 1.35 && g > b * 1.35) {
+              d[i + 3] = 0;
+            } else if (isWhite && r > 235 && g > 235 && b > 235) {
+              d[i + 3] = 0;
+            }
+          }
+          chromaCtx.putImageData(frame, 0, 0);
+        }
+
+        chromaAnimId = requestAnimationFrame(renderFrame);
+      }
+
+      chromaAnimId = requestAnimationFrame(renderFrame);
+    }
+
+    function interpolateTemplate(template, data = {}) {
+      if (!template || typeof template !== 'string') return '';
+      const rawUser = data.user || data.nickname || data.uniqueId || '';
+      const cleanUser = String(rawUser).replace(/^@+/, '');
+      const gift = data.gift || data.giftName || '';
+      const coins = data.coins || data.diamondCount || 1;
+      const count = data.count || data.repeatCount || 1;
+      const tipo = data.tipo || 'alerta';
+
+      return template
+        .replace(/\{user\}/gi, cleanUser)
+        .replace(/\{usuario\}/gi, cleanUser)
+        .replace(/\{nickname\}/gi, cleanUser)
+        .replace(/\{gift\}/gi, gift)
+        .replace(/\{regalo\}/gi, gift)
+        .replace(/\{coins\}/gi, String(coins))
+        .replace(/\{diamantes\}/gi, String(coins))
+        .replace(/\{count\}/gi, String(count))
+        .replace(/\{tipo\}/gi, tipo);
+    }
+
+    class AlertQueue {
+      constructor() {
+        this.items = [];
+        this.processing = false;
+      }
+
+      enqueue(item) {
+        this.items.push(item);
+        if (!this.processing) {
+          this.processNext();
+        }
+      }
+
+      async processNext() {
+        if (this.items.length === 0) {
+          this.processing = false;
+          return;
+        }
+
+        this.processing = true;
+        const currentItem = this.items.shift();
+
+        try {
+          await this.renderAlert(currentItem);
+        } catch (err) {
+          console.warn('Error en alerta:', err);
+        }
+
+        await new Promise(r => setTimeout(r, 300));
+        this.processNext();
+      }
+
+      renderAlert(item) {
+        return new Promise(resolve => {
+          const data = item || {};
+
+          // Normalizar video si viene como videoUrl o media_path
+          if (!data.video && (data.videoUrl || data.media_path)) {
+            data.video = data.videoUrl || data.media_path;
+          }
+
+          // Descarte Absoluto sin Video:
+          if (!data.video || data.video.trim() === "") {
+            console.warn("[Alerts] Regalo sin video asociado descartado.");
+            resolve();
+            return;
+          }
+
+          const videoUrl = data.video.trim();
+          const chromaEnabled = (data.chromaKeyEnabled !== false && data.chromaKey !== false && data.chromaEnabled !== false);
+
+          // Supresión de Capa de Texto:
+          // Ocultar de forma forzada cualquier etiqueta <span>, <h1> o contenedor de texto (display: none !important;)
+          // a menos que data.template tenga texto explícito y no vacío configurado por el usuario.
+          const rawTemplate = (data.template !== undefined && data.template !== null)
+            ? String(data.template).trim()
+            : '';
+          const hasTextTemplate = rawTemplate.length > 0;
+
+          if (hasTextTemplate) {
+            const interpolated = interpolateTemplate(rawTemplate, data);
+            alertMainText.textContent = interpolated;
+            alertMainText.style.setProperty('display', 'block', 'important');
+            textLayer.style.setProperty('display', 'flex', 'important');
+            requestAnimationFrame(() => textLayer.classList.add('visible'));
+          } else {
+            textLayer.classList.remove('visible');
+            textLayer.style.setProperty('display', 'none', 'important');
+            alertMainText.style.setProperty('display', 'none', 'important');
+            alertSubText.style.setProperty('display', 'none', 'important');
+            alertBadge.style.setProperty('display', 'none', 'important');
+            alertMainText.textContent = '';
+            alertSubText.textContent = '';
+            alertBadge.textContent = '';
+          }
+
+          if (data.audioUrl) {
+            try {
+              if (activeAudio) {
+                activeAudio.pause();
+                activeAudio = null;
+              }
+              activeAudio = new Audio(data.audioUrl);
+              activeAudio.volume = Math.max(0, Math.min(1, (Number(data.audioVolume ?? 100)) / 100));
+              activeAudio.play().catch(() => {});
+            } catch (_) {}
+          }
+
+          videoViewport.classList.add('active');
+
+          let resolved = false;
+          const finish = () => {
+            if (resolved) return;
+            resolved = true;
+            alertVideo.onended = null;
+            alertVideo.onerror = null;
+            alertVideo.onplay = null;
+
+            stopChromaLoop();
+            textLayer.classList.remove('visible');
+            textLayer.style.setProperty('display', 'none', 'important');
+            videoViewport.classList.remove('active');
+
+            setTimeout(() => {
+              alertVideo.pause();
+              alertVideo.removeAttribute('src');
+              alertVideo.load();
+              if (activeAudio) {
+                activeAudio.pause();
+                activeAudio = null;
+              }
+              resolve();
+            }, 400);
+          };
+
+          alertVideo.onended = () => finish();
+          alertVideo.onerror = (e) => {
+            console.warn("[Alerts] Regalo con video no reproducible o archivo inexistente descartado.", e);
+            finish();
+          };
+          alertVideo.onplay = () => startChromaLoop(chromaEnabled, data);
+
+          const safeDurationMs = Math.max(2500, (Number(data.duration) || 6) * 1000);
+          setTimeout(() => finish(), safeDurationMs + 2000);
+
+          try {
+            alertVideo.src = encodeURI(videoUrl);
+          } catch (_) {
+            alertVideo.src = videoUrl;
+          }
+          alertVideo.currentTime = 0;
+          alertVideo.muted = Boolean(data.audioUrl);
+          alertVideo.volume = Math.max(0, Math.min(1, (Number(data.videoVolume ?? 100)) / 100));
+
+          const playPromise = alertVideo.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(() => {
+              alertVideo.muted = true;
+              alertVideo.play().catch(() => finish());
+            });
+          }
+        });
+      }
+    }
+
+    const alertQueue = new AlertQueue();
+
+    function updateNowPlaying(track) {
+      if (!track || !track.title) {
+        nowPlayingBanner.classList.remove('show');
+        return;
+      }
+      npTitle.textContent = track.title;
+      npRequester.textContent = track.requestedBy ? `Pedido por: @${track.requestedBy.replace(/^@/, '')}` : (track.author || 'Música en Vivo');
+      nowPlayingBanner.classList.add('show');
+
+      if (nowPlayingTimer) clearTimeout(nowPlayingTimer);
+      nowPlayingTimer = setTimeout(() => {
+        nowPlayingBanner.classList.remove('show');
+      }, 12000);
+    }
+
+    function connectEventStream() {
+      const evt = new EventSource('/api/eventos');
+
+      evt.onmessage = e => {
+        try {
+          const d = JSON.parse(e.data);
+
+          if (d.type === 'init' && d.now_playing) {
+            updateNowPlaying(d.now_playing);
+          }
+          if (d.type === 'now_playing' || d.type === 'music_now_playing') {
+            updateNowPlaying(d.data || d.track || d);
+          }
+
+          // FILTRO ESTRICTO: Cero taps, likes, follows, shares o comments en alertas
+          if (['follow', 'like', 'share', 'comment', 'chat'].includes(d.type)) return;
+          if (d.type === 'tiktok_event') {
+            const ev = String(d.event || '').toLowerCase();
+            if (['like', 'tap', 'follow', 'share', 'comment', 'chat'].includes(ev)) {
+              return; // Descarte absoluto
+            }
+          }
+
+          if (d.type === 'custom_alert' || d.type === 'CUSTOM_ALERT') {
+            const a = d.alert || d;
+            if (!a.video && (a.videoUrl || a.media_path)) {
+              a.video = a.videoUrl || a.media_path;
+            }
+            if (!a.video || String(a.video).trim() === '') {
+              console.warn('[Alerts] Regalo sin video asociado descartado.');
+              return;
+            }
+            alertQueue.enqueue(a);
+          } else if (d.type === 'gift' && d.data) {
+            const vUrl = d.data.video || d.data.videoUrl || d.data.media_path;
+            if (vUrl && String(vUrl).trim() !== '') {
+              alertQueue.enqueue({
+                user: d.data.user || d.data.nickname || '',
+                gift: d.data.title || d.data.giftName || '',
+                coins: d.data.coins || d.data.diamondCount || 1,
+                video: vUrl,
+                template: d.data.template || '',
+                duration: d.data.duration || 4.5
+              });
+            } else {
+              console.warn('[Alerts] Regalo sin video asociado descartado.');
+            }
+          }
+        } catch (_) {}
+      };
+
+      evt.onerror = () => {
+        setTimeout(connectEventStream, 3000);
+      };
+    }
+
+    connectEventStream();
+  </script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 import { showToast } from '../core/toast.js';
 
-const CURRENT_VERSION = '2.0.3';
+const CURRENT_VERSION = '2.0.4';
 const GITHUB_REPO = 'cyber-gz7/galactik-landing';
 const GITHUB_API_URL = `https://api.github.com/repos/${GITHUB_REPO}/releases/latest`;
 

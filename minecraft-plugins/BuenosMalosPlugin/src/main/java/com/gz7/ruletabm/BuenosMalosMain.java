@@ -36,6 +36,11 @@ public class BuenosMalosMain extends JavaPlugin implements CommandExecutor, TabC
             getCommand("bm").setTabCompleter(this);
         }
 
+        if (getCommand("arcangel") != null) {
+            getCommand("arcangel").setExecutor(this);
+            getCommand("arcangel").setTabCompleter(this);
+        }
+
         Bukkit.getPluginManager().registerEvents(this, this);
 
         Player firstOnline = Bukkit.getOnlinePlayers().stream().findFirst().orElse(null);
@@ -68,6 +73,15 @@ public class BuenosMalosMain extends JavaPlugin implements CommandExecutor, TabC
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (label.equalsIgnoreCase("arcangel")) {
+            String[] giftArgs = new String[args.length + 2];
+            giftArgs[0] = "gift";
+            giftArgs[1] = "arcangel_serafin";
+            System.arraycopy(args, 0, giftArgs, 2, args.length);
+            handleGiftCommand(sender, giftArgs);
+            return true;
+        }
+
         if (args.length == 0) {
             sendHelp(sender);
             return true;
@@ -113,20 +127,41 @@ public class BuenosMalosMain extends JavaPlugin implements CommandExecutor, TabC
 
     private void handleGiftCommand(CommandSender sender, String[] args) {
         if (args.length < 2) {
-            sender.sendMessage(ChatColor.RED + "Uso: /bm gift <nombre_gift> [donador]");
+            sender.sendMessage(ChatColor.RED + "Uso: /bm gift <nombre_gift> [target] [donador]");
             return;
         }
 
         String giftName = args[1];
-        String donador = args.length >= 3 ? args[2] : "TikToker";
-
         GiftRegistry.GiftEntry entry = giftRegistry.findGift(giftName);
         if (entry == null) {
             sender.sendMessage(ChatColor.RED + "Regalo no encontrado: '" + giftName + "'. Usa /bm list para ver los disponibles.");
             return;
         }
 
-        Player target = resolveTargetPlayer(sender);
+        Player target = null;
+        String donador = "TikToker";
+
+        if (args.length >= 4) {
+            Player explicitTarget = Bukkit.getPlayer(args[2]);
+            if (explicitTarget != null && explicitTarget.isOnline()) {
+                target = explicitTarget;
+                donador = String.join(" ", Arrays.copyOfRange(args, 3, args.length)).replace("\"", "");
+            } else {
+                donador = args[2].replace("\"", "");
+            }
+        } else if (args.length == 3) {
+            Player explicitTarget = Bukkit.getPlayer(args[2]);
+            if (explicitTarget != null && explicitTarget.isOnline()) {
+                target = explicitTarget;
+            } else {
+                donador = args[2].replace("\"", "");
+            }
+        }
+
+        if (target == null) {
+            target = resolveTargetPlayer(sender);
+        }
+
         if (target == null) {
             sender.sendMessage(ChatColor.RED + "No hay jugador objetivo activo en el servidor.");
             return;

@@ -83,6 +83,57 @@ tikTokBridge.on('offline', ({ username, reason }) => {
   showToast(`🔴 @${u} no está transmitiendo en vivo actualmente.`);
 });
 
+tikTokBridge.on('rate_limited', ({ username, minutes, message }) => {
+  const u = username || tiktokUserField.value.trim().replace(/^@/, '');
+  showToast(`⚠️ Límite de EulerStream alcanzado (${minutes} min para @${u}). Abre '🔑 API Key Euler' para conectar sin límites.`);
+  const statusEl = document.getElementById('dash-tiktok-status-text');
+  if (statusEl) {
+    statusEl.textContent = `⏳ ESPERANDO (${minutes}m)`;
+    statusEl.style.color = '#ffb300';
+    statusEl.style.borderColor = 'rgba(255, 179, 0, 0.4)';
+    statusEl.style.background = 'rgba(255, 179, 0, 0.12)';
+  }
+});
+
+// Modal EulerStream API Key
+const modalEulerKey = document.getElementById('modal-euler-key');
+const inputEulerKey = document.getElementById('input-euler-api-key');
+
+document.getElementById('btn-open-euler-key')?.addEventListener('click', () => {
+  if (inputEulerKey) {
+    inputEulerKey.value = localStorage.getItem('galactk_euler_key') || '';
+  }
+  if (modalEulerKey) {
+    modalEulerKey.style.display = 'flex';
+  }
+});
+
+document.getElementById('btn-close-euler-key-modal')?.addEventListener('click', () => {
+  if (modalEulerKey) modalEulerKey.style.display = 'none';
+});
+
+document.getElementById('btn-cancel-euler-key')?.addEventListener('click', () => {
+  if (modalEulerKey) modalEulerKey.style.display = 'none';
+});
+
+document.getElementById('btn-save-euler-key')?.addEventListener('click', () => {
+  const val = inputEulerKey ? inputEulerKey.value.trim() : '';
+  if (val) {
+    localStorage.setItem('galactk_euler_key', val);
+    showToast('🔑 API Key de EulerStream guardada con éxito.');
+  } else {
+    localStorage.removeItem('galactk_euler_key');
+    showToast('🔑 API Key eliminada (modo anónimo activo).');
+  }
+  if (modalEulerKey) modalEulerKey.style.display = 'none';
+});
+
+document.getElementById('btn-clear-euler-key')?.addEventListener('click', () => {
+  if (inputEulerKey) inputEulerKey.value = '';
+  localStorage.removeItem('galactk_euler_key');
+  showToast('Key limpiada');
+});
+
 document.getElementById('btn-fetch-emotes')?.addEventListener('click', () => {
   const username = tiktokUserField.value.trim() || store.getState().tikTokUsername || 'gz7';
   showToast(`😎 Emotes sincronizados para @${username.replace(/^@/, '')}`);
@@ -1041,9 +1092,9 @@ document.getElementById('btn-copy-tops-url')?.addEventListener('click', () => {
   const url = document.getElementById('tops-active-url-input').value;
   navigator.clipboard.writeText(url);
   const b = document.getElementById('btn-copy-tops-url');
-  b.textContent = '✔ ¡Copiado!';
-  showToast(`📋 URL copiada: ${url}`);
-  setTimeout(() => { b.textContent = '📋 Copiar URL'; }, 1500);
+  b.textContent = 'Copiado';
+  showToast(`URL copiada: ${url}`);
+  setTimeout(() => { b.textContent = 'Copiar URL'; }, 1500);
 });
 
 document.getElementById('btn-test-tops-event')?.addEventListener('click', () => {
@@ -1053,7 +1104,7 @@ document.getElementById('btn-test-tops-event')?.addEventListener('click', () => 
     repeatCount: 1,
     nickname: 'GZ7_MVP'
   });
-  showToast('👑 Evento simulado en Ranking & MVP (Galaxy 1,000 💎)');
+  showToast('Evento simulado en Ranking y MVP (Galaxy 1,000 diamantes)');
 });
 
 document.querySelectorAll('.btn-copy-url').forEach(btn => {
@@ -1061,8 +1112,8 @@ document.querySelectorAll('.btn-copy-url').forEach(btn => {
     const url = btn.getAttribute('data-url');
     navigator.clipboard.writeText(url);
     const orig = btn.textContent;
-    btn.textContent = '✔ ¡Copiado!';
-    showToast(`📋 Link copiado: ${url}`);
+    btn.textContent = 'Copiado';
+    showToast(`Link copiado: ${url}`);
     setTimeout(() => { btn.textContent = orig; }, 1400);
   });
 });

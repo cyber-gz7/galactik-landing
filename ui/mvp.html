@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Overlay MVP Récord - Galactic Live</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Rajdhani:wght@600;700;800&family=Inter:wght@600;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      background: transparent !important;
+      overflow: hidden;
+      font-family: 'Rajdhani', 'Inter', sans-serif;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    #mvp-container {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 24px;
+      background: transparent !important;
+      border: none !important;
+      border-radius: 999px;
+      position: relative;
+      transform: translateZ(0);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease-out;
+    }
+
+    #mvp-container.pulse-update {
+      animation: recordBeat 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes recordBeat {
+      0% { transform: scale(1); }
+      35% { transform: scale(1.12); }
+      60% { transform: scale(0.98); }
+      100% { transform: scale(1); }
+    }
+
+    .crown-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 0 10px rgba(255, 167, 81, 0.75)) drop-shadow(0 2px 5px rgba(0, 0, 0, 0.9));
+    }
+
+    .svg-crown {
+      width: 38px;
+      height: 38px;
+      display: block;
+    }
+
+    .info-stack {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 3px;
+    }
+
+    .badge-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #FFE259 0%, #FFA751 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 2px 4px #000000;
+    }
+
+    .donor-name {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
+      white-space: nowrap;
+      text-shadow: 0 2px 4px #000000, 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 14px rgba(0, 0, 0, 0.8);
+      letter-spacing: 0.3px;
+      max-width: 280px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .record-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 1px;
+    }
+
+    .svg-gem {
+      width: 17px;
+      height: 17px;
+      filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.75)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.9));
+    }
+
+    .record-coins {
+      font-family: 'Orbitron', monospace;
+      font-size: 16px;
+      font-weight: 800;
+      color: #00F0FF;
+      text-shadow: 0 2px 4px #000000, 0 0 10px rgba(0, 240, 255, 0.65);
+      letter-spacing: 0.5px;
+    }
+
+    .record-gift-name {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffd899;
+      text-shadow: 0 2px 4px #000000;
+      letter-spacing: 0.4px;
+    }
+  </style>
+</head>
+<body>
+  <div id="mvp-container">
+    <div class="crown-wrapper">
+      <svg class="svg-crown" viewBox="0 0 24 24" fill="none">
+        <defs>
+          <linearGradient id="goldGradMVP" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#FFE259"/>
+            <stop offset="100%" stop-color="#FFA751"/>
+          </linearGradient>
+        </defs>
+        <path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14" stroke="url(#goldGradMVP)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div class="info-stack">
+      <div class="badge-label">MVP RECORD SESION</div>
+      <div class="donor-name" id="donor-name">Nadie aún</div>
+      <div class="record-pill">
+        <svg class="svg-gem" viewBox="0 0 24 24" fill="none">
+          <defs>
+            <linearGradient id="gemGradMVP" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00F0FF"/>
+              <stop offset="100%" stop-color="#7000FF"/>
+            </linearGradient>
+          </defs>
+          <path d="M6 3h12l4 6-10 12L2 9z" stroke="url(#gemGradMVP)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M11 3 8 9l4 12 4-12-3-6" stroke="url(#gemGradMVP)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 9h20" stroke="url(#gemGradMVP)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="record-coins" id="record-coins">0</span>
+        <span class="record-gift-name" id="record-gift-name"></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const container = document.getElementById('mvp-container');
+    const donorEl = document.getElementById('donor-name');
+    const coinsEl = document.getElementById('record-coins');
+    const giftEl = document.getElementById('record-gift-name');
+
+    let currentCoins = 0;
+
+    function formatNumber(num) {
+      if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+      if (num >= 1000) return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+      return num.toLocaleString();
+    }
+
+    function renderMVP(data, animate = true) {
+      if (!data) return;
+      const user = String(data.username || 'Nadie aún').replace(/^@+/, '');
+      const coins = Number(data.coins) || 0;
+      const giftName = String(data.giftName || '').trim();
+
+      donorEl.textContent = user === 'Nadie aún' ? user : '@' + user;
+      coinsEl.textContent = formatNumber(coins);
+      giftEl.textContent = giftName ? '(' + giftName + ')' : '';
+
+      if (animate && coins > currentCoins) {
+        container.classList.remove('pulse-update');
+        void container.offsetWidth;
+        container.classList.add('pulse-update');
+      }
+      currentCoins = coins;
+    }
+
+    // Carga de estado inicial vía HTTP
+    async function fetchInitialMVP() {
+      try {
+        const res = await fetch('/api/session-mvp');
+        if (res.ok) {
+          const data = await res.json();
+          renderMVP(data, false);
+        }
+      } catch (_) {}
+    }
+    fetchInitialMVP();
+
+    // Conexión reactiva en tiempo real por SSE
+    const evt = new EventSource('/api/eventos');
+    evt.onmessage = e => {
+      try {
+        const d = JSON.parse(e.data);
+        if (d.type === 'init' && d.session_mvp) {
+          renderMVP(d.session_mvp, false);
+        } else if (d.type === 'NEW_SESSION_MVP' && d.data) {
+          renderMVP(d.data, true);
+        } else if (d.type === 'tiktok_event' && d.event === 'gift') {
+          // Evaluación preventiva directa de regalo entrante
+          const donor = d.data?.nickname || d.data?.uniqueId || 'Donador';
+          const gift = d.data?.giftName || 'Regalo';
+          const diamondCount = Number(d.data?.diamondCount) || 1;
+          const repeat = Number(d.data?.repeatCount) || 1;
+          const totalVal = diamondCount * repeat;
+          if (totalVal > currentCoins) {
+            renderMVP({ username: donor, giftName: gift, coins: totalVal }, true);
+          }
+        }
+      } catch (_) {}
+    };
+  </script>
+</body>
+</html>

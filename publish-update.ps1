@@ -75,7 +75,7 @@ $BuildStart = Get-Date
 
 Set-Location $ProjectRoot
 $buildArgs = @("build")
-& npx @tauri-apps/cli @buildArgs
+& npx.cmd @tauri-apps/cli @buildArgs
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "❌ Error durante la compilación de Tauri." -ForegroundColor Red

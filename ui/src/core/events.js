@@ -1,3 +1,5 @@
+export { EventEmitter } from '../store.js';
+
 // A single reconnecting stream for all modules. Subscribers receive the latest snapshot.
 const subscribers = new Set();
 let stream;

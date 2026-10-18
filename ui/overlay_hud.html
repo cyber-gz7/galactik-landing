@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=600, height=350, initial-scale=1.0">
+  <title>Overlay HUD - Galactic Live</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Rajdhani:wght@600;700;800&family=Inter:wght@600;700;800&display=swap');
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    html, body {
+      width: 600px;
+      height: 350px;
+      margin: 0;
+      padding: 0;
+      background: transparent !important;
+      overflow: hidden;
+      font-family: 'Rajdhani', 'Inter', system-ui, sans-serif;
+      color: #ffffff;
+      pointer-events: none;
+    }
+
+    #hud-root {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 14px 16px;
+      gap: 12px;
+      background: transparent !important;
+    }
+
+    /* FILA SUPERIOR: WIDGET DE LIKES Y WIDGET DE MVP */
+    .top-widgets-row {
+      display: flex;
+      align-items: stretch;
+      gap: 12px;
+      width: 100%;
+    }
+
+    /* 1. CONTENEDOR DE TAPS / LIKES */
+    .widget-card {
+      background: rgba(14, 18, 28, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 10px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .likes-card {
+      flex: 1.1;
+      gap: 6px;
+    }
+
+    .widget-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .heart-icon-wrapper {
+      position: relative;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 0 10px rgba(255, 42, 133, 0.85));
+    }
+
+    .svg-heart {
+      width: 28px;
+      height: 28px;
+      display: block;
+      transition: transform 0.12s ease-out;
+    }
+
+    .heart-pulse {
+      animation: heartBeat 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes heartBeat {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.32); }
+      60% { transform: scale(0.94); }
+      100% { transform: scale(1); }
+    }
+
+    .likes-data {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .widget-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.65);
+      text-shadow: 0 1px 2px #000;
+    }
+
+    .likes-counter {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 26px;
+      font-weight: 900;
+      line-height: 1;
+      color: #ffffff;
+      text-shadow: 0 2px 4px #000000, 0 0 12px rgba(255, 42, 133, 0.6);
+      letter-spacing: 0.5px;
+    }
+
+    /* Barra de progreso de Meta 5K Likes */
+    .goal-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+      margin-top: 2px;
+    }
+
+    .goal-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ff2a85 0%, #ff7300 100%);
+      border-radius: 999px;
+      transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 0 8px rgba(255, 42, 133, 0.8);
+    }
+
+    .goal-legend {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.7);
+      text-shadow: 0 1px 2px #000;
+    }
+
+    /* 2. CONTENEDOR DE MVP RÉCORD (EL REY DE LA SALA) */
+    .mvp-card {
+      flex: 1.3;
+      gap: 4px;
+      border-color: rgba(255, 167, 81, 0.35);
+      background: rgba(18, 16, 26, 0.8);
+    }
+
+    .mvp-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .crown-wrapper {
+      position: relative;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 0 10px rgba(255, 167, 81, 0.85)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
+    }
+
+    .svg-crown {
+      width: 30px;
+      height: 30px;
+      display: block;
+    }
+
+    .mvp-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #FFE259 0%, #FFA751 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+    }
+
+    .mvp-donor {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-shadow: 0 2px 4px #000000;
+      line-height: 1.1;
+    }
+
+    .mvp-stats {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .gem-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .svg-gem {
+      width: 16px;
+      height: 16px;
+      display: block;
+      filter: drop-shadow(0 0 6px #00f0ff);
+    }
+
+    .mvp-coins {
+      font-family: 'Orbitron', monospace;
+      font-size: 14px;
+      font-weight: 800;
+      color: #00f0ff;
+      text-shadow: 0 0 8px rgba(0, 240, 255, 0.7), 0 2px 4px #000;
+    }
+
+    .mvp-gift {
+      font-size: 12px;
+      font-weight: 700;
+      color: #ffd899;
+      text-shadow: 0 1px 2px #000;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mvp-card.pulse {
+      animation: recordBeat 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes recordBeat {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.06); }
+      70% { transform: scale(0.98); }
+      100% { transform: scale(1); }
+    }
+
+    /* 3. TARJETA DE IMÁGENES IA / ARTE DEL CHAT (AI SHOWCASE BOX) */
+    .ai-showcase-card {
+      width: 100%;
+      height: 175px;
+      background: rgba(18, 18, 24, 0.65);
+      border: 1px solid rgba(138, 75, 255, 0.35);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 16px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.55), 0 0 20px rgba(138, 75, 255, 0.15);
+      opacity: 0;
+      transform: translateY(10px) scale(0.97);
+      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ai-showcase-card.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .ai-img-frame {
+      width: 140px;
+      height: 140px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid rgba(138, 75, 255, 0.6);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6), 0 0 12px rgba(138, 75, 255, 0.3);
+      flex-shrink: 0;
+      background: #090b10;
+      position: relative;
+    }
+
+    .ai-img-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .ai-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+      overflow: hidden;
+      flex: 1;
+    }
+
+    .ai-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(138, 75, 255, 0.25);
+      border: 1px solid rgba(138, 75, 255, 0.6);
+      border-radius: 999px;
+      padding: 3px 10px;
+      width: fit-content;
+    }
+
+    .svg-palette {
+      width: 14px;
+      height: 14px;
+      display: block;
+    }
+
+    .ai-tag-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      color: #d1b3ff;
+      text-transform: uppercase;
+      text-shadow: 0 1px 2px #000;
+    }
+
+    .ai-prompt {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.3;
+      text-shadow: 0 1px 3px #000;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .ai-author {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #00f0ff;
+      text-shadow: 0 1px 2px #000;
+    }
+  </style>
+</head>
+<body>
+  <div id="hud-root">
+    <!-- FILA SUPERIOR -->
+    <div class="top-widgets-row">
+      <!-- 1. TAPS / LIKES -->
+      <div class="widget-card likes-card">
+        <div class="widget-header">
+          <div class="heart-icon-wrapper" id="heart-wrapper">
+            <svg class="svg-heart" id="heart-svg" viewBox="0 0 24 24" fill="none">
+              <defs>
+                <linearGradient id="heartGradHUD" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ff2a85"/>
+                  <stop offset="100%" stop-color="#ff7300"/>
+                </linearGradient>
+              </defs>
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="url(#heartGradHUD)"/>
+            </svg>
+          </div>
+          <div class="likes-data">
+            <span class="widget-title">TAPS EN VIVO</span>
+            <span class="likes-counter" id="likes-counter">0</span>
+          </div>
+        </div>
+        <div class="goal-track">
+          <div class="goal-fill" id="goal-fill"></div>
+        </div>
+        <div class="goal-legend">
+          <span>Meta Ayuda</span>
+          <span id="goal-text">0 / 5k</span>
+        </div>
+      </div>
+
+      <!-- 2. MVP RÉCORD (EL REY DE LA SALA) -->
+      <div class="widget-card mvp-card" id="mvp-card">
+        <div class="mvp-header">
+          <div class="crown-wrapper">
+            <svg class="svg-crown" viewBox="0 0 24 24" fill="none">
+              <defs>
+                <linearGradient id="crownGradHUD" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FFE259"/>
+                  <stop offset="100%" stop-color="#FFA751"/>
+                </linearGradient>
+              </defs>
+              <path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14" stroke="url(#crownGradHUD)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="mvp-title">MVP DE LA SALA</span>
+        </div>
+        <div class="mvp-donor" id="mvp-donor">Nadie aún</div>
+        <div class="mvp-stats">
+          <div class="gem-wrapper">
+            <svg class="svg-gem" viewBox="0 0 24 24" fill="none">
+              <defs>
+                <linearGradient id="gemGradHUD" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#00F0FF"/>
+                  <stop offset="100%" stop-color="#7000FF"/>
+                </linearGradient>
+              </defs>
+              <path d="M6 3h12l4 6-10 12L2 9z" stroke="url(#gemGradHUD)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M11 3 8 9l4 12 4-12-3-6" stroke="url(#gemGradHUD)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 9h20" stroke="url(#gemGradHUD)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="mvp-coins" id="mvp-coins">0</span>
+          <span class="mvp-gift" id="mvp-gift"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. AI SHOWCASE BOX -->
+    <div class="ai-showcase-card" id="ai-showcase">
+      <div class="ai-img-frame">
+        <img id="ai-img" src="/gifts/default-gift.svg" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='/gifts/default-gift.svg';" alt="Arte IA">
+      </div>
+      <div class="ai-info">
+        <div class="ai-tag">
+          <svg class="svg-palette" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2C6.49 2 2 6.49 2 12c0 4.41 3.59 8 8 8 0.55 0 1-0.45 1-1 0-0.28-0.11-0.53-0.29-0.71-0.18-0.18-0.29-0.43-0.29-0.71 0-0.55 0.45-1 1-1h1.58c4.09 0 7.42-3.33 7.42-7.42C20.42 5.37 16.63 2 12 2z" stroke="#d1b3ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="6.5" cy="11.5" r="1.5" fill="#ff2a85"/>
+            <circle cx="9.5" cy="7.5" r="1.5" fill="#00f0ff"/>
+            <circle cx="14.5" cy="7.5" r="1.5" fill="#ffd166"/>
+            <circle cx="17.5" cy="11.5" r="1.5" fill="#06d6a0"/>
+          </svg>
+          <span class="ai-tag-label">ARTE DEL CHAT IA</span>
+        </div>
+        <div class="ai-prompt" id="ai-prompt">Generando arte para la comunidad...</div>
+        <div class="ai-author" id="ai-author">Inspirado por @Comunidad</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Referencias DOM
+    const heartSvg = document.getElementById('heart-svg');
+    const likesCounter = document.getElementById('likes-counter');
+    const goalFill = document.getElementById('goal-fill');
+    const goalText = document.getElementById('goal-text');
+
+    const mvpCard = document.getElementById('mvp-card');
+    const mvpDonor = document.getElementById('mvp-donor');
+    const mvpCoins = document.getElementById('mvp-coins');
+    const mvpGift = document.getElementById('mvp-gift');
+
+    const aiShowcase = document.getElementById('ai-showcase');
+    const aiImg = document.getElementById('ai-img');
+    const aiPrompt = document.getElementById('ai-prompt');
+    const aiAuthor = document.getElementById('ai-author');
+
+    let totalLikes = 0;
+    let maxCoins = 0;
+    let aiTimeout = null;
+
+    function formatNumber(num) {
+      if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+      if (num >= 1000) return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+      return num.toLocaleString();
+    }
+
+    function addLikes(count = 1) {
+      totalLikes += count;
+      likesCounter.textContent = formatNumber(totalLikes);
+
+      // Micro-animación de pulso
+      heartSvg.classList.remove('heart-pulse');
+      void heartSvg.offsetWidth;
+      heartSvg.classList.add('heart-pulse');
+
+      // Meta 5K
+      const currentStep = totalLikes % 5000;
+      const pct = Math.min(100, (currentStep / 5000) * 100);
+      goalFill.style.width = pct.toFixed(1) + '%';
+      goalText.textContent = `${formatNumber(currentStep)} / 5k`;
+    }
+
+    function updateMVP(donor, coins, giftName = '') {
+      const u = String(donor || 'Nadie aún').replace(/^@+/, '').trim();
+      const c = Number(coins) || 0;
+      if (c >= maxCoins && c > 0) {
+        maxCoins = c;
+        mvpDonor.textContent = '@' + u;
+        mvpCoins.textContent = formatNumber(c);
+        mvpGift.textContent = giftName ? `(${giftName})` : '';
+
+        mvpCard.classList.remove('pulse');
+        void mvpCard.offsetWidth;
+        mvpCard.classList.add('pulse');
+      }
+    }
+
+    function showAIArt(imageUrl, prompt, author, duration = 8) {
+      if (!imageUrl) return;
+      if (aiTimeout) clearTimeout(aiTimeout);
+
+      aiImg.src = imageUrl;
+      aiPrompt.textContent = prompt || 'Creación colectiva de la sala';
+      aiAuthor.textContent = author ? `Inspirado por @${author.replace(/^@+/, '')}` : 'Inspirado por el chat en vivo';
+
+      aiShowcase.classList.add('active');
+
+      aiTimeout = setTimeout(() => {
+        aiShowcase.classList.remove('active');
+      }, Math.max(4, duration) * 1000);
+    }
+
+    // Inicializar conexión SSE a localhost:4000
+    const sseHost = window.location.origin.includes('localhost:4000') || window.location.origin.includes('127.0.0.1:4000')
+      ? ''
+      : 'http://127.0.0.1:4000';
+
+    function connectSSE() {
+      const evt = new EventSource(`${sseHost}/api/eventos`);
+
+      evt.onmessage = e => {
+        try {
+          const d = JSON.parse(e.data);
+
+          if (d.type === 'init') {
+            if (d.session_mvp) {
+              updateMVP(d.session_mvp.username, d.session_mvp.coins, d.session_mvp.giftName);
+            }
+          } else if (d.type === 'NEW_SESSION_MVP' && d.data) {
+            updateMVP(d.data.username, d.data.coins, d.data.giftName);
+          } else if (d.type === 'tiktok_event') {
+            if (d.event === 'like') {
+              const count = Number(d.data?.likeCount) || 1;
+              addLikes(count);
+            } else if (d.event === 'gift') {
+              const donor = d.data?.nickname || d.data?.uniqueId || 'Donador';
+              const gift = d.data?.giftName || 'Regalo';
+              const diamonds = Number(d.data?.diamondCount) || 1;
+              const rep = Number(d.data?.repeatCount) || 1;
+              updateMVP(donor, diamonds * rep, gift);
+            }
+          } else if (d.type === 'custom_alert') {
+            if (d.is_ai || d.imageUrl?.includes('ai') || d.title?.toLowerCase().includes('ia') || d.title?.toLowerCase().includes('arte')) {
+              showAIArt(d.imageUrl, d.subtitle || d.title, d.title?.replace(/^@/, ''), d.duration || 8);
+            }
+          } else if (d.type === 'ai_art') {
+            showAIArt(d.imageUrl, d.prompt, d.user, d.duration || 10);
+          }
+        } catch (_) {}
+      };
+
+      evt.onerror = () => {
+        evt.close();
+        setTimeout(connectSSE, 2500);
+      };
+    }
+
+    connectSSE();
+  </script>
+</body>
+</html>

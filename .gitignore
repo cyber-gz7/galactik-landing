@@ -31,3 +31,19 @@ Thumbs.db
 # Temp updates & runtime scripts
 galactk-panel-update.exe
 run_galactk_update.bat
+
+# Local Minecraft servers & test environments
+minecraft_server_1.20.1/
+servidormc/
+plugins/
+minecraft-plugins/**/target/
+
+# Local tools & extracts
+tools/
+!tools/asar-inspector/
+extracted_stream_to_earn_1.21.11/
+scratch/
+f.includes*
+powershell.bat
+powershell.cmd
+
