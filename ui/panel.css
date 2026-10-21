@@ -1,15 +1,52 @@
 /* GALACTK PANEL / broadcast design system. Loaded after legacy component styles. */
 :root {
-  --bg-void:#04060A; --bg-surface:#090D16; --bg-elevated:#101826;
-  --bg-glass:rgba(16,24,38,.75); --bg-glass-hover:rgba(0,242,254,.05); --galactk-purple:#7C3AED; --warning-amber:#F59E0B;
-  --font-sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; --ease-spring:cubic-bezier(.16,1,.3,1);
-  --galactk-cyan:#00F2FE; --galactk-celeste:#38BDF8;
-  --text-primary:#F8FAFC; --text-secondary:#94A3B8; --danger-neon:#FF1744; --success-neon:#00E676;
-  --bg-deep:var(--bg-surface); --bg-card:var(--bg-surface); --bg-card-hover:var(--bg-elevated); --bg-surface-elevated:var(--bg-elevated);
-  --neon-cyan:var(--galactk-celeste); --neon-primary:var(--galactk-cyan); --color-malos:var(--danger-neon); --color-buenos:var(--success-neon); --color-success:var(--success-neon);
-  --text-main:var(--text-primary); --text-muted:var(--text-secondary); --border-active:rgba(0,242,254,.22); --border-subtle:#1c2737;
-  --font-display:'Inter','Segoe UI',sans-serif; --font-main:'Inter','Segoe UI',sans-serif;
-  --sidebar-w-expanded:236px; --topbar-h:64px;
+  --gk-bg: #050A12;
+  --gk-surface: #0A1422;
+  --gk-surface-raised: #101D2E;
+  --gk-border: #24374B;
+  --gk-text: #F2F7FF;
+  --gk-text-muted: #9FB2C8;
+  --gk-cyan: #00D9FF;
+  --gk-blue: #168BFF;
+  --gk-violet: #8B5CFF;
+  --gk-magenta: #FF328B;
+  --gk-green: #23E6A8;
+  --gk-amber: #FFBF47;
+  --gk-danger: #FF4568;
+
+  --bg-void: var(--gk-bg);
+  --bg-surface: var(--gk-surface);
+  --bg-elevated: var(--gk-surface-raised);
+  --bg-glass: rgba(10, 20, 34, 0.85);
+  --bg-glass-hover: rgba(0, 217, 255, 0.08);
+  --galactk-purple: var(--gk-violet);
+  --warning-amber: var(--gk-amber);
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --galactk-cyan: var(--gk-cyan);
+  --galactk-celeste: #38BDF8;
+  --text-primary: var(--gk-text);
+  --text-secondary: var(--gk-text-muted);
+  --danger-neon: var(--gk-danger);
+  --success-neon: var(--gk-green);
+  --bg-deep: var(--gk-bg);
+  --bg-card: var(--gk-surface);
+  --bg-card-hover: var(--gk-surface-raised);
+  --bg-surface-elevated: var(--gk-surface-raised);
+  --neon-cyan: var(--gk-cyan);
+  --neon-primary: var(--gk-cyan);
+  --color-malos: var(--gk-magenta);
+  --color-buenos: var(--gk-green);
+  --color-success: var(--gk-green);
+  --color-gold: #FFD700;
+  --text-main: var(--gk-text);
+  --text-muted: var(--gk-text-muted);
+  --border-active: rgba(0, 217, 255, 0.35);
+  --border-subtle: var(--gk-border);
+  --font-display: 'Inter', 'Segoe UI', sans-serif;
+  --font-main: 'Inter', 'Segoe UI', sans-serif;
+  --sidebar-w-expanded: 236px;
+  --topbar-h: 64px;
 }
 *,*::before,*::after { box-sizing:border-box; }
 html,body { margin:0; padding:0; width:100%; height:100%; overflow:hidden; }
@@ -113,16 +150,239 @@ button:active { transform:translateY(1px); }
 .in-debt { border-color:rgba(255,23,68,.45) !important; }
 .in-debt .wins-hint { color:#ff657f; }
 .wins-negative { color:var(--danger-neon) !important; text-shadow:0 0 12px rgba(255,23,68,.5) !important; }
-.rules-toolbar { display:grid; grid-template-columns:minmax(0,1fr) 160px auto; gap:10px; margin:16px 0; align-items:center; }
-.roblox-columns-editor { display:grid; grid-template-columns:minmax(0,1fr) !important; gap:24px; }
-.roblox-slot-row { display:grid !important; grid-template-columns:minmax(140px,1fr) minmax(260px,1.3fr) minmax(200px,1fr) !important; gap:12px; align-items:center; padding:12px !important; border:1px solid #223043 !important; background:var(--bg-elevated) !important; box-shadow:none; border-radius:9px; }
-.roblox-slot-row > div { min-width:0 !important; }
-.roblox-slot-row > div:first-child > div { overflow:hidden; }
-.roblox-slot-row > div:first-child > div > div { text-overflow:ellipsis; white-space:nowrap; overflow:hidden; }
-.roblox-slot-row > div:nth-child(2) { flex-wrap:wrap; }
-.roblox-slot-row input,.roblox-slot-row select { padding:6px; font-size:11px; }
-.roblox-slot-icon { width:36px; height:36px; flex-shrink:0; filter:none; }
-.roblox-slot-row button { padding:6px 8px; font-size:10px; }
+/* --- OBBY WORKSPACE TABS & HERO (SECCIÓN REGALOS / GVG) --- */
+.module-hero-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  background: linear-gradient(135deg, rgba(16, 29, 46, 0.95), rgba(10, 20, 34, 0.9));
+  border: 1px solid var(--gk-border);
+  border-radius: 14px;
+  padding: 22px 28px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+}
+.module-hero-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gk-cyan), var(--gk-magenta), transparent);
+}
+.module-hero-banner h1 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.module-hero-banner p {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: var(--gk-text-muted);
+}
+.workspace-tabs {
+  display: flex;
+  gap: 12px;
+  border-bottom: 1px solid var(--gk-border);
+  margin-bottom: 22px;
+}
+.workspace-tabs button {
+  background: transparent;
+  color: var(--gk-text-muted);
+  padding: 12px 18px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 8px 8px 0 0;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.workspace-tabs button:hover {
+  color: var(--gk-text);
+  background: rgba(255, 255, 255, 0.03);
+}
+.workspace-tabs button[aria-selected="true"] {
+  color: var(--gk-cyan);
+  border-bottom-color: var(--gk-cyan);
+  background: rgba(0, 217, 255, 0.06);
+}
+
+/* Barra de herramientas / Búsqueda y Filtro de Acciones */
+.rules-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 180px auto;
+  gap: 12px;
+  margin: 16px 0;
+  align-items: center;
+  background: rgba(10, 20, 34, 0.75);
+  border: 1px solid var(--gk-border);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+.rules-toolbar .input-field {
+  background: var(--gk-surface-raised) !important;
+  border: 1px solid var(--gk-border) !important;
+  border-radius: 8px;
+  color: var(--gk-text);
+  font-size: 12px;
+  padding: 8px 12px;
+}
+.rules-toolbar .table-select {
+  background: var(--gk-surface-raised) !important;
+  border: 1px solid var(--gk-border) !important;
+  border-radius: 8px;
+  color: var(--gk-text);
+  font-size: 12px;
+  padding: 8px 10px;
+}
+#obby-rule-count {
+  font-weight: 700;
+  background: rgba(0, 217, 255, 0.12);
+  border: 1px solid rgba(0, 217, 255, 0.3);
+  color: var(--gk-cyan);
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+/* Editor de Columnas de Acciones / Regalos */
+.roblox-columns-editor {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 20px;
+}
+.roblox-slot-row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 10px 14px;
+  padding: 12px 14px !important;
+  border: 1px solid var(--gk-border) !important;
+  background: var(--gk-surface-raised) !important;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+.roblox-slot-row:hover {
+  border-color: rgba(0, 217, 255, 0.35) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+.roblox-slot-row[data-side="LEFT"]:hover {
+  border-color: rgba(255, 50, 139, 0.4) !important;
+}
+.roblox-slot-row[data-side="RIGHT"]:hover {
+  border-color: rgba(0, 217, 255, 0.45) !important;
+}
+.roblox-slot-icon {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.roblox-slot-row input,
+.roblox-slot-row select {
+  background: #080f1a !important;
+  border: 1px solid #1e3044 !important;
+  border-radius: 6px;
+  color: var(--gk-text);
+  font-size: 11px;
+  padding: 6px 8px;
+  height: 30px;
+}
+.roblox-slot-row input:focus,
+.roblox-slot-row select:focus {
+  border-color: var(--gk-cyan) !important;
+  outline: none;
+}
+.roblox-slot-row button.btn-micro {
+  height: 28px;
+  padding: 4px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+}
+.slot-reorder-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: #080f1a;
+  border: 1px solid #1e3044;
+  border-radius: 6px;
+  padding: 2px 4px;
+  height: 28px;
+}
+.slot-reorder-group button {
+  background: transparent !important;
+  border: 0 !important;
+  color: var(--gk-text-muted);
+  font-size: 11px;
+  padding: 2px 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+.slot-reorder-group button:hover:not(:disabled) {
+  color: var(--gk-cyan);
+  background: rgba(0, 217, 255, 0.12);
+}
+
+.btn-change-roblox-gift {
+  border-color: rgba(0, 217, 255, 0.3) !important;
+  color: #fff !important;
+}
+.btn-change-roblox-gift:hover {
+  border-color: var(--gk-cyan) !important;
+  background: rgba(0, 217, 255, 0.12) !important;
+}
+.btn-sound-roblox-slot {
+  border-color: rgba(139, 92, 255, 0.35) !important;
+  color: #d1b8ff !important;
+}
+.btn-sound-roblox-slot:hover {
+  border-color: var(--gk-violet) !important;
+  background: rgba(139, 92, 255, 0.15) !important;
+}
+.btn-test-roblox-slot {
+  background: rgba(35, 230, 168, 0.1) !important;
+  border-color: rgba(35, 230, 168, 0.35) !important;
+  color: var(--gk-green) !important;
+}
+.btn-test-roblox-slot:hover {
+  background: rgba(35, 230, 168, 0.22) !important;
+  border-color: var(--gk-green) !important;
+}
+.btn-duplicate-roblox-slot {
+  border-color: #2a3d54 !important;
+}
+.btn-duplicate-roblox-slot:hover {
+  border-color: var(--gk-cyan) !important;
+}
+.btn-delete-roblox-slot {
+  background: rgba(255, 69, 104, 0.08) !important;
+  border-color: rgba(255, 69, 104, 0.3) !important;
+  color: #ff6b8b !important;
+}
+.btn-delete-roblox-slot:hover {
+  background: rgba(255, 69, 104, 0.22) !important;
+  border-color: var(--gk-danger) !important;
+}
 .section-card:has(#rbx-center-red-img) > div:has(#rbx-center-red-img) { grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) !important; }
 .section-card:has(#rbx-center-red-img) .roblox-slot-row { grid-template-columns:minmax(0,1fr) !important; }
 .advanced-details { border-top:1px solid var(--border-subtle); margin-top:16px; padding-top:14px; }
