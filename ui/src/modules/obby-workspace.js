@@ -9,8 +9,13 @@ export function enhanceObbyWorkspace({ app, render }) {
   const center = cards.find(c => c.querySelector('#rbx-center-red-img')) || cards[3];
   const rules = cards.find(c => c.querySelector('.roblox-columns-editor') || c.querySelector('#roblox-left-slots-list')) || cards[4];
   const hero = root.querySelector('.page-hero-title');
-  hero.classList.add('module-hero');
-  hero.querySelector('span').innerHTML = '<span class="eyebrow">TU CENTRO DE MANDO</span><h1>Obby · Gift vs Gift <small class="module-badge">PRO</small></h1><p>Tu comunidad decide: frenar o avanzar. Tú llevas el control.</p>';
+  hero.className = 'page-hero-title module-hero-banner';
+  hero.querySelector('span').innerHTML = '<div class="banner-hero-content"><span class="eyebrow" style="color:var(--gk-cyan);font-weight:800;letter-spacing:0.12em;">ROBLOX OBBY <small class="module-badge" style="background:rgba(0,217,255,0.18);color:var(--gk-cyan);border:1px solid rgba(0,217,255,0.4);vertical-align:middle;margin-left:6px;">PRO</small></span><h1>Editor Gift vs Gift</h1><p>Configura duelos, regalos y eventos interactivos para tu transmisión.</p></div>';
+  const saveAllBtn = document.getElementById('btn-save-roblox-overlay');
+  if (saveAllBtn) {
+    saveAllBtn.innerHTML = '💾 Guardar Todo en Vivo';
+    saveAllBtn.className = 'btn-primary btn-save-hero';
+  }
   const profileCode = document.getElementById('obby-profile-code').parentElement;
   const importButton = document.getElementById('btn-import-obby-json');
   const exportButton = document.getElementById('btn-export-obby-json');
@@ -31,10 +36,23 @@ export function enhanceObbyWorkspace({ app, render }) {
   hub.append(urlBar);
   hub.insertAdjacentHTML('beforeend', '<p>Fuente de navegador a 1080 × 1920 · Escala y coloca el duelo sobre tu gameplay.</p>');
   hero.after(hub);
-  const tabs = document.createElement('div'); tabs.className = 'workspace-tabs'; tabs.setAttribute('role', 'tablist'); tabs.setAttribute('aria-label', 'Configuración Obby');
+  const tabs = document.createElement('div'); tabs.className = 'workspace-tabs epic-nav-tabs'; tabs.setAttribute('role', 'tablist'); tabs.setAttribute('aria-label', 'Configuración Obby');
   const panels = {};
+  const tabIcons = {
+    live: '🎮',
+    rules: '🎁',
+    theme: '✏️',
+    profile: '📄'
+  };
+  const tabSubtitles = {
+    live: 'Gestiona el duelo en tiempo real',
+    rules: 'Configura eventos y recompensas',
+    theme: 'Personaliza tu overlay',
+    profile: 'Perfiles y configuración'
+  };
   for (const [id, label] of [['live', 'Controles en vivo'], ['rules', 'Reglas y regalos'], ['theme', 'Apariencia y tema'], ['profile', 'Importar / Exportar']]) {
-    const button = document.createElement('button'); button.type = 'button'; button.id = `obby-tab-${id}`; button.textContent = label;
+    const button = document.createElement('button'); button.type = 'button'; button.id = `obby-tab-${id}`;
+    button.innerHTML = `<span class="tab-btn-icon">${tabIcons[id] || '⚡'}</span><div class="tab-btn-meta"><strong>${label}</strong><small>${tabSubtitles[id] || ''}</small></div>`;
     button.setAttribute('role', 'tab'); button.setAttribute('aria-controls', `obby-panel-${id}`);
     const panel = document.createElement('section'); panel.id = `obby-panel-${id}`; panel.className = 'workspace-panel'; panel.setAttribute('role', 'tabpanel'); panel.setAttribute('aria-labelledby', button.id);
     panels[id] = panel; root.append(panel); tabs.append(button);

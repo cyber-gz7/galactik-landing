@@ -152,18 +152,19 @@ button:active { transform:translateY(1px); }
 .wins-negative { color:var(--danger-neon) !important; text-shadow:0 0 12px rgba(255,23,68,.5) !important; }
 /* --- OBBY WORKSPACE TABS & HERO (SECCIÓN REGALOS / GVG) --- */
 .module-hero-banner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  background: linear-gradient(135deg, rgba(16, 29, 46, 0.95), rgba(10, 20, 34, 0.9));
-  border: 1px solid var(--gk-border);
-  border-radius: 14px;
-  padding: 22px 28px;
-  margin-bottom: 20px;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 20px;
+  background: linear-gradient(90deg, rgba(10, 20, 34, 0.95) 0%, rgba(16, 29, 46, 0.85) 45%, rgba(13, 22, 38, 0.4) 100%),
+              url('./assets/banner-roblox-gvg.png') no-repeat right center / cover !important;
+  border: 1px solid var(--gk-border) !important;
+  border-radius: 14px !important;
+  padding: 26px 32px !important;
+  margin-bottom: 22px !important;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.6) !important;
 }
 .module-hero-banner::before {
   content: '';
@@ -174,50 +175,106 @@ button:active { transform:translateY(1px); }
   height: 2px;
   background: linear-gradient(90deg, var(--gk-cyan), var(--gk-magenta), transparent);
 }
-.module-hero-banner h1 {
+.banner-hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 2;
+  max-width: 650px;
+}
+.banner-hero-content h1 {
   margin: 0;
-  font-size: 26px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  font-size: 32px;
+  font-weight: 850;
+  letter-spacing: -0.035em;
   color: #fff;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.8);
 }
-.module-hero-banner p {
-  margin: 6px 0 0;
-  font-size: 13px;
-  color: var(--gk-text-muted);
+.banner-hero-content p {
+  margin: 4px 0 0;
+  font-size: 13.5px;
+  color: #a4b8cc;
+  line-height: 1.5;
 }
-.workspace-tabs {
-  display: flex;
-  gap: 12px;
-  border-bottom: 1px solid var(--gk-border);
-  margin-bottom: 22px;
+.btn-save-hero {
+  padding: 12px 22px !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.35) !important;
+  z-index: 2;
 }
-.workspace-tabs button {
-  background: transparent;
-  color: var(--gk-text-muted);
-  padding: 12px 18px;
-  border: 0;
-  border-bottom: 2px solid transparent;
-  font-size: 13px;
-  font-weight: 600;
-  border-radius: 8px 8px 0 0;
-  transition: all 0.2s ease;
+
+/* 4 Pestañas épicas inspiradas en la referencia */
+.epic-nav-tabs {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  border-bottom: 0 !important;
+  margin-bottom: 24px !important;
+}
+.epic-nav-tabs button {
+  background: var(--gk-surface) !important;
+  border: 1px solid var(--gk-border) !important;
+  border-radius: 12px !important;
+  padding: 14px 18px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  text-align: left !important;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  position: relative;
+  overflow: hidden;
 }
-.workspace-tabs button:hover {
+.epic-nav-tabs button:hover {
+  background: var(--gk-surface-raised) !important;
+  border-color: rgba(0, 217, 255, 0.3) !important;
+  transform: translateY(-1px);
+}
+.epic-nav-tabs button[aria-selected="true"] {
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.12), rgba(10, 20, 34, 0.95)) !important;
+  border-color: var(--gk-cyan) !important;
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.2), inset 0 0 12px rgba(0, 217, 255, 0.08) !important;
+}
+.tab-btn-icon {
+  font-size: 20px;
+  display: grid;
+  place-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.epic-nav-tabs button[aria-selected="true"] .tab-btn-icon {
+  background: rgba(0, 217, 255, 0.15);
+  border-color: rgba(0, 217, 255, 0.4);
+}
+.tab-btn-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.tab-btn-meta strong {
+  font-size: 13px;
+  font-weight: 700;
   color: var(--gk-text);
-  background: rgba(255, 255, 255, 0.03);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.workspace-tabs button[aria-selected="true"] {
+.epic-nav-tabs button[aria-selected="true"] .tab-btn-meta strong {
   color: var(--gk-cyan);
-  border-bottom-color: var(--gk-cyan);
-  background: rgba(0, 217, 255, 0.06);
+}
+.tab-btn-meta small {
+  font-size: 11px;
+  color: var(--gk-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Barra de herramientas / Búsqueda y Filtro de Acciones */
