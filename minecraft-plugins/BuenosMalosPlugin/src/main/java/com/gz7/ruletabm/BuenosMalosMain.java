@@ -73,15 +73,6 @@ public class BuenosMalosMain extends JavaPlugin implements CommandExecutor, TabC
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (label.equalsIgnoreCase("arcangel")) {
-            String[] giftArgs = new String[args.length + 2];
-            giftArgs[0] = "gift";
-            giftArgs[1] = "arcangel_serafin";
-            System.arraycopy(args, 0, giftArgs, 2, args.length);
-            handleGiftCommand(sender, giftArgs);
-            return true;
-        }
-
         if (args.length == 0) {
             sendHelp(sender);
             return true;

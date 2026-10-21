@@ -18,12 +18,15 @@ use serde::{Deserialize, Serialize};
 use std::fs;
 use std::os::windows::process::CommandExt;
 use std::path::PathBuf;
-use std::process::Command;
+use std::process::{Child, Command};
 use std::sync::Arc;
 use tauri::{Emitter, State};
 use tauri_plugin_updater::UpdaterExt;
 
 const CREATE_NO_WINDOW: u32 = 0x08000000;
+static TIKTOK_SIDECAR: tokio::sync::Mutex<Option<Child>> = tokio::sync::Mutex::const_new(None);
+static MC_SERVER_PROCESS: tokio::sync::Mutex<Option<Child>> = tokio::sync::Mutex::const_new(None);
+static MC_SERVER_FOLDER: tokio::sync::Mutex<Option<String>> = tokio::sync::Mutex::const_new(None);
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct AppUpdateInfo {
@@ -260,13 +263,21 @@ async fn launch_server_bat(
         return Err("No se encontró iniciar.bat ni start.bat en la carpeta del servidor".to_string());
     };
 
-    Command::new("cmd")
-        .args(["/c", "start", "GalacticLive Minecraft Server 1.20.1", bat_path.to_str().unwrap()])
+    let child = Command::new("cmd")
+        .args(["/c", bat_path.to_str().unwrap()])
         .current_dir(&folder)
+        .creation_flags(CREATE_NO_WINDOW)
         .spawn()
         .map_err(|e| format!("Error iniciando servidor: {}", e))?;
 
-    Ok("Servidor arrancado en nueva ventana".to_string())
+    {
+        let mut proc_lock = MC_SERVER_PROCESS.lock().await;
+        *proc_lock = Some(child);
+        let mut f_lock = MC_SERVER_FOLDER.lock().await;
+        *f_lock = Some(folder.clone());
+    }
+
+    Ok("Servidor Paper 1.20.1 iniciado en segundo plano sin consola externa".to_string())
 }
 
 #[tauri::command(rename_all = "snake_case")]
@@ -275,6 +286,14 @@ async fn stop_server_process(
     guard: State<'_, Arc<LicenseGuard>>,
 ) -> Result<String, String> {
     guard.require_verified().await?;
+    {
+        let mut proc_lock = MC_SERVER_PROCESS.lock().await;
+        if let Some(mut child) = proc_lock.take() {
+            let _ = child.kill();
+        }
+        let mut f_lock = MC_SERVER_FOLDER.lock().await;
+        *f_lock = None;
+    }
     let folder_clone = folder.clone();
     tokio::task::spawn_blocking(move || {
         cleanup_server_locks_and_zombies(&folder_clone);
@@ -964,26 +983,19 @@ async fn start_tiktok_sidecar(username: String, api_key: Option<String>) -> Resu
         return Err("Usuario inválido".to_string());
     }
 
-    // Auto-kill cualquier sidecar Node previo antes de lanzar uno nuevo.
-    // Evita que el proceso viejo bloquee el puerto 21219 y obligue al streamer
-    // a matar node.exe manualmente desde el Task Manager.
-    let _ = Command::new(r"C:\Windows\System32\taskkill.exe")
-        .args(["/F", "/IM", "node.exe"])
-        .creation_flags(CREATE_NO_WINDOW)
-        .output();
-
-    // Pausa mínima para que el SO libere el puerto 21219
-    tokio::time::sleep(tokio::time::Duration::from_millis(600)).await;
+    // Solo detener el proceso iniciado por este panel; nunca cerrar otros node.exe del usuario.
+    stop_tiktok_sidecar().await?;
 
     // Resolución dinámica del script tiktok-sidecar.mjs
     let mut resolved_script: Option<PathBuf> = None;
     let mut resolved_cwd: Option<PathBuf> = None;
 
     if let Ok(exe_dir) = std::env::current_exe().map(|p| p.parent().unwrap_or(&p).to_path_buf()) {
-        let p1 = exe_dir.join("tiktok-sidecar.mjs");
+        let bundled = exe_dir.join("tiktok-runtime").join("tiktok-sidecar.mjs");
+        let p1 = if bundled.exists() { bundled } else { exe_dir.join("tiktok-sidecar.mjs") };
         if p1.exists() {
             resolved_script = Some(p1);
-            resolved_cwd = Some(exe_dir.clone());
+            resolved_cwd = resolved_script.as_ref().and_then(|p| p.parent().map(|v| v.to_path_buf()));
         } else {
             let p2 = exe_dir.join("resources").join("tiktok-sidecar.mjs");
             if p2.exists() {
@@ -1008,7 +1020,10 @@ async fn start_tiktok_sidecar(username: String, api_key: Option<String>) -> Resu
     }
 
     if let (Some(script_path), Some(cwd)) = (resolved_script, resolved_cwd) {
-        let node_candidates = [r"C:\Program Files\nodejs\node.exe", "node"];
+        let bundled_node = cwd.join("node.exe");
+        let bundled_node_str = bundled_node.to_string_lossy().to_string();
+        let node_candidates = [bundled_node_str.as_str(), r"C:\Program Files\nodejs\node.exe", "node"];
+        let mut last_error = String::new();
         for node_bin in node_candidates {
             let mut cmd = Command::new(node_bin);
             cmd.arg(&script_path).arg(&clean);
@@ -1018,16 +1033,38 @@ async fn start_tiktok_sidecar(username: String, api_key: Option<String>) -> Resu
                     cmd.arg(trimmed);
                 }
             }
-            if cmd.current_dir(&cwd)
-                .creation_flags(CREATE_NO_WINDOW)
-                .spawn()
-                .is_ok()
-            {
-                return Ok(format!("Sidecar TikTok activo para @{}", clean));
+            match cmd.current_dir(&cwd).creation_flags(CREATE_NO_WINDOW).spawn() {
+                Ok(mut child) => {
+                    tokio::time::sleep(tokio::time::Duration::from_millis(450)).await;
+                    match child.try_wait() {
+                        Ok(Some(status)) => {
+                            last_error = format!("El conector terminó al iniciar ({})", status);
+                            continue;
+                        }
+                        Err(error) => {
+                            last_error = error.to_string();
+                            continue;
+                        }
+                        Ok(None) => {}
+                    }
+                    *TIKTOK_SIDECAR.lock().await = Some(child);
+                    return Ok(format!("Conector TikTok iniciado para @{}", clean));
+                }
+                Err(error) => last_error = error.to_string(),
             }
         }
+        return Err(format!("No se pudo iniciar el conector TikTok: {}", last_error));
     }
-    Ok(format!("Motor directo activo para @{}", clean))
+    Err("No se encontró el conector TikTok en la instalación".to_string())
+}
+
+#[tauri::command]
+async fn stop_tiktok_sidecar() -> Result<(), String> {
+    if let Some(mut child) = TIKTOK_SIDECAR.lock().await.take() {
+        let _ = child.kill();
+        let _ = child.wait();
+    }
+    Ok(())
 }
 
 async fn reqwest_download(url: &str) -> Result<Vec<u8>, String> {
@@ -1091,6 +1128,25 @@ fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_process::init())
+        .on_window_event(|_window, event| {
+            if let tauri::WindowEvent::CloseRequested { .. } | tauri::WindowEvent::Destroyed = event {
+                if let Ok(mut f_lock) = MC_SERVER_FOLDER.try_lock() {
+                    if let Some(folder) = f_lock.take() {
+                        cleanup_server_locks_and_zombies(&folder);
+                    }
+                }
+                if let Ok(mut proc_lock) = MC_SERVER_PROCESS.try_lock() {
+                    if let Some(mut child) = proc_lock.take() {
+                        let _ = child.kill();
+                    }
+                }
+                if let Ok(mut sc) = TIKTOK_SIDECAR.try_lock() {
+                    if let Some(mut child) = sc.take() {
+                        let _ = child.kill();
+                    }
+                }
+            }
+        })
         .manage(overlay_state)
         .manage(license_guard)
         .invoke_handler(tauri::generate_handler![
@@ -1137,6 +1193,7 @@ fn main() {
             save_uploaded_media,
             speak_tts_native,
             start_tiktok_sidecar,
+            stop_tiktok_sidecar,
             update_top_settings,
             emit_session_mvp
         ])

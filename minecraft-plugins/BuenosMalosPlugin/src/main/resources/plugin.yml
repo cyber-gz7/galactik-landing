@@ -9,10 +9,6 @@ commands:
     description: Comando principal del sistema Buenos vs Malos
     usage: /bm <totem|gift|reset|status> [args]
     permission: buenosmalos.admin
-  arcangel:
-    description: Invocacion suprema del Arcangel Serafin Metatron
-    usage: /arcangel [target] [donador]
-    permission: buenosmalos.admin
 permissions:
   buenosmalos.admin:
     description: Acceso de administracion a BuenosMalosPlugin

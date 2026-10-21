@@ -28,11 +28,11 @@ export function enhanceRconWorkspace({ app, store, rconBridge, giftRegistry, ren
     <div style="display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap;">
       <button class="btn-micro" data-cmd="/totems dar {jugador} totems=124">🛡️ +124 Tótems</button>
       <button class="btn-micro" data-cmd="/effect give {jugador} minecraft:night_vision infinite 0 true">👁️ Visión Nocturna</button>
-      <button class="btn-micro" data-cmd="/trueno {jugador}">⚡ Trueno</button>
-      <button class="btn-micro" data-cmd="/kit armadura {jugador}">⚔️ Kit Armadura</button>
-      <button class="btn-micro" data-cmd="/dragon">🐉 Dragón</button>
-      <button class="btn-micro" data-cmd="/la_parka">💀 La Parka</button>
-      <button class="btn-micro" data-cmd="/solcruel">☀️ Sol Cruel</button>
+      <button class="btn-micro" data-cmd="trueno {jugador}">⚡ Trueno</button>
+      <button class="btn-micro" data-cmd="totems dar {jugador} 10">🛡️ +10 Tótems</button>
+      <button class="btn-micro" data-cmd="dragon {jugador}">🐉 Dragón</button>
+      <button class="btn-micro" data-cmd="esqueleto {jugador}">💀 La Parka</button>
+      <button class="btn-micro" data-cmd="solcruel {jugador}">☀️ Sol Cruel</button>
       <button class="btn-micro" data-cmd="/list">👥 /list</button>
     </div>
   `;

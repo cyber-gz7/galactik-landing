@@ -27,6 +27,33 @@ export function initMinecraftRcon({ app, store, rconBridge, crearServidorMinecra
     });
   }
 
+  // Sincronizar inputs de RCON con el estado actual
+  const rconHostInput = document.getElementById('rcon-host-input');
+  const rconPortInput = document.getElementById('rcon-port-input');
+  const rconPassInput = document.getElementById('rcon-pass-input');
+  const currentRconCfg = store.getState()?.rconConfig || {};
+  if (rconHostInput && (currentRconCfg.host || '127.0.0.1')) {
+    rconHostInput.value = currentRconCfg.host || '127.0.0.1';
+  }
+  if (rconPortInput && (currentRconCfg.port || 25575)) {
+    rconPortInput.value = currentRconCfg.port || 25575;
+  }
+  if (rconPassInput) {
+    const pass = currentRconCfg.password || 'sseOr_24rlJfFpnh8oTqOUbu';
+    rconPassInput.value = pass;
+    if (!currentRconCfg.password) {
+      store.setRconConfig({ password: pass });
+    }
+  }
+
+  // Apagar servidor automáticamente al cerrar ventana
+  window.addEventListener('beforeunload', () => {
+    const invoke = getInvoke();
+    if (invoke && activeServerFolder) {
+      invoke('stop_server_process', { folder: activeServerFolder }).catch(() => {});
+    }
+  });
+
   function getInvoke() {
     return window.__TAURI__?.core?.invoke || window.__TAURI__?.invoke || null;
   }

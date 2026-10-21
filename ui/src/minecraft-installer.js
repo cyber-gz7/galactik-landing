@@ -73,7 +73,6 @@ echo  Iniciando Servidor Paper 1.20.1 (${ramGb} GB RAM)
 echo  RCON habilitado para Galactic Live (GZ7)
 echo ==============================================
 java -Xms${ramGb}G -Xmx${ramGb}G -XX:+UseG1GC -jar paper.jar --nogui
-pause
 `;
 }
 

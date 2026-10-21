@@ -1,7 +1,7 @@
 [package]
 name = "gz7live"
-version = "2.0.5"
-description = "GZ7Live - TikTok Live to Minecraft RCON bridge with Buenos vs Malos"
+version = "2.0.8"
+description = "GZ7Live - TikTok Live to Minecraft RCON bridge with Universal Survival Plugins"
 authors = ["GZ7"]
 edition = "2021"
 

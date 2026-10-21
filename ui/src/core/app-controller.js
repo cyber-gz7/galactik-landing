@@ -1,7 +1,7 @@
 import { handleRobloxGiftVsGift } from '../modules/obby-engine.js';
 import { store } from '../store.js';
 import { tikTokBridge } from '../tiktok.js';
-import { giftRegistry, PRESETS, archivoDeGift, limpiarArchivoGift, giftsEquivalentes, encontrarGrupoCanonicoGift } from '../gifts.js';
+import { giftRegistry, PRESETS, archivoDeGift, limpiarArchivoGift, giftsEquivalentes, encontrarGrupoCanonicoGift, tiktokGiftIdDeNombre } from '../gifts.js';
 import { rconBridge } from '../rcon.js';
 import { soundManager } from '../sounds.js';
 import { ttsEngine } from '../tts.js';
@@ -12,6 +12,7 @@ import '../license-client.js';
 import { DEFAULT_ROBLOX_CONFIG } from '../modules/obby-config.js';
 import { commandDispatcher } from '../modules/command-dispatcher.js';
 import { permissionManager } from '../modules/permission-manager.js';
+import { matchingMinecraftRules, migrateMinecraftRules } from '../modules/minecraft-events.js';
 
 export const DEFAULT_ALERT_ALBUMS = [
   {
@@ -159,10 +160,16 @@ class AppController {
     this.robloxOverlayConfig = JSON.parse(JSON.stringify(DEFAULT_ROBLOX_CONFIG));
     this.mcOverlayStyle = 'carousel';
     this.mcShowTotems = true;
+    this.mcOverlayScale = 100;
+    this.mcOverlaySpeed = 28;
+    this.mcOverlayFontSize = 11.5;
+    this.mcOverlayOpacity = 72;
 
     this.s2ePresets = JSON.parse(JSON.stringify(S2E_PRESETS_CATALOG));
     this.activeS2EPresetId = this.s2ePresets[0]?.id || '6a9c4ab5a3f80f466f2d6f01';
     this.likeAccumulator = 0;
+    this.mcEventRules = migrateMinecraftRules({}, this.getActiveS2EPreset());
+    this.mcEventCounters = { totalLikes: 0, likesByUser: new Map() };
 
     this.alertAlbums = JSON.parse(JSON.stringify(DEFAULT_ALERT_ALBUMS));
     this.activeAlertAlbumId = this.alertAlbums[0]?.id || 'album_quiereme';
@@ -185,7 +192,8 @@ class AppController {
     await this.loadGiftMappings();
     this.setupTikTokListeners();
     this.setupStoreOverlaySync();
-    await this.syncAllOverlaysToBackend();
+    if (this.mcEventMigrationComplete) await this.persistConfig();
+    else await this.syncAllOverlaysToBackend();
     // Modular auto-updater is loaded via ui/src/modules/auto-updater.js
   }
 
@@ -318,41 +326,117 @@ class AppController {
     }
   }
 
+  presetEventsToOverlayItems(events = []) {
+    if (!Array.isArray(events)) return [];
+    return events
+      .filter(ev => ev && ev.active !== false)
+      .map((ev, idx) => {
+        const act = ev.trigger?.action || 'SelectedGift';
+        let giftName = ev.trigger?.giftName || 'Regalo';
+        let coins = Number(ev.trigger?.coins) || 1;
+        let iconFile = '';
+
+        if (act === 'LikeForEach' || act === 'Like') {
+          giftName = `${ev.trigger?.value || 50} Likes`;
+          iconFile = 'LIKE_HEART';
+          coins = 0;
+        } else if (act === 'Follow') {
+          giftName = 'Seguidor';
+          iconFile = 'FOLLOW_ICON';
+          coins = 0;
+        } else {
+          const fallbackFile = archivoDeGift(giftName, coins) || 'rose-1-coins.webp';
+          iconFile = limpiarArchivoGift(ev.trigger?.iconUrl || fallbackFile);
+          if (iconFile === 'rose-1-coins.webp' && !/rose|rosa/i.test(giftName)) {
+            iconFile = archivoDeGift(giftName, coins);
+          }
+        }
+
+        const rep = Number(ev.func?.repetition) || 1;
+        const mult = rep > 1 ? `x${rep}` : (ev.mult || (coins >= 1000 ? '⭐' : 'x1'));
+        const actionLabel = ev.func?.name || this.formatMcCommandLabel(ev.func?.commands?.[0], giftName);
+        const cmd = Array.isArray(ev.func?.commands) && ev.func.commands.length > 0 ? ev.func.commands[0] : '';
+        const soundName = ev.audio?.name || '';
+        const soundUrl = ev.audio?.url || '';
+
+        return {
+          id: ev.id || String(idx + 1),
+          gift_name: giftName,
+          icon_file: iconFile,
+          action_image: ev.func?.imageUrl || '',
+          repetition: rep,
+          coins: coins,
+          action_label: actionLabel,
+          mult: mult,
+          badge: mult,
+          command: cmd,
+          sound_name: soundName,
+          sound_url: soundUrl
+        };
+      });
+  }
+
   async syncMcOverlayToBackend() {
     try {
       const invoke = window.__TAURI__?.core?.invoke || window.__TAURI__?.invoke;
       if (!invoke) return;
       const st = store.getState();
+
       const gifts = giftRegistry.getAll();
-      const items = gifts.map((g, idx) => {
-        const cleanIcon = limpiarArchivoGift(g.icon_file || archivoDeGift(g.name, g.coins));
-        const resolvedIcon = (cleanIcon === 'rose-1-coins.webp' && !/rose|rosa/i.test(String(g.name || '')))
-          ? archivoDeGift(g.name, g.coins)
-          : cleanIcon;
-        const mappedSound = g.audioName || this.soundManager.getSoundForGift(g.name) || '';
-        const resolvedSoundObj = this.soundManager.resolveSound(g.audioUrl || mappedSound);
-        return {
-          id: g.id || String(idx + 1),
-          gift_name: g.name || 'Regalo',
-          icon_file: resolvedIcon,
-          action_image: g.action_image || '',
-          repetition: Number(g.repetition) || 1,
-          coins: Number(g.coins) || 1,
-          action_label: g.action_label || g.overlayLabel || this.formatMcCommandLabel(g.command, g.name),
-          mult: g.mult || (g.badge ? g.badge : (g.totemDelta ? `+${g.totemDelta}` : '')),
-          badge: g.badge || '',
-          command: g.command || '',
-          sound_name: mappedSound,
-          sound_url: g.audioUrl || resolvedSoundObj?.url || ''
-        };
-      });
+      let items = [];
+      if (Array.isArray(gifts) && gifts.length > 0) {
+        items = gifts.filter(g => g.enabled !== false).map((g, idx) => {
+          const cleanIcon = limpiarArchivoGift(g.icon_file || archivoDeGift(g.name, g.coins));
+          const resolvedIcon = (cleanIcon === 'rose-1-coins.webp' && !/rose|rosa/i.test(String(g.name || '')))
+            ? archivoDeGift(g.name, g.coins)
+            : cleanIcon;
+          const mappedSound = g.audioName || this.soundManager.getSoundForGift(g.name) || '';
+          const resolvedSoundObj = this.soundManager.resolveSound(g.audioUrl || mappedSound);
+          return {
+            id: g.id || String(idx + 1),
+            gift_name: g.name || 'Regalo',
+            icon_file: resolvedIcon,
+            action_image: g.action_image || '',
+            repetition: Number(g.repetition) || 1,
+            coins: Number(g.coins) || 1,
+            action_label: g.action_label || g.overlayLabel || this.formatMcCommandLabel(g.command, g.name),
+            mult: g.mult || (g.badge ? g.badge : (g.totemDelta ? `+${g.totemDelta}` : '')),
+            badge: g.badge || '',
+            command: g.command || '',
+            sound_name: mappedSound,
+            sound_url: g.audioUrl || resolvedSoundObj?.url || ''
+          };
+        });
+      }
+
+      items.push(...this.mcEventRules.filter(rule => rule.enabled).map(rule => ({
+        id: rule.id,
+        gift_name: rule.type === 'likes_user' ? `${rule.threshold} likes por persona` :
+          rule.type === 'likes_total' ? `Meta ${rule.threshold} likes` :
+          ({ follow: 'Nuevo seguidor', share: 'Compartido', subscribe: 'Suscripción', comment: 'Comentario' }[rule.type] || 'Evento'),
+        icon_file: rule.type.startsWith('likes') ? 'LIKE_HEART' : rule.type === 'follow' ? 'FOLLOW_ICON' : 'tiktok-1-coins.webp',
+        action_image: rule.imageUrl,
+        coins: 0,
+        action_label: rule.label || this.formatMcCommandLabel(rule.command, 'Acción'),
+        mult: 'x1',
+        command: rule.command,
+        sound_name: rule.soundName,
+        sound_url: rule.soundUrl
+      })));
 
       const payload = {
         style: this.mcOverlayStyle,
         theme_style: this.robloxOverlayConfig.theme_style || 'GALACTIC',
         showTotems: this.mcShowTotems,
+        likeGoal: this.mcEventRules.filter(rule => rule.enabled && rule.type === 'likes_total')
+          .sort((a, b) => a.threshold - b.threshold)
+          .map(rule => ({ threshold: rule.threshold, label: rule.label }))[0] || null,
         totems: st.totems,
         maxTotems: st.maxTotems,
+        scale: this.mcOverlayScale || 100,
+        speed: this.mcOverlaySpeed || 28,
+        fontSize: this.mcOverlayFontSize || 11.5,
+        opacity: this.mcOverlayOpacity !== undefined ? this.mcOverlayOpacity : 72,
         items
       };
       await invoke('update_mc_overlay_config', {
@@ -360,6 +444,58 @@ class AppController {
       });
     } catch (err) {
       console.warn('Error sincronizando MC Overlay:', err);
+    }
+  }
+
+  async activatePreset(presetId) {
+    if (!presetId) return;
+    const p = this.s2ePresets.find(x => x.id === presetId);
+    if (!p) return;
+
+    this.activeS2EPresetId = presetId;
+    p.active = true;
+
+    // Sincronizar eventos del preajuste activo hacia giftRegistry para unificar el sistema
+    if (Array.isArray(p.events)) {
+      const convertedGifts = p.events
+        .filter(ev => ev.trigger?.action === 'SelectedGift')
+        .map((ev, idx) => {
+          const gName = ev.trigger.giftName || 'Rose';
+          const gCoins = Number(ev.trigger.coins) || 1;
+          const rep = Number(ev.func?.repetition) || 1;
+          const cmd = (ev.func?.commands && ev.func.commands[0]) || '';
+          const snd = ev.audio?.name || '';
+          const sndUrl = ev.audio?.url || '';
+          const rawIcon = ev.trigger.iconUrl || archivoDeGift(gName, gCoins);
+          return {
+            id: ev.id || `preset_gift_${idx}`,
+            name: gName,
+            tiktokGiftId: ev.trigger.giftId || tiktokGiftIdDeNombre(gName, 5655),
+            coins: gCoins,
+            mult: rep > 1 ? `x${rep}` : 'x1',
+            badge: rep > 1 ? `x${rep}` : '',
+            totemDelta: rep,
+            command: cmd,
+            icon_file: limpiarArchivoGift(rawIcon),
+            audioName: snd,
+            audioUrl: sndUrl
+          };
+        });
+      if (convertedGifts.length > 0) {
+        giftRegistry.setAll(convertedGifts);
+      }
+    }
+
+    // Sincronizar overlay en vivo hacia OBS / SSE
+    await this.syncMcOverlayToBackend();
+    await this.persistConfig();
+
+    // Refrescar ambas vistas (Estudio S2E y Tabla de Regalos)
+    if (window.gz7S2EStudio?.renderPresets) {
+      window.gz7S2EStudio.renderPresets();
+    }
+    if (typeof window.__renderGiftsTable === 'function') {
+      window.__renderGiftsTable();
     }
   }
 
@@ -403,7 +539,7 @@ class AppController {
           if (config.currentPreset && PRESETS[config.currentPreset]) {
             giftRegistry.loadPreset(config.currentPreset);
           }
-          if (Array.isArray(config.gifts) && config.gifts.length > 0) {
+          if (Array.isArray(config.gifts)) {
             const repairedGifts = config.gifts.map(g => {
               const rawIcon = limpiarArchivoGift(g.icon_file);
               const isNonRose = !/rose|rosa/i.test(String(g.name || ''));
@@ -451,11 +587,49 @@ class AppController {
           }
           if (config.mcOverlayStyle) this.mcOverlayStyle = config.mcOverlayStyle;
           if (config.mcShowTotems !== undefined) this.mcShowTotems = config.mcShowTotems;
+          if (config.mc_overlay) {
+            if (config.mc_overlay.scale) this.mcOverlayScale = config.mc_overlay.scale;
+            if (config.mc_overlay.speed) this.mcOverlaySpeed = config.mc_overlay.speed;
+            if (config.mc_overlay.fontSize) this.mcOverlayFontSize = config.mc_overlay.fontSize;
+            if (config.mc_overlay.opacity !== undefined) this.mcOverlayOpacity = config.mc_overlay.opacity;
+          }
           if (Array.isArray(config.s2ePresets) && config.s2ePresets.length > 0) {
             this.s2ePresets = config.s2ePresets;
           }
           if (config.activeS2EPresetId) {
             this.activeS2EPresetId = config.activeS2EPresetId;
+          }
+          const curPreset = this.getActiveS2EPreset();
+          this.mcEventRules = migrateMinecraftRules(config, curPreset);
+          this.mcEventMigrationComplete = !Array.isArray(config.mcEventRules);
+          if (curPreset && Array.isArray(curPreset.events) && curPreset.events.length > 0) {
+            const converted = curPreset.events
+              .filter(ev => ev.trigger?.action === 'SelectedGift')
+              .map((ev, idx) => {
+                const gName = ev.trigger.giftName || 'Rose';
+                const gCoins = Number(ev.trigger.coins) || 1;
+                const rep = Number(ev.func?.repetition) || 1;
+                const cmd = (ev.func?.commands && ev.func.commands[0]) || '';
+                const snd = ev.audio?.name || '';
+                const sndUrl = ev.audio?.url || '';
+                const rawIcon = ev.trigger.iconUrl || archivoDeGift(gName, gCoins);
+                return {
+                  id: ev.id || `preset_gift_${idx}`,
+                  name: gName,
+                  tiktokGiftId: ev.trigger.giftId || tiktokGiftIdDeNombre(gName, 5655),
+                  coins: gCoins,
+                  mult: rep > 1 ? `x${rep}` : 'x1',
+                  badge: rep > 1 ? `x${rep}` : '',
+                  totemDelta: rep,
+                  command: cmd,
+                  icon_file: limpiarArchivoGift(rawIcon),
+                  audioName: snd,
+                  audioUrl: sndUrl
+                };
+              });
+            if (converted.length > 0 && !Array.isArray(config.gifts)) {
+              giftRegistry.setAll(converted);
+            }
           }
           if (config.alertAlbums && config.alertAlbums.length > 0) {
             this.alertAlbums = config.alertAlbums;
@@ -489,6 +663,13 @@ class AppController {
         robloxOverlayConfig: this.robloxOverlayConfig,
         mcOverlayStyle: this.mcOverlayStyle,
         mcShowTotems: this.mcShowTotems,
+        mc_overlay: {
+          scale: this.mcOverlayScale || 100,
+          speed: this.mcOverlaySpeed || 28,
+          fontSize: this.mcOverlayFontSize || 11.5,
+          opacity: this.mcOverlayOpacity !== undefined ? this.mcOverlayOpacity : 72
+        },
+        mcEventRules: this.mcEventRules,
         s2ePresets: this.s2ePresets,
         activeS2EPresetId: this.activeS2EPresetId,
         alertAlbums: this.alertAlbums,
@@ -522,6 +703,7 @@ class AppController {
 
     tikTokBridge.on('disconnected', () => {
       store.setTikTokStatus('DESCONECTADO');
+      this.mcEventCounters = { totalLikes: 0, likesByUser: new Map() };
     });
 
     tikTokBridge.on('reconnecting', () => {
@@ -535,6 +717,7 @@ class AppController {
       commandDispatcher.dispatchChat(user, comment, chatEvent);
       ttsEngine.speakChat(user, comment, chatEvent);
       this.evaluateAlertTriggers('Comment', { user, comment });
+      this.handleMinecraftRuleEvent({ type: 'comment', user, comment });
     });
 
     tikTokBridge.on('gift', giftEvent => {
@@ -547,7 +730,7 @@ class AppController {
       store.incrementStats({ likes: count });
       overlayServer.emitLike(user, count);
       permissionManager.addPoints(user, Math.max(1, Math.round(count / 5)));
-      this.handleLikePresetEvents(user, count);
+      this.handleMinecraftRuleEvent({ type: 'like', user, userId: likeEvent.uniqueId || user, count });
       this.evaluateAlertTriggers('Like', { user, count });
     });
 
@@ -560,7 +743,7 @@ class AppController {
         user,
         detail: 'Comenzó a seguir el directo'
       });
-      this.handleFollowPresetEvents(user);
+      this.handleMinecraftRuleEvent({ type: 'follow', user });
       this.evaluateAlertTriggers('Follow', { user });
     });
 
@@ -572,8 +755,9 @@ class AppController {
         user,
         detail: '¡Se ha suscrito al canal!'
       });
-      soundManager.playSound('victoria_epica');
+      if (this.activeProfile !== 'minecraft') soundManager.playSound('victoria_epica');
       this.evaluateAlertTriggers('Subscribe', { user });
+      this.handleMinecraftRuleEvent({ type: 'subscribe', user });
     });
 
     tikTokBridge.on('share', shareEvent => {
@@ -585,6 +769,7 @@ class AppController {
         detail: 'Compartió la transmisión'
       });
       this.evaluateAlertTriggers('Share', { user });
+      this.handleMinecraftRuleEvent({ type: 'share', user });
     });
   }
 
@@ -618,18 +803,46 @@ class AppController {
 
       if (this.activeProfile === 'minecraft' && Array.isArray(ev.func?.commands) && ev.func.commands.length > 0) {
         const cleanDonor = String(donor).replace(/[^a-zA-Z0-9_]/g, '_').slice(0, 16) || 'Viewer';
-        const player = document.getElementById('mc-server-op')?.value?.trim() || 'GZ7';
-        const reps = Math.min(25, Math.max(1, (Number(ev.func.repetition) || 1) * repeatCount));
-        for (let r = 0; r < reps; r++) {
-          for (const rawCmd of ev.func.commands) {
-            const cmd = String(rawCmd)
-              .replace(/^\/+/, '')
-              .replace(/\{nickname\}/gi, cleanDonor)
-              .replace(/\{donador\}/gi, cleanDonor)
-              .replace(/\{playername\}/gi, player);
+
+        let rawPlayer = (
+          localStorage.getItem('galactk_mc_player') ||
+          document.getElementById('mc-player-nick')?.value?.trim() ||
+          document.getElementById('mc-server-op')?.value?.trim() ||
+          store.getState()?.targetPlayer ||
+          store.getState()?.rconConfig?.player ||
+          'CJ7_TUTORIALES'
+        ).trim();
+        if (!rawPlayer || rawPlayer.toUpperCase() === 'GZ7' || rawPlayer.toLowerCase() === 'bygerardguzman') {
+          rawPlayer = 'CJ7_TUTORIALES';
+        }
+        const player = rawPlayer.replace(/[^a-zA-Z0-9_]/g, '_') || 'CJ7_TUTORIALES';
+
+        const totalAmount = Math.max(1, (Number(ev.func?.repetition) || 1) * Math.max(1, repeatCount));
+        for (const rawCmd of ev.func.commands) {
+          const hasCantidadPlaceholder = /\{cantidad\}/i.test(rawCmd);
+          const cmd = String(rawCmd)
+            .replace(/^\/+/, '')
+            .replace(/\{nickname\}/gi, cleanDonor)
+            .replace(/\{donador\}/gi, cleanDonor)
+            .replace(/\{donor\}/gi, cleanDonor)
+            .replace(/\{user\}/gi, cleanDonor)
+            .replace(/\{jugador\}/gi, player)
+            .replace(/\{playername\}/gi, player)
+            .replace(/\{player\}/gi, player)
+            .replace(/\{target\}/gi, player)
+            .replace(/\{cantidad\}/gi, String(totalAmount));
+
+          if (hasCantidadPlaceholder) {
             try {
               await rconBridge.sendCommand(cmd);
             } catch (err) {}
+          } else {
+            const reps = Math.min(2, Math.max(1, Number(ev.func?.repetition) || 1));
+            for (let r = 0; r < reps; r++) {
+              try {
+                await rconBridge.sendCommand(cmd);
+              } catch (err) {}
+            }
           }
         }
       }
@@ -642,51 +855,33 @@ class AppController {
     }
   }
 
-  handleLikePresetEvents(user, count) {
+  async handleMinecraftRuleEvent(event) {
     if (this.activeProfile !== 'minecraft') return;
-    this.likeAccumulator += count;
-
-    // Meta de 5,000 taps / likes para balancear el juego
-    if (this.totalStreamLikes === undefined) this.totalStreamLikes = 0;
-    const oldMilestone = Math.floor(this.totalStreamLikes / 5000);
-    this.totalStreamLikes += count;
-    const newMilestone = Math.floor(this.totalStreamLikes / 5000);
-    if (newMilestone > oldMilestone) {
-      const targetPlayer = (store.getState()?.streamerUsername || 'GZ7').replace(/[^a-zA-Z0-9_]/g, '_') || 'GZ7';
-      const rewardCmd = Math.random() > 0.5 ? `survival totem ${targetPlayer}` : `survival apple_enchanted ${targetPlayer}`;
-      rconBridge.sendCommand(rewardCmd).catch(() => {});
-      store.addHistory({
-        type: 'like_milestone',
-        title: 'Meta 5,000 Likes',
-        user: user || 'Comunidad',
-        coins: 0,
-        command: rewardCmd,
-        detail: `Recompensa de Ayuda: /${rewardCmd}`
-      });
-    }
-
-    const preset = this.getActiveS2EPreset();
-    if (!preset || !preset.active) return;
-    for (const ev of (preset.events || [])) {
-      if (ev.active === false) continue;
-      if (ev.trigger?.action === 'LikeForEach' || ev.trigger?.action === 'Like') {
-        const threshold = Math.max(10, Number(ev.trigger.value) || 100);
-        if (this.likeAccumulator >= threshold) {
-          this.likeAccumulator %= threshold;
-          this.executeS2EPresetEvent(ev, user, 1);
+    const due = matchingMinecraftRules(this.mcEventRules, event, this.mcEventCounters);
+    for (const rule of due) {
+      const donor = String(event.user || 'Viewer').replace(/[^a-zA-Z0-9_]/g, '_').slice(0, 16) || 'Viewer';
+      const rawPlayer = String(localStorage.getItem('galactk_mc_player') ||
+        document.getElementById('mc-player-nick')?.value || store.getState()?.targetPlayer || 'CJ7_TUTORIALES');
+      const player = rawPlayer.replace(/[^a-zA-Z0-9_]/g, '_').slice(0, 16) || 'CJ7_TUTORIALES';
+      const commands = rule.command.split(/\r?\n/).map(line => line.trim()).filter(Boolean).map(line => line.replace(/^\/+/, '')
+        .replace(/\{jugador\}|\{playername\}|\{player\}|\{target\}/gi, player)
+        .replace(/\{donador\}|\{donor\}|\{nickname\}|\{user\}/gi, donor)
+        .replace(/\{cantidad\}|\{count\}/gi, String(event.count || 1)));
+      try {
+        if (rule.soundUrl) soundManager.playUrl(rule.soundUrl);
+        else if (rule.soundName) soundManager.playSound(rule.soundName);
+        await this.emitCustomAlertPayload({
+          title: `@${event.user || 'Viewer'}`,
+          subtitle: rule.label || 'Evento Minecraft',
+          imageUrl: rule.imageUrl || '',
+          duration: 3.5
+        });
+        for (const command of commands) {
+          if (!command.startsWith('ROBLOX_EVENT:')) await rconBridge.sendCommand(command);
         }
-      }
-    }
-  }
-
-  handleFollowPresetEvents(user) {
-    if (this.activeProfile !== 'minecraft') return;
-    const preset = this.getActiveS2EPreset();
-    if (!preset || !preset.active) return;
-    for (const ev of (preset.events || [])) {
-      if (ev.active === false) continue;
-      if (ev.trigger?.action === 'Follow') {
-        this.executeS2EPresetEvent(ev, user, 1);
+        store.addHistory({ type: 'minecraft_rule', title: rule.label || 'Evento Minecraft', user: event.user || 'Viewer', command: commands.join('\n') });
+      } catch (error) {
+        console.warn('No se pudo ejecutar la regla Minecraft:', error);
       }
     }
   }
@@ -818,23 +1013,7 @@ class AppController {
     // Despacho de audio / puntos del duelo de inmediato
     const robloxSoundPlayed = await this.handleRobloxGiftVsGift(giftName, coins, repeatCount, donor, rawGiftId, isSim);
 
-    let matchedS2E = false;
-    if (this.activeProfile === 'minecraft') {
-      const activePreset = window.gz7S2EStudio?.getActivePreset
-        ? window.gz7S2EStudio.getActivePreset()
-        : this.getActiveS2EPreset();
-      if (activePreset && activePreset.active && Array.isArray(activePreset.events)) {
-        for (const ev of activePreset.events) {
-          if (ev.active === false) continue;
-          if (ev.trigger?.action === 'SelectedGift') {
-            if (giftsEquivalentes(ev.trigger.giftName, giftName, rawGiftId, ev.trigger.giftId)) {
-              matchedS2E = true;
-              await this.executeS2EPresetEvent(ev, donor, repeatCount);
-            }
-          }
-        }
-      }
-    }
+    const matchedS2E = false;
 
     if (!handledMappedAlert) {
       this.evaluateAlertTriggers('Gift', { user: donor, gift: giftName, giftId: rawGiftId, coins, count: repeatCount });
@@ -845,7 +1024,8 @@ class AppController {
       donor,
       activeFaction,
       store.getState(),
-      giftName
+      giftName,
+      this.activeProfile === 'minecraft'
     );
 
     const effectiveDelta = resolution.totemDelta * repeatCount;

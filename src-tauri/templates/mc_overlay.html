@@ -9,12 +9,15 @@
 
     :root {
       --ui-scale: 1;
+      --carousel-speed: 28s;
+      --ui-font-size: 11.5px;
+      --bg-glass-alpha: 0.72;
       --neon-cyan: #00f0ff;
       --neon-blue: #0088ff;
       --neon-gold: #ffe600;
       --neon-pink: #ff2a85;
       --neon-orange: #ff6600;
-      --bg-glass: rgba(8, 14, 24, 0.72);
+      --bg-glass: rgba(8, 14, 24, var(--bg-glass-alpha, 0.72));
       --border-glass: rgba(0, 240, 255, 0.38);
     }
 
@@ -211,7 +214,7 @@
       display: flex;
       gap: 14px;
       width: max-content;
-      animation: carouselScroll 28s linear infinite;
+      animation: carouselScroll var(--carousel-speed, 28s) linear infinite;
       will-change: transform;
     }
 
@@ -303,7 +306,7 @@
 
     .mc-card-action {
       font-family: 'Orbitron', sans-serif;
-      font-size: 11px;
+      font-size: var(--ui-font-size, 11px);
       font-weight: 800;
       color: var(--neon-cyan);
       text-shadow: 1px 1px 0 #000;
@@ -340,6 +343,76 @@
       display: inline-flex;
       align-items: center;
       gap: 3px;
+    }
+
+    .mc-card-gift-mini {
+      position: absolute;
+      bottom: -4px;
+      right: -6px;
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.9));
+      background: rgba(8, 14, 24, 0.85);
+      border-radius: 6px;
+      padding: 2px;
+      border: 1px solid rgba(0, 240, 255, 0.45);
+      z-index: 2;
+    }
+
+    /* ESTILO TIRA S2E */
+    .layout-s2e {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      background: transparent !important;
+      padding: 8px 12px;
+    }
+
+    .s2e-strip-card {
+      background: rgba(14, 18, 26, 0.85);
+      border: 1.5px solid rgba(0, 240, 255, 0.4);
+      border-radius: 12px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      min-width: 72px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      position: relative;
+    }
+
+    .s2e-strip-card .s2e-mult {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      color: #00f0ff;
+      text-shadow: 0 0 6px rgba(0,240,255,0.8);
+    }
+
+    .s2e-strip-card .s2e-mob-img {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      filter: drop-shadow(0 3px 6px rgba(0,0,0,0.8));
+    }
+
+    .s2e-strip-card .s2e-gift-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .s2e-strip-card .s2e-gift-box img {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.7));
     }
 
     /* ESTILO PLANO / FLAT */
@@ -482,23 +555,14 @@
   <div id="mc-root">
     <!-- BARRA SUPERIOR DE ESTADO MODULAR (SIN FACCIONES) -->
     <header class="mc-topbar-hud" id="topbar-hud">
-      <!-- Likes Goal con SVG de Corazón y 50 central -->
-      <div class="hud-pill pill-likes-goal" id="hud-likes-goal-pill" title="50 Me gusta disparan impulso de lobo guardián">
+      <!-- Likes Goal con Gatito Dando Like y Escudo de Energía -->
+      <div class="hud-pill pill-likes-goal" id="hud-likes-goal-pill" style="display:none">
         <div class="hud-heart-wrapper">
-          <svg class="svg-heart-goal heart-pulse-active" id="hud-heart-goal-svg" viewBox="0 0 100 100">
-            <defs>
-              <linearGradient id="heartGradGoal" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#ff0055"/>
-                <stop offset="100%" stop-color="#ff5500"/>
-              </linearGradient>
-            </defs>
-            <path fill="url(#heartGradGoal)" d="M50 88.5L43.8 82.9C21.8 62.9 7.3 49.8 7.3 33.6C7.3 20.4 17.7 10 30.9 10C38.3 10 45.4 13.5 50 18.9C54.6 13.5 61.7 10 69.1 10C82.3 10 92.7 20.4 92.7 33.6C92.7 49.8 78.2 62.9 56.2 82.9L50 88.5Z"/>
-            <text x="50" y="47" text-anchor="middle" dominant-baseline="central" fill="#ffffff" font-family="'JetBrains Mono', 'Orbitron', monospace" font-size="28" font-weight="900">50</text>
-          </svg>
+          <img src="/gifts/cute-cat-5-coins.webp" class="svg-heart-goal heart-pulse-active" id="hud-heart-goal-svg" alt="Gatito Like" style="width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(0,240,255,0.7));" onerror="this.src='/gifts/rose-1-coins.webp';" />
         </div>
         <div class="likes-goal-meta">
-          <span class="likes-goal-title">50 LIKES</span>
-          <span class="likes-goal-count"><span id="likes-current-cycle">0</span> / 50</span>
+          <span class="likes-goal-title" id="likes-goal-title" style="color:var(--neon-cyan);">Meta de likes</span>
+          <span class="likes-goal-count"><span id="likes-current-cycle">0</span> / <span id="likes-goal-target">50</span></span>
         </div>
       </div>
 
@@ -552,30 +616,86 @@
     let likesCycle = 0;
     let totalLikes = 0;
 
+    function applyOverlaySettings(settings = {}) {
+      if (!settings) return;
+      if (settings.scale !== undefined && settings.scale !== null) {
+        const s = Number(settings.scale);
+        if (!isNaN(s) && s > 0) {
+          const val = s > 5 ? (s / 100).toFixed(2) : s.toFixed(2);
+          mcRoot.style.setProperty('--ui-scale', val);
+        }
+      }
+      if (settings.speed !== undefined && settings.speed !== null) {
+        const sp = Number(settings.speed);
+        if (!isNaN(sp) && sp > 0) {
+          document.documentElement.style.setProperty('--carousel-speed', `${sp}s`);
+        }
+      }
+      if (settings.fontSize !== undefined && settings.fontSize !== null) {
+        const fs = Number(settings.fontSize);
+        if (!isNaN(fs) && fs > 0) {
+          document.documentElement.style.setProperty('--ui-font-size', `${fs}px`);
+        }
+      }
+      if (settings.opacity !== undefined && settings.opacity !== null) {
+        const op = Number(settings.opacity);
+        if (!isNaN(op)) {
+          const alpha = op > 1 ? (op / 100).toFixed(2) : op.toFixed(2);
+          document.documentElement.style.setProperty('--bg-glass-alpha', alpha);
+          if (Number(alpha) === 0) {
+            document.documentElement.style.setProperty('--border-glass', 'rgba(0, 240, 255, 0.15)');
+          } else {
+            document.documentElement.style.setProperty('--border-glass', 'rgba(0, 240, 255, 0.38)');
+          }
+        }
+      }
+    }
+
+    if (urlParams.get('scale')) applyOverlaySettings({ scale: urlParams.get('scale') });
+    if (urlParams.get('speed')) applyOverlaySettings({ speed: urlParams.get('speed') });
+    if (urlParams.get('fontSize') || urlParams.get('text_size')) applyOverlaySettings({ fontSize: urlParams.get('fontSize') || urlParams.get('text_size') });
+    if (urlParams.get('opacity')) applyOverlaySettings({ opacity: urlParams.get('opacity') });
+
     let mcState = {
       style: detectInitialStyle(),
       showTotems: true,
+      likeGoal: null,
       lastFollower: 'En espera...',
       totalLikes: 0,
       items: [
-        { id: '1', gift_name: 'Rosa', icon_file: 'rose-1-coins.webp', coins: 1, action_label: '💥 Kaboom x10', mult: 'x10' },
-        { id: '2', gift_name: 'GG', icon_file: 'gg-1-coins.webp', coins: 1, action_label: '🧨 TNT x10', mult: 'x10' },
-        { id: '3', gift_name: 'Heart Me', icon_file: 'heart-me-1-coins.webp', coins: 1, action_label: '⚡ Thunder + Alerta', mult: 'PRIOR' },
-        { id: '4', gift_name: 'Finger Heart', icon_file: 'finger-heart-5-coins.webp', coins: 5, action_label: '⚡ Thunder x10', mult: 'x10' },
-        { id: '5', gift_name: 'Doughnut', icon_file: 'doughnut-30-coins.webp', coins: 30, action_label: '⚔️ Kit Armadura OP', mult: 'KIT' },
-        { id: '6', gift_name: 'Capybara', icon_file: 'capybara-30-coins.webp', coins: 30, action_label: '🛡️ +25 Tótems Stack', mult: '+25' },
-        { id: '7', gift_name: 'Game Controller', icon_file: 'game-controller-100-coins.webp', coins: 100, action_label: '🧟 Horda Zombies x500', mult: 'x500' },
-        { id: '8', gift_name: 'Sun Crown', icon_file: 'sun-crown-199-coins.webp', coins: 199, action_label: '☀️ Sol Cruel', mult: 'SOL' },
-        { id: '9', gift_name: 'Corgi', icon_file: 'corgi-299-coins.webp', coins: 299, action_label: '🛡️ +124 Tótems Stack', mult: '+124' },
-        { id: '10', gift_name: 'Money Gun', icon_file: 'money-gun-500-coins.webp', coins: 500, action_label: '🐉 Invocación Dragón', mult: 'BOSS' },
-        { id: '11', gift_name: 'Galaxy', icon_file: 'galaxy-1000-coins.webp', coins: 1000, action_label: '💀 La Parka Final', mult: 'FINAL' },
-        { id: '12', gift_name: 'Lion', icon_file: 'lion-29999-coins.webp', coins: 29999, action_label: '🔥 Apocalipsis Total', mult: 'ULTRA' }
+        { id: '1', gift_name: 'Rosa', icon_file: 'rose-1-coins.webp', action_image: '', coins: 1, action_label: '⚡ Rayo Trueno', mult: 'x1' },
+        { id: '2', gift_name: 'GG', icon_file: 'gg-1-coins.webp', action_image: '', coins: 1, action_label: '🧨 TNT Box 100%', mult: 'x1' },
+        { id: '3', gift_name: 'Maracas', icon_file: 'maracas-1-coins.webp', action_image: '', coins: 1, action_label: '🛡️ +1 Tótem Stack', mult: '+1' },
+        { id: '4', gift_name: 'Ice Cream Cone', icon_file: 'ice-cream-cone-1-coins.webp', action_image: '', coins: 1, action_label: '🛡️ Kit Cuero Niv 10', mult: 'KIT' },
+        { id: '5', gift_name: 'Heart Me', icon_file: 'heart-me-1-coins.webp', action_image: '', coins: 1, action_label: '💀 Esqueleto Hostil', mult: 'x1' },
+        { id: '6', gift_name: 'TikTok', icon_file: 'tiktok-1-coins.webp', action_image: '', coins: 1, action_label: '🐝 Enjambre Abejas', mult: 'x1' },
+        { id: '7', gift_name: 'Cute Cat', icon_file: 'cute-cat-5-coins.webp', action_image: '', coins: 5, action_label: '🛡️ Escudo Energía', mult: 'ESCUDO' },
+        { id: '8', gift_name: 'Finger Heart', icon_file: 'finger-heart-5-coins.webp', action_image: '', coins: 5, action_label: '⚡ Super Rayo (DPS)', mult: 'RAYO' },
+        { id: '9', gift_name: 'Mic', icon_file: 'mic-5-coins.webp', action_image: '', coins: 5, action_label: '🧙 Orbe Aliado', mult: 'ORBE' },
+        { id: '10', gift_name: 'Fireball', icon_file: 'fireball-5-coins.webp', action_image: '', coins: 5, action_label: '⚔️ Corona Espadas', mult: 'x1' },
+        { id: '11', gift_name: 'Rosa', icon_file: 'rosa-10-coins.webp', action_image: '', coins: 10, action_label: '🛡️ Kit Hierro Niv 10', mult: 'KIT' },
+        { id: '12', gift_name: 'Balloons', icon_file: 'balloons-10-coins.webp', action_image: '', coins: 10, action_label: '🕳️ Agujero Negro', mult: 'x1' },
+        { id: '13', gift_name: 'Perfume', icon_file: 'perfume-15-coins.webp', action_image: '', coins: 15, action_label: '🛡️ Kit Diamante Niv 10', mult: 'KIT' },
+        { id: '14', gift_name: 'Doughnut', icon_file: 'doughnut-30-coins.webp', action_image: '', coins: 30, action_label: '🎠 Carrusel Mágico', mult: 'x1' },
+        { id: '15', gift_name: 'Capybara', icon_file: 'capybara-30-coins.webp', action_image: '', coins: 30, action_label: '🛡️ +10 Tótems Stack', mult: '+10' },
+        { id: '16', gift_name: 'Paper Crane', icon_file: 'paper-crane-99-coins.webp', action_image: '', coins: 99, action_label: '🛡️ Kit Netherite Niv 10', mult: 'GOD' },
+        { id: '17', gift_name: 'Cap', icon_file: 'cap-99-coins.webp', action_image: '', coins: 99, action_label: '✝️ Cruz de Rayos', mult: 'RAYO' },
+        { id: '18', gift_name: 'Game Controller', icon_file: 'game-controller-100-coins.webp', action_image: '', coins: 100, action_label: '☢️ Bomba Atómica', mult: 'NUKE' },
+        { id: '19', gift_name: 'Sun Crown', icon_file: 'sun-crown-199-coins.webp', action_image: '', coins: 199, action_label: '☀️ Sol Cruel (DPS 10)', mult: 'SOL' },
+        { id: '20', gift_name: 'Hearts', icon_file: 'hearts-199-coins.webp', action_image: '', coins: 199, action_label: '💀 La Parka (Corazón)', mult: 'PARKA' },
+        { id: '21', gift_name: 'Panda Climb', icon_file: 'panda-climb-199-coins.webp', action_image: '', coins: 199, action_label: '💀 La Parka (Panda)', mult: 'PARKA' },
+        { id: '22', gift_name: 'Boxing Gloves', icon_file: 'boxing-gloves-299-coins.webp', action_image: '', coins: 299, action_label: '🌀 Hakai Destrucción', mult: 'HAKAI' },
+        { id: '23', gift_name: 'Money Gun', icon_file: 'money-gun-500-coins.webp', action_image: '', coins: 500, action_label: '✧ Arcángel Metatrón', mult: 'BOSS' },
+        { id: '24', gift_name: 'Galaxy', icon_file: 'galaxy-1000-coins.webp', action_image: '', coins: 1000, action_label: '🐉 6 Dragones (DPS 10)', mult: 'DRAGON' }
       ]
     };
 
     const container = document.getElementById('mc-content-container');
     const hudLastFollower = document.getElementById('hud-last-follower');
     const likesCurrentCycleEl = document.getElementById('likes-current-cycle');
+    const likesGoalPill = document.getElementById('hud-likes-goal-pill');
+    const likesGoalTitle = document.getElementById('likes-goal-title');
+    const likesGoalTarget = document.getElementById('likes-goal-target');
     const hudHeartGoalSvg = document.getElementById('hud-heart-goal-svg');
     const eventToast = document.getElementById('mc-event-toast');
     const toastIconBox = document.getElementById('toast-icon-box');
@@ -586,6 +706,7 @@
     function cleanGiftPath(raw) {
       if (!raw) return '/gifts/rose-1-coins.webp';
       const s = String(raw).trim();
+      if (s === 'LIKE_HEART' || s === 'FOLLOW_ICON') return s;
       if (s.startsWith('http://') || s.startsWith('https://')) return s;
       const clean = s.replace(/^(\.?\/)?gifts\//i, '');
       return `/gifts/${clean || 'rose-1-coins.webp'}`;
@@ -604,6 +725,16 @@
       return 'x1';
     }
 
+    function renderGiftIconOrEmoji(gSrc, cls = 'mc-card-img') {
+      if (gSrc === 'LIKE_HEART') {
+        return `<div class="${cls}" style="display:flex;align-items:center;justify-content:center;font-size:32px;">❤️</div>`;
+      }
+      if (gSrc === 'FOLLOW_ICON') {
+        return `<div class="${cls}" style="display:flex;align-items:center;justify-content:center;font-size:30px;">🐺</div>`;
+      }
+      return `<img src="${gSrc}" class="${cls}" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='/gifts/rose-1-coins.webp';" />`;
+    }
+
     function renderOverlay() {
       hudLastFollower.textContent = mcState.lastFollower || '@Streamer';
 
@@ -611,20 +742,48 @@
       const activeStyle = urlParams.get('style') || (
         pathName.includes('estatico') ? 'static' :
         pathName.includes('plano') ? 'flat' :
+        pathName.includes('carrusel') ? 'carousel' :
+        pathName.includes('s2e') ? 's2e' :
         mcState.style || 'carousel'
       );
 
-      if (activeStyle === 'flat') {
+      if (activeStyle === 's2e') {
+        container.className = 'layout-s2e';
+        container.innerHTML = items.map(item => {
+          const gSrc = cleanGiftPath(item.icon_file);
+          const actSrc = item.action_image ? cleanGiftPath(item.action_image) : '';
+          const mult = item.mult || extractMultiplierBadge(item.action_label, item.coins);
+          const mainImg = actSrc || (gSrc !== 'LIKE_HEART' && gSrc !== 'FOLLOW_ICON' ? gSrc : '/gifts/rose-1-coins.webp');
+          let giftIconHtml = '';
+          if (gSrc === 'LIKE_HEART') {
+            giftIconHtml = `<span style="font-size:18px;">❤️</span>`;
+          } else if (gSrc === 'FOLLOW_ICON') {
+            giftIconHtml = `<span style="font-size:18px;">🐺</span>`;
+          } else {
+            giftIconHtml = `<img src="${gSrc}" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='/gifts/rose-1-coins.webp';" />`;
+          }
+
+          return `
+            <div class="s2e-strip-card mc-item-node" data-gift-name="${(item.gift_name || '').toLowerCase()}">
+              <span class="s2e-mult">${mult}</span>
+              <img src="${mainImg}" class="s2e-mob-img" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='/gifts/rose-1-coins.webp';" />
+              <div class="s2e-gift-box">${giftIconHtml}</div>
+            </div>
+          `;
+        }).join('');
+      } else if (activeStyle === 'flat') {
         container.className = 'layout-flat';
         container.innerHTML = items.map(item => {
           const gSrc = cleanGiftPath(item.icon_file);
+          const actSrc = item.action_image ? cleanGiftPath(item.action_image) : '';
           const mult = item.mult || extractMultiplierBadge(item.action_label, item.coins);
+          const mainImgHtml = actSrc ? `<img src="${actSrc}" class="flat-icon" onerror="this.src='/gifts/rose-1-coins.webp';" />` : renderGiftIconOrEmoji(gSrc, 'flat-icon');
           return `
             <div class="flat-pill mc-item-node" data-gift-name="${(item.gift_name || '').toLowerCase()}">
-              <img src="${gSrc}" class="flat-icon" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='/gifts/rose-1-coins.webp';" />
+              ${mainImgHtml}
               <div class="flat-meta">
                 <span class="flat-action">${item.action_label || item.gift_name}</span>
-                <span class="flat-coins">${item.gift_name} • ${item.coins} 🪙 (${mult})</span>
+                <span class="flat-coins">${item.gift_name} • ${item.coins > 0 ? item.coins + ' 🪙' : ''} (${mult})</span>
               </div>
             </div>
           `;
@@ -633,16 +792,20 @@
         container.className = 'layout-static';
         container.innerHTML = items.map(item => {
           const gSrc = cleanGiftPath(item.icon_file);
+          const actSrc = item.action_image ? cleanGiftPath(item.action_image) : '';
           const mult = item.mult || extractMultiplierBadge(item.action_label, item.coins);
+          const mainImgHtml = actSrc
+            ? `<img src="${actSrc}" class="mc-card-img" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='/gifts/rose-1-coins.webp';" /><img src="${gSrc}" class="mc-card-gift-mini" onerror="this.style.display='none'" />`
+            : renderGiftIconOrEmoji(gSrc, 'mc-card-img');
           return `
             <div class="mc-card mc-item-node" data-gift-name="${(item.gift_name || '').toLowerCase()}">
               <span class="mc-badge-mult ${item.coins >= 500 ? 'gold' : item.coins >= 30 ? 'blue' : ''}">${mult}</span>
               <div class="mc-card-img-wrap">
-                <img src="${gSrc}" class="mc-card-img" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='/gifts/rose-1-coins.webp';" />
+                ${mainImgHtml}
               </div>
               <div class="mc-card-action">${item.action_label || item.gift_name}</div>
               <div class="mc-card-giftname">${item.gift_name}</div>
-              <div class="mc-card-coins">${item.coins} 🪙</div>
+              <div class="mc-card-coins">${item.coins > 0 ? item.coins + ' 🪙' : (item.mult || 'Evento')}</div>
             </div>
           `;
         }).join('');
@@ -651,16 +814,20 @@
         container.className = 'layout-carousel';
         container.innerHTML = `<div class="carousel-track">` + loopItems.map(item => {
           const gSrc = cleanGiftPath(item.icon_file);
+          const actSrc = item.action_image ? cleanGiftPath(item.action_image) : '';
           const mult = item.mult || extractMultiplierBadge(item.action_label, item.coins);
+          const mainImgHtml = actSrc
+            ? `<img src="${actSrc}" class="mc-card-img" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='/gifts/rose-1-coins.webp';" /><img src="${gSrc}" class="mc-card-gift-mini" onerror="this.style.display='none'" />`
+            : renderGiftIconOrEmoji(gSrc, 'mc-card-img');
           return `
             <div class="mc-card mc-item-node" data-gift-name="${(item.gift_name || '').toLowerCase()}">
               <span class="mc-badge-mult ${item.coins >= 500 ? 'gold' : item.coins >= 30 ? 'blue' : ''}">${mult}</span>
               <div class="mc-card-img-wrap">
-                <img src="${gSrc}" class="mc-card-img" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='/gifts/rose-1-coins.webp';" />
+                ${mainImgHtml}
               </div>
               <div class="mc-card-action">${item.action_label || item.gift_name}</div>
               <div class="mc-card-giftname">${item.gift_name}</div>
-              <div class="mc-card-coins">${item.coins} 🪙</div>
+              <div class="mc-card-coins">${item.coins > 0 ? item.coins + ' 🪙' : (item.mult || 'Evento')}</div>
             </div>
           `;
         }).join('') + `</div>`;
@@ -726,7 +893,7 @@
       const u = String(user || 'Viewer').replace(/^@/, '');
       mcState.lastFollower = '@' + u;
       hudLastFollower.textContent = '@' + u;
-      triggerToast('follow', u, '🐺 ¡Nuevo Seguidor! Lobo Guardián invocado');
+      triggerToast('follow', u, 'Nuevo seguidor');
     }
 
     function onLikeEvent(user, count = 1) {
@@ -735,14 +902,16 @@
       totalLikes += c;
       likesCycle += c;
 
-      hudHeartGoalSvg.classList.remove('heart-pop-burst');
-      void hudHeartGoalSvg.offsetWidth;
-      hudHeartGoalSvg.classList.add('heart-pop-burst');
-      spawnFloatingHeart();
-
-      if (likesCycle >= 50) {
-        triggerToast('like', u, '❤️ ¡Meta de 50 Likes Alcanzada! Impulso activado');
-        likesCycle = likesCycle % 50;
+      const goal = Math.max(0, Number(mcState.likeGoal?.threshold) || 0);
+      if (goal) {
+        hudHeartGoalSvg.classList.remove('heart-pop-burst');
+        void hudHeartGoalSvg.offsetWidth;
+        hudHeartGoalSvg.classList.add('heart-pop-burst');
+        spawnFloatingHeart();
+        if (likesCycle >= goal) {
+          triggerToast('like', u, mcState.likeGoal.label || `Meta de ${goal} likes`);
+          likesCycle %= goal;
+        }
       }
 
       likesCurrentCycleEl.textContent = likesCycle;
@@ -774,7 +943,20 @@
         mcRoot.style.setProperty('--ui-scale', (d.duel.gift_scale / 100).toFixed(2));
       }
       if (d.mc_overlay) {
-        mcState = { ...mcState, ...d.mc_overlay };
+        applyOverlaySettings(d.mc_overlay);
+        if (d.mc_overlay.style) mcState.style = d.mc_overlay.style;
+        if (d.mc_overlay.showTotems !== undefined) mcState.showTotems = d.mc_overlay.showTotems;
+        mcState.likeGoal = d.mc_overlay.likeGoal || null;
+        likesGoalPill.style.display = mcState.likeGoal ? '' : 'none';
+        if (mcState.likeGoal) {
+          likesGoalTitle.textContent = mcState.likeGoal.label || `Meta de ${mcState.likeGoal.threshold} likes`;
+          likesGoalTarget.textContent = mcState.likeGoal.threshold;
+          likesGoalPill.title = likesGoalTitle.textContent;
+          likesCurrentCycleEl.textContent = likesCycle % Math.max(1, Number(mcState.likeGoal.threshold) || 1);
+        }
+        if (Array.isArray(d.mc_overlay.items)) {
+          mcState.items = d.mc_overlay.items;
+        }
         renderOverlay();
       }
       if (d.type === 'follow' || d.event === 'follow') {

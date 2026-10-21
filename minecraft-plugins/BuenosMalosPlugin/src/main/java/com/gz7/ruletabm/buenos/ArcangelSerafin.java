@@ -317,6 +317,10 @@ public class ArcangelSerafin implements GiftHandler {
 
     @Override
     public void execute(Player target, String donador, JavaPlugin plugin) {
+        if (org.bukkit.Bukkit.getPluginManager().getPlugin("MiniLiveArcangel") != null) {
+            org.bukkit.Bukkit.dispatchCommand(org.bukkit.Bukkit.getConsoleSender(), "arcangel " + target.getName() + " " + donador);
+            return;
+        }
         BuenosMalosMain main = (BuenosMalosMain) plugin;
         Location playerLoc = target.getLocation();
         World world = playerLoc.getWorld();

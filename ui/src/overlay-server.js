@@ -82,6 +82,22 @@ export class OverlayBridge {
       }
     }
   }
+
+  async updateMcOverlay(config) {
+    const invoke = this.getInvoke();
+    const config_json = typeof config === 'string' ? config : JSON.stringify(config);
+    if (invoke) {
+      try {
+        await invoke('update_mc_overlay_config', { config_json });
+      } catch (err) {
+        try {
+          await invoke('update_mc_overlay_config', { configJson: config_json });
+        } catch (e) {
+          console.warn('Error llamando update_mc_overlay_config:', e);
+        }
+      }
+    }
+  }
 }
 
 export const overlayServer = new OverlayBridge();

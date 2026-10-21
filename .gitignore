@@ -4,6 +4,7 @@ src-tauri/**/target/
 
 # Node.js
 node_modules/
+runtime/node.exe
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

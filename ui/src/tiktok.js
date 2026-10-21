@@ -32,15 +32,27 @@ export class TikTokBridge extends EventEmitter {
   isDuplicate(eventName, data) {
     if (!data) return false;
     const msgId = String(data.msgId || data.common?.msgId || '');
-    const user = String(data.uniqueId || data.userId || data.nickname || '');
-    const gift = String(data.giftId || data.giftName || '');
-    const count = Number(data.repeatCount || data.likeCount || data.count || 1);
-    const end = data.repeatEnd ? 1 : 0;
-    const timeWindow = Math.floor(Date.now() / 1500);
+    if (msgId) {
+      if (this.recentEventKeys.has(msgId)) {
+        return true;
+      }
+      this.recentEventKeys.add(msgId);
+      if (this.recentEventKeys.size > 3000) {
+        const first = this.recentEventKeys.values().next().value;
+        this.recentEventKeys.delete(first);
+      }
+      return false;
+    }
 
-    const sig = msgId
-      ? `${eventName}:${msgId}:${count}:${end}`
-      : `${eventName}:${user}:${gift}:${count}:${end}:${timeWindow}`;
+    // Los regalos de stream en directo (combos y rachas) NUNCA deben descartarse por ventana de tiempo fija
+    if (eventName === 'gift') {
+      return false;
+    }
+
+    const user = String(data.uniqueId || data.userId || data.nickname || '');
+    const count = Number(data.likeCount || data.count || 1);
+    const timeWindow = Math.floor(Date.now() / 1000);
+    const sig = `${eventName}:${user}:${count}:${timeWindow}`;
 
     if (this.recentEventKeys.has(sig)) {
       return true;
@@ -74,16 +86,18 @@ export class TikTokBridge extends EventEmitter {
 
     this.cleanupCurrentConnection();
 
+    this.startSseEventStream();
     try {
       const invoke = window.__TAURI__?.core?.invoke || window.__TAURI__?.invoke;
-      if (invoke) {
-        const apiKey = localStorage.getItem('galactk_euler_key') || null;
-        invoke('start_tiktok_sidecar', { username: this.username, apiKey }).catch(() => {});
-      }
-    } catch (_) {}
-
-    this.startSseEventStream();
-    return { ok: true, username: this.username };
+      if (!invoke) throw new Error('El conector TikTok requiere abrir la aplicación de escritorio.');
+      const apiKey = localStorage.getItem('galactk_euler_key') || null;
+      const result = await invoke('start_tiktok_sidecar', { username: this.username, apiKey });
+      return { ok: true, username: this.username, result };
+    } catch (error) {
+      this.cleanupCurrentConnection();
+      this.handleDisconnected(error?.message || 'No se pudo iniciar el conector');
+      throw error;
+    }
   }
 
   startSseEventStream() {
@@ -120,7 +134,13 @@ export class TikTokBridge extends EventEmitter {
           }
         } catch (_) {}
       };
-      this.sseSource.onerror = () => {};
+      this.sseSource.onerror = () => {
+        if (!this.explicitDisconnect && this.isConnected) {
+          this.isConnected = false;
+          this.isConnecting = true;
+          this.emit('reconnecting', { username: this.username });
+        }
+      };
     } catch (_) {}
   }
 
@@ -157,6 +177,7 @@ export class TikTokBridge extends EventEmitter {
   }
 
   handleConnected(info) {
+    const wasConnected = this.isConnected;
     this.isConnecting = false;
     this.isConnected = true;
     this.reconnectAttempts = 0;
@@ -164,7 +185,7 @@ export class TikTokBridge extends EventEmitter {
       clearTimeout(this.reconnectTimer);
       this.reconnectTimer = null;
     }
-    this.emit('connected', { username: this.username, info });
+    if (!wasConnected) this.emit('connected', { username: this.username, info });
   }
 
   handleDisconnected(reason) {
@@ -181,6 +202,8 @@ export class TikTokBridge extends EventEmitter {
       this.reconnectTimer = null;
     }
     this.cleanupCurrentConnection();
+    const invoke = window.__TAURI__?.core?.invoke || window.__TAURI__?.invoke;
+    invoke?.('stop_tiktok_sidecar').catch(error => console.warn('Deteniendo TikTok:', error));
     this.isConnected = false;
     this.isConnecting = false;
     this.emit('disconnected', { reason: 'Desconexión manual por usuario', wasConnected: true });

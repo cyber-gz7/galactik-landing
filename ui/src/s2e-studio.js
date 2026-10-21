@@ -52,7 +52,6 @@ export function initS2EStudio() {
   if (document.getElementById('s2e-presets-studio-card')) return;
 
   injectNavTab();
-  injectMinecraftPreajustesSection();
   injectAlertasChromaTabPane();
   injectAudioSelectorModal();
   injectMcActionEditorModal();
@@ -123,6 +122,60 @@ function injectMinecraftPreajustesSection() {
       </div>
     </div>
 
+    <!-- BARRA EN VIVO DE AJUSTES DEL OVERLAY (TAMAÑO, VELOCIDAD, TEXTO, TRANSPARENCIA) -->
+    <div class="mc-overlay-live-controls-bar" style="background:rgba(14, 20, 32, 0.85);border:1.5px solid rgba(0, 240, 255, 0.28);border-radius:12px;padding:12px 16px;margin-bottom:14px;box-shadow:0 8px 24px rgba(0,0,0,0.5);">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:16px;">🎛️</span>
+          <strong style="color:#fff;font-size:13px;letter-spacing:0.5px;text-transform:uppercase;">Personalización en Vivo del Overlay (OBS)</strong>
+          <span style="font-size:11px;color:#38bdf8;background:rgba(56,189,248,0.12);padding:2px 8px;border-radius:99px;border:1px solid rgba(56,189,248,0.3);">Cambios en Caliente</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button type="button" class="btn-primary" id="btn-sync-live-overlay-now" style="padding:6px 14px;font-size:11.5px;background:#0284c7;display:inline-flex;align-items:center;gap:6px;">
+            🔄 Sincronizar OBS Ahora
+          </button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));gap:14px;align-items:center;">
+        <!-- Slider 1: Escala / Tamaño General -->
+        <div style="background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <label style="font-size:11px;font-weight:700;color:#94a3b8;">🔍 Tamaño / Escala</label>
+            <span id="label-mc-overlay-scale" style="font-family:var(--font-mono);font-size:11px;color:#38bdf8;font-weight:800;">100%</span>
+          </div>
+          <input type="range" id="slider-mc-overlay-scale" min="60" max="160" value="100" step="5" style="width:100%;accent-color:#0284c7;cursor:pointer;" />
+        </div>
+
+        <!-- Slider 2: Velocidad de Rotación -->
+        <div style="background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <label style="font-size:11px;font-weight:700;color:#94a3b8;">⚡ Velocidad Carrusel</label>
+            <span id="label-mc-overlay-speed" style="font-family:var(--font-mono);font-size:11px;color:#fbbf24;font-weight:800;">28s</span>
+          </div>
+          <input type="range" id="slider-mc-overlay-speed" min="10" max="60" value="28" step="2" style="width:100%;accent-color:#fbbf24;cursor:pointer;" />
+        </div>
+
+        <!-- Slider 3: Tamaño de Fuente / Texto -->
+        <div style="background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <label style="font-size:11px;font-weight:700;color:#94a3b8;">🔤 Tamaño Texto</label>
+            <span id="label-mc-overlay-font-size" style="font-family:var(--font-mono);font-size:11px;color:#10b981;font-weight:800;">11.5px</span>
+          </div>
+          <input type="range" id="slider-mc-overlay-font-size" min="9" max="17" value="11.5" step="0.5" style="width:100%;accent-color:#10b981;cursor:pointer;" />
+        </div>
+
+        <!-- Slider 4: Fondo 100% Transparente vs Vidrio -->
+        <div style="background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <label style="font-size:11px;font-weight:700;color:#94a3b8;">✨ Fondo Transparente</label>
+            <span id="label-mc-overlay-opacity" style="font-family:var(--font-mono);font-size:11px;color:#f43f5e;font-weight:800;">72% (Vidrio)</span>
+          </div>
+          <input type="range" id="slider-mc-overlay-opacity" min="0" max="100" value="72" step="5" style="width:100%;accent-color:#f43f5e;cursor:pointer;" />
+        </div>
+      </div>
+    </div>
+
     <!-- Tira blanca/limpia idéntica a Stream To Earn con 1x, 10x, 32x, 500x + Mob + Regalo -->
     <div class="s2e-strip-preview" id="s2e-mc-strip-preview" title="Haz clic en cualquier columna para probar la acción y su sonido divertido"></div>
 
@@ -151,6 +204,9 @@ function injectMinecraftPreajustesSection() {
       </div>
 
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <button type="button" class="btn-primary" id="btn-s2e-activate-to-overlay" style="padding:7px 15px;font-size:12px;font-weight:800;background:linear-gradient(135deg, #10b981, #059669);box-shadow:0 0 14px rgba(16,185,129,0.45);border:none;cursor:pointer;">
+          🎯 Activar en Overlay (OBS)
+        </button>
         <label style="font-size:12px;color:#9ca3af;">Play delay</label>
         <select id="s2e-play-delay-select" class="table-select" style="background:#1f242d;color:#fff;padding:6px 10px;border-radius:8px;">
           <option value="Off">Off</option>
@@ -183,6 +239,49 @@ function injectMinecraftPreajustesSection() {
     mcSection.appendChild(wrapper);
   }
 
+  // Listeners de controles en vivo del overlay (OBS)
+  const sliderScale = document.getElementById('slider-mc-overlay-scale');
+  const labelScale = document.getElementById('label-mc-overlay-scale');
+  sliderScale?.addEventListener('input', async e => {
+    const val = Number(e.target.value) || 100;
+    if (labelScale) labelScale.textContent = `${val}%`;
+    app.mcOverlayScale = val;
+    await app.syncMcOverlayToBackend();
+  });
+
+  const sliderSpeed = document.getElementById('slider-mc-overlay-speed');
+  const labelSpeed = document.getElementById('label-mc-overlay-speed');
+  sliderSpeed?.addEventListener('input', async e => {
+    const val = Number(e.target.value) || 28;
+    if (labelSpeed) labelSpeed.textContent = `${val}s`;
+    app.mcOverlaySpeed = val;
+    await app.syncMcOverlayToBackend();
+  });
+
+  const sliderFontSize = document.getElementById('slider-mc-overlay-font-size');
+  const labelFontSize = document.getElementById('label-mc-overlay-font-size');
+  sliderFontSize?.addEventListener('input', async e => {
+    const val = Number(e.target.value) || 11.5;
+    if (labelFontSize) labelFontSize.textContent = `${val}px`;
+    app.mcOverlayFontSize = val;
+    await app.syncMcOverlayToBackend();
+  });
+
+  const sliderOpacity = document.getElementById('slider-mc-overlay-opacity');
+  const labelOpacity = document.getElementById('label-mc-overlay-opacity');
+  sliderOpacity?.addEventListener('input', async e => {
+    const val = Number(e.target.value);
+    if (labelOpacity) labelOpacity.textContent = val === 0 ? '0% (100% Transparente)' : `${val}% (Vidrio)`;
+    app.mcOverlayOpacity = val;
+    await app.syncMcOverlayToBackend();
+  });
+
+  document.getElementById('btn-sync-live-overlay-now')?.addEventListener('click', async () => {
+    await app.syncMcOverlayToBackend();
+    await app.persistConfig();
+    notifyToast('🔄 Overlay de OBS sincronizado en vivo (escala, velocidad, texto y transparencia)');
+  });
+
   document.getElementById('btn-copy-s2e-overlay-url')?.addEventListener('click', () => {
     const url = 'http://localhost:4000/mc_overlay.html?style=s2e';
     navigator.clipboard.writeText(url);
@@ -195,12 +294,18 @@ function injectMinecraftPreajustesSection() {
     notifyToast('🎯 Estilo Tira StreamToEarn (1x/10x/500x) activado en tu Overlay de Minecraft');
   });
 
+  document.getElementById('btn-s2e-activate-to-overlay')?.addEventListener('click', async () => {
+    await app.activatePreset(app.activeS2EPresetId);
+    notifyToast(`🎯 ¡Preajuste "${app.getActiveS2EPreset()?.name}" activado y transmitiendo al Overlay de OBS!`);
+  });
+
   document.getElementById('s2e-active-preset-check')?.addEventListener('change', async e => {
     const p = app.getActiveS2EPreset();
     if (p) {
       p.active = e.target.checked;
+      await app.syncMcOverlayToBackend();
       await app.persistConfig();
-      notifyToast(p.active ? `✔ Preajuste "${p.name}" activado` : `⏸ Preajuste "${p.name}" pausado`);
+      notifyToast(p.active ? `✔ Preajuste "${p.name}" activado en Overlay` : `⏸ Preajuste "${p.name}" pausado`);
     }
   });
 
@@ -233,10 +338,8 @@ function injectMinecraftPreajustesSection() {
       events: clonedEvents
     };
     app.s2ePresets.unshift(newPreset);
-    app.activeS2EPresetId = newPreset.id;
-    renderS2EPresetsStudio();
-    await app.persistConfig();
-    notifyToast(`✔ Nuevo preajuste "${newPreset.name}" creado`);
+    await app.activatePreset(newPreset.id);
+    notifyToast(`✔ Nuevo preajuste "${newPreset.name}" creado y activado en Overlay`);
   });
 
   document.getElementById('btn-s2e-rename-preset')?.addEventListener('click', async () => {
@@ -284,8 +387,9 @@ function injectMinecraftPreajustesSection() {
     };
     p.events.unshift(newEv);
     renderS2EPresetsStudio();
+    await app.syncMcOverlayToBackend();
     await app.persistConfig();
-    notifyToast('➕ Nuevo evento añadido al inicio del preajuste');
+    notifyToast('➕ Nuevo evento añadido y sincronizado con el Overlay');
   });
 }
 
@@ -311,6 +415,35 @@ export function renderS2EPresetsStudio() {
     countBadge.textContent = `${activeCount} / ∞ Eventos Activos (Sin Límite)`;
   }
 
+  // Sincronizar valores de sliders de personalización en vivo
+  const sliderScale = document.getElementById('slider-mc-overlay-scale');
+  const labelScale = document.getElementById('label-mc-overlay-scale');
+  if (sliderScale && app.mcOverlayScale) {
+    sliderScale.value = app.mcOverlayScale;
+    if (labelScale) labelScale.textContent = `${app.mcOverlayScale}%`;
+  }
+
+  const sliderSpeed = document.getElementById('slider-mc-overlay-speed');
+  const labelSpeed = document.getElementById('label-mc-overlay-speed');
+  if (sliderSpeed && app.mcOverlaySpeed) {
+    sliderSpeed.value = app.mcOverlaySpeed;
+    if (labelSpeed) labelSpeed.textContent = `${app.mcOverlaySpeed}s`;
+  }
+
+  const sliderFontSize = document.getElementById('slider-mc-overlay-font-size');
+  const labelFontSize = document.getElementById('label-mc-overlay-font-size');
+  if (sliderFontSize && app.mcOverlayFontSize) {
+    sliderFontSize.value = app.mcOverlayFontSize;
+    if (labelFontSize) labelFontSize.textContent = `${app.mcOverlayFontSize}px`;
+  }
+
+  const sliderOpacity = document.getElementById('slider-mc-overlay-opacity');
+  const labelOpacity = document.getElementById('label-mc-overlay-opacity');
+  if (sliderOpacity && app.mcOverlayOpacity !== undefined) {
+    sliderOpacity.value = app.mcOverlayOpacity;
+    if (labelOpacity) labelOpacity.textContent = Number(app.mcOverlayOpacity) === 0 ? '0% (100% Transparente)' : `${app.mcOverlayOpacity}% (Vidrio)`;
+  }
+
   // 1. Renderizar pastillas de Preajustes
   pillsBar.innerHTML = `<div style="display:flex;gap:8px;flex-wrap:wrap;">` +
     app.s2ePresets.map(p => `
@@ -324,14 +457,13 @@ export function renderS2EPresetsStudio() {
 
   pillsBar.querySelectorAll('.s2e-preset-pill').forEach(btn => {
     btn.addEventListener('click', async () => {
-      app.activeS2EPresetId = btn.getAttribute('data-pid');
-      renderS2EPresetsStudio();
-      await app.persistConfig();
-      notifyToast(`Preajuste cargado: ${app.getActiveS2EPreset()?.name}`);
+      const pid = btn.getAttribute('data-pid');
+      await app.activatePreset(pid);
+      notifyToast(`🎯 Preajuste cargado y sincronizado con el Overlay: ${app.getActiveS2EPreset()?.name}`);
     });
   });
 
-  // 2. Renderizar Tira Visual de Acciones de Minecraft (Idéntica a Captura 1)
+  // 2. Renderizar Tira Visual de Acciones de Minecraft
   const stripEvents = (activePreset.events || []).filter(e => e.active !== false).slice(0, 12);
   stripEl.innerHTML = stripEvents.map((ev, idx) => {
     const rep = Number(ev.func?.repetition) || 1;
@@ -369,77 +501,94 @@ export function renderS2EPresetsStudio() {
     });
   });
 
-  // 3. Renderizar Lista de Eventos del Preajuste (Idéntica a Captura 1)
+  // 3. Renderizar Lista de Eventos del Preajuste (Diseño Espacioso Apple Glass / Galactic)
   eventsList.innerHTML = (activePreset.events || []).map((ev, idx) => {
     const act = ev.trigger?.action || 'SelectedGift';
     const rep = Number(ev.func?.repetition) || 1;
     const mcImg = ev.func?.imageUrl || 'http://localhost:4000/s2e_media/images/public/Minecraft/1730216866942_creeper-charged.png';
-    const audName = ev.audio?.name || 'Sin audio (Click para elegir)';
-    const waveformSvg = renderWaveformSvg(ev.audio?.peaks || '', audName, 36, 24);
+    const audName = ev.audio?.name || 'Sin audio';
+    const waveformSvg = renderWaveformSvg(ev.audio?.peaks || '', audName, 40, 24);
+    const mainCmd = (ev.func?.commands && ev.func.commands[0]) || '';
+
+    // Clasificación Clara de Rol (Héroe Salvación vs Ataque Destructivo)
+    const isHero = /kit|totem|escudo|aliado|apple/i.test(mainCmd + ' ' + (ev.func?.name || ''));
+    const badgeTypeHtml = isHero
+      ? `<span class="s2e-type-badge hero">🛡️ SALVACIÓN</span>`
+      : `<span class="s2e-type-badge attack">⚔️ ATAQUE</span>`;
 
     let trigIconHtml = '';
-    let trigTypeLabel = '♪ Regalo';
-    let trigSubLabel = `🪙 ${ev.trigger?.coins || 1} (${ev.trigger?.giftName || 'Rose'})`;
+    let trigTitle = ev.trigger?.giftName || 'Regalo';
+    let trigSub = '';
 
     if (act === 'LikeForEach' || act === 'Like') {
-      trigIconHtml = `<div class="s2e-strip-heart" style="width:40px;height:36px;">${ev.trigger?.value || 200}</div>`;
-      trigTypeLabel = '♪ Me gusta';
-      trigSubLabel = `${ev.trigger?.value || 200} Me gusta`;
+      trigIconHtml = `<div class="s2e-trig-icon-box heart">❤️</div>`;
+      trigTitle = `${ev.trigger?.value || 50} Likes`;
+      trigSub = `<span class="s2e-coin-pill likes">META LIKES</span>`;
     } else if (act === 'Follow') {
-      trigIconHtml = `<div class="s2e-strip-heart" style="width:40px;height:36px;background:#2563eb;">➕</div>`;
-      trigTypeLabel = '♪ Seguidor';
-      trigSubLabel = 'Nuevo seguidor';
+      trigIconHtml = `<div class="s2e-trig-icon-box follow">🐺</div>`;
+      trigTitle = 'Seguidor';
+      trigSub = `<span class="s2e-coin-pill follow">FOLLOW</span>`;
     } else {
       const fallbackFile = archivoDeGift(ev.trigger?.giftName, ev.trigger?.coins) || 'rose-1-coins.webp';
       const gUrl = (ev.trigger?.iconUrl && ev.trigger.iconUrl.startsWith('http'))
         ? ev.trigger.iconUrl
         : resolveGiftImgPath(fallbackFile);
-      trigIconHtml = `<img src="${gUrl}" style="width:40px;height:40px;object-fit:contain;" onerror="this.src='./gifts/rose-1-coins.webp'" />`;
+      trigIconHtml = `<div class="s2e-trig-icon-box"><img src="${gUrl}" onerror="this.src='./gifts/rose-1-coins.webp'" /></div>`;
+      const coins = ev.trigger?.coins || 1;
+      trigSub = `<span class="s2e-coin-pill coins">🪙 ${coins} ${coins === 1 ? 'Moneda' : 'Monedas'}</span>`;
     }
 
     return `
-      <div class="s2e-event-row" data-ev-idx="${idx}">
-        <!-- Columna 1: Disparador TikTok (Click para cambiar regalo/likes) -->
-        <div class="s2e-trig-cell" data-edit-trig="${idx}" title="Haz clic para cambiar el Regalo o Disparador de TikTok">
+      <div class="s2e-event-row ${ev.active === false ? 'disabled' : ''}" data-ev-idx="${idx}">
+        <!-- Columna 1: Disparador TikTok (Regalo / Likes) -->
+        <div class="s2e-col-trigger" data-edit-trig="${idx}" title="Haz clic para cambiar el Regalo o Disparador de TikTok">
           ${trigIconHtml}
-          <div style="line-height:1.25;">
-            <div style="font-size:11px;color:#9ca3af;">Cualquiera</div>
-            <div style="font-size:12px;font-weight:700;color:#e5e7eb;">${trigTypeLabel}</div>
-            <div style="font-size:12px;font-weight:800;color:#fbbf24;">${trigSubLabel}</div>
+          <div class="s2e-meta-box">
+            <span class="s2e-sub-label">DISPARADOR TIKTOK</span>
+            <strong class="s2e-main-title">${trigTitle}</strong>
+            <div>${trigSub}</div>
           </div>
         </div>
 
-        <!-- Columna 2: Acción Minecraft (Click para cambiar Mob, Multiplicador o Comando) -->
-        <div class="s2e-fn-cell" data-edit-fn="${idx}" title="Haz clic para editar la acción de Minecraft, ícono o comando RCON">
-          <img src="${mcImg}" style="width:42px;height:42px;object-fit:contain;" onerror="this.src='./gifts/rose-1-coins.webp'" />
-          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-            ${rep > 1 ? `<span class="s2e-mult-badge">x${rep}</span>` : ''}
-            <span style="font-size:14px;font-weight:700;color:#f3f4f6;">${ev.func?.name || 'Acción'}</span>
+        <!-- Columna 2: Acción Minecraft & Comando RCON Visible -->
+        <div class="s2e-col-action" data-edit-fn="${idx}" title="Haz clic para editar la acción de Minecraft, ícono o comando RCON">
+          <div class="s2e-mob-icon-box">
+            <img src="${mcImg}" onerror="this.src='./gifts/rose-1-coins.webp'" />
+            ${rep > 1 ? `<span class="s2e-mult-pill">x${rep}</span>` : ''}
           </div>
-        </div>
-
-        <!-- Columna 3: Audio Divertido + Forma de Onda (Click abre Modal Seleccionar Audio) -->
-        <div class="s2e-audio-cell" data-pick-audio="${idx}" title="Haz clic para abrir el catálogo de 258 sonidos de Stream To Earn">
-          <div style="min-width:140px;max-width:210px;">
-            <div style="font-size:13px;font-weight:700;color:#e5e7eb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-              🔊 ${audName}
+          <div class="s2e-action-meta">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;">
+              ${badgeTypeHtml}
+              <strong class="s2e-action-name">${ev.func?.name || 'Acción'}</strong>
             </div>
-            <div style="font-size:10px;color:#9ca3af;">
-              Vol: ${ev.audio?.volume ?? 100}% &bull; ${ev.audio?.playerType || 'Prioridad'}
+            <div class="s2e-rcon-pill" title="Comando RCON a ejecutar en PaperMC">
+              <code>${mainCmd || '/execute ...'}</code>
             </div>
           </div>
-          <div style="flex:1;min-width:120px;">
-            ${waveformSvg}
-          </div>
         </div>
 
-        <!-- Columna 4: Checkbox Activo + Botón Play Azul + Eliminar -->
-        <div style="display:flex;align-items:center;justify-content:flex-end;gap:10px;">
-          <input type="checkbox" class="s2e-ev-active-check" data-idx="${idx}" ${ev.active !== false ? 'checked' : ''} style="width:18px;height:18px;accent-color:#1668dc;cursor:pointer;" title="Activar/Desactivar este evento" />
-          <button type="button" class="s2e-play-btn btn-s2e-test-ev" data-idx="${idx}" title="Probar evento y sonido ahora">
-            ▶
+        <!-- Columna 3: Audio Divertido + Forma de Onda -->
+        <div class="s2e-col-audio" data-pick-audio="${idx}" title="Haz clic para abrir el catálogo de 258 sonidos de Stream To Earn">
+          <div class="s2e-audio-meta">
+            <span class="s2e-audio-name">🔊 ${audName}</span>
+            <span class="s2e-audio-vol">Vol: ${ev.audio?.volume ?? 100}% &bull; ${ev.audio?.playerType || 'Prioridad'}</span>
+          </div>
+          <div class="s2e-waveform-box">${waveformSvg}</div>
+        </div>
+
+        <!-- Columna 4: Controles de Fila (Switch, Test Play, Edit, Delete) -->
+        <div class="s2e-col-controls">
+          <label class="s2e-switch" title="Activar / Desactivar este evento">
+            <input type="checkbox" class="s2e-ev-active-check" data-idx="${idx}" ${ev.active !== false ? 'checked' : ''} />
+            <span class="s2e-slider"></span>
+          </label>
+          <button type="button" class="s2e-btn-icon play btn-s2e-test-ev" data-idx="${idx}" title="Probar RCON y Audio en Vivo" style="width:auto;padding:6px 10px;font-size:11px;font-weight:700;background:rgba(255,179,0,0.18);border:1px solid rgba(255,179,0,0.6);color:#ffde73;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:4px;">
+            ▶ Probar
           </button>
-          <button type="button" class="btn-micro btn-s2e-del-ev" data-idx="${idx}" style="color:#ef4444;padding:6px 8px;" title="Eliminar fila">
+          <button type="button" class="s2e-btn-icon edit" data-edit-fn="${idx}" title="Editar evento completo">
+            ✏️
+          </button>
+          <button type="button" class="s2e-btn-icon delete btn-s2e-del-ev" data-idx="${idx}" title="Eliminar fila">
             ✕
           </button>
         </div>
@@ -511,8 +660,9 @@ export function renderS2EPresetsStudio() {
       const idx = Number(btn.getAttribute('data-idx'));
       activePreset.events.splice(idx, 1);
       renderS2EPresetsStudio();
+      await app.syncMcOverlayToBackend();
       await app.persistConfig();
-      notifyToast('🗑 Evento eliminado del preajuste');
+      notifyToast('🗑 Evento eliminado del preajuste y overlay');
     });
   });
 }
@@ -988,6 +1138,85 @@ function injectMcActionEditorModal() {
         </div>
       </div>
 
+      <!-- BOTONERA DE 1 CLIC PARA SELECCIÓN RÁPIDA DE REGALOS -->
+      <div style="margin-bottom:12px;">
+        <label style="font-size:11px;font-weight:700;color:#94a3b8;margin-bottom:6px;display:block;">⚡ Regalos Populares (1 Clic para Seleccionar)</label>
+        <div id="s2e-quick-gifts-grid" style="display:flex;flex-wrap:wrap;gap:6px;max-height:105px;overflow-y:auto;padding:6px;background:rgba(0,0,0,0.35);border-radius:8px;border:1px solid rgba(255,255,255,0.08);">
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Rosa" data-gcoins="1" data-gicon="rose-1-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/rose-1-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Rosa <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">1🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="GG" data-gcoins="1" data-gicon="gg-1-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/gg-1-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> GG <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">1🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Maracas" data-gcoins="1" data-gicon="maracas-1-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/maracas-1-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Maracas <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">1🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Ice Cream Cone" data-gcoins="1" data-gicon="ice-cream-cone-1-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/ice-cream-cone-1-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Helado <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">1🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Heart Me" data-gcoins="1" data-gicon="heart-me-1-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/heart-me-1-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Heart Me <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">1🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="TikTok" data-gcoins="1" data-gicon="tiktok-1-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/tiktok-1-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> TikTok <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">1🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Cute Cat" data-gcoins="5" data-gicon="cute-cat-5-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/cute-cat-5-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Gato <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">5🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Finger Heart" data-gcoins="5" data-gicon="finger-heart-5-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/finger-heart-5-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Finger Heart <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">5🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Mic" data-gcoins="5" data-gicon="mic-5-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/mic-5-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Mic <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">5🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Fireball" data-gcoins="5" data-gicon="fireball-5-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/fireball-5-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Fireball <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">5🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Rosa" data-gcoins="10" data-gicon="rosa-10-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/rosa-10-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Rosa 10 <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">10🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Balloons" data-gcoins="10" data-gicon="balloons-10-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/balloons-10-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Globos <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">10🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Perfume" data-gcoins="15" data-gicon="perfume-15-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/perfume-15-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Perfume <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">15🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Doughnut" data-gcoins="30" data-gicon="doughnut-30-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/doughnut-30-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Dona <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">30🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Capybara" data-gcoins="30" data-gicon="capybara-30-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/capybara-30-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Capibara <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">30🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Paper Crane" data-gcoins="99" data-gicon="paper-crane-99-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/paper-crane-99-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Grulla <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">99🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Cap" data-gcoins="99" data-gicon="cap-99-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/cap-99-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Gorra <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">99🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Game Controller" data-gcoins="100" data-gicon="game-controller-100-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/game-controller-100-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Mando <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">100🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Sun Crown" data-gcoins="199" data-gicon="sun-crown-199-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/sun-crown-199-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Corona Sol <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">199🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Hearts" data-gcoins="199" data-gicon="hearts-199-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/hearts-199-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Corazones <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">199🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Panda Climb" data-gcoins="199" data-gicon="panda-climb-199-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/panda-climb-199-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Panda <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">199🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Boxing Gloves" data-gcoins="299" data-gicon="boxing-gloves-299-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/boxing-gloves-299-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Guantes <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">299🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Money Gun" data-gcoins="500" data-gicon="money-gun-500-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/money-gun-500-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Money Gun <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">500🪙</span>
+          </button>
+          <button type="button" class="s2e-quick-gift-pill" data-gname="Galaxy" data-gcoins="1000" data-gicon="galaxy-1000-coins.webp" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 8px;cursor:pointer;color:#e2e8f0;font-size:11px;">
+            <img src="./gifts/galaxy-1000-coins.webp" style="width:18px;height:18px;object-fit:contain;" /> Galaxia <span style="color:#fbbf24;font-family:var(--font-mono);font-size:10px;">1000🪙</span>
+          </button>
+        </div>
+      </div>
+
       <datalist id="gz7-s2e-gifts-datalist">
         <option value="Rose">Rosa / Rose (1 💎)</option>
         <option value="GG">GG (1 💎)</option>
@@ -1048,6 +1277,23 @@ function injectMcActionEditorModal() {
 
   document.body.appendChild(modal);
 
+  modal.querySelectorAll('.s2e-quick-gift-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const gname = btn.getAttribute('data-gname');
+      const gcoins = btn.getAttribute('data-gcoins');
+      const gicon = btn.getAttribute('data-gicon');
+      document.getElementById('s2e-fn-trig-type').value = 'SelectedGift';
+      document.getElementById('s2e-fn-trig-gift').value = gname;
+      document.getElementById('s2e-fn-trig-coins').value = gcoins;
+      modal.dataset.selectedGiftIcon = gicon;
+      modal.querySelectorAll('.s2e-quick-gift-pill').forEach(b => {
+        b.style.borderColor = b === btn ? '#38bdf8' : 'rgba(255,255,255,0.1)';
+        b.style.background = b === btn ? 'rgba(56,189,248,0.15)' : 'rgba(255,255,255,0.05)';
+      });
+      notifyToast(`🎁 Regalo "${gname}" (${gcoins} 🪙) seleccionado`);
+    });
+  });
+
   document.getElementById('s2e-fn-trig-gift')?.addEventListener('change', e => {
     const val = String(e.target.value || '').trim();
     if (!val || document.getElementById('s2e-fn-trig-type')?.value !== 'SelectedGift') return;
@@ -1101,8 +1347,11 @@ function injectMcActionEditorModal() {
       const foundList = buscarGifts({ q: trigGiftOrVal });
       const foundGift = CATALOGO_GIFTS.find(g => g.nombre.toLowerCase() === trigGiftOrVal.toLowerCase()) || foundList[0];
       editingPresetEventRef.trigger.giftName = foundGift ? foundGift.nombre : trigGiftOrVal;
-      editingPresetEventRef.trigger.coins = foundGift ? foundGift.coins : trigCoins;
-      editingPresetEventRef.trigger.iconUrl = resolveGiftImgPath(foundGift ? foundGift.archivo : archivoDeGift(trigGiftOrVal, trigCoins));
+      if (modal.dataset.selectedGiftIcon) {
+        editingPresetEventRef.trigger.iconUrl = resolveGiftImgPath(modal.dataset.selectedGiftIcon);
+      } else {
+        editingPresetEventRef.trigger.iconUrl = resolveGiftImgPath(foundGift ? foundGift.archivo : archivoDeGift(trigGiftOrVal, trigCoins));
+      }
     }
 
     editingPresetEventRef.func.name = fnName;
@@ -1123,6 +1372,12 @@ function openMcActionEditorModal(ev) {
   editingPresetEventRef = ev;
   const modal = document.getElementById('modal-s2e-fn');
   if (!modal) return;
+
+  modal.dataset.selectedGiftIcon = '';
+  modal.querySelectorAll('.s2e-quick-gift-pill').forEach(b => {
+    b.style.borderColor = 'rgba(255,255,255,0.1)';
+    b.style.background = 'rgba(255,255,255,0.05)';
+  });
 
   document.getElementById('s2e-fn-trig-type').value = ev.trigger?.action || 'SelectedGift';
   document.getElementById('s2e-fn-trig-gift').value = ev.trigger?.action === 'LikeForEach' ? (ev.trigger?.value || '200') : (ev.trigger?.giftName || 'Rose');

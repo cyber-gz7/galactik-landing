@@ -35,6 +35,7 @@ const tiktokUserField = document.getElementById('dash-tiktok-username');
 const btnConnectTikTok = document.getElementById('dash-btn-connect-tiktok');
 const btnDisconnectTikTok = document.getElementById('dash-btn-disconnect-tiktok');
 const dashStatusText = document.getElementById('dash-tiktok-status-text');
+const dashConnectDetail = document.getElementById('dash-connect-detail');
 const dashSideStatusBadge = document.getElementById('dash-side-status-badge');
 const dashSideStatusDot = document.getElementById('dash-side-status-dot');
 const dashSideStatusLabel = document.getElementById('dash-side-status-label');
@@ -47,6 +48,7 @@ const topbarIndicator = document.getElementById('topbar-tiktok-indicator');
 const topbarStatusText = document.getElementById('topbar-status-text');
 
 async function doConnectTikTok() {
+  if (tikTokBridge.isConnecting) return;
   const username = (tiktokUserField?.value || topbarUserField?.value || '').trim();
   if (!username) {
     showToast('⚠️ Ingresa primero tu usuario de TikTok (ej. @gz7)');
@@ -62,6 +64,7 @@ async function doConnectTikTok() {
   } catch (err) {
     console.warn('Conexión TikTok:', err);
     showToast(`⚠️ ${err?.message || 'Error al conectar'}`);
+    if (dashConnectDetail) dashConnectDetail.textContent = `No se pudo iniciar el conector: ${err?.message || 'error desconocido'}`;
   }
 }
 
@@ -120,7 +123,8 @@ tikTokBridge.on('offline', ({ username, reason }) => {
 
 tikTokBridge.on('rate_limited', ({ username, minutes, message }) => {
   const u = username || tiktokUserField.value.trim().replace(/^@/, '');
-  showToast(`⚠️ Límite de EulerStream alcanzado (${minutes} min para @${u}). Abre '🔑 API Key Euler' para conectar sin límites.`);
+  showToast(`⚠️ El servicio público de firmas limitó la conexión de @${u}. Reintentaremos en ${minutes} min.`);
+  if (dashConnectDetail) dashConnectDetail.textContent = message || `Servicio público limitado. Reintento automático en ${minutes} min.`;
   const statusEl = document.getElementById('dash-tiktok-status-text');
   if (statusEl) {
     statusEl.textContent = `⏳ ESPERANDO (${minutes}m)`;
@@ -222,6 +226,12 @@ store.on('tiktok:status', ({ status, username }) => {
   const isConnecting = status === 'CONECTANDO';
   const isOffline = status === 'OFFLINE';
   const cls = isConn ? 'connected' : (isConnecting ? 'connecting' : 'disconnected');
+  if (dashConnectDetail && status !== 'DESCONECTADO') {
+    dashConnectDetail.textContent = isConn
+      ? `Sala de @${cleanUser} confirmada. Los eventos llegan en tiempo real y el conector se reconecta si se corta la señal.`
+      : isConnecting ? `Abriendo la sala de @${cleanUser}… Espera la confirmación de TikTok.`
+        : `@${cleanUser} no está transmitiendo ahora. El conector volverá a comprobar la sala automáticamente.`;
+  }
 
   if (dashStatusText) {
     dashStatusText.textContent = isConn
@@ -277,8 +287,8 @@ store.on('tiktok:status', ({ status, username }) => {
     headerTikTokBadge.style.boxShadow = isConn ? '0 0 14px rgba(0, 255, 163, 0.35)' : 'none';
   }
 
-  if (btnConnectTikTok) btnConnectTikTok.style.display = isConn ? 'none' : 'inline-flex';
-  if (btnDisconnectTikTok) btnDisconnectTikTok.style.display = isConn ? 'inline-flex' : 'none';
+  if (btnConnectTikTok) btnConnectTikTok.style.display = isConn || isConnecting ? 'none' : 'inline-flex';
+  if (btnDisconnectTikTok) btnDisconnectTikTok.style.display = isConn || isConnecting || isOffline ? 'inline-flex' : 'none';
 
   if (topbarStatusText) {
     topbarStatusText.textContent = isConn
@@ -715,6 +725,7 @@ const handleSaveGiftModal = async () => {
   const current = giftRegistry.getAll();
   const idx = current.findIndex(x => x.id === id);
   const entry = {
+    ...(idx >= 0 ? current[idx] : {}),
     id,
     name: newName,
     tiktokGiftId: tiktokGiftIdDeNombre(newName, (idx >= 0 && current[idx]?.tiktokGiftId) ? current[idx].tiktokGiftId : 5655),
@@ -731,7 +742,6 @@ const handleSaveGiftModal = async () => {
   else current.push(entry);
 
   giftRegistry.setAll(current);
-  syncGiftWithActivePreset(entry);
   renderGiftsTable();
   await app.persistConfig();
   modalEl.style.display = 'none';
@@ -746,7 +756,10 @@ document.getElementById('btn-save-modal-gift')?.addEventListener('click', handle
 // -----------------------------------------------------------------
 function renderGiftsTable() {
   const tbody = document.getElementById('gifts-table-body');
-  if (!tbody) return;
+  if (!tbody) {
+    window.__renderMinecraftWorkspace?.();
+    return;
+  }
   const gifts = giftRegistry.getAll();
 
   tbody.innerHTML = gifts.map((g, idx) => {
@@ -855,14 +868,22 @@ function renderGiftsTable() {
   });
 }
 
+window.__renderGiftsTable = renderGiftsTable;
+
 document.querySelectorAll('.btn-load-preset').forEach(btn => {
   btn.addEventListener('click', async () => {
     const presetId = btn.getAttribute('data-preset');
+    const foundS2E = app.s2ePresets.find(p => p.id === presetId || (p.name && p.name.toLowerCase() === (presetId || '').toLowerCase()));
+    if (foundS2E) {
+      await app.activatePreset(foundS2E.id);
+      showToast(`✔ Preajuste "${foundS2E.name}" activado en Overlay`);
+      return;
+    }
     const loaded = giftRegistry.loadPreset(presetId);
     if (loaded) {
       renderGiftsTable();
-      await app.persistConfig();
       await app.syncMcOverlayToBackend();
+      await app.persistConfig();
       showToast(`✔ Preset cargado: ${loaded.nombre}`);
     }
   });
@@ -1193,8 +1214,10 @@ document.querySelectorAll('.btn-copy-url').forEach(btn => {
 });
 
 const syncScale = async (val) => {
-  document.getElementById('overlay-gift-scale-val').textContent = val + '%';
-  document.getElementById('mc-overlay-scale-label').textContent = val + '%';
+  const giftLabel = document.getElementById('overlay-gift-scale-val');
+  const mcLabel = document.getElementById('mc-overlay-scale-label');
+  if (giftLabel) giftLabel.textContent = val + '%';
+  if (mcLabel) mcLabel.textContent = val + '%';
   const invoke = window.__TAURI__?.core?.invoke || window.__TAURI__?.invoke;
   if (invoke) await invoke('set_gift_scale', { scale: Number(val) });
 };
@@ -1205,7 +1228,7 @@ document.getElementById('mc-overlay-scale-slider')?.addEventListener('input', e 
 // 10. RCON & INSTALADOR SERVIDOR MINECRAFT
 // -----------------------------------------------------------------
 
-return { app, store, rconBridge, soundManager, giftRegistry, giftUrl, renderWaveformSvg, renderRobloxEditor, renderGiftsTable, syncGiftWithActivePreset, openGiftModalForRobloxSlot, openS2EAudioModal, crearServidorMinecraft, lanzarServidorMinecraft, finish() {
+return { app, store, rconBridge, soundManager, giftRegistry, giftUrl, renderWaveformSvg, renderRobloxEditor, renderGiftsTable, openGiftConfigModal, syncGiftWithActivePreset, openGiftModalForRobloxSlot, openS2EAudioModal, crearServidorMinecraft, lanzarServidorMinecraft, finish() {
 applyProfileMode(app.activeProfile || 'roblox');
 updateCatalogPreview(CATALOGO_GIFTS[0]);
 renderCatalog();

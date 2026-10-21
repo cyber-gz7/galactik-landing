@@ -14,6 +14,7 @@ async function boot() {
   const context = initDashboard(modules);
   const entries = [
     ['alerts', './modules/alerts-chroma.js', 'initAlertsChroma'],
+    ['mcWorkspace', './modules/minecraft-config-workspace.js', 'initMinecraftConfigWorkspace'],
     ['obby', './modules/obby-gvg.js', 'initObbyGvg'],
     ['sounds', './modules/soundboard.js', 'initSoundboard'],
     ['minecraft', './modules/minecraft-rcon.js', 'initMinecraftRcon'],

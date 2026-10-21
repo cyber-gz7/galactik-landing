@@ -315,7 +315,7 @@
                 <span>⚡</span> <strong>Motor Directo TikTok Live</strong> <span style="color: var(--neon-cyan);">Webcast GZ7</span>
               </div>
               <span style="font-size: 12px; color: var(--text-muted); font-family: var(--font-mono);">
-                Conexión única directa &bull; Sin caídas
+                Conexión directa &bull; Reconexión automática
               </span>
             </div>
 
@@ -327,7 +327,7 @@
           </div>
 
           <p style="font-size: 14px; color: var(--text-main); margin-bottom: 16px;">
-            Ingresa tu <strong>@usuario</strong> de TikTok (o usuario de prueba) y haz clic en <strong>Conectar</strong> para activar la recepción en tiempo real de regalos, alertas con Croma Key, TTS y eventos.
+            Ingresa tu <strong>@usuario</strong> de TikTok y conecta mientras estés en directo. El panel usa un conector local y servicios públicos de firma; no necesitas contratar una API para probarlo.
           </p>
 
           <div class="tiktok-connect-form-row">
@@ -341,6 +341,8 @@
               </span>
             </div>
           </div>
+
+          <p id="dash-connect-detail" role="status" style="font-size: 12px; color: var(--text-muted); margin: 7px 0 13px;">Escribe tu usuario y pulsa Conectar. El indicador cambiará a EN VIVO cuando TikTok confirme la sala.</p>
 
           <div class="tiktok-connect-form-row">
             <div>
@@ -368,7 +370,7 @@
                 😎 Sincronizar Emotes
               </button>
               <button type="button" class="btn-secondary" id="btn-open-euler-key" style="border-color: rgba(0, 242, 254, 0.45); color: var(--neon-cyan);">
-                🔑 API Key Euler
+                🔑 API opcional
               </button>
             </div>
           </div>
@@ -379,7 +381,7 @@
                 MOTOR ÚNICO GZ7
               </span>
               <strong id="dash-engine-msg" style="font-size: 13px; letter-spacing: 0.5px; color: var(--text-main);">
-                CONECTOR DIRECTO WEBCAST + MODO PRUEBA INTERACTIVO ACTIVO (CROMA, RCON Y OVERLAYS LISTOS)
+                Conector listo para iniciar. La conexión en vivo se confirma al abrir la sala de TikTok.
               </strong>
             </div>
             <span style="font-family: var(--font-mono); font-size: 12px; color: var(--neon-cyan);">
@@ -418,155 +420,7 @@
     <!-- ===================================================================
          2A. PESTAÑA MODO MINECRAFT: OVERLAYS (CARRUSEL/ESTÁTICO/PLANO) & TÓTEMS
          =================================================================== -->
-    <section class="tab-pane" id="tab-minecraft">
-      <div class="page-hero-title">
-        <span>⛏️ PANEL MINECRAFT &bull; OVERLAYS &amp; TÓTEMS UNIFICADOS</span>
-        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-          <!-- Switch de Visión Nocturna Infinita -->
-          <label style="display: inline-flex; align-items: center; gap: 7px; background: rgba(0, 240, 255, 0.1); border: 1px solid var(--neon-cyan); border-radius: 999px; padding: 5px 12px; font-size: 11.5px; font-weight: 700; color: #fff; cursor: pointer;">
-            <input type="checkbox" id="toggle-night-vision-mc" checked style="accent-color: var(--neon-cyan); cursor: pointer;" />
-            <span>👁️ Vista Nocturna Infinita (Auto-Fijada)</span>
-          </label>
-          <button type="button" class="btn-primary btn-load-preset" data-preset="survival_gz7">
-            ⭐ Cargar Preset Survival GZ7 (Universal)
-          </button>
-          <button type="button" class="btn-secondary btn-load-preset" data-preset="minecraft_chaos">
-            💥 Cargar Preset Caos
-          </button>
-        </div>
-      </div>
-
-      <!-- Configurador de los 3 Estilos de Overlay para Minecraft -->
-      <div class="section-card" style="margin-bottom: 18px;">
-        <div class="panel-header">
-          <div>
-            <span class="panel-title">🎨 Configurador de Overlay para Minecraft (OBS / TikTok LIVE Studio)</span>
-            <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
-              Elige entre un <strong>Overlay Dinámico como Carrusel</strong>, uno <strong>Estático en Cuadrícula</strong> o uno <strong>Plano / Recto</strong> 100% transparente sin marcos negros.
-            </p>
-          </div>
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <label style="font-size: 12px; color: var(--text-muted); font-weight: 700;">Escala OBS:</label>
-            <input type="range" id="mc-overlay-scale-slider" min="50" max="220" value="100" style="width: 130px; accent-color: var(--neon-cyan); cursor: pointer;" />
-            <span id="mc-overlay-scale-label" style="font-family: var(--font-mono); font-size: 13px; color: var(--neon-cyan); font-weight: 800;">100%</span>
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 10px;">
-          <!-- Estilo 1: Carrusel Dinámico -->
-          <div class="card-panel mc-style-card" data-mc-style="carousel" style="border: 2px solid var(--neon-cyan);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <strong style="font-family: var(--font-display); font-size: 14px; color: var(--neon-cyan);">🎠 1. Carrusel Dinámico</strong>
-              <span class="btn-micro">RECOMENDADO</span>
-            </div>
-            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
-              Desfila automáticamente tus regalos de Minecraft con giro continuo y alerta emergente.
-            </p>
-            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--neon-cyan); background: #02060d; padding: 7px 10px; border-radius: 6px; margin-bottom: 10px;">
-              http://localhost:4000/mc_carrusel.html
-            </div>
-            <div style="display: flex; gap: 8px;">
-              <button type="button" class="btn-primary btn-copy-url" data-url="http://localhost:4000/mc_carrusel.html" style="flex: 1; padding: 8px;">
-                📋 Copiar Link
-              </button>
-              <button type="button" class="btn-secondary btn-set-mc-style" data-style="carousel">
-                Activar
-              </button>
-            </div>
-          </div>
-
-          <!-- Estilo 2: Estático Grid -->
-          <div class="card-panel mc-style-card" data-mc-style="static">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <strong style="font-family: var(--font-display); font-size: 14px; color: #fff;">🔲 2. Overlay Estático (Grid)</strong>
-              <span class="btn-micro">FIJO</span>
-            </div>
-            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
-              Muestra todos los regalos y lo que invocan en una tabla fija transparente.
-            </p>
-            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--neon-cyan); background: #02060d; padding: 7px 10px; border-radius: 6px; margin-bottom: 10px;">
-              http://localhost:4000/mc_estatico.html
-            </div>
-            <div style="display: flex; gap: 8px;">
-              <button type="button" class="btn-primary btn-copy-url" data-url="http://localhost:4000/mc_estatico.html" style="flex: 1; padding: 8px;">
-                📋 Copiar Link
-              </button>
-              <button type="button" class="btn-secondary btn-set-mc-style" data-style="static">
-                Activar
-              </button>
-            </div>
-          </div>
-
-          <!-- Estilo 3: Plano / Recto -->
-          <div class="card-panel mc-style-card" data-mc-style="flat">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <strong style="font-family: var(--font-display); font-size: 14px; color: #fff;">📏 3. Overlay Plano / Recto</strong>
-              <span class="btn-micro">MINIMALISTA</span>
-            </div>
-            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
-              Cinta horizontal recta, compacta y súper fácil de colocar arriba o abajo de tu stream.
-            </p>
-            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--neon-cyan); background: #02060d; padding: 7px 10px; border-radius: 6px; margin-bottom: 10px;">
-              http://localhost:4000/mc_plano.html
-            </div>
-            <div style="display: flex; gap: 8px;">
-              <button type="button" class="btn-primary btn-copy-url" data-url="http://localhost:4000/mc_plano.html" style="flex: 1; padding: 8px;">
-                📋 Copiar Link
-              </button>
-              <button type="button" class="btn-secondary btn-set-mc-style" data-style="flat">
-                Activar
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Fila Central: Tótems + Live Feed (Sin Facciones) -->
-      <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 18px; margin-bottom: 18px;">
-        <div>
-          <totem-bar></totem-bar>
-        </div>
-
-        <div style="height: 310px;">
-          <event-feed></event-feed>
-        </div>
-      </div>
-
-      <!-- Tabla Configurable de Regalos de Minecraft -->
-      <div class="section-card">
-        <div class="panel-header">
-          <div>
-            <span class="panel-title">🎁 Regalos y Comandos Configurados en el Overlay de Minecraft</span>
-            <p style="font-size: 13px; color: var(--text-muted); margin-top: 3px;">
-              Cualquier cambio aquí actualiza instantáneamente el Overlay de Minecraft (Carrusel, Estático y Plano) y los comandos RCON.
-            </p>
-          </div>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button type="button" class="btn-primary" id="btn-open-catalog-from-gifts">
-              🎁 + Elegir Regalo del Catálogo Visual
-            </button>
-            <button type="button" class="btn-secondary" id="btn-add-gift-row">+ Fila Manual</button>
-            <button type="button" class="btn-secondary" id="btn-restore-gifts-default">Restaurar Defaults</button>
-            <button type="button" class="btn-primary" id="btn-save-gifts">💾 Guardar y Actualizar Overlay</button>
-          </div>
-        </div>
-
-        <div style="overflow-x: auto;">
-          <table class="custom-table" id="gifts-config-table">
-            <thead>
-              <tr>
-                <th style="width: 240px;">Regalo TikTok</th>
-                <th style="width: 90px;">Monedas</th>
-                <th>Comando RCON / Acción de Plugin ({donador})</th>
-                <th style="width: 100px;">Multiplicador</th>
-                <th style="width: 110px;">Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="gifts-table-body"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+    <section class="tab-pane" id="tab-minecraft" aria-label="Configuración de Minecraft"></section>
 
     <!-- ===================================================================
          2B. PESTAÑA MODO ROBLOX: EDITOR OBBY BICICLETA (GIFT VS GIFT EDITABLE)
@@ -1574,11 +1428,11 @@
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
             <div>
               <label style="font-size: 12px; color: var(--text-muted); font-weight: 700;">Tu Nick en Minecraft ({jugador}):</label>
-              <input type="text" id="mc-player-nick" class="input-field" value="GZ7" placeholder="Tu nick exacto" style="width: 100%; margin-top: 4px; font-weight: 700; color: var(--neon-cyan);" />
+              <input type="text" id="mc-player-nick" class="input-field" value="CJ7_TUTORIALES" placeholder="Tu nick exacto" style="width: 100%; margin-top: 4px; font-weight: 700; color: var(--neon-cyan);" />
             </div>
             <div>
               <label style="font-size: 12px; color: var(--text-muted); font-weight: 700;">Nick OP (Administrador):</label>
-              <input type="text" id="mc-server-op" class="input-field" value="GZ7" style="width: 100%; margin-top: 4px;" />
+              <input type="text" id="mc-server-op" class="input-field" value="CJ7_TUTORIALES" style="width: 100%; margin-top: 4px;" />
             </div>
           </div>
 
@@ -1641,7 +1495,7 @@
 
   <!-- ================= FOOTER CON CRÉDITOS OFICIALES DE GZ7 ================= -->
   <footer class="app-footer">
-    <span>GALACTK PANEL v2.0.5 &bull; Desarrollado por <strong style="color: var(--neon-cyan);">GZ7</strong> &bull; Edición Comercial Definitiva &copy; GZ7</span>
+    <span>GALACTK PANEL v2.0.8 &bull; Desarrollado por <strong style="color: var(--neon-cyan);">GZ7</strong> &bull; Edición Comercial Definitiva &copy; GZ7</span>
     <span id="footer-mode-indicator" style="color: var(--neon-cyan);">PERFIL ACTIVO: MODO MINECRAFT</span>
   </footer>
 

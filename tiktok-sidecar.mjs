@@ -7,7 +7,7 @@ if (!process.env.SIGN_API_URL) {
   process.env.SIGN_API_URL = 'https://api.streamtoearn.io/apiserver/tiktok-signature';
 }
 
-const { TikTokLiveConnection } = await import('tiktok-live-connector');
+const { TikTokLiveConnection, SignConfig } = await import('tiktok-live-connector');
 
 const rawUser = process.argv[2] || '';
 const apiKeyArg = process.argv[3] || process.env.SIGN_API_KEY || process.env.EULER_API_KEY || '';
@@ -50,16 +50,17 @@ const singleInstanceServer = net.createServer((sock) => {
   sock.on('data', (buf) => {
     try {
       const msg = JSON.parse(buf.toString('utf8'));
-      if (msg.cmd === 'switch' && msg.user && msg.user !== cleanUser) {
-        // Ceder el paso a la nueva sesión
+      if (msg.cmd === 'switch') {
+        // Ceder el puerto al proceso nuevo, incluso si usa la misma cuenta.
         process.exit(0);
       }
     } catch (_) {}
   });
 });
-singleInstanceServer.once('error', (err) => {
+let bindAttempts = 0;
+singleInstanceServer.on('error', (err) => {
   if (err.code === 'EADDRINUSE') {
-    // Si ya hay un sidecar corriendo, le enviamos aviso para que actualice o ceda el paso
+    if (++bindAttempts > 5) { process.exit(1); }
     try {
       const client = net.createConnection({ port: 21219, host: '127.0.0.1' }, () => {
         client.write(JSON.stringify({ cmd: 'switch', user: cleanUser }));
@@ -67,7 +68,9 @@ singleInstanceServer.once('error', (err) => {
       });
       client.on('error', () => {});
     } catch (_) {}
-    process.exit(0);
+    setTimeout(() => singleInstanceServer.listen(21219, '127.0.0.1'), 350);
+  } else {
+    process.exit(1);
   }
 });
 singleInstanceServer.listen(21219, '127.0.0.1');
@@ -194,8 +197,9 @@ function handleRawGift(data) {
     data?.extendedGiftInfo?.image?.url_list?.[0] ||
     '';
 
-  const emitOne = () => {
+  const emitOne = (unitIndex = 0) => {
     postEvent('gift', {
+      msgId: `${rawMsgId || 'streak'}_${giftId}_${unitIndex}_${Date.now()}`,
       giftId,
       giftName,
       diamondCount,
@@ -210,7 +214,7 @@ function handleRawGift(data) {
 
   if (!isCombo) {
     for (let i = 0; i < repeatCount; i++) {
-      emitOne();
+      emitOne(i);
     }
     return;
   }
@@ -232,7 +236,7 @@ function handleRawGift(data) {
   if (delta > 0) {
     prev.delivered = repeatCount;
     for (let i = 0; i < delta; i++) {
-      emitOne();
+      emitOne(prev.delivered - delta + i);
     }
   }
 
@@ -250,6 +254,7 @@ let currentConnection = null;
 let isReconnecting = false;
 let reconnectTimer = null;
 let reconnectAttempts = 0;
+let heartbeatTimer = null;
 
 function isOfflineError(err) {
   const msg = String(err?.message || err || '').toLowerCase();
@@ -299,6 +304,7 @@ function scheduleReconnect(reason = 'unknown', customDelay = null) {
     } catch (_) {}
     currentConnection = null;
   }
+  if (heartbeatTimer) { clearInterval(heartbeatTimer); heartbeatTimer = null; }
 
   if (reconnectTimer) clearTimeout(reconnectTimer);
 
@@ -359,7 +365,7 @@ function bindConnectionEvents(conn) {
         username: cleanUser,
         minutes: mins,
         retryAfterMs: waitMs,
-        message: `Límite horario de firmas de EulerStream alcanzado (${mins} min). Ingresa una API Key gratuita de EulerStream en Configuración para conectar sin límites.`
+        message: `El servicio público de firmas limitó las solicitudes. Reintento automático en ${mins} min.`
       });
       scheduleReconnect(`rate_limit_wait_${mins}m`, waitMs);
       return;
@@ -399,19 +405,19 @@ async function connectWithRetry() {
 
     const state = await conn.connect();
     reconnectAttempts = 0;
-    postEvent('live_room_connected', {
-      username: cleanUser,
-      roomId: String(state?.roomId || conn.roomId || '')
-    });
+    const roomId = String(state?.roomId || conn.roomId || '');
+    postEvent('live_room_connected', { username: cleanUser, roomId });
+    if (heartbeatTimer) clearInterval(heartbeatTimer);
+    heartbeatTimer = setInterval(() => postEvent('live_room_connected', { username: cleanUser, roomId }), 15000);
   } catch (err) {
-    if (isRateLimitError(err)) {
+    if (isRateLimitError(err) && (cleanApiKey || SignConfig.basePath === 'https://api.eulerstream.com')) {
       const waitMs = Number(err?.retryAfter) > 0 ? Number(err.retryAfter) : 1800000;
       const mins = Math.max(1, Math.ceil(waitMs / 60000));
       postEvent('rate_limited', {
         username: cleanUser,
         minutes: mins,
         retryAfterMs: waitMs,
-        message: `Límite horario de EulerStream alcanzado (${mins} min). Agrega una API Key gratuita de EulerStream en Configuración para conectar sin límite de peticiones.`
+        message: `El servicio público de firmas limitó las solicitudes. Reintento automático en ${mins} min.`
       });
       scheduleReconnect(`rate_limit_wait_${mins}m`, waitMs);
       return;
@@ -423,6 +429,11 @@ async function connectWithRetry() {
     }
 
     try {
+      // El endpoint público S2E puede fallar: probar el endpoint público de Euler una vez.
+      if (!cleanApiKey && SignConfig.basePath !== 'https://api.eulerstream.com') {
+        SignConfig.basePath = 'https://api.eulerstream.com';
+        SignConfig.cachedInstance = undefined;
+      }
       const fallbackOptions = {
         processInitialData: false,
         fetchRoomInfoOnConnect: false,
@@ -445,10 +456,10 @@ async function connectWithRetry() {
 
       const st2 = await fallbackConn.connect();
       reconnectAttempts = 0;
-      postEvent('live_room_connected', {
-        username: cleanUser,
-        roomId: String(st2?.roomId || fallbackConn.roomId || '')
-      });
+      const roomId = String(st2?.roomId || fallbackConn.roomId || '');
+      postEvent('live_room_connected', { username: cleanUser, roomId });
+      if (heartbeatTimer) clearInterval(heartbeatTimer);
+      heartbeatTimer = setInterval(() => postEvent('live_room_connected', { username: cleanUser, roomId }), 15000);
     } catch (err2) {
       if (isRateLimitError(err2)) {
         const waitMs2 = Number(err2?.retryAfter) > 0 ? Number(err2.retryAfter) : 1800000;
@@ -457,7 +468,7 @@ async function connectWithRetry() {
           username: cleanUser,
           minutes: mins2,
           retryAfterMs: waitMs2,
-          message: `Límite horario de EulerStream alcanzado (${mins2} min). Agrega una API Key gratuita de EulerStream en Configuración.`
+          message: `El servicio público de firmas limitó las solicitudes. Reintento automático en ${mins2} min.`
         });
         scheduleReconnect(`rate_limit_wait_${mins2}m`, waitMs2);
         return;
