@@ -125,6 +125,14 @@ function initSidebarLayout() {
   });
 
   document.getElementById('btn-sidebar-license')?.addEventListener('click', () => {
+    const isMaster = window.gz7LicenseClient?.status?.role === 'ADMIN' ||
+                     window.gz7LicenseClient?.status?.hwid === 'GL-E320-79485B-AFD734' ||
+                     window.gz7LicenseClient?.status?.username === 'GZ7_ADMIN' ||
+                     window.gz7LicenseClient?.status?.email === 'gerardyabdiel09@gmail.com';
+    if (isMaster) {
+      document.getElementById('nav-btn-admin-licenses')?.click();
+      return;
+    }
     const gate = document.getElementById('gz7-license-gate-overlay');
     if (gate) {
       gate.style.display = 'flex';

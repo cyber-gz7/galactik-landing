@@ -1,6 +1,6 @@
 [package]
 name = "gz7live"
-version = "2.1.1"
+version = "2.1.2"
 description = "Galactik Live - TikTok Live to Minecraft RCON bridge with Universal Survival Plugins"
 authors = ["CyberGZ7"]
 edition = "2021"

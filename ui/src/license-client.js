@@ -419,7 +419,8 @@ export class LicenseClientController {
         this.status.role === 'ADMIN' ||
         this.status.hwid === 'GL-E320-79485B-AFD734' ||
         this.status.bound_hwid === 'GL-E320-79485B-AFD734' ||
-        this.status.username === 'GZ7_ADMIN'
+        this.status.username === 'GZ7_ADMIN' ||
+        this.status.email === 'gerardyabdiel09@gmail.com'
       )
     );
 
@@ -448,7 +449,14 @@ export class LicenseClientController {
 
     const adminBtn = document.getElementById('btn-open-gz7-admin');
     if (adminBtn) {
-      adminBtn.onclick = () => this.openAdminModal();
+      adminBtn.onclick = () => {
+        const adminTabBtn = document.getElementById('nav-btn-admin-licenses');
+        if (adminTabBtn) {
+          adminTabBtn.click();
+        } else {
+          this.openAdminModal();
+        }
+      };
     }
     const switchBtn = document.getElementById('btn-switch-gz7-license');
     if (switchBtn) {
