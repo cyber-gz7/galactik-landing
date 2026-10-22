@@ -3,8 +3,8 @@ Write-Host "Usando certificado: $($cert.Subject)"
 
 $filesToSign = @(
     "C:\Proyectos\GalacticLive\src-tauri\target\release\gz7live.exe",
-    "C:\Proyectos\GalacticLive\src-tauri\target\release\bundle\nsis\Galactik Live_2.1.2_x64-setup.exe",
-    "C:\Proyectos\GalacticLive\src-tauri\target\release\bundle\nsis\Galactik Live_2.1.1_x64-setup.exe"
+    "C:\Proyectos\GalacticLive\src-tauri\target\release\bundle\nsis\Galactik Live_2.1.3_x64-setup.exe",
+    "C:\Proyectos\GalacticLive\src-tauri\target\release\bundle\nsis\Galactik.Live_2.1.3_x64-setup.exe"
 )
 
 foreach ($file in $filesToSign) {
