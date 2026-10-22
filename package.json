@@ -5,12 +5,16 @@
   "scripts": {
     "tauri": "tauri",
     "dev": "tauri dev",
-    "build": "tauri build"
+    "build": "tauri build",
+    "build:css": "tailwindcss -i ./ui/tailwind-input.css -o ./ui/tailwind.css --minify",
+    "watch:css": "tailwindcss -i ./ui/tailwind-input.css -o ./ui/tailwind.css --watch"
   },
   "dependencies": {
     "tiktok-live-connector": "^2.5.0"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2.0.0"
+    "@tailwindcss/cli": "^4.3.3",
+    "@tauri-apps/cli": "^2.0.0",
+    "tailwindcss": "^4.3.3"
   }
 }

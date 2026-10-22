@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@source "./**/*.{html,js}";
+
+@theme {
+  --color-gk-void: #070e18;
+  --color-gk-surface: #0b1522;
+  --color-gk-elevated: #101e30;
+  --color-gk-border: rgba(255, 255, 255, 0.12);
+  --color-gk-cyan: #00f0ff;
+  --color-gk-magenta: #ff2a85;
+  --color-gk-emerald: #23e6a8;
+  --color-gk-yellow: #ffd600;
+  --color-gk-blue: #0088ff;
+
+  --font-gamer: 'Orbitron', sans-serif;
+  --font-tactical: 'Rajdhani', sans-serif;
+}
+
+@utility glass-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid rgba(255, 255, 255, 0.32);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+}
+
+@utility neon-glow-cyan {
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
+}
+
+@utility neon-glow-magenta {
+  box-shadow: 0 0 20px rgba(255, 42, 133, 0.35);
+}
