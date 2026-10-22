@@ -275,18 +275,20 @@
          =================================================================== -->
     <section class="tab-pane active" id="tab-inicio">
       <div class="inicio-layout">
-        <div class="page-hero-title">
-          <span>INICIO &bull; GALACTIK LIVE</span>
-          <span style="font-size: 13px; font-style: normal; font-family: var(--font-mono); color: var(--neon-cyan);">
-            Derechos & Arquitectura por GZ7
+
+        <!-- Hero Header -->
+        <div class="page-hero-title flex items-center justify-between flex-wrap gap-2">
+          <span class="font-gamer tracking-widest text-white">INICIO &bull; GALACTIK LIVE</span>
+          <span class="font-mono text-xs text-gk-cyan">
+            Derechos &amp; Arquitectura por GZ7
           </span>
         </div>
 
-        <!-- Selector de Perfil / Juego para no mezclar herramientas -->
+        <!-- Selector de Perfil -->
         <div class="section-card">
           <div class="panel-header">
             <div>
-              <span class="panel-title" style="display:inline-flex;align-items:center;gap:8px;">
+              <span class="panel-title inline-flex items-center gap-2">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <polygon points="12 2 2 7 12 12 22 7 12 2"/>
                   <polyline points="2 17 12 22 22 17"/>
@@ -294,17 +296,17 @@
                 </svg>
                 1. SELECCIONA TU PERFIL DE TRANSMISIÓN
               </span>
-              <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
+              <p class="text-xs text-white/50 mt-1 leading-relaxed">
                 El panel adapta automáticamente sus pestañas y herramientas según el juego que vayas a transmitir para que todo sea súper limpio y fácil de usar.
               </p>
             </div>
           </div>
 
-          <div class="profile-cards-grid">
+          <div class="profile-cards-grid grid grid-cols-3 gap-4 mt-4">
             <!-- Perfil 1: Minecraft -->
-            <div class="profile-select-card active" data-select-profile="minecraft">
+            <div class="profile-select-card active glass-card rounded-2xl p-6 relative flex flex-col gap-3 cursor-pointer transition-all duration-200 hover:border-gk-cyan/50 hover:scale-[1.02]" data-select-profile="minecraft">
               <span class="profile-card-badge" id="badge-prof-minecraft">ACTIVO</span>
-              <div class="profile-icon-wrap minecraft-glow">
+              <div class="profile-icon-wrap minecraft-glow size-16 rounded-2xl flex items-center justify-center">
                 <svg class="profile-game-icon" width="46" height="46" viewBox="0 0 64 64" fill="none">
                   <polygon points="32,6 58,21 32,36 6,21" fill="#23E6A8" opacity="0.95"/>
                   <polygon points="6,21 32,36 32,58 6,43" fill="#137352" opacity="0.9"/>
@@ -314,38 +316,38 @@
                   <polygon points="32,36 58,21 58,43 32,58" stroke="#23E6A8" stroke-width="1.5" fill="none"/>
                 </svg>
               </div>
-              <h3 style="font-family: var(--font-display); font-size: 16px; color: var(--gk-green); letter-spacing:0.04em;">Minecraft Live Survival</h3>
-              <p style="font-size: 13px; color: var(--text-muted); line-height: 1.4;">
+              <h3 class="font-gamer text-base text-gk-emerald tracking-wide">Minecraft Live Survival</h3>
+              <p class="text-xs text-white/50 leading-relaxed">
                 Overlays Transparentes (Carrusel Dinámico, Estático y Plano), Tótems Stackeables unificados, RCON, Visión Nocturna Infinita y Plugins Exclusivos.
               </p>
             </div>
 
             <!-- Perfil 2: Roblox Obby Bicicleta -->
-            <div class="profile-select-card" data-select-profile="roblox">
+            <div class="profile-select-card glass-card rounded-2xl p-6 relative flex flex-col gap-3 cursor-pointer transition-all duration-200 hover:border-gk-cyan/50 hover:scale-[1.02]" data-select-profile="roblox">
               <span class="profile-card-badge" id="badge-prof-roblox">ELEGIR</span>
-              <div class="profile-icon-wrap roblox-glow">
+              <div class="profile-icon-wrap roblox-glow size-16 rounded-2xl flex items-center justify-center">
                 <svg class="profile-game-icon" width="46" height="46" viewBox="0 0 100 100" fill="none">
                   <path d="M22 6 L94 26 L78 94 L6 74 Z" fill="#00D9FF" opacity="0.9" stroke="#6ff9ff" stroke-width="3"/>
                   <path d="M44 38 L62 43 L56 62 L38 57 Z" fill="#060e18"/>
                 </svg>
               </div>
-              <h3 style="font-family: var(--font-display); font-size: 16px; color: var(--neon-cyan); letter-spacing:0.04em;">Roblox Obby Duelo GvG</h3>
-              <p style="font-size: 13px; color: var(--text-muted); line-height: 1.4;">
+              <h3 class="font-gamer text-base text-gk-cyan tracking-wide">Roblox Obby Duelo GvG</h3>
+              <p class="text-xs text-white/50 leading-relaxed">
                 Oculta todo lo de Minecraft y activa el Editor Interactivo del Overlay Gift vs Gift (cambia el León, Ballena, WINS y puntos a tu gusto).
               </p>
             </div>
 
             <!-- Perfil 3: Stream Universal / IRL -->
-            <div class="profile-select-card" data-select-profile="universal">
+            <div class="profile-select-card glass-card rounded-2xl p-6 relative flex flex-col gap-3 cursor-pointer transition-all duration-200 hover:border-gk-cyan/50 hover:scale-[1.02]" data-select-profile="universal">
               <span class="profile-card-badge" id="badge-prof-universal">ELEGIR</span>
-              <div class="profile-icon-wrap universal-glow">
+              <div class="profile-icon-wrap universal-glow size-16 rounded-2xl flex items-center justify-center">
                 <svg class="profile-game-icon" width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="2.5" fill="#A78BFA"/>
                   <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/>
                 </svg>
               </div>
-              <h3 style="font-family: var(--font-display); font-size: 16px; color: #C4B5FD; letter-spacing:0.04em;">Universal Broadcast Studio</h3>
-              <p style="font-size: 13px; color: var(--text-muted); line-height: 1.4;">
+              <h3 class="font-gamer text-base tracking-wide" style="color:#C4B5FD;">Universal Broadcast Studio</h3>
+              <p class="text-xs text-white/50 leading-relaxed">
                 Panel limpio solo con TTS Chat en vivo, Sonidos y Memes interactivos, Catálogo de Regalos, Alertas y Tops/MVP para cualquier juego.
               </p>
             </div>
@@ -354,90 +356,95 @@
 
         <!-- Card de Conexión a TikTok Live (Motor Único Macizo GZ7) -->
         <div class="section-card" id="tiktok-main-connect-card">
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; border-bottom: 1px solid var(--border-subtle); padding-bottom: 14px; margin-bottom: 18px;">
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <div class="connector-pill-btn active" style="cursor: default; pointer-events: none; display:inline-flex; align-items:center; gap:6px;">
+          <!-- Header del card -->
+          <div class="flex items-center justify-between gap-4 flex-wrap border-b border-white/10 pb-4 mb-5">
+            <div class="flex items-center gap-3">
+              <div class="connector-pill-btn active" style="cursor:default;pointer-events:none;display:inline-flex;align-items:center;gap:6px;">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                <strong>Motor Directo TikTok Live</strong> <span style="color: var(--neon-cyan);">Webcast GZ7</span>
+                <strong>Motor Directo TikTok Live</strong> <span class="text-gk-cyan">Webcast GZ7</span>
               </div>
-              <span style="font-size: 12px; color: var(--text-muted); font-family: var(--font-mono);">
+              <span class="font-mono text-xs text-white/40">
                 Conexión directa &bull; Reconexión automática
               </span>
             </div>
 
-            <!-- Indicador lateral de estado en vivo (Verde al conectar) -->
-            <div id="dash-side-status-badge" style="display: inline-flex; align-items: center; gap: 9px; padding: 7px 16px; border-radius: 999px; font-family: var(--font-mono); font-size: 12px; font-weight: 800; background: rgba(255, 42, 95, 0.12); border: 1.5px solid rgba(255, 42, 95, 0.45); color: #ff6b8b; transition: all 0.25s ease;">
+            <!-- Status Badge DESCONECTADO -->
+            <div id="dash-side-status-badge" class="inline-flex items-center gap-2 rounded-full px-4 py-1.5 font-mono text-xs font-bold bg-rose-500/10 border border-rose-500/40 text-rose-400 transition-all duration-300">
               <span class="status-indicator disconnected" id="dash-side-status-dot"></span>
               <span id="dash-side-status-label">DESCONECTADO</span>
             </div>
           </div>
 
-          <p style="font-size: 14px; color: var(--text-main); margin-bottom: 16px;">
+          <p class="text-sm text-white/80 mb-5 leading-relaxed">
             Ingresa tu <strong>@usuario</strong> de TikTok y conecta mientras estés en directo. El panel usa un conector local y servicios públicos de firma; no necesitas contratar una API para probarlo.
           </p>
 
-          <div class="tiktok-connect-form-row">
-            <label for="dash-tiktok-username" style="font-size: 14px; font-weight: 700;">
-              Tu usuario de TikTok <span style="color: var(--color-malos);">(Requerido!)</span>
+          <!-- Input username row -->
+          <div class="tiktok-connect-form-row flex flex-col gap-2 mb-3">
+            <label for="dash-tiktok-username" class="text-sm font-bold text-white/90">
+              Tu usuario de TikTok <span class="text-gk-magenta">(Requerido!)</span>
             </label>
-            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-              <input type="text" id="dash-tiktok-username" class="input-field" placeholder="TikTok @username (ej. @gz7)" style="font-size: 15px; padding: 11px 14px; flex: 1; min-width: 240px;" />
-              <span id="dash-tiktok-status-text" style="font-family: var(--font-mono); font-size: 12px; font-weight: 800; padding: 8px 14px; border-radius: 999px; background: rgba(255, 42, 95, 0.12); border: 1px solid rgba(255, 42, 95, 0.4); color: #ff6b8b; white-space: nowrap;">
-                ● DESCONECTADO
+            <div class="flex items-center gap-3 flex-wrap">
+              <input
+                type="text"
+                id="dash-tiktok-username"
+                class="input-field w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm focus:border-gk-cyan/60 focus:outline-none focus:ring-1 focus:ring-gk-cyan/30 transition-all flex-1 min-w-60"
+                placeholder="TikTok @username (ej. @gz7)"
+              />
+              <span id="dash-tiktok-status-text" class="inline-flex items-center font-mono text-xs font-bold px-4 py-2 rounded-full bg-rose-500/10 border border-rose-500/40 text-rose-400 whitespace-nowrap">
+                &#x25CF; DESCONECTADO
               </span>
             </div>
           </div>
 
-          <p id="dash-connect-detail" role="status" style="font-size: 12px; color: var(--text-muted); margin: 7px 0 13px;">Escribe tu usuario y pulsa Conectar. El indicador cambiará a EN VIVO cuando TikTok confirme la sala.</p>
+          <p id="dash-connect-detail" role="status" class="text-xs text-white/40 mb-4">Escribe tu usuario y pulsa Conectar. El indicador cambiará a EN VIVO cuando TikTok confirme la sala.</p>
 
-          <div class="tiktok-connect-form-row">
-            <div>
-              <span style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);">
-                Control de Enlace &amp; Pruebas
-              </span>
-            </div>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-              <button type="button" class="btn-primary" id="dash-btn-connect-tiktok" style="min-width: 155px; display:inline-flex; align-items:center; justify-content:center; gap:6px;">
+          <!-- Botones de control -->
+          <div class="tiktok-connect-form-row flex flex-col gap-2">
+            <span class="font-mono text-xs text-white/40">Control de Enlace &amp; Pruebas</span>
+            <div class="flex gap-2 flex-wrap">
+              <button type="button" class="btn-primary inline-flex items-center justify-center gap-1.5 min-w-40" id="dash-btn-connect-tiktok">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                 Conectar TikTok
               </button>
-              <button type="button" class="btn-danger" id="dash-btn-disconnect-tiktok" style="min-width: 140px; display: none; align-items:center; justify-content:center; gap:6px;">
+              <button type="button" class="btn-danger inline-flex items-center justify-center gap-1.5 min-w-36" id="dash-btn-disconnect-tiktok" style="display:none;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 Desconectar
               </button>
-              <button type="button" class="btn-secondary" id="btn-quick-test-gift" style="display:inline-flex; align-items:center; gap:6px;">
+              <button type="button" class="btn-secondary inline-flex items-center gap-1.5" id="btn-quick-test-gift">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/></svg>
                 Simular Regalo
               </button>
-              <button type="button" class="btn-secondary" id="btn-open-gift-monitor" style="border-color: rgba(56, 189, 248, 0.4); color: var(--neon-cyan); display:inline-flex; align-items:center; gap:6px;">
+              <button type="button" class="btn-secondary inline-flex items-center gap-1.5 border-gk-cyan/40 text-gk-cyan" id="btn-open-gift-monitor">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6"/><path d="M12 2v10"/></svg>
                 Monitor &amp; Simulador
               </button>
-              <button type="button" class="btn-secondary" id="btn-quick-test-chroma" style="display:inline-flex; align-items:center; gap:6px;">
+              <button type="button" class="btn-secondary inline-flex items-center gap-1.5" id="btn-quick-test-chroma">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
                 Probar Alerta Croma
               </button>
-              <button type="button" class="btn-secondary" id="btn-fetch-emotes" style="display:inline-flex; align-items:center; gap:6px;">
+              <button type="button" class="btn-secondary inline-flex items-center gap-1.5" id="btn-fetch-emotes">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
                 Sincronizar Emotes
               </button>
-              <button type="button" class="btn-secondary" id="btn-open-euler-key" style="border-color: rgba(0, 242, 254, 0.45); color: var(--neon-cyan); display:inline-flex; align-items:center; gap:6px;">
+              <button type="button" class="btn-secondary inline-flex items-center gap-1.5 border-gk-cyan/40 text-gk-cyan" id="btn-open-euler-key">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-1.5 1.5L16 7l-1.5-1.5m-3 3L8 12l-1.5-1.5M7 17l-5 5"/></svg>
                 API Opcional
               </button>
             </div>
           </div>
 
-          <div class="retry-help-banner" id="dash-connection-footer-banner" style="background: rgba(0, 240, 255, 0.06); border-color: rgba(0, 240, 255, 0.3);">
-            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-              <span id="dash-engine-pill" style="background: rgba(0, 240, 255, 0.18); color: var(--neon-cyan); border: 1px solid rgba(0, 240, 255, 0.45); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 800;">
+          <!-- Footer engine banner -->
+          <div class="retry-help-banner rounded-xl border border-gk-cyan/20 bg-gk-cyan/5 p-4 flex items-center justify-between gap-4 flex-wrap mt-4" id="dash-connection-footer-banner">
+            <div class="flex items-center gap-3 flex-wrap">
+              <span id="dash-engine-pill" class="rounded-md bg-gk-cyan/15 border border-gk-cyan/40 text-gk-cyan px-3 py-1 text-xs font-bold tracking-widest">
                 MOTOR ÚNICO GZ7
               </span>
-              <strong id="dash-engine-msg" style="font-size: 13px; letter-spacing: 0.5px; color: var(--text-main);">
+              <strong id="dash-engine-msg" class="text-sm tracking-wide text-white/90">
                 Conector listo para iniciar. La conexión en vivo se confirma al abrir la sala de TikTok.
               </strong>
             </div>
-            <span style="font-family: var(--font-mono); font-size: 12px; color: var(--neon-cyan);">
+            <span class="font-mono text-xs text-gk-cyan">
               Overlays activos en: http://localhost:4000
             </span>
           </div>
@@ -446,7 +453,7 @@
         <!-- Estadísticas Rápidas de la Sesión -->
         <div class="section-card">
           <div class="panel-header">
-            <span class="panel-title" style="display:inline-flex;align-items:center;gap:8px;">
+            <span class="panel-title inline-flex items-center gap-2">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="18" y1="20" x2="18" y2="10"/>
                 <line x1="12" y1="20" x2="12" y2="4"/>
@@ -455,19 +462,19 @@
               TELEMETRÍA &amp; ESTADÍSTICAS EN VIVO
             </span>
           </div>
-          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;">
-            <div class="stat-box">
-              <span class="stat-value" id="stat-likes">0</span>
-              <span class="stat-label" style="display:inline-flex;align-items:center;gap:6px;">
+          <div class="grid grid-cols-4 gap-4 mt-4">
+            <div class="stat-box p-5 flex flex-col items-center gap-1">
+              <span class="stat-value text-3xl font-bold" id="stat-likes">0</span>
+              <span class="stat-label inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-white/50">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff2a85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                 </svg>
                 Likes Totales
               </span>
             </div>
-            <div class="stat-box">
-              <span class="stat-value" id="stat-gifts">0</span>
-              <span class="stat-label" style="display:inline-flex;align-items:center;gap:6px;">
+            <div class="stat-box p-5 flex flex-col items-center gap-1">
+              <span class="stat-value text-3xl font-bold" id="stat-gifts">0</span>
+              <span class="stat-label inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-white/50">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="20 12 20 22 4 22 4 12"/>
                   <rect x="2" y="7" width="20" height="5"/>
@@ -476,18 +483,18 @@
                 Regalos Recibidos
               </span>
             </div>
-            <div class="stat-box">
-              <span class="stat-value" id="stat-coins">0</span>
-              <span class="stat-label" style="display:inline-flex;align-items:center;gap:6px;">
+            <div class="stat-box p-5 flex flex-col items-center gap-1">
+              <span class="stat-value text-3xl font-bold" id="stat-coins">0</span>
+              <span class="stat-label inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-white/50">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M6 3h12l4 6-10 12L2 9z"/>
                 </svg>
                 Monedas / Diamantes
               </span>
             </div>
-            <div class="stat-box">
-              <span class="stat-value" id="stat-followers">0</span>
-              <span class="stat-label" style="display:inline-flex;align-items:center;gap:6px;">
+            <div class="stat-box p-5 flex flex-col items-center gap-1">
+              <span class="stat-value text-3xl font-bold" id="stat-followers">0</span>
+              <span class="stat-label inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-white/50">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#23e6a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
                   <circle cx="8.5" cy="7" r="4"/>
