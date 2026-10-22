@@ -234,7 +234,10 @@ export function enhanceObbyWorkspace({ app, render }) {
   livePanelHeader.innerHTML = `
     <div class="gvg-card-title-group">
       <div class="gvg-card-icon-badge" style="background:rgba(0,217,255,0.1);color:var(--gk-cyan);">
-        🎮
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="6" width="20" height="12" rx="6"/>
+          <path d="M6 12h4m-2-2v4m9-2h.01m3-2h.01"/>
+        </svg>
       </div>
       <div>
         <h2 class="gvg-card-heading">2. Control del directo</h2>
@@ -290,7 +293,7 @@ export function enhanceObbyWorkspace({ app, render }) {
     <div class="team-body-row">
       <div class="team-gift-pedestal red">
         <img src="./gifts/rose-1-coins.webp" class="team-gift-icon" onerror="this.src='./galactk-logo.png'" alt="Rosa" />
-        <span class="pedestal-coin-chip">1 🪙</span>
+        <span class="pedestal-coin-chip">1 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;display:inline-block;margin-left:2px;"><path d="M6 3h12l4 6-10 12L2 9z"/></svg></span>
       </div>
       <div class="team-counter-wrap">
         <input type="number" min="0" id="gvg-red-points" class="team-points-input" value="0" />
@@ -314,7 +317,7 @@ export function enhanceObbyWorkspace({ app, render }) {
     <div class="team-body-row">
       <div class="team-gift-pedestal blue">
         <img src="./gifts/gg-1-coins.webp" class="team-gift-icon" onerror="this.src='./galactk-logo.png'" alt="GG" />
-        <span class="pedestal-coin-chip">1 🪙</span>
+        <span class="pedestal-coin-chip">1 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;display:inline-block;margin-left:2px;"><path d="M6 3h12l4 6-10 12L2 9z"/></svg></span>
       </div>
       <div class="team-counter-wrap">
         <input type="number" min="0" id="gvg-blue-points" class="team-points-input" value="0" />
@@ -540,7 +543,7 @@ export function enhanceObbyWorkspace({ app, render }) {
   themes.querySelectorAll('.rbx-theme-btn').forEach(button => {
     const theme = button.dataset.theme;
     button.classList.add('theme-card'); button.setAttribute('aria-label', names[theme]);
-    button.innerHTML = `<span class="theme-mini" data-style="${theme.toUpperCase()}"><span>🌹 <b>24</b></span><i>VS</i><span><b>18</b> 🎮</span></span><strong>${names[theme] || theme}</strong><small>${theme === 'transparent' ? 'Solo iconos y texto' : 'Texto + superficie'}</small>`;
+    button.innerHTML = `<span class="theme-mini" data-style="${theme.toUpperCase()}"><span style="display:inline-flex;align-items:center;gap:3px;"><img src="./gifts/rose-1-coins.webp" style="width:14px;height:14px;object-fit:contain;" alt="" onerror="this.style.display='none'" /> <b>24</b></span><i>VS</i><span style="display:inline-flex;align-items:center;gap:3px;"><b>18</b> <img src="./gifts/gg-1-coins.webp" style="width:14px;height:14px;object-fit:contain;" alt="" onerror="this.style.display='none'" /></span></span><strong>${names[theme] || theme}</strong><small>${theme === 'transparent' ? 'Solo iconos y texto' : 'Texto + superficie'}</small>`;
   });
   links.querySelector('.panel-title').textContent = 'Overlays por separado';
   tabs.firstElementChild.click();
