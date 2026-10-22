@@ -35,7 +35,7 @@ export default function DownloadSection() {
             {/* Version & Arch Badge */}
             <div className="inline-flex items-center gap-2 rounded-full glass-thin border border-[#fbbf24]/30 px-4 py-1.5 text-xs font-semibold text-[#fbbf24] shadow-[0_2px_12px_rgba(251,191,36,0.15)] mb-6">
               <Sparkles className="h-3.5 w-3.5" />
-              <span>Versión 2.1.2 Oficial · Windows 10/11 x64 · 54.8 MB</span>
+              <span>Versión 2.1.3 Oficial · Windows 10/11 x64 · 54.8 MB</span>
             </div>
 
             <h2 className="apple-headline text-3xl sm:text-5xl font-extrabold text-white">
@@ -59,9 +59,9 @@ export default function DownloadSection() {
               >
                 <Download className="h-6 w-6 stroke-[2.5] transition-transform group-hover:translate-y-0.5" />
                 <div className="flex flex-col text-left">
-                  <span className="leading-tight">Descargar Galactik Live v2.1.2</span>
+                  <span className="leading-tight">Descargar Galactik Live v2.1.3</span>
                   <span className="text-xs font-medium text-black/75">
-                    Galactik Live_2.1.2_x64-setup.exe · ~54.8 MB
+                    Galactik Live_2.1.3_x64-setup.exe · ~54.8 MB
                   </span>
                 </div>
               </a>

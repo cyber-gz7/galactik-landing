@@ -7,12 +7,14 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 function getSetupPath() {
+  const v213 = path.join(process.cwd(), 'public', 'Galactik Live_2.1.3_x64-setup.exe');
+  if (fs.existsSync(v213)) return { path: v213, name: 'Galactik Live_2.1.3_x64-setup.exe' };
   const v212 = path.join(process.cwd(), 'public', 'Galactik Live_2.1.2_x64-setup.exe');
   if (fs.existsSync(v212)) return { path: v212, name: 'Galactik Live_2.1.2_x64-setup.exe' };
   const v211 = path.join(process.cwd(), 'public', 'Galactik Live_2.1.1_x64-setup.exe');
   if (fs.existsSync(v211)) return { path: v211, name: 'Galactik Live_2.1.1_x64-setup.exe' };
   const fallback = path.join(process.cwd(), 'public', 'GalacticLive-Setup.exe');
-  if (fs.existsSync(fallback)) return { path: fallback, name: 'Galactik Live_2.1.2_x64-setup.exe' };
+  if (fs.existsSync(fallback)) return { path: fallback, name: 'Galactik Live_2.1.3_x64-setup.exe' };
   return null;
 }
 
@@ -54,7 +56,7 @@ export async function HEAD() {
     status: 200,
     headers: {
       'Content-Type': 'application/octet-stream',
-      'Content-Disposition': 'attachment; filename="Galactik Live_2.1.1_x64-setup.exe"',
+      'Content-Disposition': `attachment; filename="${fileInfo.name}"`,
       'Content-Length': stat.size.toString(),
       'Accept-Ranges': 'bytes',
       'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',

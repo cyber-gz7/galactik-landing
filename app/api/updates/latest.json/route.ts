@@ -2,13 +2,13 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   const updateManifest = {
-    version: '2.1.2',
-    notes: 'Actualización v2.1.2: Panel de Control de Cuentas & Licencias para Streamers con aprobación en 1 clic desde Supabase, sincronización inmediata de solicitudes pendientes, visualización directa en sidebar y topbar, y blindaje de navegación.',
+    version: '2.1.3',
+    notes: 'Actualización v2.1.3: Motor de reconocimiento bilingüe de regalos (Español/Inglés) con ID numérico universal de TikTok, buscador bilingüe en catálogo de 1,770 regalos, subtítulos en español y persistencia de tiktokGiftId.',
     pub_date: new Date().toISOString(),
     platforms: {
       'windows-x86_64': {
         signature: '',
-        url: 'https://github.com/cyber-gz7/galactik-landing/releases/download/v2.1.2/Galactik.Live_2.1.2_x64-setup.exe',
+        url: 'https://github.com/cyber-gz7/galactik-landing/releases/download/v2.1.3/Galactik.Live_2.1.3_x64-setup.exe',
       },
     },
   };

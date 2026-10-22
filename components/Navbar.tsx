@@ -30,7 +30,7 @@ export default function Navbar({ userEmail }: NavbarProps) {
                 Galactik <span className="bg-gradient-to-r from-[#00f0ff] via-[#38bdf8] to-[#ff2a85] bg-clip-text text-transparent">Live</span>
               </span>
               <span className="rounded-full bg-white/[0.06] border border-white/[0.1] px-2 py-0.5 text-[10px] font-mono font-medium text-[#00f0ff]">
-                v2.1.2
+                v2.1.3
               </span>
             </div>
             <span className="text-[11px] font-medium tracking-wide text-zinc-400">
@@ -91,7 +91,7 @@ export default function Navbar({ userEmail }: NavbarProps) {
             className="apple-shine-btn inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#00f0ff] via-[#00c8ff] to-[#ff2a85] px-5 py-2.5 text-[13px] font-bold text-black shadow-[0_2px_14px_-2px_rgba(0,240,255,0.4)]"
           >
             <Download className="h-4 w-4 stroke-[2.5]" />
-            <span>Descargar v2.1.2</span>
+            <span>Descargar v2.1.3</span>
           </a>
         </div>
 
@@ -137,7 +137,7 @@ export default function Navbar({ userEmail }: NavbarProps) {
             onClick={() => setMobileMenuOpen(false)}
             className="block text-sm font-medium text-zinc-300 hover:text-[#fbbf24]"
           >
-            Descargar Instalador v2.1.2
+            Descargar Instalador v2.1.3
           </a>
           <div className="pt-4 border-t border-white/[0.08] flex flex-col gap-3">
             <a
@@ -145,7 +145,7 @@ export default function Navbar({ userEmail }: NavbarProps) {
               className="apple-shine-btn flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#00f0ff] to-[#ff2a85] py-3 text-sm font-bold text-black"
             >
               <Download className="h-4 w-4" />
-              <span>Descargar v2.1.2</span>
+              <span>Descargar v2.1.3</span>
             </a>
           </div>
         </div>
