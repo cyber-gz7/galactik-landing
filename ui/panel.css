@@ -77,9 +77,45 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .app-sidebar { flex:0 0 var(--sidebar-w-expanded); width:var(--sidebar-w-expanded); background:#080C13; border-right:1px solid var(--border-subtle); box-shadow:none; backdrop-filter:none; }
 .app-sidebar.collapsed { flex-basis:68px; width:68px; min-width:68px; }
 .app-sidebar .sidebar-header { padding:22px 14px 18px; }
-.brand-wrapper { gap:9px; }
-.brand-logo-wrap { width:38px; height:38px; background:none; border:0; box-shadow:none; }
-.brand-logo-img { width:38px; height:38px; object-fit:contain; filter:drop-shadow(0 0 14px rgba(0,242,254,.45)); }
+.brand-wrapper { gap:9px; align-items:center; }
+.brand-logo-wrap {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 100%) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.35) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  overflow: hidden !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer !important;
+}
+.brand-logo-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, transparent 100%);
+  pointer-events: none;
+}
+.brand-logo-wrap:hover {
+  transform: translateY(-2px) scale(1.05) !important;
+  border-color: rgba(0, 217, 255, 0.5) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 217, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+}
+.brand-glass-svg {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+  transition: transform 0.3s ease;
+}
+.brand-logo-wrap:hover .brand-glass-svg {
+  transform: rotate(15deg) scale(1.06);
+}
+.brand-logo-img { width:26px; height:26px; object-fit:contain; filter:none !important; }
 .app-title { font:800 13px/1.3 var(--font-main); letter-spacing:.06em; white-space:nowrap; color:var(--text-primary); text-shadow:none; }
 .app-subtitle { font-size:9px; letter-spacing:.12em; color:var(--text-secondary); }
 .sidebar-toggle-btn { flex-shrink:0; width:22px; }
@@ -170,15 +206,14 @@ button:active { transform:translateY(1px); }
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
-  background: linear-gradient(90deg, rgba(8, 17, 30, 0.96) 0%, rgba(13, 26, 44, 0.90) 45%, rgba(8, 17, 30, 0.94) 100%),
-              url('./assets/banner-roblox-gvg.png') no-repeat right center / cover !important;
-  border: 1.5px solid rgba(0, 217, 255, 0.4) !important;
+  background: linear-gradient(90deg, #070e18 0%, #0b1728 50%, #0f1f35 100%) !important;
+  border: 1px solid rgba(0, 217, 255, 0.3) !important;
   border-radius: 14px !important;
   padding: 20px 28px !important;
   margin-bottom: 20px !important;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 217, 255, 0.15) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 217, 255, 0.08) !important;
 }
 .module-hero-banner::before {
   content: '';
@@ -194,14 +229,26 @@ button:active { transform:translateY(1px); }
   z-index: 2;
 }
 .banner-hero-cube-wrap {
-  width: 58px;
-  height: 58px;
-  border-radius: 12px;
-  background: radial-gradient(circle, rgba(0, 217, 255, 0.2) 0%, rgba(0, 217, 255, 0.05) 70%);
-  border: 1px solid rgba(0, 217, 255, 0.4);
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-top: 1px solid rgba(255, 255, 255, 0.38);
   display: grid;
   place-content: center;
-  box-shadow: 0 0 16px rgba(0, 217, 255, 0.3);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+.banner-hero-cube-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, transparent 100%);
+  pointer-events: none;
 }
 .banner-hero-content h1 {
   font-family: 'Orbitron', sans-serif !important;
@@ -1252,9 +1299,9 @@ button:active { transform:translateY(1px); }
 .modal-backdrop > div,.modal-content { max-width:calc(100vw - 32px) !important; max-height:calc(100vh - 32px); overflow:auto; background:var(--bg-elevated); backdrop-filter:blur(16px); }
 .section-card [style*="grid-template-columns"],.card-panel [style*="grid-template-columns"] { min-width:0; }
 #galactk-loading { position:fixed; inset:0; display:grid; place-content:center; text-align:center; background:var(--bg-void); z-index:999; gap:14px; font-size:12px; color:var(--text-secondary); }
-#galactk-loading img { width:64px; height:64px; margin:auto; filter:drop-shadow(0 0 14px rgba(0,242,254,.45)); }
-.overlay-connected .brand-logo-img { animation:brandPulse 4s ease-in-out infinite; }
-@keyframes brandPulse { 50% { filter:drop-shadow(0 0 9px rgba(0,242,254,.22)); } }
+#galactk-loading img { width:64px; height:64px; margin:auto; filter:drop-shadow(0 8px 24px rgba(0,0,0,0.6)); }
+.overlay-connected .brand-logo-img { animation:none; }
+@keyframes brandPulse { 50% { opacity: 0.8; } }
 @keyframes panelEnter { from { opacity:.6; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
 @media (max-width:1200px) { .main-view-container { padding:22px 18px 32px; } .app-header { padding:10px 16px; } .roblox-slot-row { grid-template-columns:minmax(0,1fr) minmax(0,1.5fr) !important; } .roblox-slot-row > div:last-child { grid-column:1/-1; justify-content:flex-start !important; } .topbar-app-name,.topbar-separator { display:none; } }
 @media (max-width:1020px) { :root { --sidebar-w-expanded:205px; } .app-title { font-size:11px; } .brand-logo-wrap,.brand-logo-img { width:30px;height:30px; } .nav-tab-btn { padding:9px 7px; font-size:11px; } .module-hero h1 { font-size:23px; } .link-bar { grid-template-columns:minmax(0,1fr) auto !important; } .link-bar input { grid-column:1/-1; } .workspace-tabs { gap:15px; } .workspace-tabs button { font-size:11px; } .rules-toolbar { grid-template-columns:minmax(0,1fr) 140px; } .section-card [style*="repeat(4, 1fr)"] { grid-template-columns:repeat(2,minmax(0,1fr)) !important; } }

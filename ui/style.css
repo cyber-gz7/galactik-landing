@@ -151,34 +151,50 @@ body {
   overflow: hidden;
 }
 
-/* Logo Flotante sin marcos toscos */
+/* Logo Glassmorphic */
 .brand-logo-wrap,
 .logo-orbit-box {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-top: 1px solid rgba(255, 255, 255, 0.38);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.35);
   position: relative;
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.brand-logo-wrap::before,
+.logo-orbit-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.brand-logo-wrap:hover,
+.logo-orbit-box:hover {
+  transform: translateY(-2px) scale(1.05);
+  border-color: rgba(0, 217, 255, 0.45);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.65), 0 0 14px rgba(0, 217, 255, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .brand-logo-img,
 .logo-orbit-box img {
-  width: 36px;
-  height: 36px;
+  width: 26px;
+  height: 26px;
   object-fit: contain;
-  filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.7)) drop-shadow(0 0 3px rgba(56, 189, 248, 0.4));
-  transition: transform 0.3s var(--ease-apple), filter 0.3s ease;
-}
-
-.brand-logo-img:hover,
-.logo-orbit-box img:hover {
-  transform: scale(1.08) rotate(3deg);
-  filter: drop-shadow(0 0 18px rgba(56, 189, 248, 0.95)) drop-shadow(0 0 6px rgba(56, 189, 248, 0.6));
+  filter: none;
+  transition: transform 0.3s var(--ease-apple);
 }
 
 .brand-info {
