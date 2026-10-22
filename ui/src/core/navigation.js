@@ -17,7 +17,7 @@ const tabTitles = {
   'tab-rcon': 'Minecraft RCON & Servidor Local',
   'tab-music-mods': '🎵 Música & Control de Moderadores',
   'tab-alertas': 'Alertas de pantalla · BETA',
-  'tab-admin-licenses': '👑 Administración • Solicitudes & Licencias'
+  'tab-admin-licenses': 'Admin • Licencias'
 };
 
 function switchTab(targetId) {

@@ -525,7 +525,7 @@ class AppController {
       const invoke = window.__TAURI__?.core?.invoke || window.__TAURI__?.invoke;
       if (invoke) {
         const configStr = await invoke('load_config');
-        if (configStr && configStr.trim() && configStr !== '{}') {
+        if (configStr && typeof configStr === 'string' && configStr.trim() && configStr !== '{}') {
           const config = JSON.parse(configStr);
 
           if (config.activeProfile) this.activeProfile = config.activeProfile;
