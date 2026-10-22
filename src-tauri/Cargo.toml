@@ -1,8 +1,8 @@
 [package]
 name = "gz7live"
-version = "2.1.0"
-description = "GZ7Live - TikTok Live to Minecraft RCON bridge with Universal Survival Plugins"
-authors = ["GZ7"]
+version = "2.1.1"
+description = "Galactik Live - TikTok Live to Minecraft RCON bridge with Universal Survival Plugins"
+authors = ["CyberGZ7"]
 edition = "2021"
 
 [build-dependencies]
