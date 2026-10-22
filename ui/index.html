@@ -270,7 +270,14 @@
         <div class="section-card">
           <div class="panel-header">
             <div>
-              <span class="panel-title">🌌 1. Selecciona tu Perfil de Transmisión</span>
+              <span class="panel-title" style="display:inline-flex;align-items:center;gap:8px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                  <polyline points="2 17 12 22 22 17"/>
+                  <polyline points="2 12 12 17 22 12"/>
+                </svg>
+                1. SELECCIONA TU PERFIL DE TRANSMISIÓN
+              </span>
               <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
                 El panel adapta automáticamente sus pestañas y herramientas según el juego que vayas a transmitir para que todo sea súper limpio y fácil de usar.
               </p>
@@ -281,8 +288,17 @@
             <!-- Perfil 1: Minecraft -->
             <div class="profile-select-card active" data-select-profile="minecraft">
               <span class="profile-card-badge" id="badge-prof-minecraft">ACTIVO</span>
-              <div style="font-size: 28px;">⛏️</div>
-              <h3 style="font-family: var(--font-display); font-size: 16px; color: var(--neon-cyan);">Modo Minecraft</h3>
+              <div class="profile-icon-wrap minecraft-glow">
+                <svg class="profile-game-icon" width="46" height="46" viewBox="0 0 64 64" fill="none">
+                  <polygon points="32,6 58,21 32,36 6,21" fill="#23E6A8" opacity="0.95"/>
+                  <polygon points="6,21 32,36 32,58 6,43" fill="#137352" opacity="0.9"/>
+                  <polygon points="32,36 58,21 58,43 32,58" fill="#1b976c" opacity="0.85"/>
+                  <polygon points="32,6 58,21 32,36 6,21" stroke="#3dffbc" stroke-width="2" fill="none"/>
+                  <polygon points="6,21 32,36 32,58 6,43" stroke="#23E6A8" stroke-width="1.5" fill="none"/>
+                  <polygon points="32,36 58,21 58,43 32,58" stroke="#23E6A8" stroke-width="1.5" fill="none"/>
+                </svg>
+              </div>
+              <h3 style="font-family: var(--font-display); font-size: 16px; color: var(--gk-green); letter-spacing:0.04em;">Minecraft Live Survival</h3>
               <p style="font-size: 13px; color: var(--text-muted); line-height: 1.4;">
                 Overlays Transparentes (Carrusel Dinámico, Estático y Plano), Tótems Stackeables unificados, RCON, Visión Nocturna Infinita y Plugins Exclusivos.
               </p>
@@ -291,8 +307,13 @@
             <!-- Perfil 2: Roblox Obby Bicicleta -->
             <div class="profile-select-card" data-select-profile="roblox">
               <span class="profile-card-badge" id="badge-prof-roblox">ELEGIR</span>
-              <div style="font-size: 28px;">🚴</div>
-              <h3 style="font-family: var(--font-display); font-size: 16px; color: var(--neon-cyan);">Modo Roblox (Obby Bicicleta)</h3>
+              <div class="profile-icon-wrap roblox-glow">
+                <svg class="profile-game-icon" width="46" height="46" viewBox="0 0 100 100" fill="none">
+                  <path d="M22 6 L94 26 L78 94 L6 74 Z" fill="#00D9FF" opacity="0.9" stroke="#6ff9ff" stroke-width="3"/>
+                  <path d="M44 38 L62 43 L56 62 L38 57 Z" fill="#060e18"/>
+                </svg>
+              </div>
+              <h3 style="font-family: var(--font-display); font-size: 16px; color: var(--neon-cyan); letter-spacing:0.04em;">Roblox Obby Duelo GvG</h3>
               <p style="font-size: 13px; color: var(--text-muted); line-height: 1.4;">
                 Oculta todo lo de Minecraft y activa el Editor Interactivo del Overlay Gift vs Gift (cambia el León, Ballena, WINS y puntos a tu gusto).
               </p>
@@ -301,8 +322,13 @@
             <!-- Perfil 3: Stream Universal / IRL -->
             <div class="profile-select-card" data-select-profile="universal">
               <span class="profile-card-badge" id="badge-prof-universal">ELEGIR</span>
-              <div style="font-size: 28px;">🌐</div>
-              <h3 style="font-family: var(--font-display); font-size: 16px; color: var(--neon-cyan);">Modo Universal / IRL</h3>
+              <div class="profile-icon-wrap universal-glow">
+                <svg class="profile-game-icon" width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="2.5" fill="#A78BFA"/>
+                  <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/>
+                </svg>
+              </div>
+              <h3 style="font-family: var(--font-display); font-size: 16px; color: #C4B5FD; letter-spacing:0.04em;">Universal Broadcast Studio</h3>
               <p style="font-size: 13px; color: var(--text-muted); line-height: 1.4;">
                 Panel limpio solo con TTS Chat en vivo, Sonidos y Memes interactivos, Catálogo de Regalos, Alertas y Tops/MVP para cualquier juego.
               </p>
@@ -354,26 +380,33 @@
               </span>
             </div>
             <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-              <button type="button" class="btn-primary" id="dash-btn-connect-tiktok" style="min-width: 155px;">
-                ⚡ Conectar TikTok
+              <button type="button" class="btn-primary" id="dash-btn-connect-tiktok" style="min-width: 155px; display:inline-flex; align-items:center; justify-content:center; gap:6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                Conectar TikTok
               </button>
-              <button type="button" class="btn-danger" id="dash-btn-disconnect-tiktok" style="min-width: 140px; display: none;">
-                ✕ Desconectar
+              <button type="button" class="btn-danger" id="dash-btn-disconnect-tiktok" style="min-width: 140px; display: none; align-items:center; justify-content:center; gap:6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Desconectar
               </button>
-              <button type="button" class="btn-secondary" id="btn-quick-test-gift">
-                🧪 Simular Regalo (Rose)
+              <button type="button" class="btn-secondary" id="btn-quick-test-gift" style="display:inline-flex; align-items:center; gap:6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/></svg>
+                Simular Regalo
               </button>
-              <button type="button" class="btn-secondary" id="btn-open-gift-monitor" style="border-color: rgba(56, 189, 248, 0.4); color: var(--neon-cyan);">
-                📡 Monitor &amp; Simulador
+              <button type="button" class="btn-secondary" id="btn-open-gift-monitor" style="border-color: rgba(56, 189, 248, 0.4); color: var(--neon-cyan); display:inline-flex; align-items:center; gap:6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6"/><path d="M12 2v10"/></svg>
+                Monitor &amp; Simulador
               </button>
-              <button type="button" class="btn-secondary" id="btn-quick-test-chroma">
-                🎬 Probar Alerta Croma
+              <button type="button" class="btn-secondary" id="btn-quick-test-chroma" style="display:inline-flex; align-items:center; gap:6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                Probar Alerta Croma
               </button>
-              <button type="button" class="btn-secondary" id="btn-fetch-emotes">
-                😎 Sincronizar Emotes
+              <button type="button" class="btn-secondary" id="btn-fetch-emotes" style="display:inline-flex; align-items:center; gap:6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                Sincronizar Emotes
               </button>
-              <button type="button" class="btn-secondary" id="btn-open-euler-key" style="border-color: rgba(0, 242, 254, 0.45); color: var(--neon-cyan);">
-                🔑 API opcional
+              <button type="button" class="btn-secondary" id="btn-open-euler-key" style="border-color: rgba(0, 242, 254, 0.45); color: var(--neon-cyan); display:inline-flex; align-items:center; gap:6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-1.5 1.5L16 7l-1.5-1.5m-3 3L8 12l-1.5-1.5M7 17l-5 5"/></svg>
+                API Opcional
               </button>
             </div>
           </div>

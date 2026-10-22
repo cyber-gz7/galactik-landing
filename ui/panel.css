@@ -2355,6 +2355,34 @@ button:active { transform:translateY(1px); }
   overflow: hidden !important;
 }
 
+.profile-icon-wrap {
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+  display: grid;
+  place-content: center;
+  margin-bottom: 6px;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.minecraft-glow {
+  background: radial-gradient(circle, rgba(35, 230, 168, 0.25) 0%, rgba(35, 230, 168, 0.05) 70%);
+  border: 1.5px solid rgba(35, 230, 168, 0.55);
+  box-shadow: 0 0 20px rgba(35, 230, 168, 0.3);
+}
+.roblox-glow {
+  background: radial-gradient(circle, rgba(0, 217, 255, 0.25) 0%, rgba(0, 217, 255, 0.05) 70%);
+  border: 1.5px solid rgba(0, 217, 255, 0.55);
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+}
+.universal-glow {
+  background: radial-gradient(circle, rgba(167, 139, 250, 0.25) 0%, rgba(167, 139, 250, 0.05) 70%);
+  border: 1.5px solid rgba(167, 139, 250, 0.55);
+  box-shadow: 0 0 20px rgba(167, 139, 250, 0.3);
+}
+.profile-select-card:hover .profile-icon-wrap {
+  transform: scale(1.1) translateY(-2px);
+}
+
 .profile-select-card::before {
   content: '';
   position: absolute;

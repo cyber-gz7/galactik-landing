@@ -31,7 +31,13 @@ export function enhanceObbyWorkspace({ app, render }) {
   `;
   const saveAllBtn = document.getElementById('btn-save-roblox-overlay');
   if (saveAllBtn) {
-    saveAllBtn.innerHTML = '💾 Guardar Todo en Vivo';
+    saveAllBtn.innerHTML = `
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px;">
+        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+        <polyline points="17 21 17 13 7 13 7 21"/>
+        <polyline points="7 3 7 8 15 8"/>
+      </svg>GUARDAR TODO EN VIVO
+    `;
     saveAllBtn.className = 'btn-primary btn-save-hero';
   }
   const profileCode = document.getElementById('obby-profile-code').parentElement;
@@ -47,8 +53,11 @@ export function enhanceObbyWorkspace({ app, render }) {
     <div class="gvg-card-header">
       <div class="gvg-card-title-group">
         <div class="gvg-card-icon-badge">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2a5 5 0 0 1 5 5v3a5 5 0 0 1-10 0V7a5 5 0 0 1 5-5zm0 14c4.42 0 8 2.24 8 5v1H4v-1c0-2.76 3.58-5 8-5z"/>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
+            <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+            <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+            <line x1="12" y1="20" x2="12.01" y2="20"/>
           </svg>
         </div>
         <div>
@@ -58,7 +67,12 @@ export function enhanceObbyWorkspace({ app, render }) {
       </div>
       <div class="gvg-card-header-actions">
         <span id="gvg-live-status-pill" class="gvg-status-pill"><span class="status-dot-active">●</span> Overlay conectado</span>
-        <button type="button" class="btn-secondary btn-ver-obs" id="btn-ver-obs">👁️ Ver en OBS</button>
+        <button type="button" class="btn-secondary btn-ver-obs" id="btn-ver-obs">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>Ver en OBS
+        </button>
       </div>
     </div>
 
@@ -68,19 +82,35 @@ export function enhanceObbyWorkspace({ app, render }) {
           <div class="gvg-step-item">
             <span class="step-num">1</span>
             <span class="step-txt">Copia el link</span>
-            <span class="step-icon">🔗</span>
+            <span class="step-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gk-cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+              </svg>
+            </span>
           </div>
           <span class="step-arrow">›</span>
           <div class="gvg-step-item">
             <span class="step-num">2</span>
             <span class="step-txt">Abre en OBS / LIVE Studio</span>
-            <span class="step-icon">🖥️</span>
+            <span class="step-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gk-cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                <line x1="8" y1="21" x2="16" y2="21"/>
+                <line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+            </span>
           </div>
           <span class="step-arrow">›</span>
           <div class="gvg-step-item">
             <span class="step-num">3</span>
             <span class="step-txt">Controla en vivo</span>
-            <span class="step-icon">🎮</span>
+            <span class="step-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gk-cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="6" width="20" height="12" rx="6"/>
+                <path d="M6 12h4m-2-2v4m9-2h.01m3-2h.01"/>
+              </svg>
+            </span>
           </div>
         </div>
 
@@ -135,7 +165,13 @@ export function enhanceObbyWorkspace({ app, render }) {
   const urlBar = document.getElementById('gvg-overlay-url').parentElement;
   urlBar.removeAttribute('style'); urlBar.className = 'link-bar gvg-link-bar';
   const reset = document.getElementById('btn-gvg-reset-points'); reset.textContent = '↻ Reset 0 – 0';
-  document.getElementById('btn-gvg-copy-url').innerHTML = '📋'; document.getElementById('btn-gvg-copy-url').title = 'Copiar link';
+  document.getElementById('btn-gvg-copy-url').innerHTML = `
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+    </svg>
+  `;
+  document.getElementById('btn-gvg-copy-url').title = 'Copiar link';
   document.getElementById('btn-gvg-open-overlay').innerHTML = 'Previsualizar ↗';
   const urlMount = hub.querySelector('#gvg-url-mount');
   if (urlMount && urlBar) {
@@ -151,10 +187,10 @@ export function enhanceObbyWorkspace({ app, render }) {
   const tabs = document.createElement('div'); tabs.className = 'workspace-tabs epic-nav-tabs'; tabs.setAttribute('role', 'tablist'); tabs.setAttribute('aria-label', 'Configuración Obby');
   const panels = {};
   const tabIcons = {
-    live: '🎮',
-    rules: '🎁',
-    theme: '✏️',
-    profile: '📄'
+    live: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="6"/><path d="M6 12h4m-2-2v4m9-2h.01m3-2h.01"/></svg>`,
+    rules: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>`,
+    theme: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>`,
+    profile: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`
   };
   const tabSubtitles = {
     live: 'Gestiona el duelo en tiempo real',
@@ -164,7 +200,7 @@ export function enhanceObbyWorkspace({ app, render }) {
   };
   for (const [id, label] of [['live', 'Controles en vivo'], ['rules', 'Reglas y regalos'], ['theme', 'Apariencia y tema'], ['profile', 'Importar / Exportar']]) {
     const button = document.createElement('button'); button.type = 'button'; button.id = `obby-tab-${id}`;
-    button.innerHTML = `<span class="tab-btn-icon">${tabIcons[id] || '⚡'}</span><div class="tab-btn-meta"><strong>${label}</strong><small>${tabSubtitles[id] || ''}</small></div>`;
+    button.innerHTML = `<span class="tab-btn-icon">${tabIcons[id]}</span><div class="tab-btn-meta"><strong>${label}</strong><small>${tabSubtitles[id] || ''}</small></div>`;
     button.setAttribute('role', 'tab'); button.setAttribute('aria-controls', `obby-panel-${id}`);
     const panel = document.createElement('section'); panel.id = `obby-panel-${id}`; panel.className = 'workspace-panel'; panel.setAttribute('role', 'tabpanel'); panel.setAttribute('aria-labelledby', button.id);
     panels[id] = panel; root.append(panel); tabs.append(button);
@@ -292,7 +328,14 @@ export function enhanceObbyWorkspace({ app, render }) {
   duelStatus.className = 'gvg-duel-status-bar duel-direction';
   duelStatus.innerHTML = `
     <div class="duel-status-badge">
-      <span class="duel-scale-icon">⚖️</span>
+      <span class="duel-scale-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="3" x2="12" y2="21"/>
+          <polyline points="2 7 12 3 22 7"/>
+          <path d="M5 21l-3-9h6l-3 9z"/>
+          <path d="M19 21l-3-9h6l-3 9z"/>
+        </svg>
+      </span>
       <span class="duel-status-text" id="gvg-duel-status-text">Empate · La siguiente donación decide</span>
     </div>
     <button type="button" class="btn-plus-one-both" id="btn-plus-one-both">+1 WIN para ambos</button>
@@ -333,7 +376,14 @@ export function enhanceObbyWorkspace({ app, render }) {
     <div class="gvg-card-header" style="margin-bottom:16px;">
       <div class="gvg-card-title-group">
         <div class="gvg-card-icon-badge" style="background:rgba(255,215,0,0.12);color:var(--color-gold);">
-          🏆
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+            <path d="M4 22h16"/>
+            <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+            <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+            <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+          </svg>
         </div>
         <div>
           <h2 class="gvg-card-heading">3. Meta del parkour</h2>
@@ -345,7 +395,11 @@ export function enhanceObbyWorkspace({ app, render }) {
     <div class="gvg-wins-controls-grid">
       <!-- Tarjeta Wins Actuales -->
       <div class="gvg-kpi-card">
-        <span class="kpi-icon">👑</span>
+        <span class="kpi-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14v2H5v-2z" fill="rgba(255,215,0,0.2)"/>
+          </svg>
+        </span>
         <div class="kpi-info">
           <span class="kpi-label">Wins actuales</span>
           <input type="number" id="gvg-current-wins" class="kpi-value-input" value="0" />
@@ -354,7 +408,16 @@ export function enhanceObbyWorkspace({ app, render }) {
 
       <!-- Tarjeta Meta Total -->
       <div class="gvg-kpi-card">
-        <span class="kpi-icon" style="color:var(--gk-cyan);">🎯</span>
+        <span class="kpi-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00D9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="22" y1="12" x2="18" y2="12"/>
+            <line x1="6" y1="12" x2="2" y2="12"/>
+            <line x1="12" y1="6" x2="12" y2="2"/>
+            <line x1="12" y1="22" x2="12" y2="18"/>
+            <circle cx="12" cy="12" r="3" fill="#00D9FF"/>
+          </svg>
+        </span>
         <div class="kpi-info">
           <span class="kpi-label">Meta total de Wins</span>
           <input type="number" min="1" id="gvg-target-wins" class="kpi-value-input" value="10" />
