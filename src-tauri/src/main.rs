@@ -544,7 +544,6 @@ async fn download_and_install_update(
     }
 
     let temp_exe = std::env::temp_dir().join("galactk-panel-update.exe");
-    let temp_str = temp_exe.to_string_lossy().to_string();
 
     let _ = window.emit(
         "update-progress",
@@ -554,15 +553,6 @@ async fn download_and_install_update(
             percentage: 5.0,
             status: "downloading".to_string(),
         },
-    );
-
-    let ps_download_script = format!(
-        "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
-         $wc = New-Object System.Net.WebClient; \
-         $wc.Headers.Add('User-Agent', 'GALACTK-PANEL-Updater/2.0'); \
-         $wc.DownloadFile('{url}', '{target}');",
-        url = clean_url.replace('\'', "''"),
-        target = temp_str.replace('\'', "''")
     );
 
     let window_clone = window.clone();
@@ -581,20 +571,28 @@ async fn download_and_install_update(
         }
     });
 
-    let res = tokio::task::spawn_blocking(move || {
-        Command::new(r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe")
-            .args(["-NoProfile", "-WindowStyle", "Hidden", "-Command", &ps_download_script])
-            .creation_flags(CREATE_NO_WINDOW)
-            .output()
-    })
-    .await
-    .map_err(|e| format!("Fallo en tarea de descarga: {}", e))?
-    .map_err(|e| format!("Error ejecutando PowerShell: {}", e))?;
+    let client = reqwest::Client::builder()
+        .user_agent("GALACTK-PANEL-Updater/2.1")
+        .build()
+        .map_err(|e| format!("Error configurando cliente HTTP: {}", e))?;
 
-    if !res.status.success() || !temp_exe.exists() {
-        let err = String::from_utf8_lossy(&res.stderr);
-        return Err(format!("Error descargando archivo de actualización: {}", err));
+    let resp = client
+        .get(&clean_url)
+        .send()
+        .await
+        .map_err(|e| format!("Error conectando con el servidor de descargas: {}", e))?;
+
+    if !resp.status().is_success() {
+        return Err(format!("Servidor de descarga devolvió HTTP {}", resp.status()));
     }
+
+    let bytes = resp
+        .bytes()
+        .await
+        .map_err(|e| format!("Error descargando datos del instalador: {}", e))?;
+
+    std::fs::write(&temp_exe, &bytes)
+        .map_err(|e| format!("Error guardando archivo temporal de actualización: {}", e))?;
 
     let meta = std::fs::metadata(&temp_exe).map_err(|e| e.to_string())?;
     if meta.len() < 1024 * 1024 {
@@ -612,22 +610,13 @@ async fn download_and_install_update(
         },
     );
 
-    let launcher_bat = std::env::temp_dir().join("run_galactk_update.bat");
-    let bat_content = format!(
-        "@echo off\r\n\
-         timeout /t 1 /nobreak >nul\r\n\
-         start \"\" \"{}\"\r\n",
-        temp_str
-    );
-    let _ = std::fs::write(&launcher_bat, bat_content);
-
-    let _ = Command::new("cmd")
-        .args(["/c", "start", "", launcher_bat.to_str().unwrap()])
-        .creation_flags(CREATE_NO_WINDOW)
-        .spawn();
+    // Ejecutar el instalador nativo directamente sin powershell ni scripts intermediarios
+    Command::new(&temp_exe)
+        .spawn()
+        .map_err(|e| format!("Error iniciando el instalador: {}", e))?;
 
     tokio::task::spawn(async {
-        tokio::time::sleep(tokio::time::Duration::from_millis(400)).await;
+        tokio::time::sleep(tokio::time::Duration::from_millis(500)).await;
         std::process::exit(0);
     });
 
@@ -1068,22 +1057,20 @@ async fn stop_tiktok_sidecar() -> Result<(), String> {
 }
 
 async fn reqwest_download(url: &str) -> Result<Vec<u8>, String> {
-    let output = Command::new(r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe")
-        .args([
-            "-NoProfile",
-            "-Command",
-            &format!(
-                "& {{[Net.ServicePointManager]::SecurityProtocol='Tls12'; (New-Object Net.WebClient).DownloadData('{}')}}",
-                url
-            ),
-        ])
-        .creation_flags(CREATE_NO_WINDOW)
-        .output()
-        .map_err(|e| format!("Error ejecutando descarga: {}", e))?;
-    if !output.status.success() {
-        return Err(String::from_utf8_lossy(&output.stderr).to_string());
+    let client = reqwest::Client::builder()
+        .user_agent("GALACTK-PANEL/2.1")
+        .build()
+        .map_err(|e| format!("Error creando cliente HTTP: {}", e))?;
+    let resp = client
+        .get(url)
+        .send()
+        .await
+        .map_err(|e| format!("Error conectando: {}", e))?;
+    if !resp.status().is_success() {
+        return Err(format!("HTTP Error {}", resp.status()));
     }
-    Ok(output.stdout)
+    let bytes = resp.bytes().await.map_err(|e| format!("Error descargando datos: {}", e))?;
+    Ok(bytes.to_vec())
 }
 
 fn main() {
