@@ -2,13 +2,13 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   const updateManifest = {
-    version: '2.0.1',
-    notes: 'Actualización v2.0.1: autenticación estricta con Supabase Auth y sincronización automática de sonidos',
-    pub_date: '2026-10-13T12:00:00Z',
+    version: '2.1.1',
+    notes: 'Actualización v2.1.1: Rediseño visual Apple Glassmorphism, adopción Tailwind CSS v4, arena Roblox Duelos GvG, perfiles rápidos y firma digital Authenticode CyberGZ7',
+    pub_date: new Date().toISOString(),
     platforms: {
       'windows-x86_64': {
         signature: '',
-        url: 'https://github.com/cyber-gz7/galactik-landing/releases/latest/download/GalacticLive-Setup.exe',
+        url: 'https://github.com/cyber-gz7/galactik-landing/releases/download/v2.1.1/Galactik.Live_2.1.1_x64-setup.exe',
       },
     },
   };

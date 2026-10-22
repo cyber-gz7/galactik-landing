@@ -1,154 +1,160 @@
 @import "tailwindcss";
 
-:root {
-  --bg-cosmic: #020409;
-  --neon-cyan: #00f0ff;
-  --neon-rose: #ff2a5f;
-  --neon-gold: #fbbf24;
-  --text-primary: #f8fafc;
-  --glass-bg: rgba(15, 23, 42, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.08);
-}
-
-body {
-  background-color: var(--bg-cosmic);
-  color: var(--text-primary);
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  overflow-x: hidden;
-  min-height: 100vh;
-}
-
-/* Cosmic animated background */
-.cosmic-bg {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background-color: #020409;
-  background-image: 
-    radial-gradient(1.5px 1.5px at 20px 30px, rgba(255, 255, 255, 0.7), transparent),
-    radial-gradient(1.5px 1.5px at 40px 70px, rgba(0, 240, 255, 0.6), transparent),
-    radial-gradient(1px 1px at 90px 40px, rgba(255, 42, 95, 0.6), transparent),
-    radial-gradient(2px 2px at 160px 120px, rgba(251, 191, 36, 0.5), transparent),
-    radial-gradient(1.5px 1.5px at 230px 180px, rgba(255, 255, 255, 0.8), transparent),
-    radial-gradient(1.2px 1.2px at 300px 90px, rgba(0, 240, 255, 0.5), transparent),
-    radial-gradient(1.5px 1.5px at 370px 220px, rgba(255, 42, 95, 0.5), transparent),
-    radial-gradient(1.8px 1.8px at 440px 140px, rgba(255, 255, 255, 0.7), transparent);
-  background-repeat: repeat;
-  background-size: 500px 500px;
-  animation: cosmicDrift 120s linear infinite;
-}
-
-.cosmic-glow-1 {
-  position: fixed;
-  top: -15%;
-  left: 20%;
-  width: 550px;
-  height: 550px;
-  background: radial-gradient(circle, rgba(0, 240, 255, 0.12) 0%, rgba(0, 240, 255, 0) 70%);
-  pointer-events: none;
-  z-index: -1;
-  filter: blur(40px);
-}
-
-.cosmic-glow-2 {
-  position: fixed;
-  top: 40%;
-  right: 5%;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(255, 42, 95, 0.1) 0%, rgba(255, 42, 95, 0) 70%);
-  pointer-events: none;
-  z-index: -1;
-  filter: blur(50px);
-}
-
-.cosmic-glow-3 {
-  position: fixed;
-  bottom: -10%;
-  left: 10%;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(251, 191, 36, 0.08) 0%, rgba(251, 191, 36, 0) 70%);
-  pointer-events: none;
-  z-index: -1;
-  filter: blur(45px);
-}
-
-@keyframes cosmicDrift {
-  from {
-    background-position: 0 0;
+@layer base {
+  :root {
+    --app-void: #03050a;
+    --app-surface: #0a0d18;
+    --app-surface-card: #0f1322;
+    --app-cyan: #00f0ff;
+    --app-magenta: #ff2a85;
+    --app-amber: #fbbf24;
+    --app-emerald: #10b981;
+    --app-primary: #00f0ff;
+    --app-primary-rgb: 0, 240, 255;
   }
-  to {
-    background-position: 1000px 1000px;
+
+  body {
+    background-color: var(--app-void);
+    color: rgba(255, 255, 255, 0.95);
+    font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
-/* Glassmorphism primitives */
-.glass-panel {
-  background: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+/* ==========================================================================
+   Apple Design System — Glass Tiers & Materials
+   ========================================================================== */
+
+/* Tier 1: Ultra-Thin (Navigation bars, fixed overlays) */
+.glass-ultra-thin {
+  background: rgba(10, 13, 24, 0.65);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.glass-panel-hover {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* Tier 2: Thin (Secondary panels, sidebar items, chips) */
+.glass-thin {
+  background: rgba(255, 255, 255, 0.035);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-.glass-panel-hover:hover {
-  background: rgba(22, 36, 65, 0.8);
-  border-color: rgba(0, 240, 255, 0.3);
-  box-shadow: 0 0 25px rgba(0, 240, 255, 0.15);
-  transform: translateY(-2px);
+/* Tier 3: Regular (Primary Cards, Hero preview, Interactive pods) */
+.glass-regular {
+  background: rgba(255, 255, 255, 0.045);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 1px 0 0 rgba(255, 255, 255, 0.08) inset,
+    0 8px 32px -8px rgba(0, 0, 0, 0.45);
 }
 
-/* Glow effects */
-.glow-cyan {
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
+/* Tier 4: Thick (Modals, focal points, download hero panel) */
+.glass-thick {
+  background: rgba(15, 19, 34, 0.85);
+  backdrop-filter: blur(36px) saturate(200%);
+  -webkit-backdrop-filter: blur(36px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.12) inset,
+    0 16px 48px -12px rgba(0, 0, 0, 0.65),
+    0 0 40px -10px rgba(0, 240, 255, 0.12);
 }
 
-.glow-rose {
-  box-shadow: 0 0 20px rgba(255, 42, 95, 0.35);
-}
-
-.glow-gold {
-  box-shadow: 0 0 20px rgba(251, 191, 36, 0.35);
-}
-
-/* Text Gradients */
-.text-gradient-cyan-rose {
-  background: linear-gradient(135deg, #00f0ff 0%, #ff2a5f 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.text-gradient-gold {
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Galactic badge */
-.galactic-badge {
-  background: rgba(255, 255, 255, 0.04);
+/* Tier 5: Chromatic (Special accent badges & cards) */
+.glass-chromatic-cyan {
+  background: rgba(0, 240, 255, 0.06);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
   border: 1px solid rgba(0, 240, 255, 0.25);
-  box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
+  box-shadow:
+    0 1px 0 0 rgba(0, 240, 255, 0.2) inset,
+    0 4px 20px -4px rgba(0, 240, 255, 0.2);
 }
 
-/* Smooth custom scrollbar */
+/* Edge Highlight pseudo-reflection (Simulates physical light refracting on top bevel) */
+.edge-light {
+  position: relative;
+}
+.edge-light::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.03) 30%,
+    transparent 65%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Apple Button Shine Sweep Animation */
+.apple-shine-btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.apple-shine-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.75s ease-out;
+  pointer-events: none;
+}
+.apple-shine-btn:hover::after {
+  left: 150%;
+}
+.apple-shine-btn:hover {
+  transform: translateY(-1.5px);
+}
+.apple-shine-btn:active {
+  transform: scale(0.98);
+}
+
+/* Apple Typography Optical Scale */
+.apple-headline {
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+
+.apple-subheadline {
+  letter-spacing: -0.015em;
+  line-height: 1.45;
+}
+
+.apple-tag {
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Custom Scrollbar Apple-feel */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
+  height: 6px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #020409;
+  background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.16);
   border-radius: 9999px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 240, 255, 0.5);
 }

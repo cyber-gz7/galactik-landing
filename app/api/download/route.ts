@@ -6,11 +6,19 @@ import { NextResponse } from 'next/server';
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
-export async function GET() {
-  const filePath = path.join(process.cwd(), 'public', 'GalacticLive-Setup.exe');
+function getSetupPath() {
+  const primary = path.join(process.cwd(), 'public', 'Galactik Live_2.1.1_x64-setup.exe');
+  if (fs.existsSync(primary)) return primary;
+  const fallback = path.join(process.cwd(), 'public', 'GalacticLive-Setup.exe');
+  if (fs.existsSync(fallback)) return fallback;
+  return null;
+}
 
-  if (!fs.existsSync(filePath)) {
-    return new NextResponse('File not found', { status: 404 });
+export async function GET() {
+  const filePath = getSetupPath();
+
+  if (!filePath) {
+    return new NextResponse('Installer file not found', { status: 404 });
   }
 
   const stat = fs.statSync(filePath);
@@ -21,8 +29,9 @@ export async function GET() {
     status: 200,
     headers: {
       'Content-Type': 'application/octet-stream',
-      'Content-Disposition': 'attachment; filename="GalacticLive-Setup.exe"',
+      'Content-Disposition': 'attachment; filename="Galactik Live_2.1.1_x64-setup.exe"',
       'Content-Length': stat.size.toString(),
+      'Accept-Ranges': 'bytes',
       'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
       'Pragma': 'no-cache',
       'Expires': '0',
@@ -31,9 +40,9 @@ export async function GET() {
 }
 
 export async function HEAD() {
-  const filePath = path.join(process.cwd(), 'public', 'GalacticLive-Setup.exe');
+  const filePath = getSetupPath();
 
-  if (!fs.existsSync(filePath)) {
+  if (!filePath) {
     return new NextResponse(null, { status: 404 });
   }
 
@@ -43,8 +52,9 @@ export async function HEAD() {
     status: 200,
     headers: {
       'Content-Type': 'application/octet-stream',
-      'Content-Disposition': 'attachment; filename="GalacticLive-Setup.exe"',
+      'Content-Disposition': 'attachment; filename="Galactik Live_2.1.1_x64-setup.exe"',
       'Content-Length': stat.size.toString(),
+      'Accept-Ranges': 'bytes',
       'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
       'Pragma': 'no-cache',
       'Expires': '0',
