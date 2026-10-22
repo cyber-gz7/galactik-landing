@@ -563,20 +563,22 @@ gvgInputs.goal?.addEventListener('change', async () => { app.robloxOverlayConfig
 gvgInputs.columns?.addEventListener('change', async () => { app.robloxOverlayConfig.show_side_columns = gvgInputs.columns.checked; await app.persistConfig(); sendGvgControl({ action: 'set_side_columns', visible: gvgInputs.columns.checked }, true); });
 function syncGvgControlInputs(gvg) {
   if (!gvg) return;
-  if (document.activeElement !== gvgInputs.red) gvgInputs.red.value = gvg.red_points ?? 0;
-  if (document.activeElement !== gvgInputs.blue) gvgInputs.blue.value = gvg.blue_points ?? 0;
-  if (document.activeElement !== gvgInputs.wins) gvgInputs.wins.value = gvg.wins ?? 0;
-  const previousWins = Number(gvgInputs.wins.dataset.previousWins ?? gvg.wins ?? 0);
-  gvgInputs.wins.classList.toggle('wins-negative', Number(gvg.wins) < 0);
-  if (Number(gvg.wins) < previousWins) {
-    gvgInputs.wins.classList.remove('wins-negative');
-    void gvgInputs.wins.offsetWidth;
-    if (Number(gvg.wins) < 0) gvgInputs.wins.classList.add('wins-negative');
+  const redInp = document.getElementById('gvg-red-points') || gvgInputs.red;
+  const blueInp = document.getElementById('gvg-blue-points') || gvgInputs.blue;
+  const winsInp = document.getElementById('gvg-current-wins') || gvgInputs.wins;
+  const targetInp = document.getElementById('gvg-target-wins') || gvgInputs.target;
+  const goalInp = document.getElementById('gvg-goal-action') || gvgInputs.goal;
+  const colsInp = document.getElementById('gvg-show-columns') || gvgInputs.columns;
+
+  if (redInp && document.activeElement !== redInp) redInp.value = gvg.red_points ?? 0;
+  if (blueInp && document.activeElement !== blueInp) blueInp.value = gvg.blue_points ?? 0;
+  if (winsInp && document.activeElement !== winsInp) {
+    winsInp.value = gvg.wins ?? 0;
+    winsInp.classList.toggle('wins-negative', Number(gvg.wins) < 0);
   }
-  gvgInputs.wins.dataset.previousWins = String(gvg.wins ?? 0);
-  if (document.activeElement !== gvgInputs.target) gvgInputs.target.value = gvg.target_wins ?? 10;
-  gvgInputs.goal.value = gvg.goal_action || 'INCREASE_TARGET';
-  gvgInputs.columns.checked = gvg.show_side_columns !== false;
+  if (targetInp && document.activeElement !== targetInp) targetInp.value = gvg.target_wins ?? 10;
+  if (goalInp) goalInp.value = gvg.goal_action || 'INCREASE_TARGET';
+  if (colsInp) colsInp.checked = gvg.show_side_columns !== false;
 }
 overlayEvents.subscribe(payload => syncGvgControlInputs(payload.gift_vs_gift));
 
