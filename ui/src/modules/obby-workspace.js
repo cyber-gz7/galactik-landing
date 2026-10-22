@@ -90,8 +90,41 @@ export function enhanceObbyWorkspace({ app, render }) {
       </div>
 
       <div class="gvg-preview-col">
-        <div class="gvg-neon-preview-box">
-          <img src="./assets/roblox-preview-badge.png" alt="Previsualización Duelo Gift vs Gift" class="gvg-preview-art-img" />
+        <div class="gvg-live-mini-stage">
+          <div class="mini-stage-header">
+            <span class="stage-tag"><span class="pulse-dot"></span> LIVE OVERLAY HUD</span>
+            <span class="stage-res">9:16 VERTICAL</span>
+          </div>
+          <div class="mini-stage-arena">
+            <div class="mini-fighter mini-villain">
+              <div class="mini-avatar-pedestal">
+                <img src="./gifts/rose-1-coins.webp" onerror="this.src='./galactk-logo.png'" alt="Rosa" />
+              </div>
+              <span class="mini-fighter-name">ROSA</span>
+              <span class="mini-score-tag red">Villanos</span>
+            </div>
+            <div class="mini-vs-divider">
+              <span class="mini-vs-label">VS</span>
+              <div class="mini-clash-bar">
+                <div class="mini-clash-left"></div>
+                <div class="mini-clash-right"></div>
+              </div>
+            </div>
+            <div class="mini-fighter mini-hero">
+              <div class="mini-avatar-pedestal">
+                <img src="./gifts/gg-1-coins.webp" onerror="this.src='./galactk-logo.png'" alt="GG" />
+              </div>
+              <span class="mini-fighter-name">GG</span>
+              <span class="mini-score-tag blue">Héroes</span>
+            </div>
+          </div>
+          <div class="mini-stage-footer">
+            <div class="mini-goal-meter">
+              <span class="meter-label">META WINS</span>
+              <div class="meter-track"><div class="meter-fill" style="width: 50%;"></div></div>
+              <span class="meter-val">10</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -176,22 +209,50 @@ export function enhanceObbyWorkspace({ app, render }) {
   redCard.className = 'score-card villain gvg-team-card-red';
   blueCard.className = 'score-card hero gvg-team-card-blue';
 
-  // Inyectar el VS Badge recortado en el centro del grid
+  // Inyectar la Insignia Hexagonal VS Cyberpunk Nativa
   const vsCenter = document.createElement('div');
   vsCenter.className = 'gvg-vs-center-wrap';
-  vsCenter.innerHTML = '<img src="./assets/roblox-vs-badge.png" alt="VS" class="gvg-vs-img" />';
+  vsCenter.innerHTML = `
+    <div class="gvg-vs-cyber-badge" title="Duelo de Regalos en Directo">
+      <svg width="74" height="74" viewBox="0 0 100 100" fill="none" class="vs-svg-frame">
+        <defs>
+          <linearGradient id="vsHexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ff2a85"/>
+            <stop offset="50%" stop-color="#8b5cff"/>
+            <stop offset="100%" stop-color="#00d9ff"/>
+          </linearGradient>
+          <linearGradient id="vsTextGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#e0f7ff"/>
+          </linearGradient>
+          <filter id="vsGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3.5" result="blur"/>
+            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          </filter>
+        </defs>
+        <polygon points="50,5 92,27 92,73 50,95 8,73 8,27" fill="#070e1b" stroke="url(#vsHexGrad)" stroke-width="2.5" filter="url(#vsGlow)"/>
+        <polygon points="50,13 83,31 83,69 50,87 17,69 17,31" fill="rgba(11, 22, 38, 0.9)" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+        <path d="M52 16 L46 48 L54 52 L48 84" stroke="url(#vsHexGrad)" stroke-width="1.8" stroke-linecap="round" opacity="0.75"/>
+        <text x="50" y="59" text-anchor="middle" font-family="'Inter', system-ui, sans-serif" font-weight="900" font-size="28" fill="url(#vsTextGrad)" letter-spacing="1.5">VS</text>
+      </svg>
+    </div>
+  `;
   redCard.after(vsCenter);
 
   // Re-estilizar contenido interno de tarjeta roja (Villanos / Rosa)
   redCard.innerHTML = `
     <div class="team-header-row">
-      <span class="team-title-red">💀 Villanos / Rosa · Izquierda</span>
+      <span class="team-badge red">VILLANOS</span>
+      <span class="team-title-red">Rosa · Columna Izquierda</span>
     </div>
     <div class="team-body-row">
-      <img src="./gifts/rose-1-coins.webp" class="team-gift-icon" onerror="this.src='./galactk-logo.png'" alt="Rosa" />
+      <div class="team-gift-pedestal red">
+        <img src="./gifts/rose-1-coins.webp" class="team-gift-icon" onerror="this.src='./galactk-logo.png'" alt="Rosa" />
+        <span class="pedestal-coin-chip">1 🪙</span>
+      </div>
       <div class="team-counter-wrap">
         <input type="number" min="0" id="gvg-red-points" class="team-points-input" value="0" />
-        <span class="team-counter-label">WINS</span>
+        <span class="team-counter-label">PUNTOS</span>
       </div>
       <div class="team-deltas-group">
         <button class="btn-delta-pill gvg-point-delta" data-team="RED" data-delta="1">+1</button>
@@ -205,13 +266,17 @@ export function enhanceObbyWorkspace({ app, render }) {
   // Re-estilizar contenido interno de tarjeta azul (Héroes / GG)
   blueCard.innerHTML = `
     <div class="team-header-row">
-      <span class="team-title-blue">🛡️ Héroes / GG · Derecha</span>
+      <span class="team-badge blue">HÉROES</span>
+      <span class="team-title-blue">GG · Columna Derecha</span>
     </div>
     <div class="team-body-row">
-      <img src="./gifts/gg-1-coins.webp" class="team-gift-icon" onerror="this.src='./galactk-logo.png'" alt="GG" />
+      <div class="team-gift-pedestal blue">
+        <img src="./gifts/gg-1-coins.webp" class="team-gift-icon" onerror="this.src='./galactk-logo.png'" alt="GG" />
+        <span class="pedestal-coin-chip">1 🪙</span>
+      </div>
       <div class="team-counter-wrap">
         <input type="number" min="0" id="gvg-blue-points" class="team-points-input" value="0" />
-        <span class="team-counter-label">WINS</span>
+        <span class="team-counter-label">PUNTOS</span>
       </div>
       <div class="team-deltas-group">
         <button class="btn-delta-pill gvg-point-delta" data-team="BLUE" data-delta="1">+1</button>

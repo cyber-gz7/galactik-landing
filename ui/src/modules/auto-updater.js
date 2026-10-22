@@ -99,7 +99,7 @@ function injectModalHtml() {
         <div class="updater-dialog-title-wrap">
           <span class="updater-icon-rocket">🚀</span>
           <div>
-            <h3 class="updater-dialog-title" id="updater-dialog-title">Nueva Versión de GALACTK PANEL</h3>
+            <h3 class="updater-dialog-title" id="updater-dialog-title">Nueva Versión de Galactik Live</h3>
             <p class="updater-dialog-subtitle" id="updater-dialog-subtitle">Actualización Oficial Disponible</p>
           </div>
         </div>
@@ -230,7 +230,7 @@ export async function checkForUpdates(manual = false) {
   if (refreshIcon) refreshIcon.classList.add('spinning');
 
   if (manual) {
-    showToast('🔍 Buscando actualizaciones de GALACTK PANEL...');
+    showToast('🔍 Buscando actualizaciones de Galactik Live...');
   }
 
   try {
@@ -244,7 +244,7 @@ export async function checkForUpdates(manual = false) {
       if (res.status === 404) {
         hideUpdatePill();
         if (manual) {
-          showToast(`✅ GALACTK PANEL está al día (v${CURRENT_VERSION})`);
+          showToast(`✅ Galactik Live está al día (v${CURRENT_VERSION})`);
         }
         return;
       }
@@ -286,7 +286,7 @@ export async function checkForUpdates(manual = false) {
     } else {
       hideUpdatePill();
       if (manual) {
-        showToast(`✅ GALACTK PANEL está al día (v${CURRENT_VERSION})`);
+        showToast(`✅ Galactik Live está al día (v${CURRENT_VERSION})`);
       }
     }
   } catch (err) {
@@ -332,10 +332,10 @@ export function openUpdateModal(info = latestReleaseInfo) {
   const modal = document.getElementById('galactk-update-modal');
   if (!modal) return;
 
-  document.getElementById('updater-dialog-title').textContent = `Actualizar a GALACTK PANEL v${info.version}`;
+  document.getElementById('updater-dialog-title').textContent = `Actualizar a Galactik Live v${info.version}`;
   document.getElementById('updater-modal-new-version').textContent = `v${info.version}`;
   document.getElementById('updater-modal-size').textContent = info.sizeMb ? `${info.sizeMb} MB` : 'Instalador Oficial';
-  document.getElementById('updater-modal-notes').textContent = info.body || 'Mejoras y correcciones para GALACTK PANEL.';
+  document.getElementById('updater-modal-notes').textContent = info.body || 'Mejoras y correcciones para Galactik Live.';
 
   const progressArea = document.getElementById('updater-progress-area');
   if (progressArea) progressArea.style.display = 'none';

@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "GALACTK PANEL",
+  "productName": "Galactik Live",
   "version": "2.1.0",
   "identifier": "com.gz7.galacticlive",
   "build": {
@@ -10,7 +10,7 @@
     "withGlobalTauri": true,
     "windows": [
       {
-        "title": "GALACTK PANEL — Pro Broadcast Suite",
+        "title": "Galactik Live — Pro Broadcast Suite",
         "width": 1340,
         "height": 840,
         "minWidth": 1020,
