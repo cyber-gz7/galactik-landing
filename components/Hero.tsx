@@ -37,7 +37,7 @@ export default function Hero() {
             <span className="flex h-2 w-2 rounded-full bg-[#00f0ff] animate-ping" />
             <span className="font-semibold text-white">CyberGZ7 · CJ7TEC</span>
             <span className="text-zinc-600">·</span>
-            <span className="text-[#00f0ff] font-mono font-bold">Galactik Live v2.1.1</span>
+            <span className="text-[#00f0ff] font-mono font-bold">Galactik Live v2.1.2</span>
             <span className="rounded-full bg-[#fbbf24]/10 border border-[#fbbf24]/30 px-2 py-0.2 text-[10px] font-semibold text-[#fbbf24]">
               Estable
             </span>
@@ -65,7 +65,7 @@ export default function Hero() {
             >
               <Download className="h-5 w-5 stroke-[2.5]" />
               <div className="flex flex-col text-left">
-                <span className="leading-tight">Descargar Galactik Live v2.1.1</span>
+                <span className="leading-tight">Descargar Galactik Live v2.1.2</span>
                 <span className="text-[11px] font-medium text-black/75">Instalador Oficial Windows x64 · 54.4 MB</span>
               </div>
             </a>
@@ -111,7 +111,7 @@ export default function Hero() {
                   <div className="h-3 w-3 rounded-full bg-[#27c93f]/90 border border-[#1aab29]/40" />
                 </div>
                 <span className="ml-2 text-xs font-mono text-zinc-400 hidden sm:inline-block">
-                  Galactik Live — Pro Broadcast Suite v2.1.1
+                  Galactik Live — Pro Broadcast Suite v2.1.2
                 </span>
               </div>
 

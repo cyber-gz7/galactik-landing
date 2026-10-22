@@ -18,7 +18,7 @@ import {
 
 export default function DownloadSection() {
   const [copied, setCopied] = useState(false);
-  const sha256 = '6dd826a4d611da24b6aba549d9b116d54a54f29077a679b344f39234a518865a';
+  const sha256 = '28ad00f9c6ed5647895332247cf37b549aa6a1c2ea84a8e5407a17c158c303f2';
 
   const handleCopyHash = () => {
     navigator.clipboard.writeText(sha256);
@@ -35,7 +35,7 @@ export default function DownloadSection() {
             {/* Version & Arch Badge */}
             <div className="inline-flex items-center gap-2 rounded-full glass-thin border border-[#fbbf24]/30 px-4 py-1.5 text-xs font-semibold text-[#fbbf24] shadow-[0_2px_12px_rgba(251,191,36,0.15)] mb-6">
               <Sparkles className="h-3.5 w-3.5" />
-              <span>Versión 2.1.1 Oficial · Windows 10/11 x64 · 54.4 MB</span>
+              <span>Versión 2.1.2 Oficial · Windows 10/11 x64 · 54.4 MB</span>
             </div>
 
             <h2 className="apple-headline text-3xl sm:text-5xl font-extrabold text-white">
@@ -59,9 +59,9 @@ export default function DownloadSection() {
               >
                 <Download className="h-6 w-6 stroke-[2.5] transition-transform group-hover:translate-y-0.5" />
                 <div className="flex flex-col text-left">
-                  <span className="leading-tight">Descargar Galactik Live v2.1.1</span>
+                  <span className="leading-tight">Descargar Galactik Live v2.1.2</span>
                   <span className="text-xs font-medium text-black/75">
-                    Galactik Live_2.1.1_x64-setup.exe · ~54.4 MB
+                    Galactik Live_2.1.2_x64-setup.exe · ~54.4 MB
                   </span>
                 </div>
               </a>

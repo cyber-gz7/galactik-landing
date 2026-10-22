@@ -21,7 +21,7 @@ export default function Footer() {
                   Galactik <span className="bg-gradient-to-r from-[#00f0ff] to-[#ff2a85] bg-clip-text text-transparent">Live</span>
                 </span>
                 <span className="rounded-full bg-white/[0.06] border border-white/[0.1] px-2 py-0.2 text-[10px] font-mono text-[#00f0ff]">
-                  v2.1.1
+                  v2.1.2
                 </span>
               </div>
               <p className="text-xs text-zinc-400">
