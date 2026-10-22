@@ -522,7 +522,8 @@
     <section class="tab-pane" id="tab-roblox">
       <div class="page-hero-title">
         <span>🚴 ROBLOX OBBY BICICLETA &bull; SUITE DE OVERLAYS 720:1080</span>
-        <div style="display: flex; gap: 8px; align-items: center;">
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <button type="button" class="btn-primary" id="btn-load-official-gvg" style="background: linear-gradient(135deg, #ffe600 0%, #ff8800 100%); color: #000; font-weight: 900; border: none; box-shadow: 0 0 14px rgba(255, 230, 0, 0.5);">⭐ Configuración Oficial (Imagen Duelo)</button>
           <button type="button" class="btn-secondary" id="btn-import-obby-json">📥 Importar JSON</button>
           <button type="button" class="btn-secondary" id="btn-export-obby-json">📤 Exportar JSON</button>
           <button type="button" class="btn-secondary" id="btn-reset-roblox-overlay">🔄 Restaurar Originales</button>
@@ -551,11 +552,19 @@
           <div style="padding:12px;border-radius:12px;background:rgba(0,240,255,.07);border:1px solid rgba(0,240,255,.4);"><strong style="color:var(--neon-cyan);">🛡️ Héroes / GG · Derecha</strong><div style="display:flex;gap:7px;margin-top:8px;align-items:center;"><input type="number" min="0" id="gvg-blue-points" class="input-field" value="0" style="width:100px;text-align:center;font-size:18px;font-weight:900;" /><button class="btn-secondary gvg-point-delta" data-team="BLUE" data-delta="1">+1</button><button class="btn-secondary gvg-point-delta" data-team="BLUE" data-delta="-1">-1</button><button class="btn-secondary gvg-point-delta" data-team="BLUE" data-delta="10">+10</button></div></div>
         </div>
         <div style="padding:12px;border-radius:12px;background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.35);"><div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap;">
-          <label style="font-size:12px;font-weight:800;">Wins actuales<br><input type="number" id="gvg-current-wins" class="input-field" value="0" style="width:95px;margin-top:5px;" /></label>
-          <label style="font-size:12px;font-weight:800;">Meta total de Wins<br><input type="number" min="1" id="gvg-target-wins" class="input-field" value="10" style="width:110px;margin-top:5px;" /></label>
+          <label style="font-size:12px;font-weight:800;">Wins actuales<br><input type="number" id="gvg-current-wins" class="input-field" value="7" style="width:95px;margin-top:5px;" /></label>
+          <label style="font-size:12px;font-weight:800;">Meta total de Wins<br><input type="number" min="1" id="gvg-target-wins" class="input-field" value="15" style="width:110px;margin-top:5px;" /></label>
           <button class="btn-secondary gvg-win-delta" data-delta="1">+1 Win</button><button class="btn-secondary gvg-win-delta" data-delta="-1">-1 Win</button><button class="btn-secondary gvg-win-delta" data-delta="5">+5 Wins</button><button class="btn-secondary gvg-win-delta" data-delta="-5">-5 Wins</button><button class="btn-danger" id="btn-gvg-reset-wins">Reset Wins</button>
           <label style="font-size:12px;font-weight:800;flex:1;min-width:190px;">Cuando se alcanza la meta<select id="gvg-goal-action" class="table-select" style="width:100%;margin-top:5px;"><option value="INCREASE_TARGET">Aumentar Meta</option><option value="SHOW_VICTORY">Mostrar Victoria</option><option value="HOLD">Mantener</option></select></label>
           <label style="display:flex;gap:7px;align-items:center;font-size:12px;font-weight:800;"><input type="checkbox" id="gvg-show-columns" checked> Mostrar columnas laterales</label>
+        </div></div>
+
+        <!-- Meta de Likes en Vivo -->
+        <div style="padding:12px;border-radius:12px;background:rgba(0,240,255,.06);border:1px solid rgba(0,240,255,.35);margin-top:10px;"><div style="display:flex;gap:10px;align-items:end;flex-wrap:wrap;">
+          <label style="font-size:12px;font-weight:800;">👍 Likes Actuales<br><input type="number" id="rbx-likes-current" class="input-field" value="25049" style="width:110px;margin-top:5px;" /></label>
+          <label style="font-size:12px;font-weight:800;">🎯 Meta de Likes<br><input type="number" min="100" id="rbx-likes-goal" class="input-field" value="30000" style="width:115px;margin-top:5px;" /></label>
+          <label style="font-size:12px;font-weight:800;">⚡ Texto / Acción al llegar<br><input type="text" id="rbx-likes-action" class="input-field" value="-1 WIN" style="width:115px;margin-top:5px;" /></label>
+          <button type="button" class="btn-secondary" id="btn-save-likes-goal">💾 Guardar Barra Likes</button>
         </div></div>
       </div>
 

@@ -1,8 +1,13 @@
 import { limpiarArchivoGift, archivoDeGift } from '../gifts.js';
 
 export const DEFAULT_ROBLOX_CONFIG = {
-  rules_schema_version: 3,
-  target_wins: 10,
+  rules_schema_version: 4,
+  target_wins: 15,
+  wins: 7,
+  likes_goal: 30000,
+  likes_current: 25049,
+  likes_action: '-1 WIN',
+  likes_action_value: -1,
   goal_action: 'INCREASE_TARGET',
   show_side_columns: true,
   center_red_name: 'Rose',
@@ -15,28 +20,37 @@ export const DEFAULT_ROBLOX_CONFIG = {
   center_blue_coins: 1,
   center_blue_sound_name: '',
   center_blue_sound_url: '',
-  theme_style: 'GALACTIC',
-  win_label: 'WIN',
+  theme_style: 'transparent',
+  win_label: 'Win',
   win_theme: 'AUTO',
   show_win_in_sides: false,
-  icon_size: 48,
-  text_size: 20,
-  item_gap: 8,
+  icon_size: 52,
+  text_size: 22,
+  item_gap: 10,
   sharpness: 140,
   win_scale: 100,
   duel_scale: 100,
   left_rules: [
-    { id: 'L1', gift_name: 'Doughnut', icon_file: 'doughnut-30-coins.webp', coins: 30, label: '+30 PTS', action_type: 'PTS', value: 30, duration_seconds: 5, is_bottom: false, sound_name: '', sound_url: '', sound_volume: 1.0 },
-    { id: 'L2', gift_name: 'Game Controller', icon_file: 'game-controller-100-coins.webp', coins: 100, label: '+100 PTS', action_type: 'PTS', value: 100, duration_seconds: 5, is_bottom: false, sound_name: '', sound_url: '', sound_volume: 1.0 },
-    { id: 'L3', gift_name: 'Corgi', icon_file: 'corgi-299-coins.webp', coins: 299, label: '+299 PTS', action_type: 'PTS', value: 299, duration_seconds: 5, is_bottom: false, sound_name: '', sound_url: '', sound_volume: 1.0 },
-    { id: 'L4', gift_name: 'Bear with Rose', icon_file: 'bear-with-rose-400-coins.webp', coins: 400, label: '-1 WIN', action_type: 'WIN', value: -1, duration_seconds: 5, is_bottom: true, sound_name: '', sound_url: '', sound_volume: 1.0 },
-    { id: 'L5', gift_name: 'Private Jet', icon_file: 'private-jet-4888-coins.webp', coins: 4888, label: '-15 WINS', action_type: 'WIN', value: -15, duration_seconds: 5, is_bottom: true, sound_name: '', sound_url: '', sound_volume: 1.0 },
-    { id: 'L6', gift_name: 'Lion', icon_file: 'lion-29999-coins.webp', coins: 29999, label: '-15 WINS', action_type: 'WIN', value: -15, duration_seconds: 5, is_bottom: true, sound_name: '', sound_url: '', sound_volume: 1.0 }
+    { id: 'L1', gift_name: 'Lion', icon_file: 'lion-29999-coins.webp', coins: 29999, tiktokGiftId: 5509, label: '-20 WIN', action_type: 'WIN', value: -20, duration_seconds: 5, is_bottom: false, sound_name: '', sound_url: '', sound_volume: 1.0 },
+    { id: 'L2', gift_name: 'Rose', icon_file: 'rose-1-coins.webp', coins: 1, tiktokGiftId: 5655, label: '-10', action_type: 'PTS', value: -10, duration_seconds: 5, is_bottom: false, sound_name: '', sound_url: '', sound_volume: 1.0 },
+    { id: 'L3', gift_name: 'Doughnut', icon_file: 'doughnut-30-coins.webp', coins: 30, tiktokGiftId: 5879, label: '-30', action_type: 'PTS', value: -30, duration_seconds: 5, is_bottom: false, sound_name: '', sound_url: '', sound_volume: 1.0 },
+    { id: 'L4', gift_name: 'Game Controller', icon_file: 'game-controller-100-coins.webp', coins: 100, tiktokGiftId: 6070, label: '-100', action_type: 'PTS', value: -100, duration_seconds: 5, is_bottom: false, sound_name: '', sound_url: '', sound_volume: 1.0 },
+    { id: 'L5', gift_name: 'Corgi', icon_file: 'corgi-299-coins.webp', coins: 299, tiktokGiftId: 6289, label: '-300', action_type: 'PTS', value: -300, duration_seconds: 5, is_bottom: false, sound_name: '', sound_url: '', sound_volume: 1.0 },
+    { id: 'L6', gift_name: 'Money Gun', icon_file: 'money-gun-500-coins.webp', coins: 500, tiktokGiftId: 7168, label: '-500', action_type: 'PTS', value: -500, duration_seconds: 5, is_bottom: false, sound_name: '', sound_url: '', sound_volume: 1.0 },
+    { id: 'L7', gift_name: 'Blooming Ribbons', icon_file: 'blooming-ribbons-1000-coins.webp', coins: 1000, tiktokGiftId: 6088, label: '-1000', action_type: 'PTS', value: -1000, duration_seconds: 5, is_bottom: false, sound_name: '', sound_url: '', sound_volume: 1.0 },
+    { id: 'L8', gift_name: 'Bear with Rose', icon_file: 'bear-with-rose-400-coins.webp', coins: 400, tiktokGiftId: 5663, label: '-1 WIN', action_type: 'WIN', value: -1, duration_seconds: 5, is_bottom: true, sound_name: '', sound_url: '', sound_volume: 1.0 },
+    { id: 'L9', gift_name: 'Fireworks', icon_file: 'fireworks-1088-coins.webp', coins: 1088, tiktokGiftId: 6092, label: '-3 WIN', action_type: 'WIN', value: -3, duration_seconds: 5, is_bottom: true, sound_name: '', sound_url: '', sound_volume: 1.0 }
   ],
   right_rules: [
-    { id: 'R1', gift_name: 'Heart Me', icon_file: 'heart-me-1-coins.webp', coins: 1, label: '+10 PTS', action_type: 'PTS', value: 10, duration_seconds: 5, is_bottom: false, sound_name: '', sound_url: '', sound_volume: 1.0 },
-    { id: 'R2', gift_name: 'Capybara', icon_file: 'capybara-30-coins.webp', coins: 30, label: '+30 PTS', action_type: 'PTS', value: 30, duration_seconds: 5, is_bottom: false, sound_name: '', sound_url: '', sound_volume: 1.0 },
-    { id: 'R3', gift_name: 'Money Gun', icon_file: 'money-gun-500-coins.webp', coins: 500, label: '+1 WIN', action_type: 'WIN', value: 1, duration_seconds: 5, is_bottom: true, sound_name: '', sound_url: '', sound_volume: 1.0 }
+    { id: 'R1', gift_name: 'Flying Jets', icon_file: 'flying-jets-5000-coins.webp', coins: 5000, tiktokGiftId: 6100, label: '+20 WIN', action_type: 'WIN', value: 20, duration_seconds: 5, is_bottom: false, sound_name: '', sound_url: '', sound_volume: 1.0 },
+    { id: 'R2', gift_name: 'Heart Me', icon_file: 'heart-me-1-coins.webp', coins: 1, tiktokGiftId: 7934, label: '+10', action_type: 'PTS', value: 10, duration_seconds: 5, is_bottom: false, sound_name: '', sound_url: '', sound_volume: 1.0 },
+    { id: 'R3', gift_name: 'Capybara', icon_file: 'capybara-30-coins.webp', coins: 30, tiktokGiftId: 6562, label: '+30', action_type: 'PTS', value: 30, duration_seconds: 5, is_bottom: false, sound_name: '', sound_url: '', sound_volume: 1.0 },
+    { id: 'R4', gift_name: 'GG', icon_file: 'gg-1-coins.webp', coins: 1, tiktokGiftId: 6064, label: '+100', action_type: 'PTS', value: 100, duration_seconds: 5, is_bottom: false, sound_name: '', sound_url: '', sound_volume: 1.0 },
+    { id: 'R5', gift_name: 'Creator S Cap', icon_file: 'creator-s-cap-1-coins.webp', coins: 1, tiktokGiftId: 6075, label: '+300', action_type: 'PTS', value: 300, duration_seconds: 5, is_bottom: false, sound_name: '', sound_url: '', sound_volume: 1.0 },
+    { id: 'R6', gift_name: 'Lollipop Gift Box', icon_file: 'lollipop-gift-box-499-coins.webp', coins: 499, tiktokGiftId: 6120, label: '+500', action_type: 'PTS', value: 500, duration_seconds: 5, is_bottom: false, sound_name: '', sound_url: '', sound_volume: 1.0 },
+    { id: 'R7', gift_name: 'Galaxy', icon_file: 'galaxy-1000-coins.webp', coins: 1000, tiktokGiftId: 5658, label: '+1000', action_type: 'PTS', value: 1000, duration_seconds: 5, is_bottom: false, sound_name: '', sound_url: '', sound_volume: 1.0 },
+    { id: 'R8', gift_name: 'Cruiser', icon_file: 'cruiser-150-coins.webp', coins: 150, tiktokGiftId: 6155, label: '+3 WIN', action_type: 'WIN', value: 3, duration_seconds: 5, is_bottom: true, sound_name: '', sound_url: '', sound_volume: 1.0 },
+    { id: 'R9', gift_name: 'Coral', icon_file: 'coral-499-coins.webp', coins: 499, tiktokGiftId: 6156, label: '+1 WIN', action_type: 'WIN', value: 1, duration_seconds: 5, is_bottom: true, sound_name: '', sound_url: '', sound_volume: 1.0 }
   ]
 };
 
@@ -64,7 +78,7 @@ export function parseObbyConfigImport(source) {
 
   const own = raw.robloxOverlayConfig || raw.galactic_obby || raw.config?.robloxOverlayConfig || raw.config || raw;
   if (own && (Array.isArray(own.left_rules) || Array.isArray(own.right_rules))) {
-    const normalized = { ...cloneObbyDefaults(), ...own, rules_schema_version: 3 };
+    const normalized = { ...cloneObbyDefaults(), ...own, rules_schema_version: 4 };
     const normalizeRule = (rule, side, index) => ({
       id: String(rule.id || `${side === 'LEFT' ? 'L' : 'R'}${Date.now()}_${index}`),
       gift_name: String(rule.gift_name || rule.giftName || rule.name || 'Regalo'),
@@ -74,7 +88,7 @@ export function parseObbyConfigImport(source) {
       action_type: String(rule.action_type || rule.action || 'PTS').toUpperCase().includes('WIN') ? 'WIN' : 'PTS',
       value: Number(rule.value ?? rule.points ?? 0),
       duration_seconds: Math.max(0, Number(rule.duration_seconds ?? rule.duration ?? 5)),
-      is_bottom: String(rule.action_type || rule.action || '').toUpperCase().includes('WIN'),
+      is_bottom: typeof rule.is_bottom === 'boolean' ? rule.is_bottom : false,
       sound_name: String(rule.sound_name || rule.audioName || ''),
       sound_url: String(rule.sound_url || rule.audio || rule.audioUrl || ''),
       sound_volume: Number(rule.sound_volume ?? rule.volume ?? 1)

@@ -68,6 +68,13 @@ function renderRobloxEditor() {
   setSlider('rbx-slider-duel-scale', 'rbx-val-duel-scale', cfg.duel_scale ?? 100, '%');
   updateLocalSharpnessFilter(cfg.sharpness ?? 140);
 
+  const likesCurrInput = document.getElementById('rbx-likes-current');
+  const likesGoalInput = document.getElementById('rbx-likes-goal');
+  const likesActionInput = document.getElementById('rbx-likes-action');
+  if (likesCurrInput) likesCurrInput.value = cfg.likes_current ?? 25049;
+  if (likesGoalInput) likesGoalInput.value = cfg.likes_goal ?? 30000;
+  if (likesActionInput) likesActionInput.value = cfg.likes_action || '-1 WIN';
+
   const renderSlotRow = (slot, side, idx = 0, total = 1) => {
     const esSub = obtenerNombreEspanol(slot.gift_name);
     return `
@@ -81,19 +88,22 @@ function renderRobloxEditor() {
         </div>
       </div>
 
-      <div style="display: flex; align-items: center; gap: 6px;">
+      <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
         <input type="text" class="table-input rbx-slot-label" data-id="${slot.id}" value="${slot.label}" style="width: 86px; text-align: center; font-weight: 800;" title="Etiqueta en el Overlay" />
-        <select class="table-select rbx-slot-action" data-id="${slot.id}" style="width: 105px;">
-          <option value="LEFT" ${slot.action_type === 'PTS' && side === 'LEFT' ? 'selected' : ''}>← Izquierda</option>
-          <option value="RIGHT" ${slot.action_type === 'PTS' && side === 'RIGHT' ? 'selected' : ''}>Derecha →</option>
-          <option value="WINS" ${slot.action_type === 'WIN' ? 'selected' : ''}>🏆 Wins</option>
+        <select class="table-select rbx-slot-type" data-id="${slot.id}" style="width: 90px;" title="Tipo de Impacto">
+          <option value="PTS" ${slot.action_type === 'PTS' ? 'selected' : ''}>⚡ Puntos</option>
+          <option value="WIN" ${slot.action_type === 'WIN' ? 'selected' : ''}>🏆 Wins</option>
+        </select>
+        <select class="table-select rbx-slot-pos" data-id="${slot.id}" style="width: 96px;" title="Ubicación Visual en el Overlay">
+          <option value="SIDE" ${!slot.is_bottom ? 'selected' : ''}>📐 Costado</option>
+          <option value="BOTTOM" ${slot.is_bottom ? 'selected' : ''}>⚓ Base</option>
         </select>
         <input type="number" class="table-input rbx-slot-val" data-id="${slot.id}" value="${slot.value}" style="width: 64px; text-align: center;" title="Valor numérico (+ o -)" />
-        <label style="font-size:10px;color:var(--text-muted);">s <input type="number" min="0" class="table-input rbx-slot-duration" data-id="${slot.id}" value="${slot.duration_seconds ?? 5}" style="width:52px;text-align:center;" title="Duración en segundos" /></label>
+        <label style="font-size:10px;color:var(--text-muted);">s <input type="number" min="0" class="table-input rbx-slot-duration" data-id="${slot.id}" value="${slot.duration_seconds ?? 5}" style="width:48px;text-align:center;" title="Duración en segundos" /></label>
       </div>
 
       <div style="display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; align-items: center;">
-        <div class="slot-reorder-group" style="display: inline-flex; align-items: center; gap: 2px; background: rgba(15,23,42,0.85); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 2px 4px; margin-right: 2px;" title="Reordenar posición en la columna">
+        <div class="slot-reorder-group" style="display: inline-flex; align-items: center; gap: 2px; background: rgba(15,23,42,0.85); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 2px 4px; margin-right: 2px;" title="Reordenar posición">
           <button type="button" class="btn-micro btn-move-top-slot" data-slot-id="${slot.id}" title="Mover al primer lugar (inicio)" ${idx === 0 ? 'disabled style="opacity:0.3;cursor:not-allowed;"' : 'style="color:var(--galactk-cyan);font-weight:900;"'}>⤒</button>
           <button type="button" class="btn-micro btn-move-up-slot" data-slot-id="${slot.id}" title="Subir una posición" ${idx === 0 ? 'disabled style="opacity:0.3;cursor:not-allowed;"' : ''}>▲</button>
           <button type="button" class="btn-micro btn-move-down-slot" data-slot-id="${slot.id}" title="Bajar una posición" ${idx >= total - 1 ? 'disabled style="opacity:0.3;cursor:not-allowed;"' : ''}>▼</button>
@@ -121,9 +131,14 @@ function renderRobloxEditor() {
   const renderRuleCategories = (rules, side) => {
     rules = rules.filter(rule => matches(rule, side));
     if (!rules.length) return '<div class="empty-state"><img src="./galactk-logo.png" alt=""><span>No hay acciones con este filtro.</span><small>Añade un regalo o cambia la búsqueda.</small></div>';
-    const points = rules.filter(r => String(r.action_type).toUpperCase() === 'PTS');
-    const wins = rules.filter(r => String(r.action_type).toUpperCase() === 'WIN');
-    return `<div style="font-size:11px;font-weight:900;color:var(--color-gold);margin:5px 0 8px;">✖ SUMA DE PUNTOS · ACCIONES ILIMITADAS</div>${points.map((s, idx) => renderSlotRow(s, side, idx, points.length)).join('')}<div style="font-size:11px;font-weight:900;color:#ff8bd7;margin:12px 0 8px;">🏆 MODIFICADORES DE WINS · POSITIVOS O NEGATIVOS</div>${wins.map((s, idx) => renderSlotRow(s, side, idx, wins.length)).join('')}`;
+    const sideColRules = rules.filter(r => !r.is_bottom);
+    const bottomRules = rules.filter(r => Boolean(r.is_bottom));
+    return `
+      <div style="font-size:11px;font-weight:900;color:var(--color-gold);margin:5px 0 8px;">📐 COLUMNA COSTADO (VERTICAL) · ${sideColRules.length} REGALOS</div>
+      ${sideColRules.map((s, idx) => renderSlotRow(s, side, idx, sideColRules.length)).join('')}
+      <div style="font-size:11px;font-weight:900;color:#38bdf8;margin:12px 0 8px;">⚓ BASE INFERIOR (HORIZONTAL) · ${bottomRules.length} REGALOS</div>
+      ${bottomRules.map((s, idx) => renderSlotRow(s, side, idx, bottomRules.length)).join('')}
+    `;
   };
   robloxLeftList.innerHTML = renderRuleCategories(cfg.left_rules || [], 'LEFT');
   robloxRightList.innerHTML = renderRuleCategories(cfg.right_rules || [], 'RIGHT');
@@ -153,19 +168,23 @@ function renderRobloxEditor() {
     });
   });
 
-  document.querySelectorAll('.rbx-slot-action').forEach(sel => {
+  document.querySelectorAll('.rbx-slot-type').forEach(sel => {
     sel.addEventListener('change', async () => {
-      const left = app.robloxOverlayConfig.left_rules || [];
-      const right = app.robloxOverlayConfig.right_rules || [];
-      const item = [...left, ...right].find(x => x.id === sel.dataset.id);
+      const allSlots = [...app.robloxOverlayConfig.left_rules, ...app.robloxOverlayConfig.right_rules];
+      const item = allSlots.find(x => x.id === sel.dataset.id);
       if (!item) return;
-      app.robloxOverlayConfig.left_rules = left.filter(x => x.id !== item.id);
-      app.robloxOverlayConfig.right_rules = right.filter(x => x.id !== item.id);
-      const action = sel.value;
-      item.action_type = action === 'WINS' ? 'WIN' : 'PTS';
-      item.is_bottom = action === 'WINS';
-      const destination = action === 'RIGHT' || (action === 'WINS' && Number(item.value) >= 0) ? app.robloxOverlayConfig.right_rules : app.robloxOverlayConfig.left_rules;
-      destination.push(item);
+      item.action_type = sel.value;
+      renderRobloxEditor();
+      await app.persistConfig();
+    });
+  });
+
+  document.querySelectorAll('.rbx-slot-pos').forEach(sel => {
+    sel.addEventListener('change', async () => {
+      const allSlots = [...app.robloxOverlayConfig.left_rules, ...app.robloxOverlayConfig.right_rules];
+      const item = allSlots.find(x => x.id === sel.dataset.id);
+      if (!item) return;
+      item.is_bottom = sel.value === 'BOTTOM';
       renderRobloxEditor();
       await app.persistConfig();
     });
@@ -280,9 +299,9 @@ function renderRobloxEditor() {
     const item = rules.find(x => x.id === slotId);
     if (!item) return;
 
-    const isPts = String(item.action_type).toUpperCase() === 'PTS';
-    const categoryRules = rules.filter(r => (String(r.action_type).toUpperCase() === 'PTS') === isPts);
-    const otherCategoryRules = rules.filter(r => (String(r.action_type).toUpperCase() === 'PTS') !== isPts);
+    const isBottom = Boolean(item.is_bottom);
+    const categoryRules = rules.filter(r => Boolean(r.is_bottom) === isBottom);
+    const otherCategoryRules = rules.filter(r => Boolean(r.is_bottom) !== isBottom);
 
     const currIdx = categoryRules.findIndex(x => x.id === slotId);
     if (currIdx === -1) return;
@@ -307,9 +326,9 @@ function renderRobloxEditor() {
       categoryRules.push(item);
     }
 
-    const newPoints = isPts ? categoryRules : otherCategoryRules;
-    const newWins = isPts ? otherCategoryRules : categoryRules;
-    cfg[sideKey] = [...newPoints, ...newWins];
+    const newSideRules = !isBottom ? categoryRules : otherCategoryRules;
+    const newBottomRules = isBottom ? categoryRules : otherCategoryRules;
+    cfg[sideKey] = [...newSideRules, ...newBottomRules];
 
     renderRobloxEditor();
     await app.persistConfig();
@@ -462,8 +481,30 @@ document.getElementById('btn-save-roblox-overlay')?.addEventListener('click', as
   showToast('✔ ¡Overlays 720:1080 y Gift vs Gift actualizados en vivo en OBS!');
 });
 
+document.getElementById('btn-load-official-gvg')?.addEventListener('click', async () => {
+  const { DEFAULT_ROBLOX_CONFIG } = await import('./obby-config.js');
+  app.robloxOverlayConfig = JSON.parse(JSON.stringify(DEFAULT_ROBLOX_CONFIG));
+  renderRobloxEditor();
+  await app.persistConfig();
+  showToast('⭐ ¡Configuración Oficial 1:1 (Imagen Duelo) cargada con éxito!');
+});
+
+document.getElementById('btn-save-likes-goal')?.addEventListener('click', async () => {
+  const cfg = app.robloxOverlayConfig;
+  cfg.likes_current = Math.max(0, Number(document.getElementById('rbx-likes-current')?.value) || 0);
+  cfg.likes_goal = Math.max(1, Number(document.getElementById('rbx-likes-goal')?.value) || 30000);
+  cfg.likes_action = (document.getElementById('rbx-likes-action')?.value || '-1 WIN').trim();
+  await app.persistConfig();
+  showToast(`✔ Meta de Likes guardada: ${cfg.likes_action} - ${cfg.likes_current.toLocaleString()} / ${cfg.likes_goal.toLocaleString()}`);
+});
+
 document.getElementById('btn-reset-roblox-overlay')?.addEventListener('click', async () => {
   const { DEFAULT_ROBLOX_CONFIG } = await import('./obby-config.js');
+  app.robloxOverlayConfig = JSON.parse(JSON.stringify(DEFAULT_ROBLOX_CONFIG));
+  renderRobloxEditor();
+  await app.persistConfig();
+  showToast('✔ Configuración original restaurada');
+});
   app.robloxOverlayConfig = JSON.parse(JSON.stringify(DEFAULT_ROBLOX_CONFIG));
   renderRobloxEditor();
   await app.persistConfig();

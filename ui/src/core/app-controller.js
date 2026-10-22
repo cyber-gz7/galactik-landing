@@ -551,7 +551,7 @@ class AppController {
             giftRegistry.setAll(repairedGifts);
           }
           if (config.robloxOverlayConfig) {
-            const useCurrentRules = Number(config.robloxOverlayConfig.rules_schema_version) === 3;
+            const useCurrentRules = Number(config.robloxOverlayConfig.rules_schema_version) >= 3;
             const repairSlot = (s) => {
               const rawIcon = limpiarArchivoGift(s.icon_file);
               const isNonRose = !/rose|rosa/i.test(String(s.gift_name || ''));
@@ -639,6 +639,22 @@ class AppController {
           }
           if (config.ttsConfig) {
             ttsEngine.updateConfig(config.ttsConfig);
+          }
+          if (config.streamerUsername) {
+            const dashUser = document.getElementById('dash-tiktok-username');
+            const topbarUser = document.getElementById('topbar-tiktok-user');
+            if (dashUser) dashUser.value = config.streamerUsername;
+            if (topbarUser) topbarUser.value = config.streamerUsername;
+          }
+          if (config.activeProfile) {
+            this.activeProfile = config.activeProfile;
+            if (typeof window.__applyProfileMode === 'function') {
+              window.__applyProfileMode(config.activeProfile);
+            }
+          }
+          if (config.rcon?.player) {
+            const mcPlayer = document.getElementById('mc-player-nick');
+            if (mcPlayer) mcPlayer.value = config.rcon.player;
           }
         }
       }

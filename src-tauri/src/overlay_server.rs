@@ -97,6 +97,18 @@ fn default_goal_action() -> String {
 fn default_true() -> bool {
     true
 }
+fn default_likes_goal() -> u32 {
+    30000
+}
+fn default_likes_current() -> u32 {
+    25049
+}
+fn default_likes_action() -> String {
+    "-1 WIN".to_string()
+}
+fn default_likes_action_value() -> i32 {
+    -1
+}
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct GiftVsGiftState {
@@ -109,6 +121,14 @@ pub struct GiftVsGiftState {
     pub goal_action: String,
     #[serde(default = "default_true")]
     pub show_side_columns: bool,
+    #[serde(default = "default_likes_goal")]
+    pub likes_goal: u32,
+    #[serde(default = "default_likes_current")]
+    pub likes_current: u32,
+    #[serde(default = "default_likes_action")]
+    pub likes_action: String,
+    #[serde(default = "default_likes_action_value")]
+    pub likes_action_value: i32,
     #[serde(default = "default_center_red_name")]
     pub center_red_name: String,
     pub center_red_icon: String,
@@ -154,13 +174,17 @@ pub struct GiftVsGiftState {
 impl Default for GiftVsGiftState {
     fn default() -> Self {
         Self {
-            wins: 0,
-            target_wins: 10,
+            wins: 7,
+            target_wins: 15,
             red_points: 0,
             blue_points: 0,
             last_action: String::new(),
             goal_action: default_goal_action(),
             show_side_columns: true,
+            likes_goal: 30000,
+            likes_current: 25049,
+            likes_action: "-1 WIN".to_string(),
+            likes_action_value: -1,
             center_red_name: "Rose".to_string(),
             center_red_icon: "rose-1-coins.webp".to_string(),
             center_red_coins: 1,
@@ -171,26 +195,26 @@ impl Default for GiftVsGiftState {
             center_blue_coins: 1,
             center_blue_sound_name: String::new(),
             center_blue_sound_url: String::new(),
-            theme_style: "GALACTIC".to_string(),
-            win_label: "WIN".to_string(),
+            theme_style: "transparent".to_string(),
+            win_label: "Win".to_string(),
             win_theme: "AUTO".to_string(),
             show_win_in_sides: false,
-            icon_size: 48,
-            text_size: 20,
-            item_gap: 8,
+            icon_size: 52,
+            text_size: 22,
+            item_gap: 10,
             sharpness: 140,
             win_scale: 100,
             duel_scale: 100,
             left_rules: vec![
                 RobloxRuleItem {
                     id: "L1".into(),
-                    gift_name: "Doughnut".into(),
-                    icon_file: "doughnut-30-coins.webp".into(),
-                    coins: 30,
-                    tiktok_gift_id: 5879,
-                    label: "+30 PTS".into(),
-                    action_type: "PTS".into(),
-                    value: 30,
+                    gift_name: "Lion".into(),
+                    icon_file: "lion-29999-coins.webp".into(),
+                    coins: 29999,
+                    tiktok_gift_id: 5509,
+                    label: "-20 WIN".into(),
+                    action_type: "WIN".into(),
+                    value: -20,
                     is_bottom: false,
                     sound_name: String::new(),
                     sound_url: String::new(),
@@ -199,13 +223,13 @@ impl Default for GiftVsGiftState {
                 },
                 RobloxRuleItem {
                     id: "L2".into(),
-                    gift_name: "Game Controller".into(),
-                    icon_file: "game-controller-100-coins.webp".into(),
-                    coins: 100,
-                    tiktok_gift_id: 6070,
-                    label: "+100 PTS".into(),
+                    gift_name: "Rose".into(),
+                    icon_file: "rose-1-coins.webp".into(),
+                    coins: 1,
+                    tiktok_gift_id: 5655,
+                    label: "-10".into(),
                     action_type: "PTS".into(),
-                    value: 100,
+                    value: -10,
                     is_bottom: false,
                     sound_name: String::new(),
                     sound_url: String::new(),
@@ -214,13 +238,13 @@ impl Default for GiftVsGiftState {
                 },
                 RobloxRuleItem {
                     id: "L3".into(),
-                    gift_name: "Corgi".into(),
-                    icon_file: "corgi-299-coins.webp".into(),
-                    coins: 299,
-                    tiktok_gift_id: 6289,
-                    label: "+299 PTS".into(),
+                    gift_name: "Doughnut".into(),
+                    icon_file: "doughnut-30-coins.webp".into(),
+                    coins: 30,
+                    tiktok_gift_id: 5879,
+                    label: "-30".into(),
                     action_type: "PTS".into(),
-                    value: 299,
+                    value: -30,
                     is_bottom: false,
                     sound_name: String::new(),
                     sound_url: String::new(),
@@ -229,6 +253,66 @@ impl Default for GiftVsGiftState {
                 },
                 RobloxRuleItem {
                     id: "L4".into(),
+                    gift_name: "Game Controller".into(),
+                    icon_file: "game-controller-100-coins.webp".into(),
+                    coins: 100,
+                    tiktok_gift_id: 6070,
+                    label: "-100".into(),
+                    action_type: "PTS".into(),
+                    value: -100,
+                    is_bottom: false,
+                    sound_name: String::new(),
+                    sound_url: String::new(),
+                    sound_volume: 1.0,
+                    duration_seconds: 5,
+                },
+                RobloxRuleItem {
+                    id: "L5".into(),
+                    gift_name: "Corgi".into(),
+                    icon_file: "corgi-299-coins.webp".into(),
+                    coins: 299,
+                    tiktok_gift_id: 6289,
+                    label: "-300".into(),
+                    action_type: "PTS".into(),
+                    value: -300,
+                    is_bottom: false,
+                    sound_name: String::new(),
+                    sound_url: String::new(),
+                    sound_volume: 1.0,
+                    duration_seconds: 5,
+                },
+                RobloxRuleItem {
+                    id: "L6".into(),
+                    gift_name: "Money Gun".into(),
+                    icon_file: "money-gun-500-coins.webp".into(),
+                    coins: 500,
+                    tiktok_gift_id: 7168,
+                    label: "-500".into(),
+                    action_type: "PTS".into(),
+                    value: -500,
+                    is_bottom: false,
+                    sound_name: String::new(),
+                    sound_url: String::new(),
+                    sound_volume: 1.0,
+                    duration_seconds: 5,
+                },
+                RobloxRuleItem {
+                    id: "L7".into(),
+                    gift_name: "Blooming Ribbons".into(),
+                    icon_file: "blooming-ribbons-1000-coins.webp".into(),
+                    coins: 1000,
+                    tiktok_gift_id: 6088,
+                    label: "-1000".into(),
+                    action_type: "PTS".into(),
+                    value: -1000,
+                    is_bottom: false,
+                    sound_name: String::new(),
+                    sound_url: String::new(),
+                    sound_volume: 1.0,
+                    duration_seconds: 5,
+                },
+                RobloxRuleItem {
+                    id: "L8".into(),
                     gift_name: "Bear with Rose".into(),
                     icon_file: "bear-with-rose-400-coins.webp".into(),
                     coins: 400,
@@ -243,29 +327,14 @@ impl Default for GiftVsGiftState {
                     duration_seconds: 5,
                 },
                 RobloxRuleItem {
-                    id: "L5".into(),
-                    gift_name: "Private Jet".into(),
-                    icon_file: "private-jet-4888-coins.webp".into(),
-                    coins: 4888,
-                    tiktok_gift_id: 4888,
-                    label: "-15 WINS".into(),
+                    id: "L9".into(),
+                    gift_name: "Fireworks".into(),
+                    icon_file: "fireworks-1088-coins.webp".into(),
+                    coins: 1088,
+                    tiktok_gift_id: 6092,
+                    label: "-3 WIN".into(),
                     action_type: "WIN".into(),
-                    value: -15,
-                    is_bottom: true,
-                    sound_name: String::new(),
-                    sound_url: String::new(),
-                    sound_volume: 1.0,
-                    duration_seconds: 5,
-                },
-                RobloxRuleItem {
-                    id: "L6".into(),
-                    gift_name: "Lion".into(),
-                    icon_file: "lion-29999-coins.webp".into(),
-                    coins: 29999,
-                    tiktok_gift_id: 5509,
-                    label: "-15 WINS".into(),
-                    action_type: "WIN".into(),
-                    value: -15,
+                    value: -3,
                     is_bottom: true,
                     sound_name: String::new(),
                     sound_url: String::new(),
@@ -276,11 +345,26 @@ impl Default for GiftVsGiftState {
             right_rules: vec![
                 RobloxRuleItem {
                     id: "R1".into(),
+                    gift_name: "Flying Jets".into(),
+                    icon_file: "flying-jets-5000-coins.webp".into(),
+                    coins: 5000,
+                    tiktok_gift_id: 6100,
+                    label: "+20 WIN".into(),
+                    action_type: "WIN".into(),
+                    value: 20,
+                    is_bottom: false,
+                    sound_name: String::new(),
+                    sound_url: String::new(),
+                    sound_volume: 1.0,
+                    duration_seconds: 5,
+                },
+                RobloxRuleItem {
+                    id: "R2".into(),
                     gift_name: "Heart Me".into(),
                     icon_file: "heart-me-1-coins.webp".into(),
                     coins: 1,
                     tiktok_gift_id: 7934,
-                    label: "+10 PTS".into(),
+                    label: "+10".into(),
                     action_type: "PTS".into(),
                     value: 10,
                     is_bottom: false,
@@ -290,12 +374,12 @@ impl Default for GiftVsGiftState {
                     duration_seconds: 5,
                 },
                 RobloxRuleItem {
-                    id: "R2".into(),
+                    id: "R3".into(),
                     gift_name: "Capybara".into(),
                     icon_file: "capybara-30-coins.webp".into(),
                     coins: 30,
                     tiktok_gift_id: 6562,
-                    label: "+30 PTS".into(),
+                    label: "+30".into(),
                     action_type: "PTS".into(),
                     value: 30,
                     is_bottom: false,
@@ -305,30 +389,15 @@ impl Default for GiftVsGiftState {
                     duration_seconds: 5,
                 },
                 RobloxRuleItem {
-                    id: "R3".into(),
-                    gift_name: "Treasure Chest".into(),
-                    icon_file: "treasure-chest-1500-coins.webp".into(),
-                    coins: 1500,
-                    tiktok_gift_id: 6150,
-                    label: "+5 WINS".into(),
-                    action_type: "WIN".into(),
-                    value: 5,
-                    is_bottom: true,
-                    sound_name: String::new(),
-                    sound_url: String::new(),
-                    sound_volume: 1.0,
-                    duration_seconds: 5,
-                },
-                RobloxRuleItem {
                     id: "R4".into(),
-                    gift_name: "Money Gun".into(),
-                    icon_file: "money-gun-500-coins.webp".into(),
-                    coins: 500,
-                    tiktok_gift_id: 7168,
-                    label: "+1 WIN".into(),
-                    action_type: "WIN".into(),
-                    value: 1,
-                    is_bottom: true,
+                    gift_name: "GG".into(),
+                    icon_file: "gg-1-coins.webp".into(),
+                    coins: 1,
+                    tiktok_gift_id: 6064,
+                    label: "+100".into(),
+                    action_type: "PTS".into(),
+                    value: 100,
+                    is_bottom: false,
                     sound_name: String::new(),
                     sound_url: String::new(),
                     sound_volume: 1.0,
@@ -336,14 +405,14 @@ impl Default for GiftVsGiftState {
                 },
                 RobloxRuleItem {
                     id: "R5".into(),
-                    gift_name: "Whale Diving".into(),
-                    icon_file: "whale-diving-2150-coins.webp".into(),
-                    coins: 2150,
-                    tiktok_gift_id: 6267,
-                    label: "+5 WINS".into(),
-                    action_type: "WIN".into(),
-                    value: 5,
-                    is_bottom: true,
+                    gift_name: "Creator S Cap".into(),
+                    icon_file: "creator-s-cap-1-coins.webp".into(),
+                    coins: 1,
+                    tiktok_gift_id: 6075,
+                    label: "+300".into(),
+                    action_type: "PTS".into(),
+                    value: 300,
+                    is_bottom: false,
                     sound_name: String::new(),
                     sound_url: String::new(),
                     sound_volume: 1.0,
@@ -351,13 +420,58 @@ impl Default for GiftVsGiftState {
                 },
                 RobloxRuleItem {
                     id: "R6".into(),
-                    gift_name: "Falcon".into(),
-                    icon_file: "falcon-10999-coins.webp".into(),
-                    coins: 10999,
-                    tiktok_gift_id: 6427,
-                    label: "+20 WINS".into(),
+                    gift_name: "Lollipop Gift Box".into(),
+                    icon_file: "lollipop-gift-box-499-coins.webp".into(),
+                    coins: 499,
+                    tiktok_gift_id: 6120,
+                    label: "+500".into(),
+                    action_type: "PTS".into(),
+                    value: 500,
+                    is_bottom: false,
+                    sound_name: String::new(),
+                    sound_url: String::new(),
+                    sound_volume: 1.0,
+                    duration_seconds: 5,
+                },
+                RobloxRuleItem {
+                    id: "R7".into(),
+                    gift_name: "Galaxy".into(),
+                    icon_file: "galaxy-1000-coins.webp".into(),
+                    coins: 1000,
+                    tiktok_gift_id: 5658,
+                    label: "+1000".into(),
+                    action_type: "PTS".into(),
+                    value: 1000,
+                    is_bottom: false,
+                    sound_name: String::new(),
+                    sound_url: String::new(),
+                    sound_volume: 1.0,
+                    duration_seconds: 5,
+                },
+                RobloxRuleItem {
+                    id: "R8".into(),
+                    gift_name: "Cruiser".into(),
+                    icon_file: "cruiser-150-coins.webp".into(),
+                    coins: 150,
+                    tiktok_gift_id: 6155,
+                    label: "+3 WIN".into(),
                     action_type: "WIN".into(),
-                    value: 20,
+                    value: 3,
+                    is_bottom: true,
+                    sound_name: String::new(),
+                    sound_url: String::new(),
+                    sound_volume: 1.0,
+                    duration_seconds: 5,
+                },
+                RobloxRuleItem {
+                    id: "R9".into(),
+                    gift_name: "Coral".into(),
+                    icon_file: "coral-499-coins.webp".into(),
+                    coins: 499,
+                    tiktok_gift_id: 6156,
+                    label: "+1 WIN".into(),
+                    action_type: "WIN".into(),
+                    value: 1,
                     is_bottom: true,
                     sound_name: String::new(),
                     sound_url: String::new(),
@@ -594,8 +708,23 @@ impl OverlayServerState {
         let parsed: serde_json::Value = serde_json::from_str(config_json)
             .map_err(|e| format!("JSON inválido en update_roblox_config: {}", e))?;
         let mut g = self.gift_vs_gift.lock().await;
+        if let Some(w) = parsed.get("wins").and_then(|v| v.as_i64()) {
+            g.wins = w as i32;
+        }
         if let Some(tw) = parsed.get("target_wins").and_then(|v| v.as_i64()) {
             g.target_wins = (tw as i32).max(1);
+        }
+        if let Some(lg) = parsed.get("likes_goal").and_then(|v| v.as_u64()) {
+            g.likes_goal = lg as u32;
+        }
+        if let Some(lc) = parsed.get("likes_current").and_then(|v| v.as_u64()) {
+            g.likes_current = lc as u32;
+        }
+        if let Some(la) = parsed.get("likes_action").and_then(|v| v.as_str()) {
+            g.likes_action = la.to_string();
+        }
+        if let Some(lav) = parsed.get("likes_action_value").and_then(|v| v.as_i64()) {
+            g.likes_action_value = lav as i32;
         }
         if let Some(ga) = parsed.get("goal_action").and_then(|v| v.as_str()) {
             g.goal_action = match ga {
@@ -950,7 +1079,12 @@ fn canonical_gift_id_from_name(name: &str) -> u64 {
         "cute cat" | "gato tierno" | "gatito" | "gato" => 5333,
         "fireball" | "bola de fuego" => 5650,
         "balloons" | "globos" => 6801,
-        "cruiser" | "crucero" | "barco" | "yate" => 7499,
+        "cruiser" | "crucero" | "barco" | "yate" | "carro surf" => 6155,
+        "coral" | "concha" | "arrecife" => 6156,
+        "flying jets" | "jets volando" | "aviones" | "escuadron" => 6100,
+        "blooming ribbons" | "lazos florecientes" | "cintas florecientes" | "lazos" => 6088,
+        "creator s cap" | "creator cap" | "gorra creador" | "gorra tiktok" => 6075,
+        "lollipop gift box" | "caja de piruletas" | "caja piruletas" | "caja de dulces" => 6120,
         "bear with rose" | "oso con rosa" => 5663,
         "private jet" | "jet privado" | "avion" => 4888,
         "sunset speedway" | "carro deportivo" | "auto deportivo" | "coche de carreras" => 10000,
@@ -1068,6 +1202,21 @@ fn matches_gift_rule(
         }
         "bear with rose" | "oso con rosa" | "bear" | "oso" => {
             norm_i.contains("bear") || norm_i.contains("oso")
+        }
+        "flying jets" | "jets volando" | "aviones" | "jets" => {
+            norm_i.contains("jet") || norm_i.contains("avion")
+        }
+        "blooming ribbons" | "lazos florecientes" | "cintas" | "lazos" => {
+            norm_i.contains("ribbon") || norm_i.contains("lazo") || norm_i.contains("cinta")
+        }
+        "creator s cap" | "creator cap" | "gorra creador" | "gorra tiktok" => {
+            norm_i.contains("creator") || norm_i.contains("cap") || norm_i.contains("gorra")
+        }
+        "lollipop gift box" | "caja de piruletas" | "caja piruletas" | "caja dulce" => {
+            norm_i.contains("lollipop") || norm_i.contains("piruleta") || norm_i.contains("candy box")
+        }
+        "coral" | "concha" | "arrecife" => {
+            norm_i.contains("coral") || norm_i.contains("concha")
         }
         _ => false,
     };

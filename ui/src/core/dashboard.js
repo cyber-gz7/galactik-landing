@@ -69,7 +69,11 @@ async function doConnectTikTok() {
 }
 
 if (topbarUserField && tiktokUserField) {
-  topbarUserField.value = tiktokUserField.value || 'cj7_tutoriales';
+  const initialUser = store.getState()?.tikTokUsername || '';
+  if (initialUser) {
+    topbarUserField.value = initialUser;
+    tiktokUserField.value = initialUser;
+  }
   topbarUserField.addEventListener('input', () => {
     tiktokUserField.value = topbarUserField.value;
   });
@@ -218,8 +222,13 @@ document.getElementById('btn-quick-test-chroma')?.addEventListener('click', asyn
 });
 
 store.on('tiktok:status', ({ status, username }) => {
-  if (username && tiktokUserField && !tiktokUserField.value) {
-    tiktokUserField.value = username;
+  if (username) {
+    if (tiktokUserField && (!tiktokUserField.value || tiktokUserField.value === 'cj7_tutoriales')) {
+      tiktokUserField.value = username;
+    }
+    if (topbarUserField && (!topbarUserField.value || topbarUserField.value === 'cj7_tutoriales')) {
+      topbarUserField.value = username;
+    }
   }
   const cleanUser = (username || tiktokUserField?.value || '').trim().replace(/^@+/, '');
   const isConn = status === 'CONECTADO';

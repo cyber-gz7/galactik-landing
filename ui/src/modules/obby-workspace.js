@@ -227,6 +227,10 @@ export function enhanceObbyWorkspace({ app, render }) {
   panels.rules.append(center, rules);
   const profile = document.createElement('div'); profile.className = 'section-card profile-transfer';
   profile.innerHTML = '<span class="eyebrow">PERFILES PORTÁTILES</span><h2>Tu configuración, donde transmitas</h2><p>Importa un perfil de GALACTK PANEL o acciones compatibles de Interactive App. Exporta tus reglas, sonidos y apariencia en un solo archivo.</p><div class="profile-actions"></div>';
+  const officialButton = document.getElementById('btn-load-official-gvg');
+  if (officialButton) {
+    profile.querySelector('.profile-actions').append(officialButton);
+  }
   profile.querySelector('.profile-actions').append(importButton, exportButton, presetButton);
   profile.append(profileCode); panels.profile.append(profile);
   live.classList.add('live-console', 'gvg-control-section');
@@ -523,9 +527,10 @@ export function enhanceObbyWorkspace({ app, render }) {
   center.querySelector('.panel-title').textContent = 'Regalos principales · Rosa vs GG';
   rules.querySelector('.panel-title').textContent = 'Acciones de tu comunidad';
   const tools = document.createElement('div'); tools.className = 'rules-toolbar';
-  tools.innerHTML = '<input class="input-field" id="obby-rule-search" placeholder="Buscar regalo o acción…" aria-label="Buscar acciones"><select id="obby-rule-filter" class="table-select" aria-label="Filtrar acciones"><option value="ALL">Todas las acciones</option><option value="LEFT">Izquierda</option><option value="RIGHT">Derecha</option><option value="WIN">WINS +/−</option><option value="ALERT">Solo alerta</option></select><span id="obby-rule-count" class="module-badge"></span>';
+  tools.innerHTML = '<input class="input-field" id="obby-rule-search" placeholder="Buscar regalo o acción…" aria-label="Buscar acciones"><select id="obby-rule-filter" class="table-select" aria-label="Filtrar acciones"><option value="ALL">Todas las acciones</option><option value="LEFT">Izquierda</option><option value="RIGHT">Derecha</option><option value="WIN">WINS +/−</option><option value="ALERT">Solo alerta</option></select><button type="button" class="btn-secondary" id="btn-quick-load-official" style="font-size:11px;font-weight:900;color:#ffe600;border-color:rgba(255,230,0,0.4);" title="Cargar los 18 regalos oficiales de la imagen">⭐ Regalos Oficiales</button><span id="obby-rule-count" class="module-badge"></span>';
   rules.querySelector('.panel-header').after(tools);
   tools.querySelector('input').oninput = render; tools.querySelector('select').onchange = render;
+  tools.querySelector('#btn-quick-load-official')?.addEventListener('click', () => document.getElementById('btn-load-official-gvg')?.click());
   // Secondary controls (WIN settings row & manual test dock) remain in one disclosure
   const centerDetails = document.createElement('details'); centerDetails.className = 'advanced-details';
   centerDetails.innerHTML = '<summary>Opciones de WIN y pruebas con audio</summary>';

@@ -45,7 +45,7 @@
   --border-subtle: #17283c;
   --font-display: 'Orbitron', -apple-system, sans-serif;
   --font-tactical: 'Rajdhani', -apple-system, sans-serif;
-  --font-main: 'Rajdhani', 'Inter', -apple-system, sans-serif;
+  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --sidebar-w-expanded: 242px;
   --topbar-h: 64px;
 }

@@ -70,6 +70,8 @@ function applyProfileMode(profile) {
   app.persistConfig();
 }
 
+window.__applyProfileMode = applyProfileMode;
+
 modeButtons.forEach(btn => {
   btn.addEventListener('click', () => {
     const prof = btn.getAttribute('data-profile');

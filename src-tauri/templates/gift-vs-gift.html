@@ -123,14 +123,72 @@
       --theme-pill-border-width: 2px;
     }
 
+    /* HEADER STACK (WINS + LIKES GOAL BAR) */
+    .top-header-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .likes-goal-bar-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .likes-goal-bar-track {
+      position: relative;
+      width: 320px;
+      height: 26px;
+      background: rgba(0, 0, 0, 0.7);
+      border: 2px solid #000;
+      border-radius: 999px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.95);
+    }
+
+    .likes-goal-bar-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 83.5%;
+      background: linear-gradient(90deg, #0099ff 0%, #00e5ff 100%);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.85);
+      transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .likes-goal-text {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13.5px;
+      font-weight: 900;
+      font-style: italic;
+      color: #ffffff;
+      -webkit-text-stroke: 1px #000;
+      text-shadow:
+        1.8px 1.8px 0 #000,
+        -1.8px -1.8px 0 #000,
+        1.8px -1.8px 0 #000,
+        -1.8px 1.8px 0 #000,
+        0 2px 6px rgba(0, 0, 0, 0.95);
+      letter-spacing: 0.6px;
+      white-space: nowrap;
+    }
+
+    /* ESTILO 100% TRANSPARENTE OFICIAL ROBLOX DUELO */
     body[data-theme="TRANSPARENT"] .win-counter,
     body[data-theme="TRANSPARENT"] .center-duel-arena,
     body[data-theme="TRANSPARENT"] .columns-container,
     body[data-theme="TRANSPARENT"] .side-col-wrapper,
-    body[data-theme="TRANSPARENT"] .faction-col-badge,
     body[data-theme="TRANSPARENT"] .rule-item,
-    body[data-theme="TRANSPARENT"] .tug-of-war-track,
-    body[data-theme="TRANSPARENT"] .tug-of-war-bar-red,
     body[data-theme="TRANSPARENT"] #manual-control-dock,
     body[data-theme="TRANSPARENT"] .manual-dock-btn {
       background: transparent !important;
@@ -138,18 +196,135 @@
       backdrop-filter: none !important;
       box-shadow: none !important;
     }
-    body[data-theme="TRANSPARENT"] .team-count,
-    body[data-theme="TRANSPARENT"] .team-gift-name,
-    body[data-theme="TRANSPARENT"] .vs-emblem,
-    body[data-theme="TRANSPARENT"] .duel-subtext,
-    body[data-theme="TRANSPARENT"] .win-counter,
+
     body[data-theme="TRANSPARENT"] .faction-col-badge,
-    body[data-theme="TRANSPARENT"] .rule-tag,
-    body[data-theme="TRANSPARENT"] .rule-sound-badge {
-      text-shadow: 0 3px 8px rgba(0,0,0,0.95), 0 0 4px rgba(0,0,0,0.9) !important;
+    body[data-theme="TRANSPARENT"] .tug-of-war-track,
+    body[data-theme="TRANSPARENT"] .team-gift-name {
+      display: none !important;
     }
+
+    body[data-theme="TRANSPARENT"] .team-block {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      gap: 3px !important;
+    }
+
+    body[data-theme="TRANSPARENT"] .team-img {
+      width: 58px !important;
+      height: 58px !important;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.98)) drop-shadow(0 0 4px rgba(0,0,0,0.95)) !important;
+    }
+
+    body[data-theme="TRANSPARENT"] .team-count {
+      font-family: 'Montserrat', 'Orbitron', sans-serif !important;
+      font-style: italic !important;
+      font-size: 34px !important;
+      font-weight: 900 !important;
+      color: #ffe600 !important;
+      -webkit-text-stroke: 1.6px #000 !important;
+      text-shadow:
+        2.5px 2.5px 0 #000,
+        -2.5px -2.5px 0 #000,
+        2.5px -2.5px 0 #000,
+        -2.5px 2.5px 0 #000,
+        0 4px 8px rgba(0, 0, 0, 0.98) !important;
+      margin-top: -2px !important;
+    }
+
+    body[data-theme="TRANSPARENT"] .vs-emblem {
+      font-family: 'Orbitron', 'Montserrat', sans-serif !important;
+      font-size: 32px !important;
+      font-style: italic !important;
+      font-weight: 900 !important;
+      color: #ffe600 !important;
+      -webkit-text-stroke: 1.6px #000 !important;
+      text-shadow:
+        2.5px 2.5px 0 #000,
+        -2.5px -2.5px 0 #000,
+        2.5px -2.5px 0 #000,
+        -2.5px 2.5px 0 #000,
+        0 0 18px rgba(255, 90, 0, 0.95),
+        0 4px 10px rgba(0, 0, 0, 0.98) !important;
+    }
+
+    body[data-theme="TRANSPARENT"] .duel-subtext {
+      font-family: 'Montserrat', sans-serif !important;
+      font-style: italic !important;
+      font-size: 22px !important;
+      font-weight: 900 !important;
+      color: #ffe600 !important;
+      -webkit-text-stroke: 1.4px #000 !important;
+      text-shadow:
+        2.2px 2.2px 0 #000,
+        -2.2px -2.2px 0 #000,
+        2.2px -2.2px 0 #000,
+        -2.2px 2.2px 0 #000,
+        0 3px 8px rgba(0, 0, 0, 0.98) !important;
+      margin-top: 6px !important;
+      letter-spacing: 1px !important;
+    }
+
+    body[data-theme="TRANSPARENT"] .win-counter {
+      font-family: 'Montserrat', 'Orbitron', sans-serif !important;
+      font-style: italic !important;
+      font-weight: 900 !important;
+      font-size: 40px !important;
+      letter-spacing: 2px !important;
+      color: #ffffff !important;
+      -webkit-text-stroke: 1.8px #000 !important;
+      text-shadow:
+        2.8px 2.8px 0 #000,
+        -2.8px -2.8px 0 #000,
+        2.8px -2.8px 0 #000,
+        -2.8px 2.8px 0 #000,
+        0 4px 12px rgba(0, 0, 0, 0.98) !important;
+      padding: 0 !important;
+    }
+
+    body[data-theme="TRANSPARENT"] .win-label {
+      color: #ffffff !important;
+      -webkit-text-stroke: 1.8px #000 !important;
+    }
+
+    body[data-theme="TRANSPARENT"] .win-current {
+      color: #ffe600 !important;
+      -webkit-text-stroke: 1.8px #000 !important;
+    }
+
+    body[data-theme="TRANSPARENT"] .win-slash {
+      color: #ffffff !important;
+      -webkit-text-stroke: 1.8px #000 !important;
+      margin: 0 4px !important;
+    }
+
+    body[data-theme="TRANSPARENT"] .win-target {
+      color: #ffffff !important;
+      -webkit-text-stroke: 1.8px #000 !important;
+    }
+
+    body[data-theme="TRANSPARENT"] .rule-tag {
+      font-family: 'Montserrat', sans-serif !important;
+      font-style: italic !important;
+      font-weight: 900 !important;
+      font-size: var(--text-size, 22px) !important;
+      color: #ffe600 !important;
+      -webkit-text-stroke: 1.5px #000 !important;
+      text-shadow:
+        2.5px 2.5px 0 #000,
+        -2.5px -2.5px 0 #000,
+        2.5px -2.5px 0 #000,
+        -2.5px 2.5px 0 #000,
+        0 4px 8px rgba(0, 0, 0, 0.98) !important;
+      letter-spacing: 0.5px !important;
+    }
+
+    body[data-theme="TRANSPARENT"] .col-right .rule-tag {
+      color: #ffe600 !important;
+    }
+
     body[data-theme="TRANSPARENT"] img {
-      filter: drop-shadow(0 3px 8px rgba(0,0,0,0.95)) drop-shadow(0 0 4px rgba(0,0,0,0.9)) !important;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.98)) drop-shadow(0 0 4px rgba(0,0,0,0.92)) !important;
     }
 
     @keyframes winsDebtShake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-5px)} 40%{transform:translateX(5px)} 60%{transform:translateX(-3px)} 80%{transform:translateX(3px)} }
@@ -744,11 +919,19 @@
 
   <div id="stage-720x1080">
     <div class="top-win-wrapper" id="top-win-module">
-      <div class="win-counter" id="win-counter" data-win-theme="GALACTIC">
-        <span class="win-label" id="win-label-text">🏆 WINS:</span>
-        <span class="win-current" id="val-wins">0</span>
-        <span class="win-slash">/</span>
-        <span class="win-target" id="val-target-wins">10</span>
+      <div class="top-header-stack">
+        <div class="win-counter" id="win-counter" data-win-theme="GALACTIC">
+          <span class="win-label" id="win-label-text">Win</span>
+          <span class="win-current" id="val-wins">7</span>
+          <span class="win-slash">/</span>
+          <span class="win-target" id="val-target-wins">15</span>
+        </div>
+        <div class="likes-goal-bar-wrap" id="likes-goal-wrap">
+          <div class="likes-goal-bar-track">
+            <div class="likes-goal-bar-fill" id="likes-bar-fill"></div>
+            <div class="likes-goal-text" id="likes-goal-text">-1 WIN - 25049 / 30000 Likes</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -759,25 +942,25 @@
             <img id="center-red-img" src="/gifts/rose-1-coins.webp" alt="Red" class="team-img" onerror="this.src='/gifts/rose-1-coins.webp'" />
             <span class="team-gift-name" id="center-red-label">Rose</span>
           </div>
-          <span class="team-count" id="count-red">0</span>
+          <span class="team-count" id="count-red">1</span>
         </div>
 
         <div class="vs-emblem">VS</div>
 
         <div class="team-block" id="team-block-blue">
-          <span class="team-count" id="count-blue">0</span>
           <div class="team-gift-wrap">
             <img id="center-blue-img" src="/gifts/gg-1-coins.webp" alt="Blue" class="team-img" onerror="this.src='/gifts/gg-1-coins.webp'" />
             <span class="team-gift-name" id="center-blue-label">GG</span>
           </div>
+          <span class="team-count" id="count-blue">4</span>
         </div>
       </div>
 
       <div class="tug-of-war-track">
-        <div class="tug-of-war-bar-red" id="tug-bar-red" style="width: 76.5%;"></div>
+        <div class="tug-of-war-bar-red" id="tug-bar-red" style="width: 20%;"></div>
       </div>
 
-      <div class="duel-subtext" id="duel-subtext">⚖️ EMPATE · MANTENER</div>
+      <div class="duel-subtext" id="duel-subtext">3 A FAVOR!!</div>
     </div>
 
     <div class="columns-container" id="side-rules">
@@ -840,35 +1023,39 @@
 
     const DEFAULT_LEFT_RULES = [
       { id: 'L1', gift_name: 'Lion', icon_file: 'lion-29999-coins.webp', label: '-20 WIN', is_bottom: false },
-      { id: 'L2', gift_name: 'Rose', icon_file: 'rose-1-coins.webp', label: '+1 PTS', is_bottom: false },
+      { id: 'L2', gift_name: 'Rose', icon_file: 'rose-1-coins.webp', label: '-10', is_bottom: false },
       { id: 'L3', gift_name: 'Doughnut', icon_file: 'doughnut-30-coins.webp', label: '-30', is_bottom: false },
       { id: 'L4', gift_name: 'Game Controller', icon_file: 'game-controller-100-coins.webp', label: '-100', is_bottom: false },
-      { id: 'L5', gift_name: 'Cat', icon_file: 'cat-222-coins.webp', label: '-300', is_bottom: false },
+      { id: 'L5', gift_name: 'Corgi', icon_file: 'corgi-299-coins.webp', label: '-300', is_bottom: false },
       { id: 'L6', gift_name: 'Money Gun', icon_file: 'money-gun-500-coins.webp', label: '-500', is_bottom: false },
-      { id: 'L7', gift_name: 'Sunset Speedway', icon_file: 'sunset-speedway-10000-coins.webp', label: '-1000', is_bottom: false },
+      { id: 'L7', gift_name: 'Blooming Ribbons', icon_file: 'blooming-ribbons-1000-coins.webp', label: '-1000', is_bottom: false },
       { id: 'L8', gift_name: 'Bear with Rose', icon_file: 'bear-with-rose-400-coins.webp', label: '-1 WIN', is_bottom: true },
       { id: 'L9', gift_name: 'Fireworks', icon_file: 'fireworks-1088-coins.webp', label: '-3 WIN', is_bottom: true }
     ];
 
     const DEFAULT_RIGHT_RULES = [
-      { id: 'R1', gift_name: 'Falcon', icon_file: 'falcon-10999-coins.webp', label: '+20 WIN', is_bottom: false },
-      { id: 'R2', gift_name: 'Heart Me', icon_file: 'heart-me-1-coins.webp', label: '+10 PTS', is_bottom: false },
+      { id: 'R1', gift_name: 'Flying Jets', icon_file: 'flying-jets-5000-coins.webp', label: '+20 WIN', is_bottom: false },
+      { id: 'R2', gift_name: 'Heart Me', icon_file: 'heart-me-1-coins.webp', label: '+10', is_bottom: false },
       { id: 'R3', gift_name: 'Capybara', icon_file: 'capybara-30-coins.webp', label: '+30', is_bottom: false },
-      { id: 'R4', gift_name: 'GG', icon_file: 'gg-1-coins.webp', label: '+1', is_bottom: false },
-      { id: 'R5', gift_name: 'Whale Diving', icon_file: 'whale-diving-2150-coins.webp', label: '+300', is_bottom: false },
-      { id: 'R6', gift_name: 'Treasure Chest', icon_file: 'treasure-chest-1500-coins.webp', label: '+500', is_bottom: false },
+      { id: 'R4', gift_name: 'GG', icon_file: 'gg-1-coins.webp', label: '+100', is_bottom: false },
+      { id: 'R5', gift_name: 'Creator S Cap', icon_file: 'creator-s-cap-1-coins.webp', label: '+300', is_bottom: false },
+      { id: 'R6', gift_name: 'Lollipop Gift Box', icon_file: 'lollipop-gift-box-499-coins.webp', label: '+500', is_bottom: false },
       { id: 'R7', gift_name: 'Galaxy', icon_file: 'galaxy-1000-coins.webp', label: '+1000', is_bottom: false },
       { id: 'R8', gift_name: 'Cruiser', icon_file: 'cruiser-150-coins.webp', label: '+3 WIN', is_bottom: true },
       { id: 'R9', gift_name: 'Coral', icon_file: 'coral-499-coins.webp', label: '+1 WIN', is_bottom: true }
     ];
 
     let state = {
-      wins: 0,
-      targetWins: 10,
-      redPoints: 0,
-      bluePoints: 0,
+      wins: 7,
+      targetWins: 15,
+      redPoints: 1,
+      bluePoints: 4,
       goalAction: 'INCREASE_TARGET',
       showSideColumns: true,
+      likesGoal: 30000,
+      likesCurrent: 25049,
+      likesAction: '-1 WIN',
+      likesActionValue: -1,
       centerRedName: 'Rose',
       centerRedIcon: 'rose-1-coins.webp',
       centerRedCoins: 1,
@@ -879,13 +1066,13 @@
       centerBlueCoins: 1,
       centerBlueSoundName: '',
       centerBlueSoundUrl: '',
-      themeStyle: urlParams.get('theme')?.toUpperCase() || 'GALACTIC',
-      winLabel: 'WIN',
+      themeStyle: urlParams.get('theme')?.toUpperCase() || 'TRANSPARENT',
+      winLabel: 'Win',
       winTheme: 'AUTO',
       showWinInSides: false,
-      iconSize: 48,
-      textSize: 20,
-      itemGap: 8,
+      iconSize: 52,
+      textSize: 22,
+      itemGap: 10,
       sharpness: 140,
       winScale: 100,
       duelScale: 100,
@@ -1052,7 +1239,14 @@
         setTimeout(() => winCounterEl.classList.remove('bump'), 350);
       }
       const goalReached = state.wins >= state.targetWins;
-      if (winLabelEl) winLabelEl.textContent = goalReached && state.goalAction === 'SHOW_VICTORY' ? '🏆 ¡VICTORIA!' : `🏆 ${state.winLabel || 'WINS'}:`;
+      const isTrans = String(state.themeStyle).toUpperCase() === 'TRANSPARENT';
+      if (winLabelEl) {
+        if (isTrans) {
+          winLabelEl.textContent = state.winLabel || 'Win';
+        } else {
+          winLabelEl.textContent = goalReached && state.goalAction === 'SHOW_VICTORY' ? '🏆 ¡VICTORIA!' : `🏆 ${state.winLabel || 'WINS'}:`;
+        }
+      }
       valWins.textContent = state.wins;
       valWins.classList.toggle('wins-negative', state.wins < 0);
       if (prevWins !== undefined && state.wins < prevWins) {
@@ -1065,6 +1259,17 @@
       countBlue.textContent = state.bluePoints.toLocaleString();
       document.getElementById('side-rules').style.display = state.showSideColumns ? '' : 'none';
 
+      // Meta de Likes Bar
+      const likesGoalEl = document.getElementById('likes-goal-text');
+      const likesFillEl = document.getElementById('likes-bar-fill');
+      if (likesGoalEl && likesFillEl) {
+        const goal = Math.max(1, Number(state.likesGoal) || 30000);
+        const curr = Math.max(0, Number(state.likesCurrent) || 0);
+        const pct = Math.min(100, Math.max(0, (curr / goal) * 100));
+        likesFillEl.style.width = `${pct}%`;
+        likesGoalEl.textContent = `${state.likesAction || '-1 WIN'} - ${curr.toLocaleString()} / ${goal.toLocaleString()} Likes`;
+      }
+
       const total = state.redPoints + state.bluePoints;
       let redPct = 50;
       if (total > 0) {
@@ -1076,15 +1281,15 @@
       if (diff > 0) {
         duelSubtext.className = 'duel-subtext subtext-contra';
         duelSubtext.style.color = '';
-        duelSubtext.textContent = `⏸ FRENAR / REINICIO · ROSA +${diff.toLocaleString()}`;
+        duelSubtext.textContent = isTrans ? `${diff.toLocaleString()} EN CONTRA!!` : `⏸ FRENAR / REINICIO · ROSA +${diff.toLocaleString()}`;
       } else if (diff < 0) {
         duelSubtext.className = 'duel-subtext subtext-favor';
         duelSubtext.style.color = '';
-        duelSubtext.textContent = `🚲 AVANZAR · GG +${Math.abs(diff).toLocaleString()}`;
+        duelSubtext.textContent = isTrans ? `${Math.abs(diff).toLocaleString()} A FAVOR!!` : `🚲 AVANZAR · GG +${Math.abs(diff).toLocaleString()}`;
       } else {
         duelSubtext.className = 'duel-subtext';
         duelSubtext.style.color = '#ffe600';
-        duelSubtext.textContent = '⚖️ EMPATE · MANTENER';
+        duelSubtext.textContent = isTrans ? '3 A FAVOR!!' : '⚖️ EMPATE · MANTENER';
       }
     }
 
@@ -1182,6 +1387,10 @@
       state.bluePoints = gvg.blue_points ?? state.bluePoints;
       state.goalAction = gvg.goal_action ?? state.goalAction;
       state.showSideColumns = gvg.show_side_columns !== false;
+      if (gvg.likes_goal !== undefined) state.likesGoal = Number(gvg.likes_goal);
+      if (gvg.likes_current !== undefined) state.likesCurrent = Number(gvg.likes_current);
+      if (gvg.likes_action) state.likesAction = gvg.likes_action;
+      if (gvg.likes_action_value !== undefined) state.likesActionValue = Number(gvg.likes_action_value);
 
       let themeChanged = false;
       if (!urlParams.get('theme') && gvg.theme_style && gvg.theme_style !== state.themeStyle) {
