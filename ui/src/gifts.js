@@ -13,6 +13,40 @@ export function normalizarTextoGift(str) {
     .trim();
 }
 
+export function normGift(valor) {
+  if (valor == null) return '';
+  return String(valor)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]/gu, '');
+}
+
+export const ID_QUIEREME = 7934;
+export const ID_ROSA = 5655;
+export const IDS_GG = [6064, 6093, 7214];
+
+export function esQuiereme(gift, rawId = null) {
+  const num = Number(rawId || gift?.giftId || gift?.tiktokGiftId || (typeof gift === 'number' ? gift : 0));
+  if (num === ID_QUIEREME) return true;
+  const s = normGift(typeof gift === 'string' ? gift : (gift?.name || gift?.giftName || ''));
+  return s === 'heartme' || s === 'quiereme' || s === 'loveyou' || s === 'tequieromucho';
+}
+
+export function esRosa(gift, rawId = null) {
+  const num = Number(rawId || gift?.giftId || gift?.tiktokGiftId || (typeof gift === 'number' ? gift : 0));
+  if (num === ID_ROSA) return true;
+  const s = normGift(typeof gift === 'string' ? gift : (gift?.name || gift?.giftName || ''));
+  return s === 'rose' || s === 'rosa' || s === 'redrose';
+}
+
+export function esGG(gift, rawId = null) {
+  const num = Number(rawId || gift?.giftId || gift?.tiktokGiftId || (typeof gift === 'number' ? gift : 0));
+  if (IDS_GG.includes(num)) return true;
+  const s = normGift(typeof gift === 'string' ? gift : (gift?.name || gift?.giftName || ''));
+  return s === 'gg' || s === 'gg2025' || s === 'goodgame';
+}
+
 const GIFT_CANONICAL_GROUPS = [
   {
     key: 'rose',
@@ -173,7 +207,126 @@ const GIFT_CANONICAL_GROUPS = [
     tiktokGiftIds: [5995],
     defaultCoins: 1088,
     defaultFile: 'fireworks-1088-coins.webp',
-    names: ['fireworks', 'fuegos artificiales']
+    names: ['fireworks', 'fuegos artificiales', 'gift#5995', '5995']
+  },
+  {
+    key: 'corgi',
+    tiktokGiftIds: [6289],
+    defaultCoins: 299,
+    defaultFile: 'corgi-299-coins.webp',
+    names: ['corgi', 'perrito', 'perro', 'puppy', 'gift#6289', '6289']
+  },
+  {
+    key: 'perfume',
+    tiktokGiftIds: [5437],
+    defaultCoins: 15,
+    defaultFile: 'perfume-15-coins.webp',
+    names: ['perfume', 'colonia', 'aroma', 'gift#5437', '5437']
+  },
+  {
+    key: 'boxing_gloves',
+    tiktokGiftIds: [5882],
+    defaultCoins: 299,
+    defaultFile: 'boxing-gloves-299-coins.webp',
+    names: ['boxing gloves', 'guantes de box', 'guantes de boxeo', 'boxeo', 'gift#5882', '5882']
+  },
+  {
+    key: 'panda_climb',
+    tiktokGiftIds: [6360],
+    defaultCoins: 199,
+    defaultFile: 'panda-climb-199-coins.webp',
+    names: ['panda climb', 'panda', 'osito panda', 'gift#6360', '6360']
+  },
+  {
+    key: 'sun_crown',
+    tiktokGiftIds: [6800],
+    defaultCoins: 199,
+    defaultFile: 'sun-crown-199-coins.webp',
+    names: ['sun crown', 'corona de sol', 'corona solar', 'gift#6800', '6800']
+  },
+  {
+    key: 'maracas',
+    tiktokGiftIds: [8892],
+    defaultCoins: 1,
+    defaultFile: 'maracas-1-coins.webp',
+    names: ['maracas', 'beach maracas', 'gift#8892', '8892']
+  },
+  {
+    key: 'tiktok',
+    tiktokGiftIds: [5269],
+    defaultCoins: 1,
+    defaultFile: 'tiktok-1-coins.webp',
+    names: ['tiktok', 'logo tiktok', 'gift#5269', '5269']
+  },
+  {
+    key: 'cute_cat',
+    tiktokGiftIds: [5333],
+    defaultCoins: 5,
+    defaultFile: 'cute-cat-5-coins.webp',
+    names: ['cute cat', 'gato tierno', 'gatito', 'gato', 'gift#5333', '5333']
+  },
+  {
+    key: 'fireball',
+    tiktokGiftIds: [5650],
+    defaultCoins: 5,
+    defaultFile: 'fireball-5-coins.webp',
+    names: ['fireball', 'bola de fuego', 'gift#5650', '5650']
+  },
+  {
+    key: 'balloons',
+    tiktokGiftIds: [6801],
+    defaultCoins: 10,
+    defaultFile: 'balloons-10-coins.webp',
+    names: ['balloons', 'globos', 'globos de fiesta', 'gift#6801', '6801']
+  },
+  {
+    key: 'cruiser',
+    tiktokGiftIds: [7499],
+    defaultCoins: 7499,
+    defaultFile: 'cruiser-7499-coins.webp',
+    names: ['cruiser', 'crucero', 'barco', 'yate', 'gift#7499', '7499']
+  },
+  {
+    key: 'bear_with_rose',
+    tiktokGiftIds: [5663],
+    defaultCoins: 400,
+    defaultFile: 'bear-with-rose-400-coins.webp',
+    names: ['bear with rose', 'oso con rosa', 'oso', 'teddy', 'gift#5663', '5663']
+  },
+  {
+    key: 'private_jet',
+    tiktokGiftIds: [4888],
+    defaultCoins: 4888,
+    defaultFile: 'private-jet-4888-coins.webp',
+    names: ['private jet', 'jet privado', 'avion', 'gift#4888', '4888']
+  },
+  {
+    key: 'sunset_speedway',
+    tiktokGiftIds: [10000],
+    defaultCoins: 10000,
+    defaultFile: 'sunset-speedway-10000-coins.webp',
+    names: ['sunset speedway', 'carro deportivo', 'auto deportivo', 'coche de carreras', 'gift#10000', '10000']
+  },
+  {
+    key: 'tiktok_universe',
+    tiktokGiftIds: [34999, 44999],
+    defaultCoins: 34999,
+    defaultFile: 'tiktok-universe-34999-coins.webp',
+    names: ['tiktok universe', 'universo tiktok', 'universo', 'gift#34999', '34999']
+  },
+  {
+    key: 'phoenix',
+    tiktokGiftIds: [25999],
+    defaultCoins: 25999,
+    defaultFile: 'phoenix-25999-coins.webp',
+    names: ['phoenix', 'fenix', 'fenix renaciente', 'gift#25999', '25999']
+  },
+  {
+    key: 'carousel',
+    tiktokGiftIds: [1999, 8913],
+    defaultCoins: 1999,
+    defaultFile: 'carousel-1999-coins.webp',
+    names: ['carousel', 'carrusel', 'carrusel magico', 'gift#1999', '1999']
   }
 ];
 
@@ -382,6 +535,189 @@ const POPULAR_GIFT_PRIORITY = new Map([
   ['tiktok universe', 72]
 ]);
 
+export const TIKTOK_OFFICIAL_GIFT_IDS = {
+  rose: 5655,
+  rosa: 5655,
+  gg: 6064,
+  'heart me': 7934,
+  quiereme: 7934,
+  heart: 5585,
+  'finger heart': 5487,
+  doughnut: 5879,
+  dona: 5879,
+  'ice cream cone': 5827,
+  helado: 5827,
+  "you're awesome": 15232,
+  'love you so much': 15233,
+  capybara: 6562,
+  'paper crane': 5659,
+  grulla: 5659,
+  'little crown': 5658,
+  coronita: 5658,
+  cap: 5660,
+  gorra: 5660,
+  'hat and mustache': 5890,
+  'game controller': 6070,
+  mando: 6070,
+  'hand hearts': 5586,
+  'money gun': 7168,
+  galaxy: 5994,
+  galaxia: 5994,
+  'whale diving': 6267,
+  ballena: 6267,
+  lion: 5509,
+  leon: 5509,
+  falcon: 6427,
+  halcon: 6427,
+  'treasure chest': 6150,
+  cofre: 6150,
+  fireworks: 5995,
+  corgi: 6289,
+  perfume: 5437,
+  'boxing gloves': 5882,
+  'panda climb': 6360,
+  'sun crown': 6800,
+  maracas: 8892,
+  tiktok: 5269,
+  'cute cat': 5333,
+  fireball: 5650,
+  balloons: 6801,
+  'sunset speedway': 10000,
+  'tiktok universe': 34999,
+  phoenix: 25999,
+  carousel: 1999,
+  cruiser: 7499,
+  swan: 6364,
+  'rising dragon': 999,
+  'private jet': 4888,
+  'bear with rose': 5663,
+  coffee: 5338,
+  mic: 5334,
+  lollipop: 5335,
+  cheers: 5336,
+  chocolate: 5337,
+  tea: 5339,
+  rainbow: 5651,
+  'lightning bolt': 5652,
+  star: 5656,
+  sunglasses: 5657,
+  trophy: 5661,
+  'diamond ring': 5662,
+  'blow a kiss': 5663,
+  'power hug': 5664,
+  pizza: 5665,
+  watermelon: 5666,
+  strawberry: 5667,
+  dumbbell: 5668,
+  'magic wand': 5669,
+  candy: 5670,
+  'cake slice': 5671,
+  cherry: 5672,
+  'orange juice': 5673,
+  football: 5675,
+  basketball: 5677,
+  'glow stick': 5681
+};
+
+export const GIFT_ES_NAMES = {
+  'Rose': 'Rosa',
+  'GG': 'GG (Buen Juego)',
+  'Heart Me': 'Quiéreme (Club de Fans)',
+  'Heart': 'Corazón',
+  'Finger Heart': 'Corazón con Dedos',
+  'Doughnut': 'Dona / Rosquilla',
+  'Ice Cream Cone': 'Cono de Helado',
+  "You're Awesome": '¡Eres Increíble!',
+  "You're awesome": '¡Eres Increíble!',
+  'Love You So Much': 'Te Quiero Mucho',
+  'Capybara': 'Capibara / Carpincho',
+  'Paper Crane': 'Grulla de Papel',
+  'Little Crown': 'Coronita',
+  'Cap': 'Gorra',
+  'Hat and Mustache': 'Sombrero y Bigote',
+  'Game Controller': 'Mando de Juego',
+  'Hand Hearts': 'Manos Corazón',
+  'Money Gun': 'Pistola de Billetes',
+  'Galaxy': 'Galaxia',
+  'Whale Diving': 'Ballena Buceando',
+  'Lion': 'León',
+  'Falcon': 'Halcón',
+  'Treasure Chest': 'Cofre del Tesoro',
+  'Fireworks': 'Fuegos Artificiales',
+  'Corgi': 'Perrito Corgi',
+  'Perfume': 'Perfume',
+  'Boxing Gloves': 'Guantes de Box',
+  'Panda Climb': 'Panda Trepador',
+  'Sun Crown': 'Corona Solar',
+  'Maracas': 'Maracas',
+  'TikTok': 'Logo TikTok',
+  'Cute Cat': 'Gatito Tierno',
+  'Fireball': 'Bola de Fuego',
+  'Balloons': 'Globos de Fiesta',
+  'Sunset Speedway': 'Auto Deportivo',
+  'TikTok Universe': 'Universo TikTok',
+  'Phoenix': 'Fénix Renaciente',
+  'Carousel': 'Carrusel Mágico',
+  'Cruiser': 'Crucero Yate',
+  'Swan': 'Cisne Elegante',
+  'Rising Dragon': 'Dragón Dorado',
+  'Private Jet': 'Jet Privado',
+  'Bear with Rose': 'Oso con Rosa',
+  'Coffee': 'Café Caliente',
+  'Mic': 'Micrófono',
+  'Lollipop': 'Paleta Dulce',
+  'Cheers': 'Brindis de Cerveza',
+  'Chocolate': 'Chocolate',
+  'Tea': 'Té Caliente',
+  'Rainbow': 'Arcoíris Mágico',
+  'Lightning Bolt': 'Rayo Eléctrico',
+  'Star': 'Estrella Brillante',
+  'Sunglasses': 'Gafas de Sol',
+  'Trophy': 'Trofeo Campeón',
+  'Diamond Ring': 'Anillo de Diamante',
+  'Blow a Kiss': 'Beso Volador',
+  'Power Hug': 'Abrazo Fuerte',
+  'Pizza': 'Porción de Pizza',
+  'Watermelon': 'Sandía Fresca',
+  'Strawberry': 'Fresa',
+  'Dumbbell': 'Mancuerna / Pesa',
+  'Magic Wand': 'Varita Mágica',
+  'Candy': 'Caramelo Dulce',
+  'Cake Slice': 'Rebanada de Pastel',
+  'Cherry': 'Cereza',
+  'Orange Juice': 'Jugo de Naranja',
+  'Football': 'Balón de Fútbol',
+  'Basketball': 'Balón de Básquet',
+  'Glow Stick': 'Vara Luminosa',
+  'Tom The Tomato': 'Tomate Tom',
+  'Tortilla': 'Tortilla',
+  'Tulip': 'Tulipán',
+  'Umbrella': 'Paraguas',
+  'White Dove': 'Paloma Blanca',
+  'White Rose': 'Rosa Blanca',
+  'Gold Bar': 'Lingote de Oro',
+  'Magic Mirror': 'Espejo Mágico',
+  'Popcorn': 'Palomitas de Maíz',
+  'Castle': 'Castillo Encantado',
+  'Astronaut': 'Astronauta',
+  'Motorcycle': 'Motocicleta'
+};
+
+export function obtenerNombreEspanol(nombreEn) {
+  if (!nombreEn) return '';
+  if (GIFT_ES_NAMES[nombreEn]) return GIFT_ES_NAMES[nombreEn];
+  const n = normGift(nombreEn);
+  for (const [en, es] of Object.entries(GIFT_ES_NAMES)) {
+    if (normGift(en) === n) return es;
+  }
+  for (const [es, enList] of Object.entries(SPANISH_SEARCH_MAP)) {
+    if (enList.some(en => normGift(en) === n)) {
+      return es.charAt(0).toUpperCase() + es.slice(1);
+    }
+  }
+  return '';
+}
+
 const KNOWN_GIFT_IDS_BY_NAME = new Map();
 for (const grp of GIFT_CANONICAL_GROUPS) {
   for (const nm of grp.names) {
@@ -393,9 +729,13 @@ for (const item of CATALOGO_GIFTS) {
   if (item && item.archivo) {
     item.archivo = limpiarArchivoGift(item.archivo);
   }
+  const normKey = normalizarTextoGift(item?.nombre);
   if (item && !item.id) {
-    const knownId = KNOWN_GIFT_IDS_BY_NAME.get(normalizarTextoGift(item.nombre));
+    const knownId = KNOWN_GIFT_IDS_BY_NAME.get(normKey) || TIKTOK_OFFICIAL_GIFT_IDS[normKey];
     if (knownId) item.id = knownId;
+  }
+  if (item) {
+    item.nombreEs = obtenerNombreEspanol(item.nombre);
   }
 }
 
@@ -433,36 +773,58 @@ export function encontrarGrupoCanonicoGift(nameOrId, giftId = null) {
 export function giftsEquivalentes(targetName, incomingName, incomingId = null, targetId = null) {
   const numTargetId = Number(targetId);
   const numIncomingId = Number(incomingId);
+
+  // 1. Prioridad Máxima: Comparación por ID numérico invariable de TikTok
   if (Number.isFinite(numTargetId) && numTargetId > 0 && Number.isFinite(numIncomingId) && numIncomingId > 0) {
     if (numTargetId === numIncomingId) return true;
-    const grpA = encontrarGrupoCanonicoGift('', numTargetId);
-    const grpB = encontrarGrupoCanonicoGift('', numIncomingId);
-    if (grpA && grpB && grpA.key === grpB.key) return true;
+    const isGgTarget = IDS_GG.includes(numTargetId);
+    const isGgIncoming = IDS_GG.includes(numIncomingId);
+    if (isGgTarget && isGgIncoming) return true;
   }
 
-  const tNorm = normalizarTextoGift(targetName);
-  const iNorm = normalizarTextoGift(incomingName);
+  // 2. Detección especial de Quiéreme / Heart Me (ID 7934)
+  if (esQuiereme(targetName, targetId) || esQuiereme(incomingName, incomingId)) {
+    return esQuiereme(targetName, targetId) && esQuiereme(incomingName, incomingId);
+  }
 
-  if (tNorm && iNorm) {
-    if (tNorm === iNorm) return true;
-    if (tNorm.length >= 3 && iNorm.length >= 3 && (tNorm.includes(iNorm) || iNorm.includes(tNorm))) {
+  // 3. Detección especial de Rosa (ID 5655)
+  if (esRosa(targetName, targetId) || esRosa(incomingName, incomingId)) {
+    return esRosa(targetName, targetId) && esRosa(incomingName, incomingId);
+  }
+
+  // 4. Detección especial de GG (IDs 6064, 6093, 7214)
+  if (esGG(targetName, targetId) || esGG(incomingName, incomingId)) {
+    return esGG(targetName, targetId) && esGG(incomingName, incomingId);
+  }
+
+  // 5. Comparación con algoritmo normGift (elimina tildes, signos, diacríticos y espacios)
+  const normT = normGift(targetName);
+  const normI = normGift(incomingName);
+  if (normT && normI) {
+    if (normT === normI) return true;
+    if (normT.length >= 3 && normI.length >= 3 && (normT.includes(normI) || normI.includes(normT))) {
       return true;
     }
   }
 
+  // 6. Comparación de grupos canónicos
   const targetGroup = encontrarGrupoCanonicoGift(targetName, targetId);
   const incomingGroup = encontrarGrupoCanonicoGift(incomingName, incomingId);
   if (targetGroup && incomingGroup && targetGroup.key === incomingGroup.key) {
     return true;
   }
 
+  // 7. Diccionario de sinónimos bilingüe ES <-> EN
+  const tNorm = normalizarTextoGift(targetName);
+  const iNorm = normalizarTextoGift(incomingName);
+
   if (tNorm && SPANISH_SEARCH_MAP[tNorm] && iNorm) {
-    if (SPANISH_SEARCH_MAP[tNorm].some(en => normalizarTextoGift(en) === iNorm)) {
+    if (SPANISH_SEARCH_MAP[tNorm].some(en => normalizarTextoGift(en) === iNorm || normGift(en) === normI)) {
       return true;
     }
   }
   if (iNorm && SPANISH_SEARCH_MAP[iNorm] && tNorm) {
-    if (SPANISH_SEARCH_MAP[iNorm].some(en => normalizarTextoGift(en) === tNorm)) {
+    if (SPANISH_SEARCH_MAP[iNorm].some(en => normalizarTextoGift(en) === tNorm || normGift(en) === normT)) {
       return true;
     }
   }
@@ -561,11 +923,15 @@ export function buscarGifts({ q = '', filtro = 'todos', pais = 'todos' } = {}) {
     const gFileNorm = normalizarTextoGift(g.archivo || '');
     const gCoinsStr = String(g.coins);
     const gIdStr = g.id ? String(g.id) : '';
+    const gEsNorm = normalizarTextoGift(g.nombreEs || '');
+    const normSearch = normGift(texto);
 
     if (gCoinsStr === texto || (gIdStr && gIdStr === texto)) return true;
+    if (normSearch && (normGift(g.nombre) === normSearch || normGift(g.nombreEs) === normSearch)) return true;
+    if (gEsNorm && gEsNorm.includes(texto)) return true;
 
     for (const term of termsArr) {
-      if (gNorm.includes(term) || gFileNorm.includes(term)) return true;
+      if (gNorm.includes(term) || gFileNorm.includes(term) || (gEsNorm && gEsNorm.includes(term))) return true;
     }
     return false;
   });
@@ -575,12 +941,12 @@ export function buscarGifts({ q = '', filtro = 'todos', pais = 'todos' } = {}) {
     const bNorm = normalizarTextoGift(b.nombre);
 
     if (texto) {
-      const aExact = aNorm === texto || termsArr.includes(aNorm) ? 1 : 0;
-      const bExact = bNorm === texto || termsArr.includes(bNorm) ? 1 : 0;
+      const aExact = aNorm === texto || termsArr.includes(aNorm) || (a.nombreEs && normalizarTextoGift(a.nombreEs) === texto) ? 1 : 0;
+      const bExact = bNorm === texto || termsArr.includes(bNorm) || (b.nombreEs && normalizarTextoGift(b.nombreEs) === texto) ? 1 : 0;
       if (aExact !== bExact) return bExact - aExact;
 
-      const aStarts = termsArr.some(t => aNorm.startsWith(t)) ? 1 : 0;
-      const bStarts = termsArr.some(t => bNorm.startsWith(t)) ? 1 : 0;
+      const aStarts = termsArr.some(t => aNorm.startsWith(t) || (a.nombreEs && normalizarTextoGift(a.nombreEs).startsWith(t))) ? 1 : 0;
+      const bStarts = termsArr.some(t => bNorm.startsWith(t) || (b.nombreEs && normalizarTextoGift(b.nombreEs).startsWith(t))) ? 1 : 0;
       if (aStarts !== bStarts) return bStarts - aStarts;
     }
 

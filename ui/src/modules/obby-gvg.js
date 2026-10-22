@@ -3,6 +3,7 @@ import { overlayEvents } from '../core/events.js';
 import { showToast } from '../core/toast.js';
 import { enhanceObbyWorkspace } from './obby-workspace.js';
 import { copyLink } from '../core/shell.js';
+import { obtenerNombreEspanol } from '../gifts.js';
 export function initObbyGvg({ app, soundManager, giftUrl, openGiftModalForRobloxSlot, openS2EAudioModal }) {
 const robloxLeftList = document.getElementById('roblox-left-slots-list');
 const robloxRightList = document.getElementById('roblox-right-slots-list');
@@ -67,12 +68,15 @@ function renderRobloxEditor() {
   setSlider('rbx-slider-duel-scale', 'rbx-val-duel-scale', cfg.duel_scale ?? 100, '%');
   updateLocalSharpnessFilter(cfg.sharpness ?? 140);
 
-  const renderSlotRow = (slot, side, idx = 0, total = 1) => `
+  const renderSlotRow = (slot, side, idx = 0, total = 1) => {
+    const esSub = obtenerNombreEspanol(slot.gift_name);
+    return `
     <div class="roblox-slot-row" data-slot-id="${slot.id}" data-side="${side}">
       <div style="display: flex; align-items: center; gap: 10px; min-width: 145px;">
         <img src="${giftUrl(slot.icon_file, slot.gift_name, slot.coins)}" class="roblox-slot-icon gift-hd-img" onerror="this.src='./gifts/rose-1-coins.webp'" />
         <div>
-          <div style="font-weight: 800; font-size: 13px; color: #fff;">${slot.gift_name}</div>
+          <div style="font-weight: 800; font-size: 13px; color: #fff; line-height: 1.2;">${slot.gift_name}</div>
+          ${esSub ? `<div style="font-size: 10px; color: #38bdf8; font-weight: 600;">🇪🇸 ${esSub}</div>` : ''}
           <div style="font-family: var(--font-mono); font-size: 11px; color: var(--color-gold);">${slot.coins} 💎</div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { app } from './core/app-controller.js';
 import { soundManager, renderWaveformSvg } from './sounds.js';
 import { S2E_PUBLIC_AUDIOS, S2E_ALERT_VIDEOS, S2E_MC_ACTION_ICONS } from './s2e-catalog.js';
-import { CATALOGO_GIFTS, archivoDeGift, buscarGifts, coinsDeGift, giftsEquivalentes } from './gifts.js';
+import { CATALOGO_GIFTS, archivoDeGift, buscarGifts, coinsDeGift, giftsEquivalentes, tiktokGiftIdDeNombre } from './gifts.js';
 import { ttsEngine } from './tts.js';
 
 let currentAudioModalCallback = null;
@@ -1347,6 +1347,7 @@ function injectMcActionEditorModal() {
       const foundList = buscarGifts({ q: trigGiftOrVal });
       const foundGift = CATALOGO_GIFTS.find(g => g.nombre.toLowerCase() === trigGiftOrVal.toLowerCase()) || foundList[0];
       editingPresetEventRef.trigger.giftName = foundGift ? foundGift.nombre : trigGiftOrVal;
+      editingPresetEventRef.trigger.giftId = foundGift?.id || tiktokGiftIdDeNombre(editingPresetEventRef.trigger.giftName, 0);
       if (modal.dataset.selectedGiftIcon) {
         editingPresetEventRef.trigger.iconUrl = resolveGiftImgPath(modal.dataset.selectedGiftIcon);
       } else {
@@ -1850,9 +1851,11 @@ function syncCurrentAlertEditorFields() {
   if (!trig) return;
   trig.name = document.getElementById('al-edit-name')?.value || trig.name;
   trig.triggerType = document.getElementById('al-edit-trig-type')?.value || 'SelectedGift';
-  trig.giftName = document.getElementById('al-edit-gift-name')?.value || 'Rose';
-  const foundGift = CATALOGO_GIFTS.find(g => g.nombre.toLowerCase() === trig.giftName.toLowerCase());
-  if (foundGift) trig.giftCoins = foundGift.coins;
+  const rawInput = document.getElementById('al-edit-gift-name')?.value || 'Rose';
+  const foundGift = CATALOGO_GIFTS.find(g => g.nombre.toLowerCase() === rawInput.toLowerCase() || giftsEquivalentes(g.nombre, rawInput));
+  trig.giftName = foundGift ? foundGift.nombre : rawInput;
+  trig.giftCoins = foundGift ? foundGift.coins : (coinsDeGift(rawInput) || 1);
+  trig.giftId = foundGift?.id || tiktokGiftIdDeNombre(trig.giftName, 0);
 
   trig.videoUrl = document.getElementById('al-edit-video-select')?.value || '';
   trig.chromaEnabled = Boolean(document.getElementById('al-edit-chroma-enabled')?.checked);

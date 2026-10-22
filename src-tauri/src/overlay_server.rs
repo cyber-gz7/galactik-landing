@@ -36,6 +36,8 @@ pub struct RobloxRuleItem {
     pub gift_name: String,
     pub icon_file: String,
     pub coins: u32,
+    #[serde(default, rename = "tiktokGiftId", alias = "tiktok_gift_id")]
+    pub tiktok_gift_id: u64,
     pub label: String,
     pub action_type: String, // "WIN" | "PTS"
     pub value: i32,
@@ -185,6 +187,7 @@ impl Default for GiftVsGiftState {
                     gift_name: "Doughnut".into(),
                     icon_file: "doughnut-30-coins.webp".into(),
                     coins: 30,
+                    tiktok_gift_id: 5879,
                     label: "+30 PTS".into(),
                     action_type: "PTS".into(),
                     value: 30,
@@ -199,6 +202,7 @@ impl Default for GiftVsGiftState {
                     gift_name: "Game Controller".into(),
                     icon_file: "game-controller-100-coins.webp".into(),
                     coins: 100,
+                    tiktok_gift_id: 6070,
                     label: "+100 PTS".into(),
                     action_type: "PTS".into(),
                     value: 100,
@@ -213,6 +217,7 @@ impl Default for GiftVsGiftState {
                     gift_name: "Corgi".into(),
                     icon_file: "corgi-299-coins.webp".into(),
                     coins: 299,
+                    tiktok_gift_id: 6289,
                     label: "+299 PTS".into(),
                     action_type: "PTS".into(),
                     value: 299,
@@ -227,6 +232,7 @@ impl Default for GiftVsGiftState {
                     gift_name: "Bear with Rose".into(),
                     icon_file: "bear-with-rose-400-coins.webp".into(),
                     coins: 400,
+                    tiktok_gift_id: 5663,
                     label: "-1 WIN".into(),
                     action_type: "WIN".into(),
                     value: -1,
@@ -241,6 +247,7 @@ impl Default for GiftVsGiftState {
                     gift_name: "Private Jet".into(),
                     icon_file: "private-jet-4888-coins.webp".into(),
                     coins: 4888,
+                    tiktok_gift_id: 4888,
                     label: "-15 WINS".into(),
                     action_type: "WIN".into(),
                     value: -15,
@@ -255,6 +262,7 @@ impl Default for GiftVsGiftState {
                     gift_name: "Lion".into(),
                     icon_file: "lion-29999-coins.webp".into(),
                     coins: 29999,
+                    tiktok_gift_id: 5509,
                     label: "-15 WINS".into(),
                     action_type: "WIN".into(),
                     value: -15,
@@ -271,6 +279,7 @@ impl Default for GiftVsGiftState {
                     gift_name: "Heart Me".into(),
                     icon_file: "heart-me-1-coins.webp".into(),
                     coins: 1,
+                    tiktok_gift_id: 7934,
                     label: "+10 PTS".into(),
                     action_type: "PTS".into(),
                     value: 10,
@@ -285,6 +294,7 @@ impl Default for GiftVsGiftState {
                     gift_name: "Capybara".into(),
                     icon_file: "capybara-30-coins.webp".into(),
                     coins: 30,
+                    tiktok_gift_id: 6562,
                     label: "+30 PTS".into(),
                     action_type: "PTS".into(),
                     value: 30,
@@ -299,6 +309,7 @@ impl Default for GiftVsGiftState {
                     gift_name: "Treasure Chest".into(),
                     icon_file: "treasure-chest-1500-coins.webp".into(),
                     coins: 1500,
+                    tiktok_gift_id: 6150,
                     label: "+5 WINS".into(),
                     action_type: "WIN".into(),
                     value: 5,
@@ -313,6 +324,7 @@ impl Default for GiftVsGiftState {
                     gift_name: "Money Gun".into(),
                     icon_file: "money-gun-500-coins.webp".into(),
                     coins: 500,
+                    tiktok_gift_id: 7168,
                     label: "+1 WIN".into(),
                     action_type: "WIN".into(),
                     value: 1,
@@ -327,6 +339,7 @@ impl Default for GiftVsGiftState {
                     gift_name: "Whale Diving".into(),
                     icon_file: "whale-diving-2150-coins.webp".into(),
                     coins: 2150,
+                    tiktok_gift_id: 6267,
                     label: "+5 WINS".into(),
                     action_type: "WIN".into(),
                     value: 5,
@@ -341,6 +354,7 @@ impl Default for GiftVsGiftState {
                     gift_name: "Falcon".into(),
                     icon_file: "falcon-10999-coins.webp".into(),
                     coins: 10999,
+                    tiktok_gift_id: 6427,
                     label: "+20 WINS".into(),
                     action_type: "WIN".into(),
                     value: 20,
@@ -883,81 +897,177 @@ fn is_gg_gift(name: &str, gift_id: u64, coins: i32) -> bool {
         || n.split(|c: char| !c.is_alphanumeric()).any(|w| w == "gg")
 }
 
+fn normalize_gift_str(s: &str) -> String {
+    let mut out = String::with_capacity(s.len());
+    for c in s.to_ascii_lowercase().chars() {
+        match c {
+            'á' | 'à' | 'ä' | 'â' => out.push('a'),
+            'é' | 'è' | 'ë' | 'ê' => out.push('e'),
+            'í' | 'ì' | 'ï' | 'î' => out.push('i'),
+            'ó' | 'ò' | 'ö' | 'ô' => out.push('o'),
+            'ú' | 'ù' | 'ü' | 'û' => out.push('u'),
+            'ñ' => out.push('n'),
+            _ if c.is_alphanumeric() => out.push(c),
+            _ => out.push(' '),
+        }
+    }
+    out.split_whitespace().collect::<Vec<_>>().join(" ")
+}
+
+fn canonical_gift_id_from_name(name: &str) -> u64 {
+    let n = normalize_gift_str(name);
+    match n.as_str() {
+        "rose" | "rosa" | "rosa oscura" | "rosa de luz" => 5655,
+        "gg" | "gg bendicion" | "gg 2025" | "good game" => 6064,
+        "heart me" | "quiereme" | "quiere me" | "love you" | "corazon de equipo" => 7934,
+        "heart" | "corazon" => 5585,
+        "finger heart" | "corazon con dedos" | "dedos corazon" | "mini corazon" => 5487,
+        "doughnut" | "donut" | "dona" | "rosquilla" => 5879,
+        "ice cream cone" | "ice cream" | "helado" | "cono de helado" | "cono" => 5827,
+        "youre awesome" | "you re awesome" | "eres increible" => 15232,
+        "love you so much" | "te quiero mucho" | "te amo mucho" => 15233,
+        "capybara" | "capibara" | "carpincho" => 6562,
+        "paper crane" | "grulla de papel" | "grulla" => 5659,
+        "little crown" | "coronita" | "corona pequena" => 5658,
+        "cap" | "gorra" | "cachucha" => 5660,
+        "hat and mustache" | "sombrero y bigote" | "bigote" => 5890,
+        "game controller" | "mando" | "control" | "control de juego" | "gamepad" => 6070,
+        "hand hearts" | "manos corazon" | "corazon con manos" => 5586,
+        "money gun" | "pistola de billetes" | "pistola de dinero" | "lluvia de dinero" | "pistola" => 7168,
+        "galaxy" | "galaxia" => 5994,
+        "whale diving" | "whale" | "ballena" | "ballena buceando" => 6267,
+        "lion" | "leon" => 5509,
+        "falcon" | "halcon" => 6427,
+        "treasure chest" | "cofre del tesoro" | "cofre" => 6150,
+        "fireworks" | "fuegos artificiales" | "fuegos" => 5995,
+        "corgi" | "perrito" | "perro" | "puppy" => 6289,
+        "perfume" | "aroma" => 5437,
+        "boxing gloves" | "guantes de box" | "guantes de boxeo" | "boxeo" => 5882,
+        "panda climb" | "panda" | "osito panda" => 6360,
+        "sun crown" | "corona de sol" | "corona solar" => 6800,
+        "maracas" => 8892,
+        "tiktok" => 5269,
+        "cute cat" | "gato tierno" | "gatito" | "gato" => 5333,
+        "fireball" | "bola de fuego" => 5650,
+        "balloons" | "globos" => 6801,
+        "cruiser" | "crucero" | "barco" | "yate" => 7499,
+        "bear with rose" | "oso con rosa" => 5663,
+        "private jet" | "jet privado" | "avion" => 4888,
+        "sunset speedway" | "carro deportivo" | "auto deportivo" | "coche de carreras" => 10000,
+        _ => 0,
+    }
+}
+
 fn matches_gift_rule(
     rule_gift: &str,
     rule_coins: u32,
+    rule_id: u64,
     incoming_name: &str,
     incoming_id: u64,
     incoming_coins: i32,
 ) -> bool {
-    let r = rule_gift.trim().to_ascii_lowercase();
-    let i = incoming_name.trim().to_ascii_lowercase();
-    if r.is_empty() || i.is_empty() {
-        return false;
+    let clean_r = rule_gift.split('(').next().unwrap_or("").trim();
+    let clean_i = incoming_name.split('(').next().unwrap_or("").trim();
+
+    // 1. Prioridad Máxima: Comparación por ID numérico invariable de TikTok
+    let effective_rule_id = if rule_id > 0 { rule_id } else { canonical_gift_id_from_name(clean_r) };
+    let effective_incoming_id = if incoming_id > 0 { incoming_id } else { canonical_gift_id_from_name(clean_i) };
+
+    if effective_rule_id > 0 && effective_incoming_id > 0 {
+        if effective_rule_id == effective_incoming_id {
+            return true;
+        }
+        let is_gg_rule = effective_rule_id == 6064 || effective_rule_id == 6093 || effective_rule_id == 7214;
+        let is_gg_incoming = effective_incoming_id == 6064 || effective_incoming_id == 6093 || effective_incoming_id == 7214;
+        if is_gg_rule && is_gg_incoming {
+            return true;
+        }
     }
 
-    // 1. Rosa básica (1 moneda) vs regalos compuestos (ej: Bear with Rose de 400 coins):
-    if (i == "rose" || i == "rosa" || incoming_id == 5655) && incoming_coins <= 1 {
-        return (r == "rose" || r == "rosa") && rule_coins <= 1;
-    }
-    if (r == "rose" || r == "rosa") && rule_coins <= 1 {
-        return (i == "rose" || i == "rosa" || incoming_id == 5655) && incoming_coins <= 1;
-    }
-
-    // 2. GG básico (1 moneda) vs regalos compuestos:
-    if (i == "gg" || incoming_id == 6064 || incoming_id == 6093 || incoming_id == 7214)
-        && incoming_coins <= 1
-    {
-        return r == "gg" && rule_coins <= 1;
-    }
-    if r == "gg" && rule_coins <= 1 {
-        return (i == "gg" || incoming_id == 6064 || incoming_id == 6093 || incoming_id == 7214)
-            && incoming_coins <= 1;
+    // 2. Rosa básica (1 moneda) vs regalos compuestos:
+    let r_is_rose = is_rose_gift(clean_r, effective_rule_id, rule_coins as i32);
+    let i_is_rose = is_rose_gift(clean_i, effective_incoming_id, incoming_coins);
+    if r_is_rose || i_is_rose {
+        return r_is_rose == i_is_rose && (rule_coins <= 1 || incoming_coins <= 1);
     }
 
-    // 3. Super GG (100 monedas):
-    let r_is_super_gg = r.contains("super gg") || r.contains("supergg") || r.contains("súper gg");
+    // 3. GG básico (1 moneda) vs regalos compuestos:
+    let r_is_gg = is_gg_gift(clean_r, effective_rule_id, rule_coins as i32);
+    let i_is_gg = is_gg_gift(clean_i, effective_incoming_id, incoming_coins);
+    if r_is_gg || i_is_gg {
+        return r_is_gg == i_is_gg && (rule_coins <= 1 || incoming_coins <= 1);
+    }
+
+    // 4. Super GG (100 monedas):
+    let r_is_super_gg = clean_r.to_ascii_lowercase().contains("super gg") || clean_r.to_ascii_lowercase().contains("supergg");
     let i_is_super_gg = is_super_gg_gift(incoming_name, incoming_coins);
-    if r_is_super_gg {
-        return i_is_super_gg;
-    }
-    if i_is_super_gg {
-        return false;
+    if r_is_super_gg || i_is_super_gg {
+        return r_is_super_gg == i_is_super_gg;
     }
 
-    // 4. Rosa Gigante (10 monedas):
-    let r_is_giant_rose =
-        r.contains("gigante") || r.contains("giant") || (r.contains("rosa") && rule_coins == 10);
+    // 5. Rosa Gigante (10 monedas):
+    let r_is_giant_rose = clean_r.to_ascii_lowercase().contains("gigante") || clean_r.to_ascii_lowercase().contains("giant") || (clean_r.to_ascii_lowercase().contains("rosa") && rule_coins == 10);
     let i_is_giant_rose = is_giant_rose_gift(incoming_name, incoming_coins);
-    if r_is_giant_rose {
-        return i_is_giant_rose;
-    }
-    if i_is_giant_rose {
-        return false;
+    if r_is_giant_rose || i_is_giant_rose {
+        return r_is_giant_rose == i_is_giant_rose;
     }
 
-    let clean_r = r.split('(').next().unwrap_or("").trim();
-    let clean_i = i.split('(').next().unwrap_or("").trim();
-
-    if clean_r == clean_i || r == i {
-        return true;
+    // 6. Normalización estricta de texto bilingüe (ES <-> EN)
+    let norm_r = normalize_gift_str(clean_r);
+    let norm_i = normalize_gift_str(clean_i);
+    if !norm_r.is_empty() && !norm_i.is_empty() {
+        if norm_r == norm_i {
+            return true;
+        }
+        let min_len = norm_r.len().min(norm_i.len());
+        if min_len >= 3 && (norm_r.contains(&norm_i) || norm_i.contains(&norm_r)) {
+            return true;
+        }
     }
 
-    // Traducciones y alias frecuentes de regalos de victorias y duelos
-    let is_same_alias = match clean_r {
+    // 7. Traducciones y alias bilingües frecuentes
+    let is_same_alias = match norm_r.as_str() {
         "cruiser" | "crucero" | "barco" | "yate" => {
-            clean_i == "cruiser" || clean_i == "crucero" || clean_i == "barco" || clean_i == "yate"
+            matches!(norm_i.as_str(), "cruiser" | "crucero" | "barco" | "yate")
         }
-        "coral" => clean_i == "coral",
-        "falcon" | "halcon" | "halcón" | "aguila" => {
-            clean_i == "falcon" || clean_i == "halcon" || clean_i == "halcón" || clean_i == "aguila"
+        "falcon" | "halcon" | "aguila" => {
+            matches!(norm_i.as_str(), "falcon" | "halcon" | "aguila")
         }
-        "lion" | "leon" | "león" => clean_i == "lion" || clean_i == "leon" || clean_i == "león",
-        "bear with rose" | "oso con rosa" | "bear" | "oso" => {
-            clean_i.contains("bear") || clean_i.contains("oso")
+        "lion" | "leon" => {
+            matches!(norm_i.as_str(), "lion" | "leon")
+        }
+        "doughnut" | "donut" | "dona" | "rosquilla" => {
+            matches!(norm_i.as_str(), "doughnut" | "donut" | "dona" | "rosquilla")
+        }
+        "heart me" | "quiereme" | "quiere me" | "love you" => {
+            matches!(norm_i.as_str(), "heart me" | "quiereme" | "quiere me" | "love you")
+        }
+        "ice cream cone" | "ice cream" | "helado" | "cono" => {
+            matches!(norm_i.as_str(), "ice cream cone" | "ice cream" | "helado" | "cono")
+        }
+        "game controller" | "mando" | "control" | "gamepad" => {
+            matches!(norm_i.as_str(), "game controller" | "mando" | "control" | "gamepad")
+        }
+        "money gun" | "pistola de billetes" | "pistola de dinero" | "pistola" => {
+            matches!(norm_i.as_str(), "money gun" | "pistola de billetes" | "pistola de dinero" | "pistola")
+        }
+        "galaxy" | "galaxia" => {
+            matches!(norm_i.as_str(), "galaxy" | "galaxia")
+        }
+        "whale diving" | "whale" | "ballena" => {
+            matches!(norm_i.as_str(), "whale diving" | "whale" | "ballena")
+        }
+        "treasure chest" | "cofre del tesoro" | "cofre" => {
+            matches!(norm_i.as_str(), "treasure chest" | "cofre del tesoro" | "cofre")
+        }
+        "corgi" | "perrito" | "perro" | "puppy" => {
+            matches!(norm_i.as_str(), "corgi" | "perrito" | "perro" | "puppy")
         }
         "fireworks" | "fuegos artificiales" | "fuegos" => {
-            clean_i.contains("firework") || clean_i.contains("fuego")
+            norm_i.contains("firework") || norm_i.contains("fuego")
+        }
+        "bear with rose" | "oso con rosa" | "bear" | "oso" => {
+            norm_i.contains("bear") || norm_i.contains("oso")
         }
         _ => false,
     };
@@ -965,9 +1075,13 @@ fn matches_gift_rule(
         return true;
     }
 
-    let min_len = clean_r.len().min(clean_i.len());
-    if min_len >= 3 && (clean_r.contains(clean_i) || clean_i.contains(clean_r)) {
-        return true;
+    // 8. Comodín de coincidencia de monedas si las etiquetas canónicas son idénticas
+    if rule_coins > 0 && incoming_coins > 0 && (rule_coins as i32) == incoming_coins {
+        let r_id = canonical_gift_id_from_name(clean_r);
+        let i_id = canonical_gift_id_from_name(clean_i);
+        if r_id > 0 && i_id > 0 && r_id == i_id {
+            return true;
+        }
     }
 
     false
@@ -1597,6 +1711,7 @@ Connection: close\r\n\r\n",
                             if matches_gift_rule(
                                 &r.gift_name,
                                 r.coins,
+                                r.tiktok_gift_id,
                                 gift_name,
                                 gift_id,
                                 diamond_count,
@@ -1616,6 +1731,7 @@ Connection: close\r\n\r\n",
                                 if matches_gift_rule(
                                     &r.gift_name,
                                     r.coins,
+                                    r.tiktok_gift_id,
                                     gift_name,
                                     gift_id,
                                     diamond_count,
@@ -1660,7 +1776,7 @@ Connection: close\r\n\r\n",
                                     match g.goal_action.as_str() {
                                         "INCREASE_TARGET" => g.target_wins = g.wins + 1,
                                         "SHOW_VICTORY" => {
-                                            g.last_action = "META_ALCANZADA".to_string()
+                                             g.last_action = "META_ALCANZADA".to_string()
                                         }
                                         _ => {}
                                     }
@@ -1695,6 +1811,7 @@ Connection: close\r\n\r\n",
                                 || matches_gift_rule(
                                     &g.center_red_name,
                                     g.center_red_coins,
+                                    5655,
                                     gift_name,
                                     gift_id,
                                     diamond_count,
@@ -1712,6 +1829,7 @@ Connection: close\r\n\r\n",
                                 || matches_gift_rule(
                                     &g.center_blue_name,
                                     g.center_blue_coins,
+                                    6064,
                                     gift_name,
                                     gift_id,
                                     diamond_count,

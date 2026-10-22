@@ -491,11 +491,17 @@ function renderModalPickerGrid() {
   grid.innerHTML = results.map(g => {
     const cleanFile = limpiarArchivoGift(g.archivo);
     const isSel = g.nombre === currentSelectedName;
+    const esSub = g.nombreEs ? `<div class="modal-picker-es-name" style="font-size: 11px; color: #38bdf8; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;">🇪🇸 ${g.nombreEs}</div>` : '';
+    const idBadge = g.id ? `<span style="font-size: 9px; color: rgba(255,255,255,0.4); font-family: var(--font-mono);">#${g.id}</span>` : '';
     return `
-      <div class="modal-picker-card ${isSel ? 'selected' : ''}" data-name="${g.nombre}" data-coins="${g.coins}" data-file="${cleanFile}">
+      <div class="modal-picker-card ${isSel ? 'selected' : ''}" data-name="${g.nombre}" data-coins="${g.coins}" data-file="${cleanFile}" data-id="${g.id || ''}" data-es="${g.nombreEs || ''}">
         <img src="${giftUrl(cleanFile, g.nombre, g.coins)}" class="modal-picker-img gift-hd-img" loading="lazy" onerror="this.src='./gifts/rose-1-coins.webp'" />
-        <div class="modal-picker-name">${g.nombre}</div>
-        <div class="modal-picker-coins">${g.coins} 💎</div>
+        <div class="modal-picker-name" style="font-weight: 700; font-size: 13px; color: #fff; line-height: 1.2;">${g.nombre}</div>
+        ${esSub}
+        <div class="modal-picker-coins" style="margin-top: 3px; display: flex; align-items: center; justify-content: space-between; width: 100%;">
+          <span>${g.coins} 💎</span>
+          ${idBadge}
+        </div>
       </div>
     `;
   }).join('');
@@ -507,10 +513,17 @@ function renderModalPickerGrid() {
       const cleanFile = limpiarArchivoGift(card.dataset.file);
       document.getElementById('modal-hidden-name').value = card.dataset.name;
       document.getElementById('modal-hidden-coins').value = card.dataset.coins;
-      document.getElementById('modal-gift-title').textContent = card.dataset.name;
+      const esTitle = card.dataset.es ? ` (${card.dataset.es})` : '';
+      document.getElementById('modal-gift-title').textContent = `${card.dataset.name}${esTitle}`;
       document.getElementById('modal-gift-coins-badge').textContent = `💎 ${card.dataset.coins}`;
       document.getElementById('modal-gift-icon').src = giftUrl(cleanFile, card.dataset.name, card.dataset.coins);
       document.getElementById('modal-gift-icon').dataset.file = cleanFile;
+
+      const idBadgeEl = document.getElementById('modal-gift-id-badge');
+      if (idBadgeEl) {
+        idBadgeEl.textContent = card.dataset.id ? `ID Oficial TikTok #${card.dataset.id}` : 'Catálogo Oficial TikTok';
+        idBadgeEl.dataset.giftId = card.dataset.id || '';
+      }
 
       const existingSound = soundManager.getSoundForGift(card.dataset.name);
       if (!document.getElementById('modal-hidden-sound-name')?.value && existingSound) {
@@ -703,6 +716,7 @@ const handleSaveGiftModal = async () => {
       if (slot) {
         slot.gift_name = newName;
         slot.coins = newCoins;
+        slot.tiktokGiftId = Number(document.getElementById('modal-gift-id-badge')?.dataset?.giftId) || tiktokGiftIdDeNombre(newName, slot.tiktokGiftId || 0);
         slot.icon_file = newFile;
         slot.sound_name = chosenSoundName;
         slot.sound_url = chosenSoundUrl;
@@ -728,7 +742,7 @@ const handleSaveGiftModal = async () => {
     ...(idx >= 0 ? current[idx] : {}),
     id,
     name: newName,
-    tiktokGiftId: tiktokGiftIdDeNombre(newName, (idx >= 0 && current[idx]?.tiktokGiftId) ? current[idx].tiktokGiftId : 5655),
+    tiktokGiftId: Number(document.getElementById('modal-gift-id-badge')?.dataset?.giftId) || tiktokGiftIdDeNombre(newName, (idx >= 0 && current[idx]?.tiktokGiftId) ? current[idx].tiktokGiftId : 5655),
     coins: newCoins,
     mult: mult || (badge ? badge : (totemDelta ? `+${totemDelta}` : '')),
     badge,
