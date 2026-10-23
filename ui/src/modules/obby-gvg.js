@@ -123,6 +123,7 @@ function renderRobloxEditor() {
       </div>
     </div>
   `;
+};
 
   const query = (document.getElementById('obby-rule-search')?.value || '').toLowerCase();
   const filter = document.getElementById('obby-rule-filter')?.value || 'ALL';
@@ -500,11 +501,6 @@ document.getElementById('btn-save-likes-goal')?.addEventListener('click', async 
 
 document.getElementById('btn-reset-roblox-overlay')?.addEventListener('click', async () => {
   const { DEFAULT_ROBLOX_CONFIG } = await import('./obby-config.js');
-  app.robloxOverlayConfig = JSON.parse(JSON.stringify(DEFAULT_ROBLOX_CONFIG));
-  renderRobloxEditor();
-  await app.persistConfig();
-  showToast('✔ Configuración original restaurada');
-});
   app.robloxOverlayConfig = JSON.parse(JSON.stringify(DEFAULT_ROBLOX_CONFIG));
   renderRobloxEditor();
   await app.persistConfig();
