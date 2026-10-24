@@ -610,8 +610,11 @@ async fn download_and_install_update(
         },
     );
 
-    // Ejecutar el instalador nativo directamente sin powershell ni scripts intermediarios
-    Command::new(&temp_exe)
+    // Ejecutar el instalador nativo en modo actualizacion silenciosa ultrarrapida (/S /UPDATE)
+    // /UPDATE omite la desinstalacion previa y sobreescribe directamente en segundos
+    std::process::Command::new(&temp_exe)
+        .arg("/S")
+        .arg("/UPDATE")
         .spawn()
         .map_err(|e| format!("Error iniciando el instalador: {}", e))?;
 

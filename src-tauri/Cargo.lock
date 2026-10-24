@@ -1306,7 +1306,7 @@ dependencies = [
 
 [[package]]
 name = "gz7live"
-version = "2.1.4"
+version = "2.2.1"
 dependencies = [
  "reqwest",
  "serde",
