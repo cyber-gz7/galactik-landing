@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { invokeTyped } from '@/api/tauri-bridge';
 
-const BANNER_BG = '/assets/card-universal-bg.png';
+const BANNER_BG = '/assets/banner-sounds-pro.png';
 
 interface MemeSound {
   id: string;

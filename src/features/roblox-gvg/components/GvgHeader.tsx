@@ -28,13 +28,13 @@ export const GvgHeader: React.FC = () => {
       <div className="relative overflow-hidden rounded-2xl border border-[#24374B] bg-[#040812] p-4 shadow-lg min-h-[90px]">
         {/* Capa 0: Fondo Real con Avatares Roblox en Duelo */}
         <img
-          src="/assets/roblox-duel-right.png"
+          src="/assets/banner-roblox-duel-pro.png"
           alt="Roblox Duelo Art"
-          className="absolute top-0 right-0 h-full w-auto max-w-[55%] object-cover object-right z-0 opacity-85 pointer-events-none"
+          className="absolute inset-0 h-full w-full object-cover object-center z-0 opacity-45 pointer-events-none"
         />
 
         {/* Capa 1: Vignette / Filtro de legibilidad */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#040812] via-[#040812]/80 to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#040812] via-[#040812]/85 to-transparent z-10 pointer-events-none" />
 
         {/* Capa 2: UI Interactiva */}
         <div className="relative z-20 flex flex-wrap items-center justify-between gap-4">

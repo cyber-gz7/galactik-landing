@@ -176,7 +176,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ activeTab, onSelectTab
         <div className="flex items-center justify-between px-3 py-1.5 text-[10px] font-mono text-[#64748B]">
           <div className="flex items-center gap-1.5">
             <Settings className="h-3 w-3" />
-            <span>v2.2.1 PRO</span>
+            <span>v2.2.2 PRO</span>
           </div>
           <span className="text-[#00FFA3] font-bold">ONLINE</span>
         </div>

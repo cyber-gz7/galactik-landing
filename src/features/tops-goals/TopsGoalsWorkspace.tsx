@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { invokeTyped } from '@/api/tauri-bridge';
 
-const BANNER_BG = '/assets/banner-inicio.png';
+const BANNER_BG = '/assets/banner-tops-pro.png';
 
 interface OverlayWidgetInfo {
   id: 'donors' | 'likes' | 'mvp' | 'counter' | 'timer';

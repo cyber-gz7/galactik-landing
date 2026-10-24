@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { invokeTyped } from '@/api/tauri-bridge';
 
-const BG_BANNER_PATH = '/assets/card-universal-bg.png';
+const BG_BANNER_PATH = '/assets/banner-alerts-pro.png';
 const OVERLAY_URL = 'http://127.0.0.1:4000/alerta.html';
 
 export const AlertsChromaWorkspace: React.FC = () => {

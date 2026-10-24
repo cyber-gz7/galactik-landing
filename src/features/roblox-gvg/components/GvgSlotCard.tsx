@@ -171,7 +171,7 @@ export const GvgSlotCard: React.FC<GvgSlotCardProps> = ({
           type="button"
           onClick={() => onOpenGiftModal?.(slot.id)}
           title="Cambiar regalo"
-          className="flex items-center gap-1 rounded-lg border border-[#24374B] bg-[#101D2E] px-2 py-1 text-xs font-bold text-[#9FB2C8] hover:border-[#00D9FF] hover:text-white"
+          className="flex items-center gap-1 rounded-lg border border-[#24374B] bg-[#101D2E] px-2 py-1 text-xs font-bold text-[#9FB2C8] hover:border-[#00D9FF] hover:text-white transition-all active:scale-95 cursor-pointer"
         >
           <RefreshCw className="h-3 w-3" />
           Regalo
@@ -181,7 +181,7 @@ export const GvgSlotCard: React.FC<GvgSlotCardProps> = ({
           type="button"
           onClick={() => onOpenSoundModal?.(slot.id)}
           title="Asignar sonido"
-          className="flex max-w-[110px] items-center gap-1 truncate rounded-lg border border-[#00D9FF]/30 bg-[#101D2E] px-2 py-1 text-xs font-bold text-[#00D9FF] hover:border-[#00D9FF]"
+          className="flex max-w-[110px] items-center gap-1 truncate rounded-lg border border-[#00D9FF]/30 bg-[#101D2E] px-2 py-1 text-xs font-bold text-[#00D9FF] hover:border-[#00D9FF] hover:bg-[#00D9FF]/10 transition-all active:scale-95 cursor-pointer"
         >
           <Volume2 className="h-3 w-3 shrink-0" />
           <span className="truncate">{slot.sound_name || 'Sonido'}</span>
@@ -191,7 +191,7 @@ export const GvgSlotCard: React.FC<GvgSlotCardProps> = ({
           type="button"
           onClick={() => onTestSlot?.(slot.id)}
           title="Probar en vivo"
-          className="rounded-lg border border-[#24374B] bg-[#101D2E] p-1.5 text-[#23E6A8] hover:border-[#23E6A8] hover:bg-[#23E6A8]/10"
+          className="rounded-lg border border-[#24374B] bg-[#101D2E] p-1.5 text-[#23E6A8] hover:border-[#23E6A8] hover:bg-[#23E6A8]/10 transition-all active:scale-95 cursor-pointer"
         >
           <Play className="h-3 w-3 fill-current" />
         </button>
@@ -208,7 +208,7 @@ export const GvgSlotCard: React.FC<GvgSlotCardProps> = ({
             });
           }}
           title="Duplicar acción"
-          className="rounded-lg border border-[#24374B] bg-[#101D2E] p-1.5 text-[#9FB2C8] hover:text-white"
+          className="rounded-lg border border-[#24374B] bg-[#101D2E] p-1.5 text-[#9FB2C8] hover:text-white transition-all active:scale-95 cursor-pointer"
         >
           <Copy className="h-3 w-3" />
         </button>
@@ -224,7 +224,7 @@ export const GvgSlotCard: React.FC<GvgSlotCardProps> = ({
             });
           }}
           title="Eliminar acción"
-          className="rounded-lg border border-[#24374B] bg-[#101D2E] p-1.5 text-[#FF4568] hover:border-[#FF4568] hover:bg-[#FF4568]/10"
+          className="rounded-lg border border-[#24374B] bg-[#101D2E] p-1.5 text-[#FF4568] hover:border-[#FF4568] hover:bg-[#FF4568]/10 transition-all active:scale-95 cursor-pointer"
         >
           <Trash2 className="h-3 w-3" />
         </button>

@@ -171,7 +171,7 @@ export const SidebarRight: React.FC = () => {
             NOVEDADES
           </span>
           <span className="rounded-full border border-[#FF2A85]/50 bg-[#FF2A85]/15 px-2.5 py-0.5 font-mono text-[10px] font-black text-[#FF2A85]">
-            v2.2.1 PRO
+            v2.2.2 PRO
           </span>
         </div>
 

@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import type { AppUpdateInfo, UpdateProgressPayload } from '@/types/tauri.types';
 import { invokeTyped } from '@/api/tauri-bridge';
 
-const CURRENT_VERSION = '2.2.1';
+const CURRENT_VERSION = '2.2.2';
 
 interface AutoUpdaterState {
   currentVersion: string;

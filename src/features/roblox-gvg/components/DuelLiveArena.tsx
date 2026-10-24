@@ -12,10 +12,14 @@ export const DuelLiveArena: React.FC = () => {
 
   const updateSetting = useRobloxGvgStore((s) => s.updateSetting);
 
-  const handleAction = async (action: string, value = 0) => {
+  const handleAction = async (action: string, valueOrPayload?: unknown) => {
     try {
+      const payload =
+        typeof valueOrPayload === 'object' && valueOrPayload !== null
+          ? { action, ...valueOrPayload }
+          : { action, value: valueOrPayload ?? 0 };
       await invokeTyped('send_gvg_control', {
-        action_json: JSON.stringify({ action, value })
+        action_json: JSON.stringify(payload)
       });
     } catch (err) {
       console.warn('Error enviando control de duelo:', err);
@@ -60,8 +64,12 @@ export const DuelLiveArena: React.FC = () => {
       {/* 2. Duelo Central 1:1 Flotante: Rosa vs Flame VS vs GG */}
       <div className="my-2 flex items-center justify-center gap-8 py-3">
         {/* Lado Rosa (Villanos / Izquierda) */}
-        <div className="flex flex-col items-center gap-1.5">
-          <div className="flex h-20 w-20 items-center justify-center rounded-2xl border-2 border-[#FF2A85]/50 bg-gradient-to-br from-[#FF2A85]/20 to-transparent p-2 shadow-[0_0_20px_rgba(255,42,133,0.2)]">
+        <div
+          onClick={() => handleAction('push_duel', { side: 'LEFT', power: 1.0, donor: 'Streamer Test', gift: 'Rosa' })}
+          className="flex flex-col items-center gap-1.5 cursor-pointer group"
+          title="Haz clic para empujar a favor de Rosa en vivo"
+        >
+          <div className="flex h-20 w-20 items-center justify-center rounded-2xl border-2 border-[#FF2A85]/50 bg-gradient-to-br from-[#FF2A85]/20 to-transparent p-2 shadow-[0_0_20px_rgba(255,42,133,0.2)] group-hover:scale-105 group-hover:border-[#FF2A85] transition-all">
             <img
               src="/gifts/rose-1-coins.webp"
               alt="Rose"
@@ -74,7 +82,7 @@ export const DuelLiveArena: React.FC = () => {
           <span className="font-black italic text-xl text-[#FFE600] [text-shadow:_0_1.5px_0_#000,_-1.5px_0_0_#000,_1.5px_0_0_#000,_0_-1.5px_0_#000]">
             1
           </span>
-          <span className="text-[11px] font-bold text-[#FF2A85]">Rosa</span>
+          <span className="text-[11px] font-bold text-[#FF2A85] group-hover:underline">Rosa (Empujar)</span>
         </div>
 
         {/* VS con Fuego Central */}
@@ -86,13 +94,17 @@ export const DuelLiveArena: React.FC = () => {
             </span>
           </div>
           <span className="rounded-full bg-[#00D9FF]/10 px-2.5 py-0.5 font-black text-[10px] tracking-wider text-[#00D9FF] border border-[#00D9FF]/30">
-            3 A FAVOR!!
+            DUELO EN VIVO
           </span>
         </div>
 
         {/* Lado GG (Héroes / Derecha) */}
-        <div className="flex flex-col items-center gap-1.5">
-          <div className="flex h-20 w-20 items-center justify-center rounded-2xl border-2 border-[#00D9FF]/50 bg-gradient-to-br from-[#00D9FF]/20 to-transparent p-2 shadow-[0_0_20px_rgba(0,217,255,0.2)]">
+        <div
+          onClick={() => handleAction('push_duel', { side: 'RIGHT', power: 1.0, donor: 'Streamer Test', gift: 'GG' })}
+          className="flex flex-col items-center gap-1.5 cursor-pointer group"
+          title="Haz clic para empujar a favor de GG en vivo"
+        >
+          <div className="flex h-20 w-20 items-center justify-center rounded-2xl border-2 border-[#00D9FF]/50 bg-gradient-to-br from-[#00D9FF]/20 to-transparent p-2 shadow-[0_0_20px_rgba(0,217,255,0.2)] group-hover:scale-105 group-hover:border-[#00D9FF] transition-all">
             <img
               src="/gifts/gg-1-coins.webp"
               alt="GG"
@@ -103,9 +115,9 @@ export const DuelLiveArena: React.FC = () => {
             />
           </div>
           <span className="font-black italic text-xl text-[#FFE600] [text-shadow:_0_1.5px_0_#000,_-1.5px_0_0_#000,_1.5px_0_0_#000,_0_-1.5px_0_#000]">
-            4
+            1
           </span>
-          <span className="text-[11px] font-bold text-[#00D9FF]">GG</span>
+          <span className="text-[11px] font-bold text-[#00D9FF] group-hover:underline">GG (Empujar)</span>
         </div>
       </div>
 
@@ -117,7 +129,7 @@ export const DuelLiveArena: React.FC = () => {
             updateSetting('current_wins', currentWins + 1);
             handleAction('add_wins', 1);
           }}
-          className="flex items-center gap-1.5 rounded-xl border border-[#23E6A8]/40 bg-[#23E6A8]/10 px-4 py-2 font-bold text-xs text-[#23E6A8] transition-all hover:bg-[#23E6A8]/20"
+          className="flex items-center gap-1.5 rounded-xl border border-[#23E6A8]/40 bg-[#23E6A8]/10 px-4 py-2 font-bold text-xs text-[#23E6A8] transition-all hover:bg-[#23E6A8]/20 active:scale-95 cursor-pointer"
         >
           <Plus className="h-4 w-4" />
           Sumar Win (+1)
@@ -129,7 +141,7 @@ export const DuelLiveArena: React.FC = () => {
             updateSetting('current_wins', Math.max(0, currentWins - 1));
             handleAction('add_wins', -1);
           }}
-          className="flex items-center gap-1.5 rounded-xl border border-[#FF4568]/40 bg-[#FF4568]/10 px-4 py-2 font-bold text-xs text-[#FF4568] transition-all hover:bg-[#FF4568]/20"
+          className="flex items-center gap-1.5 rounded-xl border border-[#FF4568]/40 bg-[#FF4568]/10 px-4 py-2 font-bold text-xs text-[#FF4568] transition-all hover:bg-[#FF4568]/20 active:scale-95 cursor-pointer"
         >
           <Minus className="h-4 w-4" />
           Restar Win (-1)
@@ -141,7 +153,7 @@ export const DuelLiveArena: React.FC = () => {
             updateSetting('current_wins', 0);
             handleAction('reset_wins');
           }}
-          className="flex items-center gap-1.5 rounded-xl border border-[#24374B] bg-[#101D2E] px-4 py-2 font-bold text-xs text-[#9FB2C8] transition-all hover:text-white"
+          className="flex items-center gap-1.5 rounded-xl border border-[#24374B] bg-[#101D2E] px-4 py-2 font-bold text-xs text-[#9FB2C8] transition-all hover:text-white active:scale-95 cursor-pointer"
         >
           <RotateCcw className="h-3.5 w-3.5" />
           Reiniciar Wins
@@ -150,7 +162,7 @@ export const DuelLiveArena: React.FC = () => {
         <button
           type="button"
           onClick={() => handleAction('reset_points')}
-          className="flex items-center gap-1.5 rounded-xl border border-[#24374B] bg-[#101D2E] px-4 py-2 font-bold text-xs text-[#9FB2C8] transition-all hover:text-white"
+          className="flex items-center gap-1.5 rounded-xl border border-[#24374B] bg-[#101D2E] px-4 py-2 font-bold text-xs text-[#9FB2C8] transition-all hover:text-white active:scale-95 cursor-pointer"
         >
           <RotateCcw className="h-3.5 w-3.5" />
           Reiniciar Ronda

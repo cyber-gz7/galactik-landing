@@ -799,6 +799,73 @@ async fn add_gvg_points(
 }
 
 #[tauri::command(rename_all = "snake_case")]
+async fn send_gvg_control(
+    action_json: String,
+    state: State<'_, Arc<OverlayServerState>>,
+) -> Result<(), String> {
+    let parsed: serde_json::Value = serde_json::from_str(&action_json)
+        .map_err(|e| format!("JSON inválido en send_gvg_control: {}", e))?;
+
+    let action = parsed.get("action").and_then(|v| v.as_str()).unwrap_or("");
+    let value = parsed.get("value").and_then(|v| v.as_i64()).unwrap_or(0) as i32;
+
+    match action {
+        "add_wins" => {
+            state.modify_win(value).await;
+        }
+        "reset_wins" => {
+            state.reset_wins().await;
+        }
+        "reset_ronda" | "reset_points" => {
+            state.reset_ronda().await;
+        }
+        "set_target_wins" => {
+            state.set_target_wins(value).await;
+        }
+        "add_points" => {
+            let team = parsed.get("team").and_then(|v| v.as_str()).unwrap_or("RED");
+            state.add_gvg_points(team, value).await;
+        }
+        "push_duel" => {
+            let side = parsed.get("side").and_then(|v| v.as_str()).unwrap_or("LEFT");
+            let power = parsed.get("power").and_then(|v| v.as_f64()).unwrap_or(1.0) as f32;
+            let donor = parsed.get("donor").and_then(|v| v.as_str()).unwrap_or("Streamer");
+            let gift = parsed.get("gift").and_then(|v| v.as_str()).unwrap_or("Rose");
+            state.push_duel(side, power, donor, gift).await;
+        }
+        "test_slot" => {
+            let slot_id = parsed.get("slot_id").and_then(|v| v.as_str()).unwrap_or("");
+            let g = state.gift_vs_gift.lock().await;
+            let left_match = g.left_rules.iter().find(|s| s.id == slot_id).cloned();
+            let right_match = g.right_rules.iter().find(|s| s.id == slot_id).cloned();
+            drop(g);
+
+            if let Some(r) = left_match {
+                if r.action_type.eq_ignore_ascii_case("WIN") {
+                    state.modify_win(r.value).await;
+                } else {
+                    state.add_gvg_points("RED", r.value).await;
+                }
+                state.emit_gift("Prueba Streamer", &r.gift_name, r.coins).await;
+            } else if let Some(r) = right_match {
+                if r.action_type.eq_ignore_ascii_case("WIN") {
+                    state.modify_win(r.value).await;
+                } else {
+                    state.add_gvg_points("BLUE", r.value).await;
+                }
+                state.emit_gift("Prueba Streamer", &r.gift_name, r.coins).await;
+            } else {
+                state.modify_win(1).await;
+            }
+        }
+        _ => {
+            eprintln!("[GVG] Acción no reconocida: {}", action);
+        }
+    }
+    Ok(())
+}
+
+#[tauri::command(rename_all = "snake_case")]
 async fn update_roblox_overlay_config(
     config_json: String,
     state: State<'_, Arc<OverlayServerState>>,
@@ -1175,6 +1242,7 @@ fn main() {
             reset_gvg_wins,
             reset_gvg_ronda,
             add_gvg_points,
+            send_gvg_control,
             update_roblox_overlay_config,
             update_mc_overlay_config,
             emit_overlay_gift,
