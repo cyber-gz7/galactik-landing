@@ -15,113 +15,169 @@ import {
   MessageSquare,
   Gift,
   Trophy,
-  Heart,
   ChevronDown,
   Copy,
   Check,
   ExternalLink,
   Users,
   Clock,
-  Laptop,
   Layers,
   ArrowRight,
-  ShieldAlert,
-  Play
+  Play,
+  Share2,
+  CheckCheck,
+  Radio,
+  Sliders,
+  Disc3
 } from 'lucide-react';
 
+// Enlaces oficiales configurados según solicitud
+const WHATSAPP_URL = 'https://wa.me/@cybergz7';
 const DOWNLOAD_URL = 'https://github.com/cyber-gz7/galactik-landing/releases/latest/download/Galactik.Live_2.9.0_x64-setup.exe';
-const WHATSAPP_BASE = 'https://wa.me/51983234444?text=';
 
 export default function App() {
   const [currency, setCurrency] = useState<'USD' | 'PEN'>('USD');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [copiedCode, setCopiedCode] = useState(false);
-
-  const getWaUrl = (planText: string) => {
-    return `${WHATSAPP_BASE}${encodeURIComponent(`Hola Galactik Live, deseo activar el ${planText}`)}`;
-  };
+  const [duelSide, setDuelSide] = useState<'left' | 'right'>('left');
+  const [simWins, setSimWins] = useState(14);
 
   const handleCopyDemoRef = () => {
-    navigator.clipboard.writeText('REF-PRO2026');
+    navigator.clipboard.writeText('REF-GZ7PRO');
     setCopiedCode(true);
     setTimeout(() => setCopiedCode(false), 2000);
   };
 
   return (
     <div className="min-h-screen bg-[#09080F] text-[#E6EDF3] font-sans overflow-x-hidden selection:bg-[#8B5CF6]/30">
-      {/* ================= 1. BARRA DE NAVEGACIÓN ================= */}
-      <header className="sticky top-0 z-50 border-b border-[#8B5CF6]/20 bg-[#09080F]/85 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-6">
+      {/* ================= 1. NAVEGACIÓN SUPERIOR ================= */}
+      <header className="sticky top-0 z-50 border-b border-[#8B5CF6]/25 bg-[#09080F]/90 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
           <div className="flex items-center gap-3">
-            <a href="#" className="flex items-center gap-2.5 group">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-[#8B5CF6] to-[#6D28D9] p-0.5 shadow-[0_0_20px_rgba(139,92,246,0.5)]">
-                <div className="flex h-full w-full items-center justify-center rounded-[10px] bg-[#09080F]">
-                  <Sparkles className="h-5 w-5 text-[#C4B5FD] group-hover:rotate-12 transition-transform" />
-                </div>
-              </div>
+            <a href="#" className="flex items-center gap-3 group">
+              <img
+                src="./galactk-logo.png"
+                alt="Galactik Live Logo"
+                className="h-10 w-auto object-contain drop-shadow-[0_0_15px_rgba(139,92,246,0.6)] group-hover:scale-105 transition-transform"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src = './favicon.png';
+                }}
+              />
               <div className="flex flex-col">
-                <span className="font-extrabold text-base tracking-wide text-white flex items-center gap-1.5">
-                  GALACTIK <span className="bg-gradient-to-r from-[#C4B5FD] to-[#8B5CF6] bg-clip-text text-transparent">LIVE</span>
+                <div className="flex items-center gap-2">
+                  <span className="font-extrabold text-lg tracking-wider text-white">
+                    GALACTIK <span className="bg-gradient-to-r from-[#C4B5FD] via-[#8B5CF6] to-[#818CF8] bg-clip-text text-transparent">LIVE</span>
+                  </span>
+                  <span className="rounded-full bg-[#8B5CF6]/20 border border-[#8B5CF6]/40 px-2 py-0.2 font-mono text-[10px] font-bold text-[#C4B5FD]">
+                    v2.9.0
+                  </span>
+                </div>
+                <span className="text-[10px] text-[#A78BFA] font-medium tracking-wide">
+                  Suite Obsidian Neon para TikTok Live
                 </span>
-                <span className="font-mono text-[10px] text-[#A78BFA] font-semibold tracking-wider">SUITE v2.9.0</span>
               </div>
             </a>
           </div>
 
-          <nav className="hidden md:flex items-center gap-6 text-xs font-bold text-[#B8B2C8]">
+          <nav className="hidden lg:flex items-center gap-6 text-xs font-bold text-[#B8B2C8]">
             <a href="#features" className="hover:text-white transition-colors">Funciones</a>
-            <a href="#roblox" className="hover:text-[#C4B5FD] transition-colors">Roblox GvG</a>
-            <a href="#minecraft" className="hover:text-[#34D399] transition-colors">Minecraft</a>
-            <a href="#alerts" className="hover:text-[#818CF8] transition-colors">Croma & Alertas</a>
-            <a href="#tts" className="hover:text-[#F472B6] transition-colors">Voz TTS</a>
-            <a href="#pricing" className="hover:text-[#FBBF24] transition-colors">Planes</a>
+            <a href="#roblox" className="hover:text-[#F472B6] transition-colors">Roblox GvG</a>
+            <a href="#minecraft" className="hover:text-[#34D399] transition-colors">Minecraft 1.20.1</a>
+            <a href="#alerts" className="hover:text-[#818CF8] transition-colors">Croma Key</a>
+            <a href="#tts" className="hover:text-[#FBBF24] transition-colors">Voz TTS</a>
+            <a href="#pricing" className="hover:text-white transition-colors">Planes & Precios</a>
             <a href="#referrals" className="hover:text-[#34D399] transition-colors">Referidos</a>
             <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
+            {/* Badge de Discord Próximamente */}
+            <div
+              title="Servidor de Discord Oficial - Próximamente disponible"
+              className="hidden sm:flex items-center gap-1.5 rounded-xl border border-[#5865F2]/40 bg-[#5865F2]/10 px-3 py-2 text-xs font-bold text-[#818CF8] cursor-default"
+            >
+              <Disc3 className="h-3.5 w-3.5 text-[#5865F2] animate-spin" />
+              <span>Discord</span>
+              <span className="rounded bg-[#5865F2]/30 px-1.5 py-0.2 text-[9px] font-black uppercase text-white">Pronto</span>
+            </div>
+
+            {/* Botón WhatsApp */}
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1.5 rounded-xl border border-[#34D399]/40 bg-[#34D399]/15 px-3 py-2 text-xs font-bold text-[#34D399] hover:bg-[#34D399]/25 transition-all"
+            >
+              <MessageSquare className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">WhatsApp</span>
+            </a>
+
+            {/* Descarga Directa */}
             <a
               href={DOWNLOAD_URL}
               className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] px-4 py-2 text-xs font-black uppercase tracking-wider text-white shadow-[0_0_20px_rgba(139,92,246,0.35)] hover:brightness-110 active:scale-95 transition-all"
             >
               <Download className="h-4 w-4" />
-              <span className="hidden sm:inline">Descargar App</span>
-              <span className="sm:hidden">Descargar</span>
+              <span>Descargar</span>
             </a>
           </div>
         </div>
       </header>
 
       {/* ================= 2. HERO PRINCIPAL OBSIDIAN NEON ================= */}
-      <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-32">
-        {/* Glow de fondo */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-[#8B5CF6]/15 blur-[120px] pointer-events-none rounded-full" />
-        <div className="absolute top-1/3 left-1/4 w-[350px] h-[350px] bg-[#34D399]/10 blur-[130px] pointer-events-none rounded-full" />
-        <div className="absolute top-1/2 right-1/4 w-[350px] h-[350px] bg-[#818CF8]/10 blur-[130px] pointer-events-none rounded-full" />
+      <section className="relative overflow-hidden pt-12 pb-24 md:pt-18 md:pb-32">
+        {/* Banner de fondo oficial obsidian con overlay gradiente */}
+        <div className="absolute inset-0 pointer-events-none z-0">
+          <img
+            src="./assets/hero-banner-bg.png"
+            alt="Hero Background"
+            className="w-full h-full object-cover object-center opacity-30 blur-[2px]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#09080F]/80 via-[#09080F]/95 to-[#09080F]" />
+        </div>
 
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 text-center">
+        {/* Luces y destellos neón */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-[#8B5CF6]/20 blur-[130px] pointer-events-none rounded-full" />
+        <div className="absolute top-1/3 left-1/6 w-[350px] h-[350px] bg-[#F472B6]/15 blur-[140px] pointer-events-none rounded-full" />
+        <div className="absolute top-1/3 right-1/6 w-[350px] h-[350px] bg-[#34D399]/15 blur-[140px] pointer-events-none rounded-full" />
+
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 text-center">
+          {/* Logo Central Gigante con Glow */}
+          <div className="flex justify-center mb-6">
+            <div className="relative p-2">
+              <img
+                src="./assets/galactik-mark.png"
+                alt="Galactik Mark"
+                className="h-16 w-auto object-contain drop-shadow-[0_0_35px_rgba(139,92,246,0.85)]"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src = './galactk-logo.png';
+                }}
+              />
+            </div>
+          </div>
+
           {/* Badge superior */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#8B5CF6]/40 bg-[#14111D]/80 px-4 py-1.5 text-xs font-bold text-[#C4B5FD] shadow-[0_0_20px_rgba(139,92,246,0.25)] backdrop-blur-md mb-6">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#8B5CF6]/50 bg-[#14111D]/80 px-4 py-1.5 text-xs font-bold text-[#C4B5FD] shadow-[0_0_25px_rgba(139,92,246,0.3)] backdrop-blur-md mb-6">
             <span className="h-2 w-2 rounded-full bg-[#34D399] animate-pulse" />
-            <span>Versión 2.9.0 Oficial · Motor Nativo Rust a 60 FPS</span>
+            <span>Versión 2.9.0 Oficial · Motor Rust en Tiempo Real · Compatible con OBS y TikTok Studio</span>
           </div>
 
           <h1 className="font-extrabold text-4xl sm:text-6xl md:text-7xl tracking-tight text-white max-w-5xl mx-auto leading-[1.12]">
-            Multiplica las donaciones en tu directo de{' '}
-            <span className="bg-gradient-to-r from-[#C4B5FD] via-[#8B5CF6] to-[#818CF8] bg-clip-text text-transparent [text-shadow:0_0_35px_rgba(139,92,246,0.4)]">
-              TikTok Live
+            Transforma tu directo de TikTok en un{' '}
+            <span className="bg-gradient-to-r from-[#C4B5FD] via-[#8B5CF6] to-[#818CF8] bg-clip-text text-transparent [text-shadow:0_0_40px_rgba(139,92,246,0.55)]">
+              espectáculo interactivo
             </span>
           </h1>
 
           <p className="mt-6 text-base sm:text-xl text-[#B8B2C8] max-w-3xl mx-auto leading-relaxed">
-            La suite interactiva definitiva para streamers: automatiza duelos de <strong className="text-white">Roblox GvG</strong>, eventos de <strong className="text-white">Minecraft PaperMC 1.20.1</strong>, alertas con <strong className="text-white">Croma Key GPU</strong>, botonera de memes y <strong className="text-white">Voz TTS humana</strong> para OBS Studio y TikTok Live Studio.
+            La suite integral para streamers: automatiza duelos de <strong className="text-white">Roblox Obby GvG</strong>, eventos cinemáticos en <strong className="text-white">Minecraft PaperMC 1.20.1</strong>, alertas con <strong className="text-white">Croma Key GPU</strong>, 60+ sonidos memes virales y <strong className="text-white">Voz TTS ultra natural</strong> sin latencia.
           </p>
 
           {/* Botones de acción Hero */}
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <a
               href={DOWNLOAD_URL}
-              className="flex items-center gap-3 rounded-2xl bg-gradient-to-r from-[#C4B5FD] via-[#8B5CF6] to-[#6D28D9] px-7 py-4 text-sm font-black uppercase tracking-wider text-white shadow-[0_0_30px_rgba(139,92,246,0.5)] hover:brightness-110 active:scale-95 transition-all"
+              className="flex items-center gap-3 rounded-2xl bg-gradient-to-r from-[#C4B5FD] via-[#8B5CF6] to-[#6D28D9] px-8 py-4 text-sm font-black uppercase tracking-wider text-white shadow-[0_0_35px_rgba(139,92,246,0.6)] hover:brightness-110 active:scale-95 transition-all"
             >
               <Download className="h-5 w-5" />
               <span>Descargar para Windows (64-bit)</span>
@@ -129,29 +185,29 @@ export default function App() {
 
             <a
               href="#pricing"
-              className="flex items-center gap-2 rounded-2xl border border-[#8B5CF6]/40 bg-[#14111D] px-6 py-4 text-sm font-black text-white hover:border-[#8B5CF6] hover:bg-[#8B5CF6]/15 transition-all"
+              className="flex items-center gap-2 rounded-2xl border border-[#8B5CF6]/50 bg-[#14111D]/90 px-6 py-4 text-sm font-black text-white hover:border-[#8B5CF6] hover:bg-[#8B5CF6]/20 transition-all shadow-lg"
             >
               <Crown className="h-5 w-5 text-[#FBBF24]" />
               <span>Ver Planes & Precios (Desde $0 / $9 / $15)</span>
             </a>
 
             <a
-              href={getWaUrl('información y activación')}
+              href={WHATSAPP_URL}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-2 rounded-2xl border border-[#34D399]/40 bg-[#34D399]/10 px-5 py-4 text-sm font-bold text-[#34D399] hover:bg-[#34D399]/20 transition-all"
+              className="flex items-center gap-2 rounded-2xl border border-[#34D399]/40 bg-[#34D399]/15 px-6 py-4 text-sm font-bold text-[#34D399] hover:bg-[#34D399]/25 transition-all"
             >
               <MessageSquare className="h-5 w-5" />
-              <span>Soporte WhatsApp</span>
+              <span>wa.me/@cybergz7</span>
             </a>
           </div>
 
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-6 text-xs text-[#8E87A0]">
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-6 text-xs text-[#8E87A0]">
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="h-4 w-4 text-[#34D399]" /> Sin tarjeta de crédito
+              <CheckCircle2 className="h-4 w-4 text-[#34D399]" /> 1h / 2h Diarias Gratis sin tarjeta
             </span>
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="h-4 w-4 text-[#34D399]" /> 100% seguro (sin contraseñas)
+              <CheckCircle2 className="h-4 w-4 text-[#34D399]" /> 100% Seguro (solo tu @nick de TikTok)
             </span>
             <span className="flex items-center gap-1.5">
               <CheckCircle2 className="h-4 w-4 text-[#34D399]" /> Actualizaciones silenciosas en 2s
@@ -161,74 +217,93 @@ export default function App() {
             </span>
           </div>
 
-          {/* ================= MOCKUP INTERACTIVO DEL DUELO GVG ================= */}
-          <div className="mt-14 max-w-5xl mx-auto rounded-3xl border border-[#8B5CF6]/35 bg-[#14111D]/90 p-4 sm:p-6 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.9),0_0_40px_rgba(139,92,246,0.2)]">
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4 mb-5">
-              <div className="flex items-center gap-2.5">
+          {/* ================= MOCKUP DE LA SUITE EN ACCIÓN ================= */}
+          <div className="mt-14 max-w-5xl mx-auto rounded-3xl border border-[#8B5CF6]/40 bg-[#14111D]/95 p-4 sm:p-7 shadow-[0_20px_70px_-15px_rgba(0,0,0,0.95),0_0_50px_rgba(139,92,246,0.3)]">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4 mb-6">
+              <div className="flex items-center gap-3">
                 <span className="h-3 w-3 rounded-full bg-[#F43F5E]" />
                 <span className="h-3 w-3 rounded-full bg-[#FBBF24]" />
                 <span className="h-3 w-3 rounded-full bg-[#34D399]" />
-                <span className="ml-2 font-mono text-xs text-[#B8B2C8]">Galactik Live v2.9.0 · Conexión WebSocket OBS :4000</span>
-              </div>
-              <div className="flex items-center gap-2 font-mono text-xs">
-                <span className="rounded-full bg-[#34D399]/20 border border-[#34D399]/40 px-2.5 py-0.5 text-[#34D399] font-bold flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#34D399] animate-ping" />
-                  LIVE ACTIVO
+                <span className="font-mono text-xs font-bold text-white flex items-center gap-2 ml-1">
+                  <Laptop className="h-4 w-4 text-[#C4B5FD]" />
+                  Galactik Live v2.9.0 &bull; Panel de Control Activo
                 </span>
+              </div>
+              <div className="flex items-center gap-3 text-xs font-mono">
+                <span className="text-[#34D399] font-bold flex items-center gap-1.5 rounded-full bg-[#34D399]/15 border border-[#34D399]/40 px-3 py-1">
+                  <span className="h-2 w-2 rounded-full bg-[#34D399] animate-ping" />
+                  SERVIDOR OBS HTTP :4000
+                </span>
+                <span className="text-[#C4B5FD] font-bold">@streamer_oficial</span>
               </div>
             </div>
 
-            {/* Arena de Duelo Visual */}
-            <div className="rounded-2xl border border-white/10 bg-[#09080F] p-4 sm:p-6">
+            {/* Arena de Duelo Roblox GvG Interactiva */}
+            <div className="rounded-2xl border border-[#8B5CF6]/30 bg-[#09080F] p-4 sm:p-6 shadow-inner">
               <div className="flex items-center justify-between text-xs font-black uppercase tracking-wider mb-2">
-                <span className="text-[#F472B6] flex items-center gap-1.5">
-                  🌹 VILLANOS (ROSAS) &bull; 1,480 PTS
+                <span className="text-[#F472B6] flex items-center gap-2">
+                  🌹 VILLANOS: ROSAS (2,450 PTS)
                 </span>
-                <span className="text-[#FBBF24] font-mono text-sm">VS</span>
-                <span className="text-[#818CF8] flex items-center gap-1.5">
-                  HÉROES (GGs) &bull; 2,120 PTS ⚡
+                <div className="flex items-center gap-2 bg-[#14111D] border border-white/10 px-3 py-1 rounded-xl">
+                  <Trophy className="h-4 w-4 text-[#FBBF24]" />
+                  <span className="font-mono text-xs font-bold text-white">META WINS: {simWins}</span>
+                </div>
+                <span className="text-[#818CF8] flex items-center gap-2">
+                  HÉROES: GGs (3,120 PTS) ⚡
                 </span>
               </div>
 
-              {/* Barra de tira y afloja */}
-              <div className="relative h-6 w-full rounded-full bg-[#1E1A2B] overflow-hidden p-1 border border-white/10">
+              {/* Barra de progreso interactiva */}
+              <div className="relative h-7 w-full rounded-full bg-[#1A1429] overflow-hidden p-1 border border-[#8B5CF6]/30 shadow-[0_0_20px_rgba(139,92,246,0.3)]">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-[#F472B6] via-[#8B5CF6] to-[#818CF8] transition-all duration-500 shadow-[0_0_20px_rgba(139,92,246,0.6)]"
-                  style={{ width: '58%' }}
+                  className="h-full rounded-full bg-gradient-to-r from-[#F472B6] via-[#8B5CF6] to-[#818CF8] transition-all duration-700 shadow-[0_0_25px_rgba(139,92,246,0.7)]"
+                  style={{ width: '56%' }}
                 />
               </div>
 
-              {/* Grid de regalos interactivos en la preview */}
+              {/* Regalos interactivos activos en el duelo */}
               <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 text-left">
-                <div className="rounded-xl border border-[#F472B6]/30 bg-[#14111D] p-3 flex items-center gap-3">
-                  <img src="./gifts/leon-the-kitten-4888-coins.webp" alt="Leon" className="h-10 w-10 object-contain drop-shadow" />
+                <div
+                  onClick={() => setSimWins(Math.max(0, simWins - 15))}
+                  className="rounded-xl border border-[#F472B6]/40 bg-[#14111D] p-3 flex items-center gap-3 cursor-pointer hover:border-[#F472B6] transition-all"
+                  title="Haz clic para simular donación de Gatito León"
+                >
+                  <img src="./gifts/leon-the-kitten-4888-coins.webp" alt="Gatito León" className="h-11 w-11 object-contain drop-shadow" />
                   <div>
                     <div className="font-bold text-xs text-white">Gatito León</div>
-                    <div className="font-mono text-[11px] font-black text-[#F472B6]">-15 WINS</div>
+                    <div className="font-mono text-[11px] font-black text-[#F472B6]">-15 WINs</div>
                   </div>
                 </div>
 
-                <div className="rounded-xl border border-[#F472B6]/30 bg-[#14111D] p-3 flex items-center gap-3">
-                  <img src="./gifts/rose-1-coins.webp" alt="Rose" className="h-10 w-10 object-contain drop-shadow" />
+                <div
+                  className="rounded-xl border border-[#F472B6]/40 bg-[#14111D] p-3 flex items-center gap-3"
+                >
+                  <img src="./gifts/rose-1-coins.webp" alt="Rosa" className="h-11 w-11 object-contain drop-shadow" />
                   <div>
                     <div className="font-bold text-xs text-white">Rosa TikTok</div>
-                    <div className="font-mono text-[11px] font-black text-[#F472B6]">+10 PUNTOS</div>
+                    <div className="font-mono text-[11px] font-black text-[#F472B6]">+10 Pts</div>
                   </div>
                 </div>
 
-                <div className="rounded-xl border border-[#818CF8]/30 bg-[#14111D] p-3 flex items-center gap-3">
-                  <img src="./gifts/gg-1-coins.webp" alt="GG" className="h-10 w-10 object-contain drop-shadow" />
+                <div
+                  className="rounded-xl border border-[#818CF8]/40 bg-[#14111D] p-3 flex items-center gap-3"
+                >
+                  <img src="./gifts/gg-1-coins.webp" alt="GG" className="h-11 w-11 object-contain drop-shadow" />
                   <div>
                     <div className="font-bold text-xs text-white">GG Gamer</div>
-                    <div className="font-mono text-[11px] font-black text-[#818CF8]">+10 PUNTOS</div>
+                    <div className="font-mono text-[11px] font-black text-[#818CF8]">+10 Pts</div>
                   </div>
                 </div>
 
-                <div className="rounded-xl border border-[#818CF8]/30 bg-[#14111D] p-3 flex items-center gap-3">
-                  <img src="./gifts/flying-jets-5000-coins.webp" alt="Jets" className="h-10 w-10 object-contain drop-shadow" />
+                <div
+                  onClick={() => setSimWins(simWins + 15)}
+                  className="rounded-xl border border-[#818CF8]/40 bg-[#14111D] p-3 flex items-center gap-3 cursor-pointer hover:border-[#34D399] transition-all"
+                  title="Haz clic para simular donación de Jets"
+                >
+                  <img src="./gifts/flying-jets-5000-coins.webp" alt="Jets" className="h-11 w-11 object-contain drop-shadow" />
                   <div>
                     <div className="font-bold text-xs text-white">Jets 5000</div>
-                    <div className="font-mono text-[11px] font-black text-[#34D399]">+15 WINS</div>
+                    <div className="font-mono text-[11px] font-black text-[#34D399]">+15 WINs</div>
                   </div>
                 </div>
               </div>
@@ -243,165 +318,288 @@ export default function App() {
           <div className="grid grid-cols-2 gap-6 md:grid-cols-4 text-center">
             <div>
               <div className="font-mono text-3xl md:text-4xl font-black text-[#34D399]">0 ms</div>
-              <div className="text-xs text-[#B8B2C8] mt-1">Latencia en eventos y RCON</div>
+              <div className="text-xs text-[#B8B2C8] mt-1 font-semibold">Latencia Webcast & RCON</div>
             </div>
             <div>
               <div className="font-mono text-3xl md:text-4xl font-black text-[#C4B5FD]">+1,770</div>
-              <div className="text-xs text-[#B8B2C8] mt-1">Regalos de TikTok mapeados</div>
+              <div className="text-xs text-[#B8B2C8] mt-1 font-semibold">Regalos de TikTok Mapeados</div>
             </div>
             <div>
               <div className="font-mono text-3xl md:text-4xl font-black text-[#FBBF24]">60 FPS</div>
-              <div className="text-xs text-[#B8B2C8] mt-1">Overlays GPU fluidos en OBS</div>
+              <div className="text-xs text-[#B8B2C8] mt-1 font-semibold">Aceleración GPU en OBS Studio</div>
             </div>
             <div>
               <div className="font-mono text-3xl md:text-4xl font-black text-[#818CF8]">2 seg</div>
-              <div className="text-xs text-[#B8B2C8] mt-1">Actualización in-place sin desinstalar</div>
+              <div className="text-xs text-[#B8B2C8] mt-1 font-semibold">Actualizaciones In-Place NSIS</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ================= 4. MÓDULOS DE LA SUITE ================= */}
+      {/* ================= 4. SHOWCASE DE MÓDULOS CON GRÁFICOS OFICIALES ================= */}
       <section id="features" className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="font-mono text-xs font-black uppercase tracking-widest text-[#A78BFA]">Módulos Profesionales</span>
+            <span className="font-mono text-xs font-black uppercase tracking-widest text-[#A78BFA]">
+              Módulos Profesionales
+            </span>
             <h2 className="mt-2 font-extrabold text-3xl sm:text-5xl text-white">
-              Todo lo que necesitas para tu canal en una sola app
+              Todo el poder para tu transmisión en un solo panel
             </h2>
             <p className="mt-4 text-sm sm:text-base text-[#B8B2C8]">
-              Olvídate de pagar 4 suscripciones distintas de páginas web lentas. Galactik Live corre nativamente en tu computadora.
+              Sin suscripciones web dispersas ni software lento. Galactik Live corre nativo en Windows y levanta tus overlays locales en milisegundos.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Card 1: Roblox Obby GvG */}
-            <div id="roblox" className="group rounded-3xl border border-[#8B5CF6]/30 bg-[#14111D] p-6 shadow-xl hover:border-[#8B5CF6] transition-all">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#8B5CF6]/20 text-[#C4B5FD] border border-[#8B5CF6]/40 mb-5">
-                <Gamepad2 className="h-6 w-6" />
+            {/* Card 1: Roblox Obby GvG con Banner Oficial */}
+            <div id="roblox" className="group rounded-3xl border border-[#8B5CF6]/35 bg-[#14111D] overflow-hidden shadow-2xl hover:border-[#8B5CF6] transition-all flex flex-col justify-between">
+              <div>
+                <div className="relative h-44 w-full overflow-hidden bg-[#09080F]">
+                  <img
+                    src="./assets/banner-roblox-duel-pro.png"
+                    alt="Roblox GvG Banner"
+                    className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = './assets/card-roblox-bg.png';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#14111D] via-transparent to-transparent" />
+                  <span className="absolute top-3 right-3 rounded-full bg-[#8B5CF6] px-2.5 py-0.5 font-mono text-[10px] font-black uppercase text-white shadow-lg">
+                    ★ MÁS POPULAR
+                  </span>
+                </div>
+                <div className="p-6">
+                  <h3 className="font-extrabold text-xl text-white">Roblox Obby GvG (Gift vs Gift)</h3>
+                  <p className="mt-2 text-xs text-[#B8B2C8] leading-relaxed">
+                    Duelo interactivo en vivo: barra central Rosa vs GG, 2 columnas arrastrables con regalos asignados, contador de victorias (WINs), meta de likes y 8 modos de overlay listos para OBS (720x1080).
+                  </p>
+                  <ul className="mt-4 flex flex-col gap-1.5 text-xs text-[#D4D4D8]">
+                    <li className="flex items-center gap-2">• <strong className="text-white">18+ Regalos interactivos</strong> en pantalla</li>
+                    <li className="flex items-center gap-2">• Efectos de sonido meme automáticos</li>
+                    <li className="flex items-center gap-2">• Reordenamiento drag & drop instantáneo</li>
+                  </ul>
+                </div>
               </div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#F472B6]">Módulo Principal</span>
-              <h3 className="mt-1 font-extrabold text-xl text-white">Roblox Obby GvG (Gift vs Gift)</h3>
-              <p className="mt-2 text-xs text-[#B8B2C8] leading-relaxed">
-                El modo más viral de TikTok: barra de duelo Rosa vs GG en tiempo real, 2 columnas arrastrables (Villanos y Héroes), contador de victorias (WINs), meta de likes automática y visor OBS 720x1080.
-              </p>
-              <ul className="mt-4 flex flex-col gap-1.5 text-xs text-[#D4D4D8]">
-                <li className="flex items-center gap-2">• <strong className="text-white">18+ Regalos configurables</strong> con drag & drop</li>
-                <li className="flex items-center gap-2">• Sonidos de meme automáticos por regalo</li>
-                <li className="flex items-center gap-2">• 8 modos modulares de overlay para OBS</li>
-              </ul>
+              <div className="p-6 pt-0">
+                <a
+                  href="#pricing"
+                  className="flex items-center justify-between rounded-xl border border-[#8B5CF6]/30 bg-[#8B5CF6]/10 px-4 py-2.5 text-xs font-bold text-[#C4B5FD] hover:bg-[#8B5CF6]/20 transition-colors"
+                >
+                  <span>Incluido en todos los planes</span>
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+              </div>
             </div>
 
-            {/* Card 2: Minecraft Studio */}
-            <div id="minecraft" className="group rounded-3xl border border-[#34D399]/30 bg-[#14111D] p-6 shadow-xl hover:border-[#34D399] transition-all">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#34D399]/20 text-[#34D399] border border-[#34D399]/40 mb-5">
-                <Box className="h-6 w-6" />
+            {/* Card 2: Minecraft Studio 1.20.1 con Banner Oficial */}
+            <div id="minecraft" className="group rounded-3xl border border-[#34D399]/35 bg-[#14111D] overflow-hidden shadow-2xl hover:border-[#34D399] transition-all flex flex-col justify-between">
+              <div>
+                <div className="relative h-44 w-full overflow-hidden bg-[#09080F]">
+                  <img
+                    src="./assets/minecraft-banner-steve.png"
+                    alt="Minecraft Banner"
+                    className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = './assets/card-minecraft-bg.png';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#14111D] via-transparent to-transparent" />
+                  <span className="absolute top-3 right-3 rounded-full bg-[#34D399] px-2.5 py-0.5 font-mono text-[10px] font-black uppercase text-black shadow-lg">
+                    PAPER 1.20.1
+                  </span>
+                </div>
+                <div className="p-6">
+                  <h3 className="font-extrabold text-xl text-white">Minecraft Studio & Plugin SurvivalGZ7</h3>
+                  <p className="mt-2 text-xs text-[#B8B2C8] leading-relaxed">
+                    Conexión nativa por socket RCON a PaperMC. Invocación de jefes cinematográficos por regalos (Warden, Titanes, Rayos, Hoyos), tótems de salvación y visión nocturna infinita en segundo plano.
+                  </p>
+                  <ul className="mt-4 flex flex-col gap-1.5 text-xs text-[#D4D4D8]">
+                    <li className="flex items-center gap-2">• Plugin oficial <strong className="text-white">SurvivalGZ7.jar</strong> integrado</li>
+                    <li className="flex items-center gap-2">• Hasta 30 reglas personalizables (PRO)</li>
+                    <li className="flex items-center gap-2">• Kit Inicial configurable en 1 clic (PLUS)</li>
+                  </ul>
+                </div>
               </div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#34D399]">PaperMC 1.20.1</span>
-              <h3 className="mt-1 font-extrabold text-xl text-white">Minecraft Studio & Plugin SurvivalGZ7</h3>
-              <p className="mt-2 text-xs text-[#B8B2C8] leading-relaxed">
-                Conexión instantánea por RCON con PaperMC. Invocación de jefes por donaciones, tótems cinemáticos, rayos, creepers y visión nocturna infinita en segundo plano (anti-wipe).
-              </p>
-              <ul className="mt-4 flex flex-col gap-1.5 text-xs text-[#D4D4D8]">
-                <li className="flex items-center gap-2">• Plugin oficial <strong className="text-white">SurvivalGZ7.jar</strong> integrado</li>
-                <li className="flex items-center gap-2">• Hasta 30 reglas y kits configurables</li>
-                <li className="flex items-center gap-2">• Descarga e instalación de servidor en 1 clic</li>
-              </ul>
+              <div className="p-6 pt-0">
+                <a
+                  href="#pricing"
+                  className="flex items-center justify-between rounded-xl border border-[#34D399]/30 bg-[#34D399]/10 px-4 py-2.5 text-xs font-bold text-[#34D399] hover:bg-[#34D399]/20 transition-colors"
+                >
+                  <span>Vanilla Free · Plugins en PLUS & PRO</span>
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+              </div>
             </div>
 
-            {/* Card 3: Alertas Croma Key */}
-            <div id="alerts" className="group rounded-3xl border border-[#818CF8]/30 bg-[#14111D] p-6 shadow-xl hover:border-[#818CF8] transition-all">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#818CF8]/20 text-[#818CF8] border border-[#818CF8]/40 mb-5">
-                <Tv className="h-6 w-6" />
+            {/* Card 3: Alertas con Croma Key GPU con Banner Oficial */}
+            <div id="alerts" className="group rounded-3xl border border-[#818CF8]/35 bg-[#14111D] overflow-hidden shadow-2xl hover:border-[#818CF8] transition-all flex flex-col justify-between">
+              <div>
+                <div className="relative h-44 w-full overflow-hidden bg-[#09080F]">
+                  <img
+                    src="./assets/banner-alerts-pro.png"
+                    alt="Alertas Croma Banner"
+                    className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#14111D] via-transparent to-transparent" />
+                  <span className="absolute top-3 right-3 rounded-full bg-[#818CF8] px-2.5 py-0.5 font-mono text-[10px] font-black uppercase text-white shadow-lg">
+                    CHROMA GPU
+                  </span>
+                </div>
+                <div className="p-6">
+                  <h3 className="font-extrabold text-xl text-white">Alertas con Croma Key GPU</h3>
+                  <p className="mt-2 text-xs text-[#B8B2C8] leading-relaxed">
+                    Elimina el fondo verde, azul, negro o morado de cualquier video en tiempo real sin sobrecargar el procesador. Compatible con videos propios .mp4 y .webm en formato 9:16 y 16:9.
+                  </p>
+                  <ul className="mt-4 flex flex-col gap-1.5 text-xs text-[#D4D4D8]">
+                    <li className="flex items-center gap-2">• Shaders WebGL acelerados por tarjeta de video</li>
+                    <li className="flex items-center gap-2">• Mensajes dinámicos: <code className="text-[#C4B5FD]">&#123;user&#125; envió &#123;gift&#125;</code></li>
+                    <li className="flex items-center gap-2">• Botonera de clips manuales para MVP y sustos</li>
+                  </ul>
+                </div>
               </div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#818CF8]">Hardware GPU</span>
-              <h3 className="mt-1 font-extrabold text-xl text-white">Alertas con Croma Key GPU</h3>
-              <p className="mt-2 text-xs text-[#B8B2C8] leading-relaxed">
-                Quita el fondo verde, azul, negro o morado de cualquier video automáticamente. Muestra alertas de regalos en 9:16 vertical u horizontal, y sube tus propios videos .mp4 y .webm.
-              </p>
-              <ul className="mt-4 flex flex-col gap-1.5 text-xs text-[#D4D4D8]">
-                <li className="flex items-center gap-2">• Recorte Croma Key por shaders WebGL</li>
-                <li className="flex items-center gap-2">• Textos dinámicos: <code className="text-[#C4B5FD]">&#123;user&#125; envió &#123;gift&#125;</code></li>
-                <li className="flex items-center gap-2">• Clips manuales de MVP, entrada y victoria</li>
-              </ul>
+              <div className="p-6 pt-0">
+                <a
+                  href="#pricing"
+                  className="flex items-center justify-between rounded-xl border border-[#818CF8]/30 bg-[#818CF8]/10 px-4 py-2.5 text-xs font-bold text-[#818CF8] hover:bg-[#818CF8]/20 transition-colors"
+                >
+                  <span>Exclusivo Plan PRO ($15) / Pase 24h ($1)</span>
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+              </div>
             </div>
 
-            {/* Card 4: Voz TTS Neural */}
-            <div id="tts" className="group rounded-3xl border border-[#F472B6]/30 bg-[#14111D] p-6 shadow-xl hover:border-[#F472B6] transition-all">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F472B6]/20 text-[#F472B6] border border-[#F472B6]/40 mb-5">
-                <Mic className="h-6 w-6" />
+            {/* Card 4: Voz TTS Neural & Personajes */}
+            <div id="tts" className="group rounded-3xl border border-[#F472B6]/35 bg-[#14111D] overflow-hidden shadow-2xl hover:border-[#F472B6] transition-all flex flex-col justify-between">
+              <div>
+                <div className="p-6 pb-2">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F472B6]/20 text-[#F472B6] border border-[#F472B6]/40 mb-4">
+                    <Mic className="h-6 w-6" />
+                  </div>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-[#F472B6]">Cero Robótico</span>
+                  <h3 className="mt-1 font-extrabold text-xl text-white">Voz TTS Natural & Personajes</h3>
+                  <p className="mt-2 text-xs text-[#B8B2C8] leading-relaxed">
+                    Lector de chat con voz humana real en español. Incluye presets de personajes (<strong className="text-white">Anime/Kawaii, Ardilla/Stitch, Locutor Épico, Titán Grave</strong>), anunciador de regalos y filtro anti-insultos.
+                  </p>
+                  <ul className="mt-4 flex flex-col gap-1.5 text-xs text-[#D4D4D8]">
+                    <li className="flex items-center gap-2">• Permisos por Quiéreme, Suscriptores y Mods</li>
+                    <li className="flex items-center gap-2">• Prioridad automática en cola para donadores</li>
+                    <li className="flex items-center gap-2">• Filtro de palabras prohibidas estricto</li>
+                  </ul>
+                </div>
               </div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#F472B6]">Zero Robótica</span>
-              <h3 className="mt-1 font-extrabold text-xl text-white">Voz TTS Natural & Personajes</h3>
-              <p className="mt-2 text-xs text-[#B8B2C8] leading-relaxed">
-                Lee los comentarios del chat con voz humana real. Incluye presets de personajes (<strong className="text-white">Anime/Kawaii, Ardilla/Stitch, Locutor Épico</strong>), filtro anti-insultos y permisos especiales.
-              </p>
-              <ul className="mt-4 flex flex-col gap-1.5 text-xs text-[#D4D4D8]">
-                <li className="flex items-center gap-2">• Permisos para Quiéreme, Suscriptores y Mods</li>
-                <li className="flex items-center gap-2">• Anuncio en voz alta de regalos y seguidores</li>
-                <li className="flex items-center gap-2">• Filtro estricto OWASP contra palabras tóxicas</li>
-              </ul>
+              <div className="p-6 pt-0">
+                <a
+                  href="#pricing"
+                  className="flex items-center justify-between rounded-xl border border-[#F472B6]/30 bg-[#F472B6]/10 px-4 py-2.5 text-xs font-bold text-[#F472B6] hover:bg-[#F472B6]/20 transition-colors"
+                >
+                  <span>2 Voces Free · Personajes en PRO</span>
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+              </div>
             </div>
 
-            {/* Card 5: Overlays & 5 Tops */}
-            <div className="group rounded-3xl border border-[#FBBF24]/30 bg-[#14111D] p-6 shadow-xl hover:border-[#FBBF24] transition-all">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FBBF24]/20 text-[#FBBF24] border border-[#FBBF24]/40 mb-5">
-                <Trophy className="h-6 w-6" />
+            {/* Card 5: Overlays & 5 Tops para OBS con Banner Oficial */}
+            <div className="group rounded-3xl border border-[#FBBF24]/35 bg-[#14111D] overflow-hidden shadow-2xl hover:border-[#FBBF24] transition-all flex flex-col justify-between">
+              <div>
+                <div className="relative h-44 w-full overflow-hidden bg-[#09080F]">
+                  <img
+                    src="./assets/banner-tops-pro.png"
+                    alt="Tops Overlays Banner"
+                    className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#14111D] via-transparent to-transparent" />
+                  <span className="absolute top-3 right-3 rounded-full bg-[#FBBF24] px-2.5 py-0.5 font-mono text-[10px] font-black uppercase text-black shadow-lg">
+                    5 OVERLAYS
+                  </span>
+                </div>
+                <div className="p-6">
+                  <h3 className="font-extrabold text-xl text-white">Overlays de Tops & Reloj Subathon</h3>
+                  <p className="mt-2 text-xs text-[#B8B2C8] leading-relaxed">
+                    Widgets dinámicos para motivar donaciones: Top Donadores con coronas, Duelo por la Corona, Top Tap Taps, Top 3 Regalos y el <strong className="text-white">Reloj Extensible</strong> que suma tiempo automáticamente cuando envían regalos.
+                  </p>
+                  <ul className="mt-4 flex flex-col gap-1.5 text-xs text-[#D4D4D8]">
+                    <li className="flex items-center gap-2">• Reloj Extensible para directos 24 horas</li>
+                    <li className="flex items-center gap-2">• Animaciones de corona para el Top 1</li>
+                    <li className="flex items-center gap-2">• Personalización de colores, fondos y estilos</li>
+                  </ul>
+                </div>
               </div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#FBBF24]">OBS Studio</span>
-              <h3 className="mt-1 font-extrabold text-xl text-white">Overlays de Tops & Reloj Subathon</h3>
-              <p className="mt-2 text-xs text-[#B8B2C8] leading-relaxed">
-                Coloca marcadores dinámicos que motivan al público a donar: Top Donadores, Duelo por la Corona, Top Tap Taps, Top 3 Regalos y el famoso Reloj Extensible que suma tiempo con regalos.
-              </p>
-              <ul className="mt-4 flex flex-col gap-1.5 text-xs text-[#D4D4D8]">
-                <li className="flex items-center gap-2">• Reloj Extensible para directos 24 horas</li>
-                <li className="flex items-center gap-2">• Podio de donadores y animaciones de corona</li>
-                <li className="flex items-center gap-2">• Personalización completa de colores y bordes</li>
-              </ul>
+              <div className="p-6 pt-0">
+                <a
+                  href="#pricing"
+                  className="flex items-center justify-between rounded-xl border border-[#FBBF24]/30 bg-[#FBBF24]/10 px-4 py-2.5 text-xs font-bold text-[#FBBF24] hover:bg-[#FBBF24]/20 transition-colors"
+                >
+                  <span>Reloj y Top 3 en PLUS y PRO</span>
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+              </div>
             </div>
 
-            {/* Card 6: Botonera de Sonidos & Memes */}
-            <div className="group rounded-3xl border border-[#C4B5FD]/30 bg-[#14111D] p-6 shadow-xl hover:border-[#C4B5FD] transition-all">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#C4B5FD]/20 text-[#C4B5FD] border border-[#C4B5FD]/40 mb-5">
-                <Volume2 className="h-6 w-6" />
+            {/* Card 6: Botonera de Memes con Banner Oficial */}
+            <div className="group rounded-3xl border border-[#C4B5FD]/35 bg-[#14111D] overflow-hidden shadow-2xl hover:border-[#C4B5FD] transition-all flex flex-col justify-between">
+              <div>
+                <div className="relative h-44 w-full overflow-hidden bg-[#09080F]">
+                  <img
+                    src="./assets/banner-sounds-pro.png"
+                    alt="Sounds Memes Banner"
+                    className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#14111D] via-transparent to-transparent" />
+                  <span className="absolute top-3 right-3 rounded-full bg-[#C4B5FD] px-2.5 py-0.5 font-mono text-[10px] font-black uppercase text-black shadow-lg">
+                    60+ MEMES
+                  </span>
+                </div>
+                <div className="p-6">
+                  <h3 className="font-extrabold text-xl text-white">Botonera de Memes & Audios Propios</h3>
+                  <p className="mt-2 text-xs text-[#B8B2C8] leading-relaxed">
+                    Dispara sonidos virales con latencia cero (Taco Bell, Vine Boom, Wow Anime, Pedro Pedro, etc.) o sube tus propios audios (.mp3/.wav) para vincularlos a cualquier regalo o comando del chat.
+                  </p>
+                  <ul className="mt-4 flex flex-col gap-1.5 text-xs text-[#D4D4D8]">
+                    <li className="flex items-center gap-2">• Catálogo gratuito de memes 100% libre</li>
+                    <li className="flex items-center gap-2">• Subida de audios propios (PLUS y PRO)</li>
+                    <li className="flex items-center gap-2">• Control de volumen y mezclador maestro</li>
+                  </ul>
+                </div>
               </div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#C4B5FD]">Instantáneo</span>
-              <h3 className="mt-1 font-extrabold text-xl text-white">Botonera de Memes & Audios Propios</h3>
-              <p className="mt-2 text-xs text-[#B8B2C8] leading-relaxed">
-                Dispara más de 60 memes virales al instante o sube tus propios archivos de audio (.mp3, .wav, .ogg) para vincularlos a tus regalos y comandos del chat sin retraso.
-              </p>
-              <ul className="mt-4 flex flex-col gap-1.5 text-xs text-[#D4D4D8]">
-                <li className="flex items-center gap-2">• Catálogo gratuito de sonidos de memes virales</li>
-                <li className="flex items-center gap-2">• Subida de audios personalizados (.mp3/.wav)</li>
-                <li className="flex items-center gap-2">• Control de volumen maestro independiente</li>
-              </ul>
+              <div className="p-6 pt-0">
+                <a
+                  href="#pricing"
+                  className="flex items-center justify-between rounded-xl border border-[#C4B5FD]/30 bg-[#C4B5FD]/10 px-4 py-2.5 text-xs font-bold text-[#C4B5FD] hover:bg-[#C4B5FD]/20 transition-colors"
+                >
+                  <span>Subida de audios en PLUS ($9) y PRO ($15)</span>
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* ================= 5. SECCIÓN DE PLANES Y PRECIOS ================= */}
-      <section id="pricing" className="py-20 md:py-32 border-t border-white/10 bg-[#0D0B14]/80 relative">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[#8B5CF6]/10 blur-[140px] pointer-events-none rounded-full" />
+      <section id="pricing" className="py-20 md:py-32 border-t border-white/10 bg-[#0D0B14]/90 relative">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] bg-[#8B5CF6]/15 blur-[150px] pointer-events-none rounded-full" />
 
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <span className="font-mono text-xs font-black uppercase tracking-widest text-[#34D399]">Planes Transparentes</span>
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="text-center max-w-3xl mx-auto mb-14">
+            <span className="font-mono text-xs font-black uppercase tracking-widest text-[#34D399]">
+              Tarifas Claras y Flexibles
+            </span>
             <h2 className="mt-2 font-extrabold text-3xl sm:text-5xl text-white">
               Elige el plan ideal para tu canal
             </h2>
             <p className="mt-4 text-sm sm:text-base text-[#B8B2C8]">
-              Empieza 100% gratis con nuestro modo invitado o adquiere el plan que impulse tus donaciones al siguiente nivel.
+              Comienza hoy sin poner tarjeta en el modo Invitado, o desbloquea todo el potencial de tu stream con nuestros planes mensuales y pases express.
             </p>
 
-            {/* Selector de moneda USD / PEN */}
-            <div className="mt-6 inline-flex items-center gap-1.5 rounded-2xl border border-white/10 bg-[#14111D] p-1.5">
+            {/* Selector de Moneda USD / PEN */}
+            <div className="mt-7 inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-[#14111D] p-1.5 shadow-xl">
               <button
                 type="button"
                 onClick={() => setCurrency('USD')}
-                className={`rounded-xl px-4 py-1.5 text-xs font-black transition-all ${
+                className={`rounded-xl px-5 py-2 text-xs font-black transition-all ${
                   currency === 'USD'
-                    ? 'bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] text-white shadow-md'
+                    ? 'bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] text-white shadow-lg'
                     : 'text-[#B8B2C8] hover:text-white'
                 }`}
               >
@@ -410,9 +608,9 @@ export default function App() {
               <button
                 type="button"
                 onClick={() => setCurrency('PEN')}
-                className={`rounded-xl px-4 py-1.5 text-xs font-black transition-all ${
+                className={`rounded-xl px-5 py-2 text-xs font-black transition-all ${
                   currency === 'PEN'
-                    ? 'bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] text-white shadow-md'
+                    ? 'bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] text-white shadow-lg'
                     : 'text-[#B8B2C8] hover:text-white'
                 }`}
               >
@@ -432,7 +630,7 @@ export default function App() {
                   <span className="text-3xl font-black text-white">$0</span>
                   <span className="text-xs text-[#8E87A0] font-sans">USD / gratis</span>
                 </div>
-                <p className="text-xs text-[#B8B2C8] mt-2">Para descargar y probar al instante sin crearte cuenta.</p>
+                <p className="text-xs text-[#B8B2C8] mt-2">Descarga y prueba hoy mismo sin crearte cuenta.</p>
 
                 <ul className="mt-6 flex flex-col gap-2.5 text-xs text-[#D4D4D8]">
                   <li className="flex items-center gap-2">
@@ -460,7 +658,7 @@ export default function App() {
 
               <a
                 href={DOWNLOAD_URL}
-                className="mt-8 block w-full rounded-2xl border border-white/15 bg-[#09080F] py-3 text-center text-xs font-black uppercase tracking-wider text-white hover:border-[#8B5CF6] hover:bg-[#8B5CF6]/10 transition-all"
+                className="mt-8 block w-full rounded-2xl border border-white/15 bg-[#09080F] py-3 text-center text-xs font-black uppercase tracking-wider text-white hover:border-[#8B5CF6] hover:bg-[#8B5CF6]/15 transition-all"
               >
                 Descargar y Probar
               </a>
@@ -468,18 +666,18 @@ export default function App() {
 
             {/* 2. Free Registrado */}
             <div className="flex flex-col justify-between rounded-3xl border border-[#34D399]/40 bg-[#14111D] p-6 shadow-xl relative">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#34D399] px-3 py-0.5 text-[10px] font-black uppercase text-black">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#34D399] px-3.5 py-0.5 text-[10px] font-black uppercase text-black shadow-md">
                 Doble de tiempo
               </div>
 
               <div>
-                <span className="text-[10px] font-black uppercase tracking-wider text-[#34D399]">Con Cuenta Creada</span>
+                <span className="text-[10px] font-black uppercase tracking-wider text-[#34D399]">Solo con tu Correo</span>
                 <h3 className="font-extrabold text-xl text-white mt-1">FREE Registrado</h3>
                 <div className="mt-4 flex items-baseline gap-1 font-mono">
                   <span className="text-3xl font-black text-white">$0</span>
                   <span className="text-xs text-[#8E87A0] font-sans">USD / gratis</span>
                 </div>
-                <p className="text-xs text-[#B8B2C8] mt-2">Solo ingresa tu correo en Inicio para duplicar tu tiempo diario.</p>
+                <p className="text-xs text-[#B8B2C8] mt-2">Regístrate en Inicio y duplica tu tiempo diario automáticamente.</p>
 
                 <ul className="mt-6 flex flex-col gap-2.5 text-xs text-[#D4D4D8]">
                   <li className="flex items-center gap-2">
@@ -528,7 +726,7 @@ export default function App() {
                     {currency === 'USD' ? 'USD / mes' : 'PEN / mes'}
                   </span>
                 </div>
-                <p className="text-xs text-[#C4B5FD] mt-2">Roblox GvG completo y hasta 10 horas de directo al día.</p>
+                <p className="text-xs text-[#C4B5FD] mt-2">Roblox GvG completo, sonidos propios y hasta 10h de directo.</p>
 
                 <ul className="mt-6 flex flex-col gap-2.5 text-xs text-[#D4D4D8]">
                   <li className="flex items-center gap-2">
@@ -559,7 +757,7 @@ export default function App() {
               </div>
 
               <a
-                href={getWaUrl('Plan PLUS ($9 USD/mes)')}
+                href={WHATSAPP_URL}
                 target="_blank"
                 rel="noreferrer"
                 className="mt-8 block w-full rounded-2xl bg-[#818CF8] py-3 text-center text-xs font-black uppercase tracking-wider text-black hover:brightness-110 transition-all shadow-lg"
@@ -569,13 +767,13 @@ export default function App() {
             </div>
 
             {/* 4. Plan PRO $15 - RECOMENDADO */}
-            <div className="flex flex-col justify-between rounded-3xl border-2 border-[#8B5CF6] bg-gradient-to-b from-[#1C142C] to-[#14111D] p-6 shadow-[0_0_35px_rgba(139,92,246,0.35)] relative">
+            <div className="flex flex-col justify-between rounded-3xl border-2 border-[#8B5CF6] bg-gradient-to-b from-[#1C142C] to-[#14111D] p-6 shadow-[0_0_35px_rgba(139,92,246,0.4)] relative">
               <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-[#FBBF24] to-[#F59E0B] px-3.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-black shadow-lg">
                 ★ RECOMENDADO
               </div>
 
               <div>
-                <span className="text-[10px] font-black uppercase tracking-wider text-[#FBBF24]">Todo Desbloqueado</span>
+                <span className="text-[10px] font-black uppercase tracking-wider text-[#FBBF24]">Suite Completa</span>
                 <h3 className="font-extrabold text-xl text-white mt-1 flex items-center gap-1.5">
                   <Crown className="h-5 w-5 text-[#FBBF24]" /> Plan PRO
                 </h3>
@@ -622,7 +820,7 @@ export default function App() {
               </div>
 
               <a
-                href={getWaUrl('Plan PRO ($15 USD/mes)')}
+                href={WHATSAPP_URL}
                 target="_blank"
                 rel="noreferrer"
                 className="mt-8 block w-full rounded-2xl bg-gradient-to-r from-[#8B5CF6] via-[#7C3AED] to-[#6D28D9] py-3 text-center text-xs font-black uppercase tracking-wider text-white shadow-[0_0_20px_rgba(139,92,246,0.4)] hover:brightness-110 transition-all"
@@ -633,34 +831,34 @@ export default function App() {
           </div>
 
           {/* Tarjeta de Pases PRO Express */}
-          <div className="mt-8 rounded-3xl border border-[#FBBF24]/30 bg-[#14111D] p-6 shadow-xl max-w-4xl mx-auto">
+          <div className="mt-8 rounded-3xl border border-[#FBBF24]/35 bg-[#14111D] p-6 shadow-xl max-w-4xl mx-auto">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <span className="rounded-full bg-[#FBBF24]/15 border border-[#FBBF24]/40 px-3 py-1 text-[10px] font-black uppercase text-[#FBBF24]">
                   Pases PRO Express
                 </span>
                 <h3 className="text-xl font-extrabold text-white mt-2">
-                  ¿Solo vas a transmitir este fin de semana? Usa un Pase PRO
+                  ¿Solo vas a transmitir un fin de semana? Adquiere un Pase PRO
                 </h3>
                 <p className="text-xs text-[#B8B2C8] mt-1 max-w-xl">
-                  Accede a todas las funciones PRO (Croma Key, Plugins Minecraft, TTS de Personajes y horas ilimitadas) sin atarte a un mes.
+                  Accede a todas las funciones PRO (Croma Key, Plugins Minecraft, TTS de Personajes y horas ilimitadas) sin atarte a una mensualidad.
                 </p>
               </div>
 
               <div className="flex flex-wrap items-center gap-3">
                 <a
-                  href={getWaUrl('Pase PRO 24 Horas ($1 USD)')}
+                  href={WHATSAPP_URL}
                   target="_blank"
                   rel="noreferrer"
-                  className="rounded-2xl border border-[#34D399]/40 bg-[#34D399]/10 px-5 py-3 text-xs font-black text-[#34D399] hover:bg-[#34D399]/20 transition-all text-center"
+                  className="rounded-2xl border border-[#34D399]/40 bg-[#34D399]/15 px-5 py-3 text-xs font-black text-[#34D399] hover:bg-[#34D399]/25 transition-all text-center"
                 >
                   ⚡ Pase 24h &bull; {currency === 'USD' ? '$1 USD' : 'S/ 3.80 PEN'}
                 </a>
                 <a
-                  href={getWaUrl('Pase PRO 7 Días ($5 USD)')}
+                  href={WHATSAPP_URL}
                   target="_blank"
                   rel="noreferrer"
-                  className="rounded-2xl border border-[#FBBF24]/40 bg-[#FBBF24]/10 px-5 py-3 text-xs font-black text-[#FBBF24] hover:bg-[#FBBF24]/20 transition-all text-center"
+                  className="rounded-2xl border border-[#FBBF24]/40 bg-[#FBBF24]/15 px-5 py-3 text-xs font-black text-[#FBBF24] hover:bg-[#FBBF24]/25 transition-all text-center"
                 >
                   🔥 Pase 7 Días &bull; {currency === 'USD' ? '$5 USD' : 'S/ 19 PEN'}
                 </a>
@@ -680,20 +878,20 @@ export default function App() {
                 <span>Programa de Referidos Galactik</span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
-                Gana días gratis recomendando la app a tus amigos
+                Gana días gratis recomendando la app a tus amigos streamers
               </h2>
               <p className="mt-4 text-sm text-[#B8B2C8] leading-relaxed">
-                Si cuentas con un plan mensual PLUS o PRO activo, comparte tu código personal <strong className="text-white">REF-XXXXXX</strong>. Cada amigo nuevo que active un plan mensual con tu código te otorga <strong className="text-[#34D399]">+2 días extra automáticos</strong> a tu fecha de corte (hasta 5 amigos por mes = <strong className="text-white">+10 días gratis</strong>).
+                Si cuentas con un plan mensual PLUS o PRO activo, comparte tu código personal <strong className="text-white">REF-XXXXXX</strong>. Cada amigo nuevo que active un plan mensual con tu código te otorga <strong className="text-[#34D399]">+2 días extra automáticos</strong> a tu fecha de corte (hasta 5 amigos por mes = <strong className="text-white">+10 días gratis al mes</strong>).
               </p>
 
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#09080F] px-4 py-2.5 font-mono text-xs text-[#C4B5FD]">
                   <span>Ejemplo:</span>
-                  <strong className="text-white">REF-PRO2026</strong>
+                  <strong className="text-white">REF-GZ7PRO</strong>
                   <button
                     type="button"
                     onClick={handleCopyDemoRef}
-                    className="ml-2 text-[11px] text-[#34D399] hover:underline"
+                    className="ml-2 text-[11px] text-[#34D399] hover:underline cursor-pointer"
                   >
                     {copiedCode ? '¡Copiado!' : 'Copiar'}
                   </button>
@@ -711,7 +909,9 @@ export default function App() {
       <section id="faq" className="py-20 md:py-28 border-t border-white/10 bg-[#0D0B14]">
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
           <div className="text-center mb-12">
-            <span className="font-mono text-xs font-black uppercase tracking-widest text-[#818CF8]">Dudas Frecuentes</span>
+            <span className="font-mono text-xs font-black uppercase tracking-widest text-[#818CF8]">
+              Resolución de Dudas
+            </span>
             <h2 className="mt-2 font-extrabold text-3xl sm:text-4xl text-white">Preguntas Frecuentes</h2>
           </div>
 
@@ -748,7 +948,7 @@ export default function App() {
                   <button
                     type="button"
                     onClick={() => setOpenFaq(isOpen ? null : index)}
-                    className="flex w-full items-center justify-between p-4 sm:p-5 text-left text-sm font-bold text-white hover:text-[#C4B5FD] transition-colors"
+                    className="flex w-full items-center justify-between p-4 sm:p-5 text-left text-sm font-bold text-white hover:text-[#C4B5FD] transition-colors cursor-pointer"
                   >
                     <span>{faq.q}</span>
                     <ChevronDown className={`h-4 w-4 shrink-0 transition-transform ${isOpen ? 'rotate-180 text-[#8B5CF6]' : 'text-[#8E87A0]'}`} />
@@ -769,12 +969,17 @@ export default function App() {
       <footer className="border-t border-white/10 bg-[#09080F] py-12 text-xs text-[#8E87A0]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#8B5CF6]/20 border border-[#8B5CF6]/40 text-[#C4B5FD]">
-              <Sparkles className="h-4 w-4" />
-            </div>
+            <img
+              src="./galactk-logo.png"
+              alt="Galactik Live Logo"
+              className="h-8 w-auto object-contain"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = './favicon.png';
+              }}
+            />
             <div>
               <span className="font-bold text-white">Galactik Live &bull; Suite Interactiva</span>
-              <p className="text-[11px] text-[#8E87A0]">Desarrollado para la comunidad de streamers de TikTok Live.</p>
+              <p className="text-[11px] text-[#8E87A0]">Desarrollado para la comunidad de creadores de TikTok Live.</p>
             </div>
           </div>
 
@@ -782,7 +987,12 @@ export default function App() {
             <a href="#features" className="hover:text-white transition-colors">Funciones</a>
             <a href="#pricing" className="hover:text-white transition-colors">Planes</a>
             <a href={DOWNLOAD_URL} className="hover:text-white transition-colors">Descarga Directa</a>
-            <a href={getWaUrl('soporte general')} target="_blank" rel="noreferrer" className="text-[#34D399] hover:underline">WhatsApp Oficial</a>
+            <span className="text-[#818CF8] flex items-center gap-1 cursor-default">
+              <Disc3 className="h-3.5 w-3.5 text-[#5865F2]" /> Discord (Pronto)
+            </span>
+            <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="text-[#34D399] hover:underline flex items-center gap-1">
+              <MessageSquare className="h-3.5 w-3.5" /> wa.me/@cybergz7
+            </a>
           </div>
 
           <div className="text-center md:text-right text-[11px]">
