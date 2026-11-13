@@ -33,7 +33,9 @@ import {
 
 // Enlaces oficiales configurados según solicitud
 const WHATSAPP_URL = 'https://wa.me/@cybergz7';
-const DOWNLOAD_URL = 'https://github.com/cyber-gz7/galactik-landing/releases/latest/download/Galactik.Live_2.9.0_x64-setup.exe';
+// Cada release sube también una copia sin número de versión: el botón siempre baja la última.
+const DOWNLOAD_URL = 'https://github.com/cyber-gz7/galactik-landing/releases/latest/download/Galactik.Live_x64-setup.exe';
+const DISCORD_USER = 'cj7_tutoriales';
 
 export default function App() {
   const [currency, setCurrency] = useState<'USD' | 'PEN'>('USD');
@@ -69,7 +71,7 @@ export default function App() {
                     GALACTIK <span className="bg-gradient-to-r from-[#C4B5FD] via-[#8B5CF6] to-[#818CF8] bg-clip-text text-transparent">LIVE</span>
                   </span>
                   <span className="rounded-full bg-[#8B5CF6]/20 border border-[#8B5CF6]/40 px-2 py-0.2 font-mono text-[10px] font-bold text-[#C4B5FD]">
-                    v2.9.0
+                    v2.9.3
                   </span>
                 </div>
                 <span className="text-[10px] text-[#A78BFA] font-medium tracking-wide">
@@ -91,14 +93,13 @@ export default function App() {
           </nav>
 
           <div className="flex items-center gap-2.5">
-            {/* Badge de Discord Próximamente */}
+            {/* Discord: aún sin servidor, se atiende por mensaje directo */}
             <div
-              title="Servidor de Discord Oficial - Próximamente disponible"
+              title={`Escríbenos por Discord a ${DISCORD_USER}. Servidor oficial próximamente.`}
               className="hidden sm:flex items-center gap-1.5 rounded-xl border border-[#5865F2]/40 bg-[#5865F2]/10 px-3 py-2 text-xs font-bold text-[#818CF8] cursor-default"
             >
               <Disc3 className="h-3.5 w-3.5 text-[#5865F2] animate-spin" />
-              <span>Discord</span>
-              <span className="rounded bg-[#5865F2]/30 px-1.5 py-0.2 text-[9px] font-black uppercase text-white">Pronto</span>
+              <span>Discord: {DISCORD_USER}</span>
             </div>
 
             {/* Botón WhatsApp */}
@@ -159,7 +160,7 @@ export default function App() {
           {/* Badge superior */}
           <div className="inline-flex items-center gap-2 rounded-full border border-[#8B5CF6]/50 bg-[#14111D]/80 px-4 py-1.5 text-xs font-bold text-[#C4B5FD] shadow-[0_0_25px_rgba(139,92,246,0.3)] backdrop-blur-md mb-6">
             <span className="h-2 w-2 rounded-full bg-[#34D399] animate-pulse" />
-            <span>Versión 2.9.0 Oficial · Motor Rust en Tiempo Real · Compatible con OBS y TikTok Studio</span>
+            <span>Versión 2.9.3 Oficial · Motor Rust en Tiempo Real · Compatible con OBS y TikTok Studio</span>
           </div>
 
           <h1 className="font-extrabold text-4xl sm:text-6xl md:text-7xl tracking-tight text-white max-w-5xl mx-auto leading-[1.12]">
@@ -226,7 +227,7 @@ export default function App() {
                 <span className="h-3 w-3 rounded-full bg-[#34D399]" />
                 <span className="font-mono text-xs font-bold text-white flex items-center gap-2 ml-1">
                   <Laptop className="h-4 w-4 text-[#C4B5FD]" />
-                  Galactik Live v2.9.0 &bull; Panel de Control Activo
+                  Galactik Live v2.9.3 &bull; Panel de Control Activo
                 </span>
               </div>
               <div className="flex items-center gap-3 text-xs font-mono">
@@ -988,7 +989,7 @@ export default function App() {
             <a href="#pricing" className="hover:text-white transition-colors">Planes</a>
             <a href={DOWNLOAD_URL} className="hover:text-white transition-colors">Descarga Directa</a>
             <span className="text-[#818CF8] flex items-center gap-1 cursor-default">
-              <Disc3 className="h-3.5 w-3.5 text-[#5865F2]" /> Discord (Pronto)
+              <Disc3 className="h-3.5 w-3.5 text-[#5865F2]" /> Discord: {DISCORD_USER}
             </span>
             <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="text-[#34D399] hover:underline flex items-center gap-1">
               <MessageSquare className="h-3.5 w-3.5" /> wa.me/@cybergz7
