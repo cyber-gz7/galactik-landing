@@ -28,7 +28,8 @@ import {
   CheckCheck,
   Radio,
   Sliders,
-  Disc3
+  Disc3,
+  Laptop
 } from 'lucide-react';
 
 // Enlaces oficiales configurados según solicitud
