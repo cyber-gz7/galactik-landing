@@ -53,71 +53,50 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#09080F] text-[#E6EDF3] font-sans overflow-x-hidden selection:bg-[#8B5CF6]/30">
-      {/* ================= 1. NAVEGACIÓN SUPERIOR ================= */}
-      <header className="sticky top-0 z-50 border-b border-[#8B5CF6]/25 bg-[#09080F]/90 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-3">
-            <a href="#" className="flex items-center gap-3 group">
-              <img
-                src="./galactk-logo.png"
-                alt="Galactik Live Logo"
-                className="h-10 w-auto object-contain drop-shadow-[0_0_15px_rgba(139,92,246,0.6)] group-hover:scale-105 transition-transform"
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).src = './favicon.png';
-                }}
-              />
-              <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <span className="font-extrabold text-lg tracking-wider text-white">
-                    GALACTIK <span className="bg-gradient-to-r from-[#C4B5FD] via-[#8B5CF6] to-[#818CF8] bg-clip-text text-transparent">LIVE</span>
-                  </span>
-                  <span className="rounded-full bg-[#8B5CF6]/20 border border-[#8B5CF6]/40 px-2 py-0.2 font-mono text-[10px] font-bold text-[#C4B5FD]">
-                    v2.9.3
-                  </span>
-                </div>
-                <span className="text-[10px] text-[#A78BFA] font-medium tracking-wide">
-                  Suite Obsidian Neon para TikTok Live
-                </span>
-              </div>
-            </a>
-          </div>
+      {/* ================= 1. NAVEGACIÓN ================= */}
+      <header className="sticky top-0 z-50 border-b border-white/[0.07] bg-[#09080F]/80 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+          <a href="#" className="flex shrink-0 items-center gap-3" aria-label="Galactik Live, inicio">
+            <img src="./galactk-logo.png" alt="" width={40} height={40} className="h-10 w-10 object-contain drop-shadow-[0_0_14px_rgba(139,92,246,0.7)]" />
+            <span className="text-lg font-extrabold leading-none tracking-wide text-white">
+              GALACTIK <span className="text-[#A78BFA]">LIVE</span>
+            </span>
+            <span className="hidden rounded-md border border-[#8B5CF6]/40 bg-[#8B5CF6]/15 px-1.5 py-0.5 font-mono text-[10px] font-bold text-[#C4B5FD] sm:inline">
+              v2.9.3
+            </span>
+          </a>
 
-          <nav className="hidden lg:flex items-center gap-6 text-xs font-bold text-[#B8B2C8]">
+          <nav className="hidden xl:flex items-center gap-7 text-[13px] font-semibold text-[#B8B2C8]" aria-label="Principal">
             <a href="#features" className="hover:text-white transition-colors">Funciones</a>
-            <a href="#roblox" className="hover:text-[#F472B6] transition-colors">Roblox GvG</a>
-            <a href="#minecraft" className="hover:text-[#34D399] transition-colors">Minecraft 1.20.1</a>
-            <a href="#alerts" className="hover:text-[#818CF8] transition-colors">Croma Key</a>
-            <a href="#tts" className="hover:text-[#FBBF24] transition-colors">Voz TTS</a>
-            <a href="#pricing" className="hover:text-white transition-colors">Planes & Precios</a>
-            <a href="#referrals" className="hover:text-[#34D399] transition-colors">Referidos</a>
+            <a href="#roblox" className="hover:text-white transition-colors">Roblox GvG</a>
+            <a href="#minecraft" className="hover:text-white transition-colors">Minecraft</a>
+            <a href="#alerts" className="hover:text-white transition-colors">Croma Key</a>
+            <a href="#tts" className="hover:text-white transition-colors">Voz TTS</a>
+            <a href="#pricing" className="hover:text-white transition-colors">Precios</a>
+            <a href="#referrals" className="hover:text-white transition-colors">Referidos</a>
             <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
           </nav>
 
-          <div className="flex items-center gap-2.5">
-            {/* Discord: aún sin servidor, se atiende por mensaje directo */}
-            <div
+          <div className="flex items-center gap-2">
+            <span
               title={`Escríbenos por Discord a ${DISCORD_USER}. Servidor oficial próximamente.`}
-              className="hidden sm:flex items-center gap-1.5 rounded-xl border border-[#5865F2]/40 bg-[#5865F2]/10 px-3 py-2 text-xs font-bold text-[#818CF8] cursor-default"
+              className="hidden 2xl:flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold text-[#B8B2C8]"
             >
-              <Disc3 className="h-3.5 w-3.5 text-[#5865F2] animate-spin" />
-              <span>Discord: {DISCORD_USER}</span>
-            </div>
-
-            {/* Botón WhatsApp */}
+              <Disc3 className="h-3.5 w-3.5 text-[#818CF8]" /> {DISCORD_USER}
+            </span>
             <a
               href={WHATSAPP_URL}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-1.5 rounded-xl border border-[#34D399]/40 bg-[#34D399]/15 px-3 py-2 text-xs font-bold text-[#34D399] hover:bg-[#34D399]/25 transition-all"
+              aria-label="WhatsApp"
+              className="flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-2 text-xs font-bold text-[#34D399] hover:bg-white/5 transition-colors"
             >
-              <MessageSquare className="h-3.5 w-3.5" />
+              <MessageSquare className="h-4 w-4" />
               <span className="hidden sm:inline">WhatsApp</span>
             </a>
-
-            {/* Descarga Directa */}
             <a
               href={DOWNLOAD_URL}
-              className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] px-4 py-2 text-xs font-black uppercase tracking-wider text-white shadow-[0_0_20px_rgba(139,92,246,0.35)] hover:brightness-110 active:scale-95 transition-all"
+              className="flex items-center gap-2 rounded-lg bg-[#8B5CF6] px-4 py-2 text-xs font-extrabold text-white shadow-[0_0_24px_rgba(139,92,246,0.45)] hover:bg-[#7C3AED] active:scale-95 transition-all"
             >
               <Download className="h-4 w-4" />
               <span>Descargar</span>
@@ -126,186 +105,109 @@ export default function App() {
         </div>
       </header>
 
-      {/* ================= 2. HERO PRINCIPAL OBSIDIAN NEON ================= */}
-      <section className="relative overflow-hidden pt-12 pb-24 md:pt-18 md:pb-32">
-        {/* Banner de fondo oficial obsidian con overlay gradiente */}
-        <div className="absolute inset-0 pointer-events-none z-0">
-          <img
-            src="./assets/hero-banner-bg.png"
-            alt="Hero Background"
-            className="w-full h-full object-cover object-center opacity-30 blur-[2px]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#09080F]/80 via-[#09080F]/95 to-[#09080F]" />
+      {/* ================= 2. HERO ================= */}
+      <section className="relative overflow-hidden pt-14 pb-20 lg:pt-20 lg:pb-28">
+        <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+          <img src="./assets/hero-banner-bg.png" alt="" className="h-full w-full object-cover opacity-20" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#09080F]/70 via-[#09080F]/90 to-[#09080F]" />
+          <div className="absolute -top-24 right-[-10%] h-[520px] w-[520px] rounded-full bg-[#8B5CF6]/25 blur-[140px]" />
+          <div className="absolute bottom-0 left-[-8%] h-[380px] w-[380px] rounded-full bg-[#F472B6]/10 blur-[140px]" />
         </div>
 
-        {/* Luces y destellos neón */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-[#8B5CF6]/20 blur-[130px] pointer-events-none rounded-full" />
-        <div className="absolute top-1/3 left-1/6 w-[350px] h-[350px] bg-[#F472B6]/15 blur-[140px] pointer-events-none rounded-full" />
-        <div className="absolute top-1/3 right-1/6 w-[350px] h-[350px] bg-[#34D399]/15 blur-[140px] pointer-events-none rounded-full" />
-
-        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 text-center">
-          {/* Logo Central Gigante con Glow */}
-          <div className="flex justify-center mb-6">
-            <div className="relative p-2">
-              <img
-                src="./assets/galactik-mark.png"
-                alt="Galactik Mark"
-                className="h-16 w-auto object-contain drop-shadow-[0_0_35px_rgba(139,92,246,0.85)]"
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).src = './galactk-logo.png';
-                }}
-              />
-            </div>
-          </div>
-
-          {/* Badge superior */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#8B5CF6]/50 bg-[#14111D]/80 px-4 py-1.5 text-xs font-bold text-[#C4B5FD] shadow-[0_0_25px_rgba(139,92,246,0.3)] backdrop-blur-md mb-6">
-            <span className="h-2 w-2 rounded-full bg-[#34D399] animate-pulse" />
-            <span>Versión 2.9.3 Oficial · Motor Rust en Tiempo Real · Compatible con OBS y TikTok Studio</span>
-          </div>
-
-          <h1 className="font-extrabold text-4xl sm:text-6xl md:text-7xl tracking-tight text-white max-w-5xl mx-auto leading-[1.12]">
-            Transforma tu directo de TikTok en un{' '}
-            <span className="bg-gradient-to-r from-[#C4B5FD] via-[#8B5CF6] to-[#818CF8] bg-clip-text text-transparent [text-shadow:0_0_40px_rgba(139,92,246,0.55)]">
-              espectáculo interactivo
-            </span>
-          </h1>
-
-          <p className="mt-6 text-base sm:text-xl text-[#B8B2C8] max-w-3xl mx-auto leading-relaxed">
-            La suite integral para streamers: automatiza duelos de <strong className="text-white">Roblox Obby GvG</strong>, eventos cinemáticos en <strong className="text-white">Minecraft PaperMC 1.20.1</strong>, alertas con <strong className="text-white">Croma Key GPU</strong>, 60+ sonidos memes virales y <strong className="text-white">Voz TTS ultra natural</strong> sin latencia.
-          </p>
-
-          {/* Botones de acción Hero */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <a
-              href={DOWNLOAD_URL}
-              className="flex items-center gap-3 rounded-2xl bg-gradient-to-r from-[#C4B5FD] via-[#8B5CF6] to-[#6D28D9] px-8 py-4 text-sm font-black uppercase tracking-wider text-white shadow-[0_0_35px_rgba(139,92,246,0.6)] hover:brightness-110 active:scale-95 transition-all"
-            >
-              <Download className="h-5 w-5" />
-              <span>Descargar para Windows (64-bit)</span>
-            </a>
-
-            <a
-              href="#pricing"
-              className="flex items-center gap-2 rounded-2xl border border-[#8B5CF6]/50 bg-[#14111D]/90 px-6 py-4 text-sm font-black text-white hover:border-[#8B5CF6] hover:bg-[#8B5CF6]/20 transition-all shadow-lg"
-            >
-              <Crown className="h-5 w-5 text-[#FBBF24]" />
-              <span>Ver Planes & Precios (Desde $0 / $9 / $15)</span>
-            </a>
-
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-2 rounded-2xl border border-[#34D399]/40 bg-[#34D399]/15 px-6 py-4 text-sm font-bold text-[#34D399] hover:bg-[#34D399]/25 transition-all"
-            >
-              <MessageSquare className="h-5 w-5" />
-              <span>wa.me/@cybergz7</span>
-            </a>
-          </div>
-
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-6 text-xs text-[#8E87A0]">
-            <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="h-4 w-4 text-[#34D399]" /> 1h / 2h Diarias Gratis sin tarjeta
-            </span>
-            <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="h-4 w-4 text-[#34D399]" /> 100% Seguro (solo tu @nick de TikTok)
-            </span>
-            <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="h-4 w-4 text-[#34D399]" /> Actualizaciones silenciosas en 2s
-            </span>
-            <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="h-4 w-4 text-[#34D399]" /> Windows 10 & 11 (85 MB)
-            </span>
-          </div>
-
-          {/* ================= MOCKUP DE LA SUITE EN ACCIÓN ================= */}
-          <div className="mt-14 max-w-5xl mx-auto rounded-3xl border border-[#8B5CF6]/40 bg-[#14111D]/95 p-4 sm:p-7 shadow-[0_20px_70px_-15px_rgba(0,0,0,0.95),0_0_50px_rgba(139,92,246,0.3)]">
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4 mb-6">
-              <div className="flex items-center gap-3">
-                <span className="h-3 w-3 rounded-full bg-[#F43F5E]" />
-                <span className="h-3 w-3 rounded-full bg-[#FBBF24]" />
-                <span className="h-3 w-3 rounded-full bg-[#34D399]" />
-                <span className="font-mono text-xs font-bold text-white flex items-center gap-2 ml-1">
-                  <Laptop className="h-4 w-4 text-[#C4B5FD]" />
-                  Galactik Live v2.9.3 &bull; Panel de Control Activo
-                </span>
-              </div>
-              <div className="flex items-center gap-3 text-xs font-mono">
-                <span className="text-[#34D399] font-bold flex items-center gap-1.5 rounded-full bg-[#34D399]/15 border border-[#34D399]/40 px-3 py-1">
-                  <span className="h-2 w-2 rounded-full bg-[#34D399] animate-ping" />
-                  SERVIDOR OBS HTTP :4000
-                </span>
-                <span className="text-[#C4B5FD] font-bold">@streamer_oficial</span>
-              </div>
+        <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-[1.05fr_1fr]">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs font-semibold text-[#C4B5FD]">
+              <span className="h-2 w-2 rounded-full bg-[#34D399] animate-pulse" />
+              Versión 2.9.3 · Motor Rust en tiempo real · OBS y TikTok Studio
             </div>
 
-            {/* Arena de Duelo Roblox GvG Interactiva */}
-            <div className="rounded-2xl border border-[#8B5CF6]/30 bg-[#09080F] p-4 sm:p-6 shadow-inner">
-              <div className="flex items-center justify-between text-xs font-black uppercase tracking-wider mb-2">
-                <span className="text-[#F472B6] flex items-center gap-2">
-                  🌹 VILLANOS: ROSAS (2,450 PTS)
+            <h1 className="mt-6 text-[2.5rem] font-black leading-[1.05] tracking-tight text-white sm:text-6xl xl:text-7xl">
+              Tu directo de TikTok, convertido en{' '}
+              <span className="text-[#A78BFA]">espectáculo interactivo</span>
+            </h1>
+
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-[#B8B2C8] sm:text-lg">
+              Duelos de <strong className="text-white">Roblox Obby GvG</strong>, eventos en <strong className="text-white">Minecraft PaperMC 1.20.1</strong>, alertas con <strong className="text-white">Croma Key GPU</strong>, +60 sonidos meme y <strong className="text-white">Voz TTS</strong> sin latencia. Todo en una sola app para Windows.
+            </p>
+
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <a
+                href={DOWNLOAD_URL}
+                className="flex items-center gap-2.5 rounded-xl bg-[#8B5CF6] px-7 py-4 text-sm font-extrabold text-white shadow-[0_0_40px_rgba(139,92,246,0.55)] hover:bg-[#7C3AED] active:scale-95 transition-all"
+              >
+                <Download className="h-5 w-5" />
+                Descargar para Windows (64-bit)
+              </a>
+              <a
+                href="#pricing"
+                className="flex items-center gap-2 rounded-xl border border-white/15 px-6 py-4 text-sm font-bold text-white hover:bg-white/5 transition-colors"
+              >
+                <Crown className="h-5 w-5 text-[#FBBF24]" />
+                Ver planes desde $0
+              </a>
+            </div>
+
+            <ul className="mt-8 grid max-w-xl grid-cols-1 gap-x-6 gap-y-2.5 text-[13px] text-[#B8B2C8] sm:grid-cols-2">
+              <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 shrink-0 text-[#34D399]" /> 1h / 2h diarias gratis, sin tarjeta</li>
+              <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 shrink-0 text-[#34D399]" /> Solo pedimos tu @nick de TikTok</li>
+              <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 shrink-0 text-[#34D399]" /> Actualizaciones silenciosas en 2 s</li>
+              <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 shrink-0 text-[#34D399]" /> Windows 10 y 11 · 85 MB</li>
+            </ul>
+          </div>
+
+          {/* Logo flotante + panel en vivo */}
+          <div className="relative">
+            <img
+              src="./galactk-logo.png"
+              alt="Logo de Galactik Live"
+              width={120}
+              height={120}
+              className="gk-float absolute -top-10 -right-2 z-20 h-24 w-24 object-contain drop-shadow-[0_0_30px_rgba(139,92,246,0.9)] sm:-right-6 sm:h-28 sm:w-28"
+            />
+            <div className="rounded-2xl border border-[#8B5CF6]/35 bg-[#14111D]/95 p-4 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9),0_0_60px_rgba(139,92,246,0.25)] sm:p-5">
+              <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+                <span className="flex items-center gap-2 font-mono text-xs font-bold text-white">
+                  <span className="flex gap-1.5" aria-hidden="true">
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#F43F5E]" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#FBBF24]" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#34D399]" />
+                  </span>
+                  <Laptop className="ml-1 h-4 w-4 text-[#C4B5FD]" /> Panel en vivo
                 </span>
-                <div className="flex items-center gap-2 bg-[#14111D] border border-white/10 px-3 py-1 rounded-xl">
-                  <Trophy className="h-4 w-4 text-[#FBBF24]" />
-                  <span className="font-mono text-xs font-bold text-white">META WINS: {simWins}</span>
-                </div>
-                <span className="text-[#818CF8] flex items-center gap-2">
-                  HÉROES: GGs (3,120 PTS) ⚡
+                <span className="flex items-center gap-1.5 rounded-full border border-[#34D399]/40 bg-[#34D399]/10 px-2.5 py-1 font-mono text-[11px] font-bold text-[#34D399]">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#34D399] animate-ping" /> OBS :4000
                 </span>
               </div>
 
-              {/* Barra de progreso interactiva */}
-              <div className="relative h-7 w-full rounded-full bg-[#1A1429] overflow-hidden p-1 border border-[#8B5CF6]/30 shadow-[0_0_20px_rgba(139,92,246,0.3)]">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-[#F472B6] via-[#8B5CF6] to-[#818CF8] transition-all duration-700 shadow-[0_0_25px_rgba(139,92,246,0.7)]"
-                  style={{ width: '56%' }}
-                />
-              </div>
-
-              {/* Regalos interactivos activos en el duelo */}
-              <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 text-left">
-                <div
-                  onClick={() => setSimWins(Math.max(0, simWins - 15))}
-                  className="rounded-xl border border-[#F472B6]/40 bg-[#14111D] p-3 flex items-center gap-3 cursor-pointer hover:border-[#F472B6] transition-all"
-                  title="Haz clic para simular donación de Gatito León"
-                >
-                  <img src="./gifts/leon-the-kitten-4888-coins.webp" alt="Gatito León" className="h-11 w-11 object-contain drop-shadow" />
-                  <div>
-                    <div className="font-bold text-xs text-white">Gatito León</div>
-                    <div className="font-mono text-[11px] font-black text-[#F472B6]">-15 WINs</div>
-                  </div>
+              <div className="rounded-xl border border-[#8B5CF6]/25 bg-[#09080F] p-4">
+                <div className="mb-3 flex items-center justify-between gap-2 text-[11px] font-black uppercase tracking-wide">
+                  <span className="text-[#F472B6]">🌹 Rosas · 2,450</span>
+                  <span className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-[#14111D] px-2.5 py-1 font-mono text-white">
+                    <Trophy className="h-3.5 w-3.5 text-[#FBBF24]" /> WINS {simWins}
+                  </span>
+                  <span className="text-[#818CF8]">GGs · 3,120 ⚡</span>
+                </div>
+                <div className="h-5 w-full overflow-hidden rounded-full border border-[#8B5CF6]/30 bg-[#1A1429] p-0.5">
+                  <div className="h-full w-[56%] rounded-full bg-gradient-to-r from-[#F472B6] via-[#8B5CF6] to-[#818CF8] shadow-[0_0_20px_rgba(139,92,246,0.7)]" />
                 </div>
 
-                <div
-                  className="rounded-xl border border-[#F472B6]/40 bg-[#14111D] p-3 flex items-center gap-3"
-                >
-                  <img src="./gifts/rose-1-coins.webp" alt="Rosa" className="h-11 w-11 object-contain drop-shadow" />
-                  <div>
-                    <div className="font-bold text-xs text-white">Rosa TikTok</div>
-                    <div className="font-mono text-[11px] font-black text-[#F472B6]">+10 Pts</div>
+                <p className="mt-4 text-[11px] text-[#8E87A0]">Toca un regalo para simular la donación:</p>
+                <div className="mt-2 grid grid-cols-2 gap-2.5">
+                  <button type="button" onClick={() => setSimWins(Math.max(0, simWins - 15))} className="flex items-center gap-3 rounded-xl border border-[#F472B6]/35 bg-[#14111D] p-2.5 text-left hover:border-[#F472B6] transition-colors">
+                    <img src="./gifts/leon-the-kitten-4888-coins.webp" alt="" className="h-10 w-10 object-contain" />
+                    <span><span className="block text-xs font-bold text-white">Gatito León</span><span className="font-mono text-[11px] font-black text-[#F472B6]">-15 WINs</span></span>
+                  </button>
+                  <button type="button" onClick={() => setSimWins(simWins + 15)} className="flex items-center gap-3 rounded-xl border border-[#818CF8]/35 bg-[#14111D] p-2.5 text-left hover:border-[#34D399] transition-colors">
+                    <img src="./gifts/flying-jets-5000-coins.webp" alt="" className="h-10 w-10 object-contain" />
+                    <span><span className="block text-xs font-bold text-white">Jets 5000</span><span className="font-mono text-[11px] font-black text-[#34D399]">+15 WINs</span></span>
+                  </button>
+                  <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#14111D] p-2.5">
+                    <img src="./gifts/rose-1-coins.webp" alt="" className="h-10 w-10 object-contain" />
+                    <span><span className="block text-xs font-bold text-white">Rosa TikTok</span><span className="font-mono text-[11px] font-black text-[#F472B6]">+10 pts</span></span>
                   </div>
-                </div>
-
-                <div
-                  className="rounded-xl border border-[#818CF8]/40 bg-[#14111D] p-3 flex items-center gap-3"
-                >
-                  <img src="./gifts/gg-1-coins.webp" alt="GG" className="h-11 w-11 object-contain drop-shadow" />
-                  <div>
-                    <div className="font-bold text-xs text-white">GG Gamer</div>
-                    <div className="font-mono text-[11px] font-black text-[#818CF8]">+10 Pts</div>
-                  </div>
-                </div>
-
-                <div
-                  onClick={() => setSimWins(simWins + 15)}
-                  className="rounded-xl border border-[#818CF8]/40 bg-[#14111D] p-3 flex items-center gap-3 cursor-pointer hover:border-[#34D399] transition-all"
-                  title="Haz clic para simular donación de Jets"
-                >
-                  <img src="./gifts/flying-jets-5000-coins.webp" alt="Jets" className="h-11 w-11 object-contain drop-shadow" />
-                  <div>
-                    <div className="font-bold text-xs text-white">Jets 5000</div>
-                    <div className="font-mono text-[11px] font-black text-[#34D399]">+15 WINs</div>
+                  <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#14111D] p-2.5">
+                    <img src="./gifts/gg-1-coins.webp" alt="" className="h-10 w-10 object-contain" />
+                    <span><span className="block text-xs font-bold text-white">GG Gamer</span><span className="font-mono text-[11px] font-black text-[#818CF8]">+10 pts</span></span>
                   </div>
                 </div>
               </div>
@@ -314,28 +216,21 @@ export default function App() {
         </div>
       </section>
 
-      {/* ================= 3. STATS STRIP ================= */}
-      <section className="border-y border-white/10 bg-[#0D0B14] py-8">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="grid grid-cols-2 gap-6 md:grid-cols-4 text-center">
-            <div>
-              <div className="font-mono text-3xl md:text-4xl font-black text-[#34D399]">0 ms</div>
-              <div className="text-xs text-[#B8B2C8] mt-1 font-semibold">Latencia Webcast & RCON</div>
+      {/* ================= 3. STATS ================= */}
+      <section className="border-y border-white/[0.07] bg-[#0D0B14]">
+        <dl className="mx-auto grid max-w-7xl grid-cols-2 divide-white/[0.07] md:grid-cols-4 md:divide-x">
+          {[
+            ['0 ms', 'Latencia Webcast y RCON', '#34D399'],
+            ['+1,770', 'Regalos de TikTok mapeados', '#C4B5FD'],
+            ['60 FPS', 'Aceleración GPU en OBS', '#FBBF24'],
+            ['2 s', 'Actualización in-place', '#818CF8'],
+          ].map(([v, l, c]) => (
+            <div key={l} className="px-6 py-7 text-center md:text-left">
+              <dt className="font-mono text-3xl font-black md:text-4xl" style={{ color: c }}>{v}</dt>
+              <dd className="mt-1 text-xs font-semibold text-[#B8B2C8]">{l}</dd>
             </div>
-            <div>
-              <div className="font-mono text-3xl md:text-4xl font-black text-[#C4B5FD]">+1,770</div>
-              <div className="text-xs text-[#B8B2C8] mt-1 font-semibold">Regalos de TikTok Mapeados</div>
-            </div>
-            <div>
-              <div className="font-mono text-3xl md:text-4xl font-black text-[#FBBF24]">60 FPS</div>
-              <div className="text-xs text-[#B8B2C8] mt-1 font-semibold">Aceleración GPU en OBS Studio</div>
-            </div>
-            <div>
-              <div className="font-mono text-3xl md:text-4xl font-black text-[#818CF8]">2 seg</div>
-              <div className="text-xs text-[#B8B2C8] mt-1 font-semibold">Actualizaciones In-Place NSIS</div>
-            </div>
-          </div>
-        </div>
+          ))}
+        </dl>
       </section>
 
       {/* ================= 4. SHOWCASE DE MÓDULOS CON GRÁFICOS OFICIALES ================= */}
@@ -974,7 +869,7 @@ export default function App() {
             <img
               src="./galactk-logo.png"
               alt="Galactik Live Logo"
-              className="h-8 w-auto object-contain"
+              className="h-9 w-9 object-contain"
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).src = './favicon.png';
               }}

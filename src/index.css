@@ -76,3 +76,12 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #8B5CF6;
 }
+
+@keyframes gk-float {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-10px) rotate(3deg); }
+}
+.gk-float { animation: gk-float 6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .gk-float { animation: none; }
+}
